@@ -32,10 +32,11 @@ module.exports = {
 		'react/prop-types': 'off',
 		'import/newline-after-import': 2,
 		'import/no-duplicates': 2,
-		'graphql/capitalized-type-name': ['error', {env: 'literal'}],
-		'graphql/named-operations': ['error', {env: 'literal'}],
-		'graphql/no-deprecated-fields': ['warn', {env: 'literal'}],
-		'graphql/template-strings': ['error', {env: 'literal'}],
+		// Deshabilitadas mientras agregamos tipos de GQL
+		// 'graphql/capitalized-type-name': ['error', {env: 'literal'}],
+		// 'graphql/named-operations': ['error', {env: 'literal'}],
+		// 'graphql/no-deprecated-fields': ['warn', {env: 'literal'}],
+		// 'graphql/template-strings': ['error', {env: 'literal'}],
 		'no-nested-ternary': 'error',
 		'import/order': [
 			2,

@@ -46,7 +46,8 @@ module.exports = {
 				alphabetize: {order: 'asc', caseInsensitive: true}
 			}
 		],
-		'import/named': 2,
+		// Deshabilitada por este bug https://github.com/import-js/eslint-plugin-import/issues/1282
+		// 'import/named': 2,
 		'no-console': ['error', {allow: ['warn', 'error']}],
 		'import/extensions': [
 			2,

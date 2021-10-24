@@ -1,0 +1,52 @@
+@import '../../../styles/mixins/colors';
+
+$button-height: 16px;
+$button-width: 32px;
+$button-padding: 2px;
+$indicator-diameter: ($button-height - ($button-padding * 2));
+
+.wrapper {
+	display: flex;
+	flex-direction: row;
+  align-items: center;
+  & p {
+    margin: 0 10px 0 0;
+  }
+}
+
+button,
+.indicator {
+	transition-duration: 200ms;
+	transition-timing-function: ease-out;
+	transition-property: background-color;
+}
+
+button {
+	position: relative;
+	outline: none;
+	border: 0;
+
+	width: $button-width;
+	height: $button-height;
+	border-radius: $button-height / 2;
+	padding: $button-padding;
+
+	.indicator {
+		background-color: white;
+		border-radius: 100%;
+		position: relative;
+		left: 0;
+		width: $indicator-diameter;
+		height: $indicator-diameter;
+		transition-property: all;
+	}
+
+	&.active {
+		transition-property: background-color;
+		.indicator {
+			background-color: $red;
+			transition-property: all;
+			left: $button-width - $button-height;
+		}
+	}
+}

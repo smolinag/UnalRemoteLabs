@@ -1,10 +1,22 @@
 import React from 'react';
-import FormCheck, {FormCheckProps} from 'react-bootstrap/FormCheck';
 
-type Props = Pick<FormCheckProps, 'label'>;
+import classes from './Switch.module.scss';
 
-const Switch: React.FC<Props> = (props: Props) => {
-	return <FormCheck type="switch" {...props} />;
+interface Props {
+	label: string;
+	state: boolean;
+	onToggle: (value: boolean) => void;
+}
+
+const Switch: React.FC<Props> = ({label, onToggle, state}: Props) => {
+	return (
+		<div className={classes.wrapper}>
+			<p onClick={() => onToggle(!state)}>{label}</p>
+			<button className={state ? classes.active : ''} onClick={() => onToggle(!state)}>
+				<div className={classes.indicator} />
+			</button>
+		</div>
+	);
 };
 
 export default Switch;

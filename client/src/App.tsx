@@ -5,13 +5,10 @@ import Header from './components/UI/Layout/Header'
 
 function App(): JSX.Element {
 	return (
-		<div style={{ minHeight: '100vh' }}>
+		<>
 			<Header/>
-			<div style={{height: "300px"}}>
-
-			</div>
 			<Footer/>
-		</div>
+		</>
 	);
 }
 

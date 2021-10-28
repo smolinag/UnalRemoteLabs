@@ -1,7 +1,14 @@
 @use './mixins/typography';
 
 html,
-body,
+body {
+	height: 100vh;
+}
+
+#root {
+	height: 100%;
+}
+
 * {
 	font-family: 'AncizarSerif';
 	-ms-text-size-adjust: 100%;

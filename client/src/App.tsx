@@ -1,14 +1,15 @@
 import React from 'react';
 
-import Footer from './components/UI/Layout/Footer'
-import Header from './components/UI/Layout/Header'
+import classes from './App.module.scss';
+import {Footer, Header} from './components/UI';
 
 function App(): JSX.Element {
 	return (
-		<>
-			<Header/>
-			<Footer/>
-		</>
+		<div className={classes.wrapper}>
+			<Header />
+			<div className={classes.content}></div>
+			<Footer />
+		</div>
 	);
 }
 

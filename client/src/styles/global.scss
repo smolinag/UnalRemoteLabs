@@ -1,7 +1,15 @@
 @use './mixins/typography';
+@import './mixins/bootstrapTheme';
 
 html,
-body,
+body {
+	height: 100vh;
+}
+
+#root {
+	height: 100%;
+}
+
 * {
 	font-family: 'AncizarSerif';
 	-ms-text-size-adjust: 100%;

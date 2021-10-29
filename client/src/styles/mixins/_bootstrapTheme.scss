@@ -1,0 +1,42 @@
+@import './colors';
+
+/* BUTTON */
+
+@mixin btn($color, $text-color) {
+	background-color: $color;
+	color: $text-color;
+}
+
+@mixin btn-hover($color) {
+	background-color: $color;
+}
+
+@mixin btn-focus($color) {
+	box-shadow: 0 0 0 0.25rem rgba($color: $color, $alpha: 0.7);
+}
+
+.btn {
+	&.btn-red {
+		@include btn($red, $white);
+
+		&:hover:not(:focus) {
+			@include btn-hover($red-dark);
+		}
+
+		&:focus {
+			@include btn-focus($red);
+		}
+	}
+
+	&.btn-green {
+		@include btn($green, $white);
+
+		&:hover:not(:focus) {
+			@include btn-hover($green-dark);
+		}
+
+		&:focus {
+			@include btn-focus($green);
+		}
+	}
+}

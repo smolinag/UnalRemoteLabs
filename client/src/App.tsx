@@ -1,8 +1,7 @@
 import React from 'react';
 
 import classes from './App.module.scss';
-import Footer from './components/UI/Layout/Footer'
-import Header from './components/UI/Layout/Header'
+import {Footer, Header} from './components/UI';
 
 function App(): JSX.Element {
 	return (

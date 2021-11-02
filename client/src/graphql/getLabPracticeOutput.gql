@@ -1,0 +1,17 @@
+query getLabPracticeOutput {
+	getLabPracticeOutput(id: 1) {
+		id
+		name
+		descriptio
+		units
+		updatedBy
+		createdBy
+		LabPracticeSessionOutputs {
+			items {
+				value
+			}
+			nextToken
+			startedAt
+		}
+	}
+}

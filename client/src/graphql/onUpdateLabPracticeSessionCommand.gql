@@ -1,4 +1,4 @@
-subscription {
+subscription onUpdateLabPracticeSessionCommand {
 	onUpdateLabPracticeSessionCommand {
 		id
 		LabPracticeCommand {

@@ -2375,6 +2375,26 @@ export type GetLabPracticeOutputQuery = {__typename?: 'Query'} & {
 	>;
 };
 
+export type Unnamed_1_SubscriptionVariables = Exact<{[key: string]: never}>;
+
+export type Unnamed_1_Subscription = {__typename?: 'Subscription'} & {
+	onUpdateLabPracticeSessionCommand?: Maybe<
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'id'> & {
+				LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id'>>;
+			}
+	>;
+};
+
+export type Unnamed_2_SubscriptionVariables = Exact<{[key: string]: never}>;
+
+export type Unnamed_2_Subscription = {__typename?: 'Subscription'} & {
+	onUpdateLabPracticeSessionOutput?: Maybe<
+		{__typename?: 'LabPracticeSessionOutput'} & Pick<LabPracticeSessionOutput, 'id'> & {
+				LabPracticeOutput?: Maybe<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id'>>;
+			}
+	>;
+};
+
 export const GetLabPracticeOutputDocument = gql`
 	query getLabPracticeOutput {
 		getLabPracticeOutput(id: 1) {
@@ -2434,3 +2454,67 @@ export type GetLabPracticeOutputQueryResult = Apollo.QueryResult<
 	GetLabPracticeOutputQuery,
 	GetLabPracticeOutputQueryVariables
 >;
+export const Document = gql`
+	subscription {
+		onUpdateLabPracticeSessionCommand {
+			id
+			LabPracticeCommand {
+				id
+			}
+		}
+	}
+`;
+
+/**
+ * __useSubscription__
+ *
+ * To run a query within a React component, call `useSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSubscription(baseOptions?: Apollo.SubscriptionHookOptions<Subscription, SubscriptionVariables>) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useSubscription<Subscription, SubscriptionVariables>(Document, options);
+}
+export type SubscriptionHookResult = ReturnType<typeof useSubscription>;
+export type SubscriptionResult = Apollo.SubscriptionResult<Subscription>;
+export const Document = gql`
+	subscription {
+		onUpdateLabPracticeSessionOutput {
+			id
+			LabPracticeOutput {
+				id
+			}
+		}
+	}
+`;
+
+/**
+ * __useSubscription__
+ *
+ * To run a query within a React component, call `useSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSubscription(baseOptions?: Apollo.SubscriptionHookOptions<Subscription, SubscriptionVariables>) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useSubscription<Subscription, SubscriptionVariables>(Document, options);
+}
+export type SubscriptionHookResult = ReturnType<typeof useSubscription>;
+export type SubscriptionResult = Apollo.SubscriptionResult<Subscription>;

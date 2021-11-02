@@ -1,0 +1,8 @@
+subscription {
+	onUpdateLabPracticeSessionOutput {
+		id
+		LabPracticeOutput {
+			id
+		}
+	}
+}

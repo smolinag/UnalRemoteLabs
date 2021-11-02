@@ -1,5 +1,8 @@
 overwrite: true
-schema: http://localhost:5000/graphql
+schema:
+  - https://4xgfahcqmvfmti2gv2rfwhflxe.appsync-api.us-east-2.amazonaws.com/graphql:
+      headers:
+        x-api-key: 'da2-nujzzwmwo5hftcmaj7axynomui'
 documents: ./src/graphql/**/*.gql
 generates:
   src/graphql/generated/schema.ts:

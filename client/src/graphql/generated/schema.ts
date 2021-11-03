@@ -2356,23 +2356,13 @@ export type UserLabSemester = {
 export type GetLabPracticeOutputQueryVariables = Exact<{[key: string]: never}>;
 
 export type GetLabPracticeOutputQuery = {__typename?: 'Query'} & {
-	getLabPracticeOutput?: Maybe<
-		{__typename?: 'LabPracticeOutput'} & Pick<
-			LabPracticeOutput,
-			'id' | 'name' | 'descriptio' | 'units' | 'updatedBy' | 'createdBy'
-		> & {
-				LabPracticeSessionOutputs?: Maybe<
-					{__typename?: 'ModelLabPracticeSessionOutputConnection'} & Pick<
-						ModelLabPracticeSessionOutputConnection,
-						'nextToken' | 'startedAt'
-					> & {
-							items?: Maybe<
-								Array<Maybe<{__typename?: 'LabPracticeSessionOutput'} & Pick<LabPracticeSessionOutput, 'value'>>>
-							>;
-						}
-				>;
-			}
-	>;
+	getLabPracticeOutput?: Maybe<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'updatedAt'>>;
+};
+
+export type OnCreateLaboratorySubscriptionVariables = Exact<{[key: string]: never}>;
+
+export type OnCreateLaboratorySubscription = {__typename?: 'Subscription'} & {
+	onCreateLaboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id'>>;
 };
 
 export type OnUpdateLabPracticeSessionCommandSubscriptionVariables = Exact<{[key: string]: never}>;
@@ -2399,18 +2389,7 @@ export const GetLabPracticeOutputDocument = gql`
 	query getLabPracticeOutput {
 		getLabPracticeOutput(id: 1) {
 			id
-			name
-			descriptio
-			units
-			updatedBy
-			createdBy
-			LabPracticeSessionOutputs {
-				items {
-					value
-				}
-				nextToken
-				startedAt
-			}
+			updatedAt
 		}
 	}
 `;
@@ -2454,6 +2433,40 @@ export type GetLabPracticeOutputQueryResult = Apollo.QueryResult<
 	GetLabPracticeOutputQuery,
 	GetLabPracticeOutputQueryVariables
 >;
+export const OnCreateLaboratoryDocument = gql`
+	subscription onCreateLaboratory {
+		onCreateLaboratory {
+			id
+		}
+	}
+`;
+
+/**
+ * __useOnCreateLaboratorySubscription__
+ *
+ * To run a query within a React component, call `useOnCreateLaboratorySubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnCreateLaboratorySubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnCreateLaboratorySubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOnCreateLaboratorySubscription(
+	baseOptions?: Apollo.SubscriptionHookOptions<OnCreateLaboratorySubscription, OnCreateLaboratorySubscriptionVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useSubscription<OnCreateLaboratorySubscription, OnCreateLaboratorySubscriptionVariables>(
+		OnCreateLaboratoryDocument,
+		options
+	);
+}
+export type OnCreateLaboratorySubscriptionHookResult = ReturnType<typeof useOnCreateLaboratorySubscription>;
+export type OnCreateLaboratorySubscriptionResult = Apollo.SubscriptionResult<OnCreateLaboratorySubscription>;
 export const OnUpdateLabPracticeSessionCommandDocument = gql`
 	subscription onUpdateLabPracticeSessionCommand {
 		onUpdateLabPracticeSessionCommand {

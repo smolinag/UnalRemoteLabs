@@ -1,0 +1,19 @@
+[{
+   "name": "Laboratorio de máquinas",
+   "commandlist" : [   
+      {"name": "Velocidad Baja", "parameter": "cmd_Vel_Baja", "type": "switch", "value": false},
+      {"name": "Velocidad Media", "parameter": "cmd_Vel_Media", "type": "switch", "value": false},
+      {"name": "Velocidad Alta", "parameter": "cmd_Vel_Alta", "type": "switch", "value": false},
+      {"name": "Velocidad Reset", "parameter": "cmd_Vel_Reset", "type": "switch", "value": false}
+   ],
+   "data": [
+      ["V_Fase1","123.456 vac"],
+      ["V_Fase2","120.99 vac"],
+      ["V_Fase3","115.99 vac"],
+      ["I_Fase1","0.023 A"],
+      ["I_Fase2","0.99 A"],
+      ["I_Fase3","0.123 A"]
+
+   ],
+   "imagenReal": false
+}]

@@ -1,0 +1,11 @@
+@import '../../../styles/mixins/colors';
+
+.labTitle {
+   padding-left: 3% !important;
+   margin: 3% 0% !important
+}
+
+.option {
+   display: flex !important;
+   flex-direction: row !important
+}

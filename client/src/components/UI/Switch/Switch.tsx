@@ -11,7 +11,7 @@ interface Props {
 const Switch: React.FC<Props> = ({label, onToggle, state}: Props) => {
 	return (
 		<div className={classes.wrapper}>
-			<p onClick={() => onToggle(!state)}>{label}</p>
+			<p onClick={() => onToggle(!state)}>{label}:</p>
 			<button className={state ? classes.active : ''} onClick={() => onToggle(!state)}>
 				<div className={classes.indicator} />
 			</button>

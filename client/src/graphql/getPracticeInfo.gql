@@ -1,0 +1,8 @@
+query getPracticeInfo {
+   getLabPractice(id: "7f735a8d-2d46-466f-a40e-49a32d891654") {
+      id
+      name
+      description
+      duration
+   }
+}

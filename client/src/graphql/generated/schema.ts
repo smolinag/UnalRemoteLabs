@@ -2353,10 +2353,26 @@ export type UserLabSemester = {
 	labsemester: LabSemester;
 };
 
+export type GetLabCommandsListkQueryVariables = Exact<{[key: string]: never}>;
+
+export type GetLabCommandsListkQuery = {__typename?: 'Query'} & {
+	listLabPracticeCommands?: Maybe<
+		{__typename?: 'ModelLabPracticeCommandConnection'} & {
+			items?: Maybe<Array<Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>>>;
+		}
+	>;
+};
+
 export type GetLabPracticeOutputQueryVariables = Exact<{[key: string]: never}>;
 
 export type GetLabPracticeOutputQuery = {__typename?: 'Query'} & {
 	getLabPracticeOutput?: Maybe<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'updatedAt'>>;
+};
+
+export type GetPracticeInfoQueryVariables = Exact<{[key: string]: never}>;
+
+export type GetPracticeInfoQuery = {__typename?: 'Query'} & {
+	getLabPractice?: Maybe<{__typename?: 'LabPractice'} & Pick<LabPractice, 'id' | 'name' | 'description' | 'duration'>>;
 };
 
 export type OnCreateLaboratorySubscriptionVariables = Exact<{[key: string]: never}>;
@@ -2385,6 +2401,56 @@ export type OnUpdateLabPracticeSessionOutputSubscription = {__typename?: 'Subscr
 	>;
 };
 
+export const GetLabCommandsListkDocument = gql`
+	query getLabCommandsListk {
+		listLabPracticeCommands {
+			items {
+				id
+				name
+			}
+		}
+	}
+`;
+
+/**
+ * __useGetLabCommandsListkQuery__
+ *
+ * To run a query within a React component, call `useGetLabCommandsListkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLabCommandsListkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLabCommandsListkQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetLabCommandsListkQuery(
+	baseOptions?: Apollo.QueryHookOptions<GetLabCommandsListkQuery, GetLabCommandsListkQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<GetLabCommandsListkQuery, GetLabCommandsListkQueryVariables>(
+		GetLabCommandsListkDocument,
+		options
+	);
+}
+export function useGetLabCommandsListkLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<GetLabCommandsListkQuery, GetLabCommandsListkQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<GetLabCommandsListkQuery, GetLabCommandsListkQueryVariables>(
+		GetLabCommandsListkDocument,
+		options
+	);
+}
+export type GetLabCommandsListkQueryHookResult = ReturnType<typeof useGetLabCommandsListkQuery>;
+export type GetLabCommandsListkLazyQueryHookResult = ReturnType<typeof useGetLabCommandsListkLazyQuery>;
+export type GetLabCommandsListkQueryResult = Apollo.QueryResult<
+	GetLabCommandsListkQuery,
+	GetLabCommandsListkQueryVariables
+>;
 export const GetLabPracticeOutputDocument = gql`
 	query getLabPracticeOutput {
 		getLabPracticeOutput(id: 1) {
@@ -2433,6 +2499,47 @@ export type GetLabPracticeOutputQueryResult = Apollo.QueryResult<
 	GetLabPracticeOutputQuery,
 	GetLabPracticeOutputQueryVariables
 >;
+export const GetPracticeInfoDocument = gql`
+	query getPracticeInfo {
+		getLabPractice(id: "7f735a8d-2d46-466f-a40e-49a32d891654") {
+			id
+			name
+			description
+			duration
+		}
+	}
+`;
+
+/**
+ * __useGetPracticeInfoQuery__
+ *
+ * To run a query within a React component, call `useGetPracticeInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPracticeInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPracticeInfoQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPracticeInfoQuery(
+	baseOptions?: Apollo.QueryHookOptions<GetPracticeInfoQuery, GetPracticeInfoQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<GetPracticeInfoQuery, GetPracticeInfoQueryVariables>(GetPracticeInfoDocument, options);
+}
+export function useGetPracticeInfoLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<GetPracticeInfoQuery, GetPracticeInfoQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<GetPracticeInfoQuery, GetPracticeInfoQueryVariables>(GetPracticeInfoDocument, options);
+}
+export type GetPracticeInfoQueryHookResult = ReturnType<typeof useGetPracticeInfoQuery>;
+export type GetPracticeInfoLazyQueryHookResult = ReturnType<typeof useGetPracticeInfoLazyQuery>;
+export type GetPracticeInfoQueryResult = Apollo.QueryResult<GetPracticeInfoQuery, GetPracticeInfoQueryVariables>;
 export const OnCreateLaboratoryDocument = gql`
 	subscription onCreateLaboratory {
 		onCreateLaboratory {

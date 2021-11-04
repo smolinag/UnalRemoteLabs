@@ -1,0 +1,9 @@
+query getLabCommandsListk {
+   listLabPracticeCommands {
+      items {
+         id
+         name
+      }
+
+   }
+}

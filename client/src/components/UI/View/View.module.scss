@@ -1,11 +1,19 @@
 @import '../../../styles/mixins/colors';
 
-.labTitle {
-   padding-left: 3% !important;
-   margin: 3% 0% !important
+.section {
+   padding: 0 3% 8px !important;
+   margin: 3% 0% !important;
 }
 
-.option {
+.title {
+   border-bottom: 1px solid $green;
+}
+
+.commands {
    display: flex !important;
    flex-direction: row !important
+}
+
+.command {
+   margin: 10px;
 }

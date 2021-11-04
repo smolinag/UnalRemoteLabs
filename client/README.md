@@ -1,46 +1,47 @@
-# Getting Started with Create React App
+# UI Laboratorios UNAL
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Scripts
 
-In the project directory, you can run:
+Utilizamos NPM para instalar dependencias y ejecutar scripts.
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Inicia la aplicacion en modo `development` en [http://localhost:3000](http://localhost:3000).
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Variables de entorno
 
-### `npm test`
+Las variables de entorno se definen en `.env` y deben tener como prefijo `REACT_APP_`. Por ejemplo `REACT_APP_GRAPHQL_HTTP=XXX`. Para accederlas se llama `process.env.<VARIABLE_DE_ENTORNO>`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Peticiones GQL
 
-### `npm run build`
+Utilizamos [GraphQL generator](https://www.graphql-code-generator.com/) para tener peticiones tipadas. Ademas, podemos generar hooks automaticos para utilizar de una forma mas sencilla las peticiones.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Por ejemplo, si creamos un archivo `./src/graphql/getTest.gql`, el cual contiene:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```gql
+query getTest {
+	test {
+		id
+	}
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Ejecutamos `npm run codegen` para actualizar el codigo generado.
 
-### `npm run eject`
+Luego en algun componente podemos utilizar dentro de un componente como:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```tsx
+import {useGetTest} from './src/graphql/generated/schema'
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+const Component = () =>{
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+  const {data, loading, error} = useGetTest();
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+  ...
+}
 
-## Learn More
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Donde `data`, `loading` y `error` son variables reactivas.

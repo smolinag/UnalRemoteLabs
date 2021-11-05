@@ -15,7 +15,7 @@ interface commandListDto {
 
 const View: React.FC<unknown> = () => {
 	const [commandList, setCommandList] = React.useState<commandListDto[]>([]);
-	const {data} = useGetPracticeInfoQuery();
+	const {data} = useGetPracticeInfoQuery({variables: {id: "7f735a8d-2d46-466f-a40e-49a32d891654"}});
 
 	React.useEffect(() => {
 		setCommandList(dummyData[0].commandlist);

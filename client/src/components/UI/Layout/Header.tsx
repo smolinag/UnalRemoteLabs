@@ -3,7 +3,7 @@ import {Navbar, Nav, Image} from 'react-bootstrap';
 import {BiExit} from 'react-icons/bi';
 import {BsPersonCircle} from 'react-icons/bs';
 
-import logosimbolo from '../../../images/logosimbolo.png';
+import logosimbolo from '../../../assets/images/logosimbolo.png';
 import classes from './Header.module.scss';
 
 const Header: React.FC<unknown> = () => {

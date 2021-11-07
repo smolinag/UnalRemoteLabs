@@ -1,7 +1,8 @@
 import React from 'react';
 
 import classes from './App.module.scss';
-import {Footer, Header, LabView} from './components/UI';
+import {Footer, Header} from './components/UI';
+import {LabView} from './containers';
 
 function App(): JSX.Element {
 	return (

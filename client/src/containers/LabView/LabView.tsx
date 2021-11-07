@@ -1,10 +1,10 @@
 import React from 'react';
 import {Row, Col} from 'react-bootstrap';
 
-import dummyData from '../../../../dummyData/dummyData.json';
-import {useGetPracticeInfoQuery, useOnUpdateLabPracticeSessionOutputSubscription} from '../../../../graphql/generated/schema';
-import {Switch, Table} from '../../index';
-import classes from './View.module.scss';
+import {Switch, Table} from '../../components/UI/index';
+import dummyData from '../../dummyData/dummyData.json';
+import {useGetPracticeInfoQuery, useOnUpdateLabPracticeSessionOutputSubscription} from '../../graphql/generated/schema';
+import classes from './LabView.module.scss';
 
 interface commandListDto {
 	name: string;
@@ -15,7 +15,9 @@ interface commandListDto {
 
 const LabView: React.FC<unknown> = () => {
 	const [commandList, setCommandList] = React.useState<commandListDto[]>([]);
-	const {data: practiceInfo} = useGetPracticeInfoQuery({variables: {id: "7f735a8d-2d46-466f-a40e-49a32d891654"}});
+	const {data: practiceInfo} = useGetPracticeInfoQuery({
+		variables: {id: '7f735a8d-2d46-466f-a40e-49a32d891654'}
+	});
 	const {data: outputs} = useOnUpdateLabPracticeSessionOutputSubscription();
 
 	React.useEffect(() => {
@@ -27,6 +29,7 @@ const LabView: React.FC<unknown> = () => {
 		console.warn(test);
 	};
 
+	const historicoComandos: string[] = ['Salida', 'Valores'];
 	const columns: string[] = ['Salida', 'Valores'];
 
 	return (
@@ -34,7 +37,9 @@ const LabView: React.FC<unknown> = () => {
 			<Row className={classes.section}>
 				<h3 className={classes.title}>{practiceInfo?.getLabPractice?.name}</h3>
 				<span>Descripción: {practiceInfo?.getLabPractice?.description}</span>
-				<span>Duración: {practiceInfo?.getLabPractice?.duration ? practiceInfo?.getLabPractice?.duration : '-'} segundos</span>
+				<span>
+					Duración: {practiceInfo?.getLabPractice?.duration ? practiceInfo?.getLabPractice?.duration : '-'} segundos
+				</span>
 			</Row>
 			<Row className={classes.section}>
 				<h4 className={classes.title}>Comandos de entrada</h4>
@@ -52,7 +57,7 @@ const LabView: React.FC<unknown> = () => {
 					</Col>
 					<Col>
 						<p>Histórico de comandos</p>
-						<Table headers={columns} data={dummyData[0].data} />
+						<Table headers={historicoComandos} data={dummyData[0].data} overflow stickyHeader maxHeight={'200px'} />
 					</Col>
 				</Row>
 			</Row>
@@ -66,7 +71,7 @@ const LabView: React.FC<unknown> = () => {
 					)}
 					<Col md={6}>
 						<h5>Datos</h5>
-						<Table headers={columns} data={dummyData[0].data} />
+						<Table headers={columns} data={dummyData[0].data} overflow stickyHeader maxHeight={'400px'} />
 					</Col>
 				</Row>
 			</Row>

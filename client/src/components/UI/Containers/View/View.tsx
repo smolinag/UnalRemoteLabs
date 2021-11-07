@@ -1,9 +1,9 @@
 import React from 'react';
 import {Row, Col} from 'react-bootstrap';
 
-import dummyData from '../../../dummyData/dummyData.json';
-import {useGetPracticeInfoQuery} from '../../../graphql/generated/schema';
-import {Switch, Table} from '../index';
+import dummyData from '../../../../dummyData/dummyData.json';
+import {useGetPracticeInfoQuery, useOnUpdateLabPracticeSessionOutputSubscription} from '../../../../graphql/generated/schema';
+import {Switch, Table} from '../../index';
 import classes from './View.module.scss';
 
 interface commandListDto {
@@ -15,25 +15,26 @@ interface commandListDto {
 
 const View: React.FC<unknown> = () => {
 	const [commandList, setCommandList] = React.useState<commandListDto[]>([]);
-	const {data} = useGetPracticeInfoQuery({variables: {id: "7f735a8d-2d46-466f-a40e-49a32d891654"}});
+	const {data: practiceInfo} = useGetPracticeInfoQuery({variables: {id: "7f735a8d-2d46-466f-a40e-49a32d891654"}});
+	const {data: outputs} = useOnUpdateLabPracticeSessionOutputSubscription();
 
 	React.useEffect(() => {
 		setCommandList(dummyData[0].commandlist);
-		console.warn(data);
-	}, [data]);
+		console.warn(outputs);
+	}, [practiceInfo]);
 
 	const test = () => {
 		console.warn(test);
 	};
 
-	const columns: string[] = ['Parámetros', 'Valores'];
+	const columns: string[] = ['Salida', 'Valores'];
 
 	return (
 		<>
 			<Row className={classes.section}>
-				<h3 className={classes.title}>{data?.getLabPractice?.name}</h3>
-				<span>Descripción: {data?.getLabPractice?.description}</span>
-				<span>Duración: {data?.getLabPractice?.duration ? data?.getLabPractice?.duration : '-'} segundos</span>
+				<h3 className={classes.title}>{practiceInfo?.getLabPractice?.name}</h3>
+				<span>Descripción: {practiceInfo?.getLabPractice?.description}</span>
+				<span>Duración: {practiceInfo?.getLabPractice?.duration ? practiceInfo?.getLabPractice?.duration : '-'} segundos</span>
 			</Row>
 			<Row className={classes.section}>
 				<h4 className={classes.title}>Comandos de entrada</h4>

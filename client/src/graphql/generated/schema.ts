@@ -2353,13 +2353,28 @@ export type UserLabSemester = {
 	labsemester: LabSemester;
 };
 
-export type GetLabCommandsListQueryVariables = Exact<{[key: string]: never}>;
+export type GetLabCommandsListQueryVariables = Exact<{
+	LabPracticeParametersId: Scalars['ID'];
+}>;
 
 export type GetLabCommandsListQuery = {__typename?: 'Query'} & {
-	listLabPracticeCommands?: Maybe<
-		{__typename?: 'ModelLabPracticeCommandConnection'} & {
-			items?: Maybe<Array<Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>>>;
-		}
+	getLabPracticeCommand?: Maybe<
+		{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'name' | 'description'> & {
+				LabPracticeParameters?: Maybe<
+					{__typename?: 'ModelLabPracticeParameterConnection'} & {
+						items?: Maybe<
+							Array<
+								Maybe<
+									{__typename?: 'LabPracticeParameter'} & Pick<
+										LabPracticeParameter,
+										'name' | 'description' | 'defaultValue' | 'minValue' | 'maxValue' | 'regex'
+									>
+								>
+							>
+						>;
+					}
+				>;
+			}
 	>;
 };
 
@@ -2404,11 +2419,20 @@ export type OnUpdateLabPracticeSessionOutputSubscription = {__typename?: 'Subscr
 };
 
 export const GetLabCommandsListDocument = gql`
-	query getLabCommandsList {
-		listLabPracticeCommands {
-			items {
-				id
-				name
+	query getLabCommandsList($LabPracticeParametersId: ID!) {
+		getLabPracticeCommand(id: $LabPracticeParametersId) {
+			name
+			description
+			LabPracticeParameters {
+				items {
+					name
+					description
+					defaultValue
+					defaultValue
+					minValue
+					maxValue
+					regex
+				}
 			}
 		}
 	}
@@ -2426,11 +2450,12 @@ export const GetLabCommandsListDocument = gql`
  * @example
  * const { data, loading, error } = useGetLabCommandsListQuery({
  *   variables: {
+ *      LabPracticeParametersId: // value for 'LabPracticeParametersId'
  *   },
  * });
  */
 export function useGetLabCommandsListQuery(
-	baseOptions?: Apollo.QueryHookOptions<GetLabCommandsListQuery, GetLabCommandsListQueryVariables>
+	baseOptions: Apollo.QueryHookOptions<GetLabCommandsListQuery, GetLabCommandsListQueryVariables>
 ) {
 	const options = {...defaultOptions, ...baseOptions};
 	return Apollo.useQuery<GetLabCommandsListQuery, GetLabCommandsListQueryVariables>(

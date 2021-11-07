@@ -1,9 +1,17 @@
-query getLabCommandsList {
-   listLabPracticeCommands {
-      items {
-         id
-         name
+query getLabCommandsList ($LabPracticeParametersId: ID!) {
+   getLabPracticeCommand(id: $LabPracticeParametersId) {
+      name
+      description
+      LabPracticeParameters {
+         items {
+            name
+            description
+            defaultValue
+            defaultValue
+            minValue
+            maxValue
+            regex
+         }
       }
-
    }
 }

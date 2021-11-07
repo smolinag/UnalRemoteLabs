@@ -13,7 +13,7 @@ interface commandListDto {
 	value: boolean;
 }
 
-const View: React.FC<unknown> = () => {
+const LabView: React.FC<unknown> = () => {
 	const [commandList, setCommandList] = React.useState<commandListDto[]>([]);
 	const {data: practiceInfo} = useGetPracticeInfoQuery({variables: {id: "7f735a8d-2d46-466f-a40e-49a32d891654"}});
 	const {data: outputs} = useOnUpdateLabPracticeSessionOutputSubscription();
@@ -74,4 +74,4 @@ const View: React.FC<unknown> = () => {
 	);
 };
 
-export default View;
+export default LabView;

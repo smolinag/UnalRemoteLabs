@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Image } from 'react-bootstrap';
 
-import logoUNAL from '../../../images/logoUNAL.png';
+import logoUNAL from '../../../assets/images/logoUNAL.png';
 import classes from "./Footer.module.scss"
 
 const Footer: React.FC<unknown> = () => {

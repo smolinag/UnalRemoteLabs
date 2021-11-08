@@ -3,7 +3,7 @@ import {Row, Col} from 'react-bootstrap';
 
 import {Switch, Table} from '../../components/UI/index';
 import dummyData from '../../dummyData/dummyData.json';
-import {useGetPracticeInfoQuery, useOnUpdateLabPracticeSessionOutputSubscription} from '../../graphql/generated/schema';
+import {useGetPracticeInfoQuery} from '../../graphql/generated/schema';
 import classes from './LabView.module.scss';
 
 interface commandListDto {
@@ -14,19 +14,13 @@ interface commandListDto {
 }
 
 const LabView: React.FC<unknown> = () => {
-	const [commandList, setCommandList] = React.useState<commandListDto[]>([]);
+	const [commandList] = React.useState<commandListDto[]>(dummyData[0].commandlist);
 	const {data: practiceInfo} = useGetPracticeInfoQuery({
 		variables: {id: '7f735a8d-2d46-466f-a40e-49a32d891654'}
 	});
-	const {data: outputs} = useOnUpdateLabPracticeSessionOutputSubscription();
 
-	React.useEffect(() => {
-		setCommandList(dummyData[0].commandlist);
-		console.warn(outputs);
-	}, [practiceInfo]);
-
-	const test = () => {
-		console.warn(test);
+	const handleSwitchEvent = () => {
+		// Swtich event
 	};
 
 	const historicoComandos: string[] = ['Salida', 'Valores'];
@@ -49,7 +43,7 @@ const LabView: React.FC<unknown> = () => {
 							{commandList.map((command) => {
 								return (
 									<div key={command.parameter} className={classes.command}>
-										<Switch label={command.name} state={command.value} onToggle={test} />
+										<Switch label={command.name} state={command.value} onToggle={handleSwitchEvent} />
 									</div>
 								);
 							})}

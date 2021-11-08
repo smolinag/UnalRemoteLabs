@@ -1,7 +1,7 @@
 @import '../../styles/mixins/colors';
 
 .section {
-   padding: 0 3% 8px;
+   padding: 0 3% 1%;
    margin: 3% 0%;
 }
 
@@ -10,8 +10,8 @@
 }
 
 .commands {
-   display: flex !important;
-   flex-direction: row !important
+   display: flex;
+   flex-direction: row;
 }
 
 .command {

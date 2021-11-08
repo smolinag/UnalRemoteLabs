@@ -7,7 +7,6 @@ query getLabCommandsList ($LabPracticeParametersId: ID!) {
             name
             description
             defaultValue
-            defaultValue
             minValue
             maxValue
             regex

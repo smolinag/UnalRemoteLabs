@@ -1,8 +1,7 @@
 subscription onUpdateLabPracticeSessionCommand {
 	onUpdateLabPracticeSessionCommand {
 		id
-		LabPracticeCommand {
-			id
-		}
+		status
+		parameters
 	}
 }

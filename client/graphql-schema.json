@@ -998,7 +998,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "AWSDateTime",
               "ofType": null
             },
             "defaultValue": null,
@@ -4749,7 +4749,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "String",
+              "name": "AWSDateTime",
               "ofType": null
             },
             "isDeprecated": false,

@@ -1,8 +1,9 @@
 subscription onUpdateLabPracticeSessionOutput {
 	onUpdateLabPracticeSessionOutput {
-		id
+		value
 		LabPracticeOutput {
-			id
+			name
+			units
 		}
 	}
 }

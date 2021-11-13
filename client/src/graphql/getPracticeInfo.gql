@@ -1,0 +1,7 @@
+query getPracticeInfo ($id: ID!) {
+   getLabPractice(id: $id) {
+      name
+      description
+      duration
+   }
+}

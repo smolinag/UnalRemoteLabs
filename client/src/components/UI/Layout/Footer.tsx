@@ -9,7 +9,7 @@ const Footer: React.FC<unknown> = () => {
       <footer>
          <Row className={classes.footer}>
             <Col md={6} />
-            <Col md={4} className="leftBorder">
+            <Col md={4} className={classes.leftBorder}>
                <Row>
                   <Col xs={6}>
                      <Row><span>Contacto página web:</span></Row>
@@ -27,7 +27,7 @@ const Footer: React.FC<unknown> = () => {
                   </Col>
                </Row>
             </Col>
-            <Col md={2} className="leftBorder">
+            <Col md={2} className={classes.leftBorder}>
                <div>
                   <Image src={logoUNAL} className={classes.unalimage} />
                </div>

@@ -1,6 +1,0 @@
-query getLabPracticeOutput {
-	getLabPracticeOutput(id: 1) {
-		id
-		updatedAt
-	}
-}

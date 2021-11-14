@@ -16,6 +16,7 @@ $spinner-radius: 17px;
 }
 
 .indicator {
+	z-index: 99;
 	position: absolute;
 	top: calc(50% - #{$spinner-radius});
 	left: calc(50% - #{$spinner-radius});

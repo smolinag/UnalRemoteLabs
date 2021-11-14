@@ -1,0 +1,6 @@
+query getLabPracticeSessionOutput($id: ID!) {
+	getLabPracticeSessionOutput(id: $id) {
+		id
+    
+	}
+}

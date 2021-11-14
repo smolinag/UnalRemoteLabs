@@ -1,0 +1,5 @@
+mutation updateLabPracticeSessionCommand($input: CreateLabPracticeSessionCommandInput!) {
+	createLabPracticeSessionCommand(input: $input) {
+		id
+	}
+}

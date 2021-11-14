@@ -1,0 +1,5 @@
+query getLabPracticeSessionCommandVersion($id: ID!) {
+	getLabPracticeSessionCommand(id: $id) {
+		_version
+	}
+}

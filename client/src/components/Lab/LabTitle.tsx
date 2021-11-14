@@ -12,7 +12,7 @@ interface Props {
 const LabTitle: React.FC<Props> = ({description, duration, name}) => {
 	return (
 		<Row className={classes.section}>
-			<h3 className={classes.title}>{name}</h3>
+			<h3 className={classes.title}>{name ?? 'Práctica de laboratorio'}</h3>
 			<span>Descripción: {description}</span>
 			<span>Duración: {duration ? duration : '-'} segundos</span>
 		</Row>

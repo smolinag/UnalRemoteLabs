@@ -1,7 +1,8 @@
-query getPracticeInfo ($id: ID!) {
+query getLabPractice ($id: ID!) {
    getLabPractice(id: $id) {
       name
       description
       duration
+      
    }
 }

@@ -2,14 +2,20 @@ import React from 'react';
 import {Row} from 'react-bootstrap';
 
 import {Switch} from '../../components/UI/index';
+import { Maybe } from '../../graphql/generated/schema';
 import classes from './Commands.module.scss';
 import sharedClasses from './shared.module.scss';
 
 // TODO Extend with other type of commands
 export interface Command {
-	label: string;
-	id: string;
-	value: boolean;
+	id: string | undefined;
+	label: Maybe<string> | undefined;
+	value: ParameterDto | undefined | null;
+}
+
+interface ParameterDto {
+	name: string  | undefined | null;
+	value: boolean  | undefined | null;
 }
 
 interface Props {
@@ -20,7 +26,7 @@ interface Props {
 const getCommand = ({id, label, value}: Command, handler: (value: boolean, id: string) => void): JSX.Element => {
 	return (
 		<div key={id} className={classes.command}>
-			<Switch label={label} state={value} onToggle={(newValue) => handler(newValue, id)} />
+			<Switch label={label} state={value?.value} onToggle={(newValue) => handler(newValue, (`${id}`))} />
 		</div>
 	);
 };

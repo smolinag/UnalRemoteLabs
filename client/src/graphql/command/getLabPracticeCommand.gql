@@ -1,0 +1,15 @@
+query getLabPracticeCommand {
+   listLabPracticeCommands {
+      items {
+         id
+         name
+         LabPracticeParameters {
+            items{
+               id
+               name 
+               defaultValue
+            }
+         }
+      }
+   }
+}

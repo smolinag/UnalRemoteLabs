@@ -9,12 +9,14 @@ import {useGetLabPracticeQuery, useGetLabPracticeCommandQuery, Maybe} from '../.
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const IINITIALCOMMANDNAME = 'cmd'
 
+// REVISAR LOS TIPOS DE LOS PARÁMETROS
 interface CommandListDto {
-	id: string | undefined;
-	name: Maybe<string> | undefined;
+	id: Maybe<string>;
+	name: Maybe<string>;
 	parameters: ParameterDto | undefined | null;
 }
 
+// REVISAR LOS TIPOS DE LOS PARÁMETROS
 interface ParameterDto {
 	name: string | undefined | null;
 	value: boolean | undefined | null;
@@ -34,6 +36,9 @@ const LabView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = React.useState<CommandListDto[]>([]);
 
 	React.useEffect(() => {
+
+		// REFACTORIZAR FUNCIÓN, TENIENDO EN CUENTA LOS TIPOS DE LOS
+		// DE LOS PARÁMETROS RETORNADOS DESDE EL BE
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
 			const commands: CommandListDto[] = [];
 			labCommandsData?.listLabPracticeCommands?.items.forEach((item) => {

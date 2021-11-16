@@ -7,12 +7,14 @@ import classes from './Commands.module.scss';
 import sharedClasses from './shared.module.scss';
 
 // TODO Extend with other type of commands
+// REVISAR LOS TIPOS DE LOS PARÁMETROS
 export interface Command {
-	id: string | undefined;
-	label: Maybe<string> | undefined;
+	id: Maybe<string>;
+	label: Maybe<string>;
 	value: ParameterDto | undefined | null;
 }
 
+// REVISAR LOS TIPOS DE LOS PARÁMETROS
 interface ParameterDto {
 	name: string  | undefined | null;
 	value: boolean  | undefined | null;

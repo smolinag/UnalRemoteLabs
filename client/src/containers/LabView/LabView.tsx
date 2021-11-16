@@ -9,9 +9,7 @@ import {
 	useGetLabPracticeCommandQuery,
 	useUpdateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandSubscription,
-	// GetLabPracticeSessionCommandDocument,
-	// GetLabPracticeSessionCommandQuery,
-	// CreateLabPracticeSessionCommandInput,
+	usePublishMqttMessageMutation,
 	Maybe
 } from '../../graphql/generated/schema';
 
@@ -30,6 +28,7 @@ const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	return {
 		id,
 		label: name,
+		name,
 		parameters
 	};
 };
@@ -42,6 +41,7 @@ const LabView: React.FC<unknown> = () => {
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
+	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
 		variables: {id: SESSION_ID}
 	});
@@ -91,17 +91,25 @@ const LabView: React.FC<unknown> = () => {
 		});
 	}, [updatedSessionCommands]);
 
-	const handleCommandChange = async (parameters: ParameterDto, id: string) => {
-		updateLabPracticeSessionCommand({
+	const handleCommandChange = async ({parameters, name}: Command, id: string) => {
+		const {data} = await updateLabPracticeSessionCommand({
 			variables: {
 				input: {
 					labpracticesessionID: labPracticeSessionId,
 					labpracticecommandID: id,
-					parameters: JSON.stringify(parameters),
+					parameters: JSON.stringify([parameters][0]),
 					status: 'pending'
 				}
 			}
 		});
+
+		const mqttMessage = {
+			name,
+			params: parameters,
+			uuid: data?.createLabPracticeSessionCommand?.id
+		};
+
+		publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_1'}}});
 	};
 
 	return (

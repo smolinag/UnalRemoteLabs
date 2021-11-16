@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { Maybe } from '../../../graphql/generated/schema';
 import classes from './Switch.module.scss';
 
 interface Props {
-	label: string;
-	state: boolean;
+	label: Maybe<string> | undefined;
+	state: boolean  | undefined | null;
 	onToggle: (value: boolean) => void;
 }
 

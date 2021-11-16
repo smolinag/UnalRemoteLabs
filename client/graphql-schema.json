@@ -998,7 +998,7 @@
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "AWSDateTime",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -4749,7 +4749,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "AWSDateTime",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -17541,6 +17541,64 @@
         "name": "Subscription",
         "description": null,
         "fields": [
+          {
+            "name": "onCreateLabPracticeSessionOutputBySessionID",
+            "description": null,
+            "args": [
+              {
+                "name": "labpracticesessionID",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "LabPracticeSessionOutput",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "onCreateLabPracticeSessionCommandBySessionID",
+            "description": null,
+            "args": [
+              {
+                "name": "labpracticesessionID",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "LabPracticeSessionCommand",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
           {
             "name": "onCreateOrganization",
             "description": null,

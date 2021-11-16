@@ -59,7 +59,7 @@ export type CreateLabPracticeInput = {
 export type CreateLabPracticeOutputInput = {
 	id?: Maybe<Scalars['ID']>;
 	name?: Maybe<Scalars['String']>;
-	descriptio?: Maybe<Scalars['String']>;
+	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -93,6 +93,7 @@ export type CreateLabPracticeSessionCommandInput = {
 	status?: Maybe<Scalars['String']>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID?: Maybe<Scalars['ID']>;
+	labpracticecommandID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 	labPracticeSessionCommandLabPracticeSessionId?: Maybe<Scalars['ID']>;
 	labPracticeSessionCommandLabPracticeCommandId?: Maybe<Scalars['ID']>;
@@ -140,7 +141,7 @@ export type CreateLaboratoryInput = {
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	organizatioID?: Maybe<Scalars['ID']>;
+	organizationID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 	laboratoryOrganizationId?: Maybe<Scalars['ID']>;
 };
@@ -377,8 +378,16 @@ export type LabPracticeCommand = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	LabPracticeSessionCommands?: Maybe<ModelLabPracticeSessionCommandConnection>;
 	LabPractice?: Maybe<LabPracticeParameter>;
 	LabPracticeParameters?: Maybe<ModelLabPracticeParameterConnection>;
+};
+
+export type LabPracticeCommandLabPracticeSessionCommandsArgs = {
+	filter?: Maybe<ModelLabPracticeSessionCommandFilterInput>;
+	sortDirection?: Maybe<ModelSortDirection>;
+	limit?: Maybe<Scalars['Int']>;
+	nextToken?: Maybe<Scalars['String']>;
 };
 
 export type LabPracticeCommandLabPracticeParametersArgs = {
@@ -408,7 +417,7 @@ export type LabPracticeOutput = {
 	__typename?: 'LabPracticeOutput';
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
-	descriptio?: Maybe<Scalars['String']>;
+	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -501,6 +510,7 @@ export type LabPracticeSessionCommand = {
 	status?: Maybe<Scalars['String']>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID?: Maybe<Scalars['ID']>;
+	labpracticecommandID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -560,7 +570,7 @@ export type Laboratory = {
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	organizatioID?: Maybe<Scalars['ID']>;
+	organizationID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -665,7 +675,7 @@ export type ModelLabPracticeCommandConditionInput = {
 
 export type ModelLabPracticeCommandConnection = {
 	__typename?: 'ModelLabPracticeCommandConnection';
-	items?: Maybe<Array<Maybe<LabPracticeCommand>>>;
+	items: Array<LabPracticeCommand>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -696,7 +706,7 @@ export type ModelLabPracticeConditionInput = {
 
 export type ModelLabPracticeConnection = {
 	__typename?: 'ModelLabPracticeConnection';
-	items?: Maybe<Array<Maybe<LabPractice>>>;
+	items: Array<LabPractice>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -714,7 +724,7 @@ export type ModelLabPracticeDeviceConditionInput = {
 
 export type ModelLabPracticeDeviceConnection = {
 	__typename?: 'ModelLabPracticeDeviceConnection';
-	items?: Maybe<Array<Maybe<LabPracticeDevice>>>;
+	items: Array<LabPracticeDevice>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -746,7 +756,7 @@ export type ModelLabPracticeFilterInput = {
 
 export type ModelLabPracticeOutputConditionInput = {
 	name?: Maybe<ModelStringInput>;
-	descriptio?: Maybe<ModelStringInput>;
+	description?: Maybe<ModelStringInput>;
 	units?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -759,7 +769,7 @@ export type ModelLabPracticeOutputConditionInput = {
 
 export type ModelLabPracticeOutputConnection = {
 	__typename?: 'ModelLabPracticeOutputConnection';
-	items?: Maybe<Array<Maybe<LabPracticeOutput>>>;
+	items: Array<LabPracticeOutput>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -767,7 +777,7 @@ export type ModelLabPracticeOutputConnection = {
 export type ModelLabPracticeOutputFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
-	descriptio?: Maybe<ModelStringInput>;
+	description?: Maybe<ModelStringInput>;
 	units?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -796,7 +806,7 @@ export type ModelLabPracticeParameterConditionInput = {
 
 export type ModelLabPracticeParameterConnection = {
 	__typename?: 'ModelLabPracticeParameterConnection';
-	items?: Maybe<Array<Maybe<LabPracticeParameter>>>;
+	items: Array<LabPracticeParameter>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -824,6 +834,7 @@ export type ModelLabPracticeSessionCommandConditionInput = {
 	status?: Maybe<ModelStringInput>;
 	parameters?: Maybe<ModelStringInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
+	labpracticecommandID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionCommandConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeSessionCommandConditionInput>>>;
 	not?: Maybe<ModelLabPracticeSessionCommandConditionInput>;
@@ -831,7 +842,7 @@ export type ModelLabPracticeSessionCommandConditionInput = {
 
 export type ModelLabPracticeSessionCommandConnection = {
 	__typename?: 'ModelLabPracticeSessionCommandConnection';
-	items?: Maybe<Array<Maybe<LabPracticeSessionCommand>>>;
+	items: Array<LabPracticeSessionCommand>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -843,6 +854,7 @@ export type ModelLabPracticeSessionCommandFilterInput = {
 	status?: Maybe<ModelStringInput>;
 	parameters?: Maybe<ModelStringInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
+	labpracticecommandID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionCommandFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeSessionCommandFilterInput>>>;
 	not?: Maybe<ModelLabPracticeSessionCommandFilterInput>;
@@ -862,7 +874,7 @@ export type ModelLabPracticeSessionConditionInput = {
 
 export type ModelLabPracticeSessionConnection = {
 	__typename?: 'ModelLabPracticeSessionConnection';
-	items?: Maybe<Array<Maybe<LabPracticeSession>>>;
+	items: Array<LabPracticeSession>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -893,7 +905,7 @@ export type ModelLabPracticeSessionOutputConditionInput = {
 
 export type ModelLabPracticeSessionOutputConnection = {
 	__typename?: 'ModelLabPracticeSessionOutputConnection';
-	items?: Maybe<Array<Maybe<LabPracticeSessionOutput>>>;
+	items: Array<LabPracticeSessionOutput>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -924,7 +936,7 @@ export type ModelLabSemesterConditionInput = {
 
 export type ModelLabSemesterConnection = {
 	__typename?: 'ModelLabSemesterConnection';
-	items?: Maybe<Array<Maybe<LabSemester>>>;
+	items: Array<LabSemester>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -947,7 +959,7 @@ export type ModelLaboratoryConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	organizatioID?: Maybe<ModelIdInput>;
+	organizationID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLaboratoryConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLaboratoryConditionInput>>>;
 	not?: Maybe<ModelLaboratoryConditionInput>;
@@ -955,7 +967,7 @@ export type ModelLaboratoryConditionInput = {
 
 export type ModelLaboratoryConnection = {
 	__typename?: 'ModelLaboratoryConnection';
-	items?: Maybe<Array<Maybe<Laboratory>>>;
+	items: Array<Laboratory>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -966,7 +978,7 @@ export type ModelLaboratoryFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	organizatioID?: Maybe<ModelIdInput>;
+	organizationID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLaboratoryFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLaboratoryFilterInput>>>;
 	not?: Maybe<ModelLaboratoryFilterInput>;
@@ -990,7 +1002,7 @@ export type ModelOrganizationConditionInput = {
 
 export type ModelOrganizationConnection = {
 	__typename?: 'ModelOrganizationConnection';
-	items?: Maybe<Array<Maybe<Organization>>>;
+	items: Array<Organization>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1022,7 +1034,7 @@ export type ModelPrivilegeConditionInput = {
 
 export type ModelPrivilegeConnection = {
 	__typename?: 'ModelPrivilegeConnection';
-	items?: Maybe<Array<Maybe<Privilege>>>;
+	items: Array<Privilege>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1046,7 +1058,7 @@ export type ModelPrivilegeRoleConditionInput = {
 
 export type ModelPrivilegeRoleConnection = {
 	__typename?: 'ModelPrivilegeRoleConnection';
-	items?: Maybe<Array<Maybe<PrivilegeRole>>>;
+	items: Array<PrivilegeRole>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1072,7 +1084,7 @@ export type ModelRoleConditionInput = {
 
 export type ModelRoleConnection = {
 	__typename?: 'ModelRoleConnection';
-	items?: Maybe<Array<Maybe<Role>>>;
+	items: Array<Role>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1098,7 +1110,7 @@ export type ModelRoleUserConditionInput = {
 
 export type ModelRoleUserConnection = {
 	__typename?: 'ModelRoleUserConnection';
-	items?: Maybe<Array<Maybe<RoleUser>>>;
+	items: Array<RoleUser>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1161,7 +1173,7 @@ export type ModelUserConditionInput = {
 
 export type ModelUserConnection = {
 	__typename?: 'ModelUserConnection';
-	items?: Maybe<Array<Maybe<User>>>;
+	items: Array<User>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1196,7 +1208,7 @@ export type ModelUserLabPracticeSessionConditionInput = {
 
 export type ModelUserLabPracticeSessionConnection = {
 	__typename?: 'ModelUserLabPracticeSessionConnection';
-	items?: Maybe<Array<Maybe<UserLabPracticeSession>>>;
+	items: Array<UserLabPracticeSession>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1223,7 +1235,7 @@ export type ModelUserLabSemesterConditionInput = {
 
 export type ModelUserLabSemesterConnection = {
 	__typename?: 'ModelUserLabSemesterConnection';
-	items?: Maybe<Array<Maybe<UserLabSemester>>>;
+	items: Array<UserLabSemester>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -2121,7 +2133,7 @@ export type UpdateLabPracticeInput = {
 export type UpdateLabPracticeOutputInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
-	descriptio?: Maybe<Scalars['String']>;
+	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -2155,6 +2167,7 @@ export type UpdateLabPracticeSessionCommandInput = {
 	status?: Maybe<Scalars['String']>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID?: Maybe<Scalars['ID']>;
+	labpracticecommandID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 	labPracticeSessionCommandLabPracticeSessionId?: Maybe<Scalars['ID']>;
 	labPracticeSessionCommandLabPracticeCommandId?: Maybe<Scalars['ID']>;
@@ -2202,7 +2215,7 @@ export type UpdateLaboratoryInput = {
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	organizatioID?: Maybe<Scalars['ID']>;
+	organizationID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 	laboratoryOrganizationId?: Maybe<Scalars['ID']>;
 };
@@ -2368,27 +2381,16 @@ export type GetLabPracticeCommandQueryVariables = Exact<{[key: string]: never}>;
 export type GetLabPracticeCommandQuery = {__typename?: 'Query'} & {
 	listLabPracticeCommands?: Maybe<
 		{__typename?: 'ModelLabPracticeCommandConnection'} & {
-			items?: Maybe<
-				Array<
-					Maybe<
-						{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'> & {
-								LabPracticeParameters?: Maybe<
-									{__typename?: 'ModelLabPracticeParameterConnection'} & {
-										items?: Maybe<
-											Array<
-												Maybe<
-													{__typename?: 'LabPracticeParameter'} & Pick<
-														LabPracticeParameter,
-														'id' | 'name' | 'defaultValue'
-													>
-												>
-											>
-										>;
-									}
+			items: Array<
+				{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name' | 'labpracticeID'> & {
+						LabPracticeParameters?: Maybe<
+							{__typename?: 'ModelLabPracticeParameterConnection'} & {
+								items: Array<
+									{__typename?: 'LabPracticeParameter'} & Pick<LabPracticeParameter, 'id' | 'name' | 'defaultValue'>
 								>;
 							}
-					>
-				>
+						>;
+					}
 			>;
 		}
 	>;
@@ -2400,17 +2402,7 @@ export type GetLabPracticeSessionCommandQueryVariables = Exact<{
 
 export type GetLabPracticeSessionCommandQuery = {__typename?: 'Query'} & {
 	getLabPracticeSessionCommand?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, '_version'>
-	>;
-};
-
-export type GetLabPracticeSessionCommandVersionQueryVariables = Exact<{
-	id: Scalars['ID'];
-}>;
-
-export type GetLabPracticeSessionCommandVersionQuery = {__typename?: 'Query'} & {
-	getLabPracticeSessionCommand?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, '_version'>
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, '_version' | 'labpracticesessionID'>
 	>;
 };
 
@@ -2437,7 +2429,15 @@ export type GetLabPracticeQueryVariables = Exact<{
 }>;
 
 export type GetLabPracticeQuery = {__typename?: 'Query'} & {
-	getLabPractice?: Maybe<{__typename?: 'LabPractice'} & Pick<LabPractice, 'name' | 'description' | 'duration'>>;
+	getLabPractice?: Maybe<
+		{__typename?: 'LabPractice'} & Pick<LabPractice, 'name' | 'description' | 'duration'> & {
+				LabPracticeSessions?: Maybe<
+					{__typename?: 'ModelLabPracticeSessionConnection'} & {
+						items: Array<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>;
+					}
+				>;
+			}
+	>;
 };
 
 export type GetLabPracticeSessionOutputQueryVariables = Exact<{
@@ -2464,6 +2464,7 @@ export const GetLabPracticeCommandDocument = gql`
 			items {
 				id
 				name
+				labpracticeID
 				LabPracticeParameters {
 					items {
 						id
@@ -2519,6 +2520,7 @@ export const GetLabPracticeSessionCommandDocument = gql`
 	query getLabPracticeSessionCommand($id: ID!) {
 		getLabPracticeSessionCommand(id: $id) {
 			_version
+			labpracticesessionID
 		}
 	}
 `;
@@ -2567,64 +2569,6 @@ export type GetLabPracticeSessionCommandLazyQueryHookResult = ReturnType<
 export type GetLabPracticeSessionCommandQueryResult = Apollo.QueryResult<
 	GetLabPracticeSessionCommandQuery,
 	GetLabPracticeSessionCommandQueryVariables
->;
-export const GetLabPracticeSessionCommandVersionDocument = gql`
-	query getLabPracticeSessionCommandVersion($id: ID!) {
-		getLabPracticeSessionCommand(id: $id) {
-			_version
-		}
-	}
-`;
-
-/**
- * __useGetLabPracticeSessionCommandVersionQuery__
- *
- * To run a query within a React component, call `useGetLabPracticeSessionCommandVersionQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetLabPracticeSessionCommandVersionQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetLabPracticeSessionCommandVersionQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useGetLabPracticeSessionCommandVersionQuery(
-	baseOptions: Apollo.QueryHookOptions<
-		GetLabPracticeSessionCommandVersionQuery,
-		GetLabPracticeSessionCommandVersionQueryVariables
-	>
-) {
-	const options = {...defaultOptions, ...baseOptions};
-	return Apollo.useQuery<GetLabPracticeSessionCommandVersionQuery, GetLabPracticeSessionCommandVersionQueryVariables>(
-		GetLabPracticeSessionCommandVersionDocument,
-		options
-	);
-}
-export function useGetLabPracticeSessionCommandVersionLazyQuery(
-	baseOptions?: Apollo.LazyQueryHookOptions<
-		GetLabPracticeSessionCommandVersionQuery,
-		GetLabPracticeSessionCommandVersionQueryVariables
-	>
-) {
-	const options = {...defaultOptions, ...baseOptions};
-	return Apollo.useLazyQuery<
-		GetLabPracticeSessionCommandVersionQuery,
-		GetLabPracticeSessionCommandVersionQueryVariables
-	>(GetLabPracticeSessionCommandVersionDocument, options);
-}
-export type GetLabPracticeSessionCommandVersionQueryHookResult = ReturnType<
-	typeof useGetLabPracticeSessionCommandVersionQuery
->;
-export type GetLabPracticeSessionCommandVersionLazyQueryHookResult = ReturnType<
-	typeof useGetLabPracticeSessionCommandVersionLazyQuery
->;
-export type GetLabPracticeSessionCommandVersionQueryResult = Apollo.QueryResult<
-	GetLabPracticeSessionCommandVersionQuery,
-	GetLabPracticeSessionCommandVersionQueryVariables
 >;
 export const OnUpdateLabPracticeSessionCommandDocument = gql`
 	subscription onUpdateLabPracticeSessionCommand {
@@ -2724,6 +2668,11 @@ export const GetLabPracticeDocument = gql`
 			name
 			description
 			duration
+			LabPracticeSessions {
+				items {
+					id
+				}
+			}
 		}
 	}
 `;

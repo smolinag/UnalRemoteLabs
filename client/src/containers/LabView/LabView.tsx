@@ -8,7 +8,6 @@ import {
 	useGetLabPracticeQuery,
 	useGetLabPracticeCommandQuery,
 	useUpdateLabPracticeSessionCommandMutation,
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	useOnUpdateLabPracticeSessionCommandSubscription,
 	// GetLabPracticeSessionCommandDocument,
 	// GetLabPracticeSessionCommandQuery,
@@ -17,6 +16,7 @@ import {
 } from '../../graphql/generated/schema';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
@@ -42,7 +42,9 @@ const LabView: React.FC<unknown> = () => {
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
-	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription();
+	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
+		variables: {id: SESSION_ID}
+	});
 
 	useEffect(() => {
 		// REFACTORIZAR FUNCIÓN, TENIENDO EN CUENTA LOS TIPOS DE LOS
@@ -72,6 +74,23 @@ const LabView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		console.warn(updatedSessionCommands);
+		console.warn(labCommands);
+		const newCommand = updatedSessionCommands?.onCreateLabPracticeSessionCommandBySessionID;
+		if (!newCommand) {
+			return;
+		}
+		setLabCommands((oldCommands) => {
+			const commandToUpdateIndex = oldCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
+			if (commandToUpdateIndex < 0) {
+				return oldCommands;
+			}
+			oldCommands[commandToUpdateIndex] = {
+				...oldCommands[commandToUpdateIndex],
+				parameters: JSON.parse(newCommand.parameters)
+			};
+
+			return oldCommands;
+		});
 	}, [updatedSessionCommands]);
 
 	const handleCommandChange = async (parameters: ParameterDto, id: string) => {

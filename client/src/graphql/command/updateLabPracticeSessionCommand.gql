@@ -1,5 +1,9 @@
 mutation updateLabPracticeSessionCommand($input: CreateLabPracticeSessionCommandInput!) {
 	createLabPracticeSessionCommand(input: $input) {
 		id
+		labpracticesessionID
+		labpracticecommandID
+		status
+		parameters
 	}
 }

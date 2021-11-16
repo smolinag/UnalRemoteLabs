@@ -2402,15 +2402,20 @@ export type GetLabPracticeSessionCommandQueryVariables = Exact<{
 
 export type GetLabPracticeSessionCommandQuery = {__typename?: 'Query'} & {
 	getLabPracticeSessionCommand?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, '_version' | 'labpracticesessionID'>
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'labpracticesessionID'>
 	>;
 };
 
-export type OnUpdateLabPracticeSessionCommandSubscriptionVariables = Exact<{[key: string]: never}>;
+export type OnUpdateLabPracticeSessionCommandSubscriptionVariables = Exact<{
+	id: Scalars['ID'];
+}>;
 
 export type OnUpdateLabPracticeSessionCommandSubscription = {__typename?: 'Subscription'} & {
-	onUpdateLabPracticeSessionCommand?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'id' | 'status' | 'parameters'>
+	onCreateLabPracticeSessionCommandBySessionID?: Maybe<
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<
+			LabPracticeSessionCommand,
+			'id' | 'status' | 'parameters' | 'labpracticecommandID'
+		>
 	>;
 };
 
@@ -2420,7 +2425,10 @@ export type UpdateLabPracticeSessionCommandMutationVariables = Exact<{
 
 export type UpdateLabPracticeSessionCommandMutation = {__typename?: 'Mutation'} & {
 	createLabPracticeSessionCommand?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'id'>
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<
+			LabPracticeSessionCommand,
+			'id' | 'labpracticesessionID' | 'labpracticecommandID' | 'status' | 'parameters'
+		>
 	>;
 };
 
@@ -2519,7 +2527,6 @@ export type GetLabPracticeCommandQueryResult = Apollo.QueryResult<
 export const GetLabPracticeSessionCommandDocument = gql`
 	query getLabPracticeSessionCommand($id: ID!) {
 		getLabPracticeSessionCommand(id: $id) {
-			_version
 			labpracticesessionID
 		}
 	}
@@ -2571,11 +2578,12 @@ export type GetLabPracticeSessionCommandQueryResult = Apollo.QueryResult<
 	GetLabPracticeSessionCommandQueryVariables
 >;
 export const OnUpdateLabPracticeSessionCommandDocument = gql`
-	subscription onUpdateLabPracticeSessionCommand {
-		onUpdateLabPracticeSessionCommand {
+	subscription onUpdateLabPracticeSessionCommand($id: ID!) {
+		onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 			id
 			status
 			parameters
+			labpracticecommandID
 		}
 	}
 `;
@@ -2592,11 +2600,12 @@ export const OnUpdateLabPracticeSessionCommandDocument = gql`
  * @example
  * const { data, loading, error } = useOnUpdateLabPracticeSessionCommandSubscription({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
 export function useOnUpdateLabPracticeSessionCommandSubscription(
-	baseOptions?: Apollo.SubscriptionHookOptions<
+	baseOptions: Apollo.SubscriptionHookOptions<
 		OnUpdateLabPracticeSessionCommandSubscription,
 		OnUpdateLabPracticeSessionCommandSubscriptionVariables
 	>
@@ -2616,6 +2625,10 @@ export const UpdateLabPracticeSessionCommandDocument = gql`
 	mutation updateLabPracticeSessionCommand($input: CreateLabPracticeSessionCommandInput!) {
 		createLabPracticeSessionCommand(input: $input) {
 			id
+			labpracticesessionID
+			labpracticecommandID
+			status
+			parameters
 		}
 	}
 `;

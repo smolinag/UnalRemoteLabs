@@ -73,8 +73,6 @@ const LabView: React.FC<unknown> = () => {
 	}, [practiceInfo]);
 
 	useEffect(() => {
-		console.warn(updatedSessionCommands);
-		console.warn(labCommands);
 		const newCommand = updatedSessionCommands?.onCreateLabPracticeSessionCommandBySessionID;
 		if (!newCommand) {
 			return;

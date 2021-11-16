@@ -1,8 +1,12 @@
-query getLabPractice ($id: ID!) {
-   getLabPractice(id: $id) {
-      name
-      description
-      duration
-      
-   }
+query getLabPractice($id: ID!) {
+	getLabPractice(id: $id) {
+		name
+		description
+		duration
+		LabPracticeSessions {
+			items {
+				id
+			}
+		}
+	}
 }

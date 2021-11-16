@@ -2,7 +2,7 @@ import React from 'react';
 import {Row} from 'react-bootstrap';
 
 import {Switch} from '../../components/UI/index';
-import { Maybe } from '../../graphql/generated/schema';
+import {Maybe} from '../../graphql/generated/schema';
 import classes from './Commands.module.scss';
 import sharedClasses from './shared.module.scss';
 
@@ -11,30 +11,38 @@ import sharedClasses from './shared.module.scss';
 export interface Command {
 	id: Maybe<string>;
 	label: Maybe<string>;
-	value: ParameterDto | undefined | null;
+	parameters: ParameterDto | undefined | null;
 }
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
-interface ParameterDto {
-	name: string  | undefined | null;
-	value: boolean  | undefined | null;
+export interface ParameterDto {
+	name: string | undefined | null;
+	value: boolean | undefined | null;
+	id: string;
 }
 
 interface Props {
 	commands: Command[];
-	onCommandChange?: (value: boolean, id: string) => void;
+	onCommandChange?: (value: ParameterDto, id: string) => void;
 }
 
-const getCommand = ({id, label, value}: Command, handler: (value: boolean, id: string) => void): JSX.Element => {
+const getCommand = (
+	{id, label, parameters}: Command,
+	handler: (params: ParameterDto, id: string) => void
+): JSX.Element => {
 	return (
 		<div key={id} className={classes.command}>
-			<Switch label={label} state={value?.value} onToggle={(newValue) => handler(newValue, (`${id}`))} />
+			<Switch
+				label={label}
+				state={parameters?.value}
+				onToggle={(newValue) => handler({...parameters, value: newValue} as ParameterDto, `${id}`)}
+			/>
 		</div>
 	);
 };
 
 const Commands: React.FC<Props> = ({commands, onCommandChange}) => {
-	const handleCommandChange = (value: boolean, id: string): void => {
+	const handleCommandChange = (value: ParameterDto, id: string): void => {
 		if (onCommandChange) {
 			onCommandChange(value, id);
 		}

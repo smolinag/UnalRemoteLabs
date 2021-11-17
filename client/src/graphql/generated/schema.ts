@@ -2414,7 +2414,7 @@ export type OnUpdateLabPracticeSessionCommandSubscription = {__typename?: 'Subsc
 	onCreateLabPracticeSessionCommandBySessionID?: Maybe<
 		{__typename?: 'LabPracticeSessionCommand'} & Pick<
 			LabPracticeSessionCommand,
-			'id' | 'status' | 'parameters' | 'labpracticecommandID'
+			'status' | 'parameters' | 'labpracticecommandID'
 		>
 	>;
 };
@@ -2465,6 +2465,12 @@ export type OnUpdateLabPracticeSessionOutputSubscription = {__typename?: 'Subscr
 			}
 	>;
 };
+
+export type PublishMqttMessageMutationVariables = Exact<{
+	input: LambdaInput;
+}>;
+
+export type PublishMqttMessageMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'publishMqttMessage'>;
 
 export const GetLabPracticeCommandDocument = gql`
 	query getLabPracticeCommand {
@@ -2580,7 +2586,6 @@ export type GetLabPracticeSessionCommandQueryResult = Apollo.QueryResult<
 export const OnUpdateLabPracticeSessionCommandDocument = gql`
 	subscription onUpdateLabPracticeSessionCommand($id: ID!) {
 		onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
-			id
 			status
 			parameters
 			labpracticecommandID
@@ -2813,3 +2818,45 @@ export type OnUpdateLabPracticeSessionOutputSubscriptionHookResult = ReturnType<
 >;
 export type OnUpdateLabPracticeSessionOutputSubscriptionResult =
 	Apollo.SubscriptionResult<OnUpdateLabPracticeSessionOutputSubscription>;
+export const PublishMqttMessageDocument = gql`
+	mutation publishMqttMessage($input: LambdaInput!) {
+		publishMqttMessage(input: $input)
+	}
+`;
+export type PublishMqttMessageMutationFn = Apollo.MutationFunction<
+	PublishMqttMessageMutation,
+	PublishMqttMessageMutationVariables
+>;
+
+/**
+ * __usePublishMqttMessageMutation__
+ *
+ * To run a mutation, you first call `usePublishMqttMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishMqttMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishMqttMessageMutation, { data, loading, error }] = usePublishMqttMessageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function usePublishMqttMessageMutation(
+	baseOptions?: Apollo.MutationHookOptions<PublishMqttMessageMutation, PublishMqttMessageMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<PublishMqttMessageMutation, PublishMqttMessageMutationVariables>(
+		PublishMqttMessageDocument,
+		options
+	);
+}
+export type PublishMqttMessageMutationHookResult = ReturnType<typeof usePublishMqttMessageMutation>;
+export type PublishMqttMessageMutationResult = Apollo.MutationResult<PublishMqttMessageMutation>;
+export type PublishMqttMessageMutationOptions = Apollo.BaseMutationOptions<
+	PublishMqttMessageMutation,
+	PublishMqttMessageMutationVariables
+>;

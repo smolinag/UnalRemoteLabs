@@ -10,6 +10,7 @@ import sharedClasses from './shared.module.scss';
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
 export interface Command {
 	id: Maybe<string>;
+	name: Maybe<string>;
 	label: Maybe<string>;
 	parameters: ParameterDto | undefined | null;
 }
@@ -23,28 +24,27 @@ export interface ParameterDto {
 
 interface Props {
 	commands: Command[];
-	onCommandChange?: (value: ParameterDto, id: string) => void;
+	onCommandChange?: (command: Command, id: string) => void;
 }
 
-const getCommand = (
-	{id, label, parameters}: Command,
-	handler: (params: ParameterDto, id: string) => void
-): JSX.Element => {
+const getCommand = (command: Command, handler: (command: Command, id: string) => void): JSX.Element => {
 	return (
-		<div key={id} className={classes.command}>
+		<div key={command.id} className={classes.command}>
 			<Switch
-				label={label}
-				state={parameters?.value}
-				onToggle={(newValue) => handler({...parameters, value: newValue} as ParameterDto, `${id}`)}
+				label={command.label}
+				state={command.parameters?.value}
+				onToggle={(newValue) =>
+					handler({...command, parameters: {...command.parameters, value: newValue}} as Command, `${command.id}`)
+				}
 			/>
 		</div>
 	);
 };
 
 const Commands: React.FC<Props> = ({commands, onCommandChange}) => {
-	const handleCommandChange = (value: ParameterDto, id: string): void => {
+	const handleCommandChange = (command: Command, id: string): void => {
 		if (onCommandChange) {
-			onCommandChange(value, id);
+			onCommandChange(command, id);
 		}
 	};
 

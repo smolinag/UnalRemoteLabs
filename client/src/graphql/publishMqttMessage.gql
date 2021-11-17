@@ -1,0 +1,3 @@
+mutation publishMqttMessage ($input: LambdaInput!) {
+	publishMqttMessage(input: $input)
+}

@@ -11,6 +11,7 @@ import {
 	useOnUpdateLabPracticeSessionCommandSubscription,
 	usePublishMqttMessageMutation,
 	useOnUpdateLabPracticeSessionOutputSubscription,
+	useUpdateLabPracticeSessionOutputMutation,
 	Maybe
 } from '../../graphql/generated/schema';
 
@@ -40,6 +41,8 @@ const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	};
 };
 
+const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
+
 const LabView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<CommandListDto[]>([]);
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
@@ -50,6 +53,7 @@ const LabView: React.FC<unknown> = () => {
 	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
+	useUpdateLabPracticeSessionOutputMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
 		variables: {id: SESSION_ID}
@@ -77,38 +81,44 @@ const LabView: React.FC<unknown> = () => {
 	}, [labCommandsData]);
 
 	useEffect(() => {
+		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
+		if (receivedOutputs) {
+			const outputs: OutputListDto[] = receivedOutputs.map(({id, name}) => ({id, name, value: '-'}));
+			setOutputs(outputs);
+		}
+	}, [practiceOutputs]);
+
+	useEffect(() => {
 		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items[0];
 		if (sessionData) {
 			setLabPracticeSessionId(sessionData.id);
 		}
-
-		const practiceOutput = practiceOutputs?.listLabPracticeOutputs?.items;
-		if (practiceOutput) {
-			const practiceOutputDto: OutputListDto[] = practiceOutput.map((obj) => {
-				return {
-					id: obj.id,
-					name: obj.name,
-					value: null
-				};
-			});
-			setOutputs(practiceOutputDto);
-		}
 	}, [practiceInfo]);
 
 	useEffect(() => {
-		// const practiceId = updatedSessionOutput?.onCreateLabPracticeSessionOutput?.labpracticeoutputID;
-		const outputValue: OutputListDto[] = outputs
+		const updatedSessionOutputData = updatedSessionOutput?.onCreateLabPracticeSessionOutput;
+		if (!updatedSessionOutputData) {
+			return;
+		}
+		const outputValue: OutputListDto[] = outputs;
+		console.warn(updatedSessionOutput);
 
-		// if(updatedSessionOutput?.onCreateLabPracticeSessionOutput?.labpracticeoutputID) {
-		// 	const practiceOutput = practiceOutputs?.listLabPracticeOutputs?.items.filter((practiceOutput) => {practiceOutput.name === practiceId})[0];
-		// 	outputValue.push({
-		// 		id: practiceOutput.id,
-		// 		name: practiceOutput.name,
-		// 		value: updatedSessionOutput?.onCreateLabPracticeSessionOutput?.value
-		// 	})
-		// }
+		const outputToUpdateIndex = outputValue.findIndex(
+			(output: OutputListDto) => output.id === '9c8b54b7-0921-43dc-847b-79895eb438cd'
+		);
 
-		setOutputs(outputValue)
+		if (outputToUpdateIndex < 0) {
+			return;
+		}
+
+		setOutputs((oldOutputs) => {
+			oldOutputs[outputToUpdateIndex] = {
+				...oldOutputs[outputToUpdateIndex],
+				value: updatedSessionOutputData.value ?? '-'
+			};
+
+			return oldOutputs;
+		});
 	}, [updatedSessionOutput]);
 
 	useEffect(() => {
@@ -117,11 +127,12 @@ const LabView: React.FC<unknown> = () => {
 		if (!newCommand) {
 			return;
 		}
+		const commandToUpdateIndex = labCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
+		if (commandToUpdateIndex < 0) {
+			return;
+		}
+
 		setLabCommands((oldCommands) => {
-			const commandToUpdateIndex = oldCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
-			if (commandToUpdateIndex < 0) {
-				return oldCommands;
-			}
 			oldCommands[commandToUpdateIndex] = {
 				...oldCommands[commandToUpdateIndex],
 				parameters: JSON.parse(newCommand.parameters)
@@ -161,7 +172,7 @@ const LabView: React.FC<unknown> = () => {
 			/>
 
 			<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
-			<LabOutputs data={[['test', 'test']] as [string, string][]} />
+			<LabOutputs data={outputs.map(mapOutput)} />
 		</LoadingContainer>
 	);
 };

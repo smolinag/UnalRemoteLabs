@@ -2474,16 +2474,6 @@ export type OnUpdateLabPracticeSessionOutputSubscription = {__typename?: 'Subscr
 	>;
 };
 
-export type UpdateLabPracticeSessionOutputMutationVariables = Exact<{
-	input: CreateLabPracticeSessionOutputInput;
-}>;
-
-export type UpdateLabPracticeSessionOutputMutation = {__typename?: 'Mutation'} & {
-	createLabPracticeSessionOutput?: Maybe<
-		{__typename?: 'LabPracticeSessionOutput'} & Pick<LabPracticeSessionOutput, 'value' | 'labpracticeoutputID'>
-	>;
-};
-
 export type PublishMqttMessageMutationVariables = Exact<{
 	input: LambdaInput;
 }>;
@@ -2883,57 +2873,6 @@ export type OnUpdateLabPracticeSessionOutputSubscriptionHookResult = ReturnType<
 >;
 export type OnUpdateLabPracticeSessionOutputSubscriptionResult =
 	Apollo.SubscriptionResult<OnUpdateLabPracticeSessionOutputSubscription>;
-export const UpdateLabPracticeSessionOutputDocument = gql`
-	mutation updateLabPracticeSessionOutput($input: CreateLabPracticeSessionOutputInput!) {
-		createLabPracticeSessionOutput(input: $input) {
-			value
-			labpracticeoutputID
-		}
-	}
-`;
-export type UpdateLabPracticeSessionOutputMutationFn = Apollo.MutationFunction<
-	UpdateLabPracticeSessionOutputMutation,
-	UpdateLabPracticeSessionOutputMutationVariables
->;
-
-/**
- * __useUpdateLabPracticeSessionOutputMutation__
- *
- * To run a mutation, you first call `useUpdateLabPracticeSessionOutputMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateLabPracticeSessionOutputMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateLabPracticeSessionOutputMutation, { data, loading, error }] = useUpdateLabPracticeSessionOutputMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUpdateLabPracticeSessionOutputMutation(
-	baseOptions?: Apollo.MutationHookOptions<
-		UpdateLabPracticeSessionOutputMutation,
-		UpdateLabPracticeSessionOutputMutationVariables
-	>
-) {
-	const options = {...defaultOptions, ...baseOptions};
-	return Apollo.useMutation<UpdateLabPracticeSessionOutputMutation, UpdateLabPracticeSessionOutputMutationVariables>(
-		UpdateLabPracticeSessionOutputDocument,
-		options
-	);
-}
-export type UpdateLabPracticeSessionOutputMutationHookResult = ReturnType<
-	typeof useUpdateLabPracticeSessionOutputMutation
->;
-export type UpdateLabPracticeSessionOutputMutationResult =
-	Apollo.MutationResult<UpdateLabPracticeSessionOutputMutation>;
-export type UpdateLabPracticeSessionOutputMutationOptions = Apollo.BaseMutationOptions<
-	UpdateLabPracticeSessionOutputMutation,
-	UpdateLabPracticeSessionOutputMutationVariables
->;
 export const PublishMqttMessageDocument = gql`
 	mutation publishMqttMessage($input: LambdaInput!) {
 		publishMqttMessage(input: $input)

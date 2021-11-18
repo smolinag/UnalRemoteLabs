@@ -1,6 +1,0 @@
-mutation updateLabPracticeSessionOutput($input: CreateLabPracticeSessionOutputInput!) {
-	createLabPracticeSessionOutput(input: $input) {
-    value
-		labpracticeoutputID
-	}
-}

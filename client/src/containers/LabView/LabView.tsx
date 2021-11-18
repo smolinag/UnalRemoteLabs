@@ -11,7 +11,6 @@ import {
 	useOnUpdateLabPracticeSessionCommandSubscription,
 	usePublishMqttMessageMutation,
 	useOnUpdateLabPracticeSessionOutputSubscription,
-	useUpdateLabPracticeSessionOutputMutation,
 	Maybe
 } from '../../graphql/generated/schema';
 
@@ -53,7 +52,6 @@ const LabView: React.FC<unknown> = () => {
 	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
-	useUpdateLabPracticeSessionOutputMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
 		variables: {id: SESSION_ID}
@@ -101,10 +99,9 @@ const LabView: React.FC<unknown> = () => {
 			return;
 		}
 		const outputValue: OutputListDto[] = outputs;
-		console.warn(updatedSessionOutput);
 
 		const outputToUpdateIndex = outputValue.findIndex(
-			(output: OutputListDto) => output.id === '9c8b54b7-0921-43dc-847b-79895eb438cd'
+			(output: OutputListDto) => output.id === updatedSessionOutputData.labpracticeoutputID
 		);
 
 		if (outputToUpdateIndex < 0) {

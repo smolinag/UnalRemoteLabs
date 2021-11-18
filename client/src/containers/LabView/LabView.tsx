@@ -3,13 +3,14 @@ import React, {useState, useEffect} from 'react';
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command, ParameterDto} from '../../components/Lab/Commands';
 import {LoadingContainer} from '../../components/UI/index';
-import dummyData from '../../dummyData/dummyData.json';
 import {
 	useGetLabPracticeQuery,
 	useGetLabPracticeCommandQuery,
+	useGetLabPracticeOutputQuery,
 	useUpdateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandSubscription,
 	usePublishMqttMessageMutation,
+	useOnUpdateLabPracticeSessionOutputSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 
@@ -24,6 +25,12 @@ interface CommandListDto {
 	parameters: ParameterDto | undefined | null;
 }
 
+interface OutputListDto {
+	id: Maybe<string> | undefined;
+	name: Maybe<string> | undefined;
+	value: Maybe<string> | undefined;
+}
+
 const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	return {
 		id,
@@ -35,16 +42,20 @@ const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 
 const LabView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<CommandListDto[]>([]);
+	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>();
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
+	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
 		variables: {id: SESSION_ID}
 	});
+
+	const {data: updatedSessionOutput} = useOnUpdateLabPracticeSessionOutputSubscription();
 
 	useEffect(() => {
 		// REFACTORIZAR FUNCIÓN, TENIENDO EN CUENTA LOS TIPOS DE LOS
@@ -70,10 +81,39 @@ const LabView: React.FC<unknown> = () => {
 		if (sessionData) {
 			setLabPracticeSessionId(sessionData.id);
 		}
+
+		const practiceOutput = practiceOutputs?.listLabPracticeOutputs?.items;
+		if (practiceOutput) {
+			const practiceOutputDto: OutputListDto[] = practiceOutput.map((obj) => {
+				return {
+					id: obj.id,
+					name: obj.name,
+					value: null
+				};
+			});
+			setOutputs(practiceOutputDto);
+		}
 	}, [practiceInfo]);
 
 	useEffect(() => {
+		// const practiceId = updatedSessionOutput?.onCreateLabPracticeSessionOutput?.labpracticeoutputID;
+		const outputValue: OutputListDto[] = outputs
+
+		// if(updatedSessionOutput?.onCreateLabPracticeSessionOutput?.labpracticeoutputID) {
+		// 	const practiceOutput = practiceOutputs?.listLabPracticeOutputs?.items.filter((practiceOutput) => {practiceOutput.name === practiceId})[0];
+		// 	outputValue.push({
+		// 		id: practiceOutput.id,
+		// 		name: practiceOutput.name,
+		// 		value: updatedSessionOutput?.onCreateLabPracticeSessionOutput?.value
+		// 	})
+		// }
+
+		setOutputs(outputValue)
+	}, [updatedSessionOutput]);
+
+	useEffect(() => {
 		const newCommand = updatedSessionCommands?.onCreateLabPracticeSessionCommandBySessionID;
+
 		if (!newCommand) {
 			return;
 		}
@@ -121,7 +161,7 @@ const LabView: React.FC<unknown> = () => {
 			/>
 
 			<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
-			<LabOutputs data={dummyData[0].data as [string, string][]} />
+			<LabOutputs data={[['test', 'test']] as [string, string][]} />
 		</LoadingContainer>
 	);
 };

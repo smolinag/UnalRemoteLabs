@@ -1,10 +1,17 @@
 import React from 'react';
 import {Row, Col} from 'react-bootstrap';
 
+import { Maybe } from '../../graphql/generated/schema';
 import {Table} from '../UI/index';
 import classes from './shared.module.scss';
 
 type Data = [string, string | number][];
+
+export interface Output {
+	id: Maybe<string>;
+	name: Maybe<string> | undefined;
+	value: Maybe<string>;
+}
 
 interface Props {
 	data: Data;

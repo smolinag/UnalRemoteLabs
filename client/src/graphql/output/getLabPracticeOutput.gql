@@ -1,0 +1,8 @@
+query getLabPracticeOutput {
+	listLabPracticeOutputs {
+		items {
+			id
+			name
+		}
+	}
+}

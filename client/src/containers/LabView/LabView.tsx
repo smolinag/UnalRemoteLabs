@@ -98,9 +98,8 @@ const LabView: React.FC<unknown> = () => {
 		if (!updatedSessionOutputData) {
 			return;
 		}
-		const outputValue: OutputListDto[] = outputs;
 
-		const outputToUpdateIndex = outputValue.findIndex(
+		const outputToUpdateIndex = outputs.findIndex(
 			(output: OutputListDto) => output.id === updatedSessionOutputData.labpracticeoutputID
 		);
 
@@ -157,7 +156,7 @@ const LabView: React.FC<unknown> = () => {
 			uuid: data?.createLabPracticeSessionCommand?.id
 		};
 
-		publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_1'}}});
+		publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}});
 	};
 
 	return (

@@ -105,11 +105,11 @@ const LabView: React.FC<unknown> = () => {
 
 		const mqttMessage = {
 			name,
-			params: parameters,
+			params: [parameters],
 			uuid: data?.createLabPracticeSessionCommand?.id
 		};
 
-		publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_1'}}});
+		publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}});
 	};
 
 	return (

@@ -152,7 +152,7 @@ const LabView: React.FC<unknown> = () => {
 
 		const mqttMessage = {
 			name,
-			params: parameters,
+			params: [parameters],
 			uuid: data?.createLabPracticeSessionCommand?.id
 		};
 

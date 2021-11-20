@@ -3,13 +3,14 @@ import React, {useState, useEffect} from 'react';
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command, ParameterDto} from '../../components/Lab/Commands';
 import {LoadingContainer} from '../../components/UI/index';
-import dummyData from '../../dummyData/dummyData.json';
 import {
 	useGetLabPracticeQuery,
 	useGetLabPracticeCommandQuery,
+	useGetLabPracticeOutputQuery,
 	useUpdateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandSubscription,
 	usePublishMqttMessageMutation,
+	useOnUpdateLabPracticeSessionOutputSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 
@@ -24,6 +25,12 @@ interface CommandListDto {
 	parameters: ParameterDto | undefined | null;
 }
 
+interface OutputListDto {
+	id: Maybe<string> | undefined;
+	name: Maybe<string> | undefined;
+	value: Maybe<string> | undefined;
+}
+
 const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	return {
 		id,
@@ -33,18 +40,24 @@ const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	};
 };
 
+const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
+
 const LabView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<CommandListDto[]>([]);
+	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>();
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
+	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
 		variables: {id: SESSION_ID}
 	});
+
+	const {data: updatedSessionOutput} = useOnUpdateLabPracticeSessionOutputSubscription();
 
 	useEffect(() => {
 		// REFACTORIZAR FUNCIÓN, TENIENDO EN CUENTA LOS TIPOS DE LOS
@@ -66,6 +79,14 @@ const LabView: React.FC<unknown> = () => {
 	}, [labCommandsData]);
 
 	useEffect(() => {
+		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
+		if (receivedOutputs) {
+			const outputs: OutputListDto[] = receivedOutputs.map(({id, name}) => ({id, name, value: '-'}));
+			setOutputs(outputs);
+		}
+	}, [practiceOutputs]);
+
+	useEffect(() => {
 		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items[0];
 		if (sessionData) {
 			setLabPracticeSessionId(sessionData.id);
@@ -73,15 +94,41 @@ const LabView: React.FC<unknown> = () => {
 	}, [practiceInfo]);
 
 	useEffect(() => {
+		const updatedSessionOutputData = updatedSessionOutput?.onCreateLabPracticeSessionOutput;
+		if (!updatedSessionOutputData) {
+			return;
+		}
+
+		const outputToUpdateIndex = outputs.findIndex(
+			(output: OutputListDto) => output.id === updatedSessionOutputData.labpracticeoutputID
+		);
+
+		if (outputToUpdateIndex < 0) {
+			return;
+		}
+
+		setOutputs((oldOutputs) => {
+			oldOutputs[outputToUpdateIndex] = {
+				...oldOutputs[outputToUpdateIndex],
+				value: updatedSessionOutputData.value ?? '-'
+			};
+
+			return oldOutputs;
+		});
+	}, [updatedSessionOutput]);
+
+	useEffect(() => {
 		const newCommand = updatedSessionCommands?.onCreateLabPracticeSessionCommandBySessionID;
+
 		if (!newCommand) {
 			return;
 		}
+		const commandToUpdateIndex = labCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
+		if (commandToUpdateIndex < 0) {
+			return;
+		}
+
 		setLabCommands((oldCommands) => {
-			const commandToUpdateIndex = oldCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
-			if (commandToUpdateIndex < 0) {
-				return oldCommands;
-			}
 			oldCommands[commandToUpdateIndex] = {
 				...oldCommands[commandToUpdateIndex],
 				parameters: JSON.parse(newCommand.parameters)
@@ -121,7 +168,7 @@ const LabView: React.FC<unknown> = () => {
 			/>
 
 			<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
-			<LabOutputs data={dummyData[0].data as [string, string][]} />
+			<LabOutputs data={outputs.map(mapOutput)} />
 		</LoadingContainer>
 	);
 };

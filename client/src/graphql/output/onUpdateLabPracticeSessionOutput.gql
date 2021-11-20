@@ -1,9 +1,6 @@
 subscription onUpdateLabPracticeSessionOutput {
-	onUpdateLabPracticeSessionOutput {
+	onCreateLabPracticeSessionOutput {
 		value
-		LabPracticeOutput {
-			name
-			units
-		}
+		labpracticeoutputID
 	}
 }

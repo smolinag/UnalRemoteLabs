@@ -14,7 +14,7 @@ const LabTitle: React.FC<Props> = ({description, duration, name}) => {
 		<Row className={classes.section}>
 			<h3 className={classes.title}>{name ?? 'Práctica de laboratorio'}</h3>
 			<span>Descripción: {description}</span>
-			<span>Duración: {duration ? duration : '-'} segundos</span>
+			<span>Duración: {duration ? duration : '-'} minutos</span>
 		</Row>
 	);
 };

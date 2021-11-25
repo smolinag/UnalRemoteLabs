@@ -31,6 +31,11 @@ interface OutputListDto {
 	value: Maybe<string> | undefined;
 }
 
+enum CommandExecutionState {
+	Success = 'success',
+	Pending = 'pending'
+}
+
 const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	return {
 		id,
@@ -120,7 +125,7 @@ const LabView: React.FC<unknown> = () => {
 	useEffect(() => {
 		const newCommand = updatedSessionCommands?.onCreateLabPracticeSessionCommandBySessionID;
 
-		if (!newCommand) {
+		if (!newCommand || newCommand.status !== CommandExecutionState.Success) {
 			return;
 		}
 		const commandToUpdateIndex = labCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
@@ -129,7 +134,10 @@ const LabView: React.FC<unknown> = () => {
 		}
 
 		setLabCommands((oldCommands) => {
-			oldCommands = oldCommands.map((command) => ({...command, parameters: {...command.parameters, value: false} as ParameterDto}));
+			oldCommands = oldCommands.map((command) => ({
+				...command,
+				parameters: {...command.parameters, value: false} as ParameterDto
+			}));
 			oldCommands[commandToUpdateIndex] = {
 				...oldCommands[commandToUpdateIndex],
 				parameters: JSON.parse(newCommand.parameters)

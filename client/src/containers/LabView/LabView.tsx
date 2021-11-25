@@ -20,7 +20,7 @@ const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
 interface CommandListDto {
-	id: Maybe<string>;
+	id: string;
 	name: Maybe<string>;
 	parameters: ParameterDto | undefined | null;
 }
@@ -34,8 +34,8 @@ interface OutputListDto {
 const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	return {
 		id,
-		label: name,
-		name,
+		name: name as string,
+		label: name as string,
 		parameters
 	};
 };
@@ -129,6 +129,7 @@ const LabView: React.FC<unknown> = () => {
 		}
 
 		setLabCommands((oldCommands) => {
+			oldCommands = oldCommands.map((command) => ({...command, parameters: {...command.parameters, value: false} as ParameterDto}));
 			oldCommands[commandToUpdateIndex] = {
 				...oldCommands[commandToUpdateIndex],
 				parameters: JSON.parse(newCommand.parameters)
@@ -166,7 +167,6 @@ const LabView: React.FC<unknown> = () => {
 				description={practiceInfo?.getLabPractice?.description}
 				duration={practiceInfo?.getLabPractice?.duration}
 			/>
-
 			<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
 			<LabOutputs data={outputs.map(mapOutput)} />
 		</LoadingContainer>

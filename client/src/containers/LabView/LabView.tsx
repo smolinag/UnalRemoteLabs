@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command, ParameterDto} from '../../components/Lab/Commands';
@@ -45,11 +45,15 @@ const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
 	};
 };
 
+const COMMAND_EXECUTION_TIMEOUT = 5000;
+
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
 const LabView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<CommandListDto[]>([]);
+	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
+	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>();
 
@@ -128,6 +132,12 @@ const LabView: React.FC<unknown> = () => {
 		if (!newCommand || newCommand.status !== CommandExecutionState.Success) {
 			return;
 		}
+
+		setIsExecutingCommand(false);
+		if (commandExecutionTimeout.current) {
+			clearTimeout(commandExecutionTimeout.current);
+		}
+
 		const commandToUpdateIndex = labCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
 		if (commandToUpdateIndex < 0) {
 			return;
@@ -148,24 +158,34 @@ const LabView: React.FC<unknown> = () => {
 	}, [updatedSessionCommands]);
 
 	const handleCommandChange = async ({parameters, name}: Command, id: string) => {
-		const {data} = await updateLabPracticeSessionCommand({
-			variables: {
-				input: {
-					labpracticesessionID: labPracticeSessionId,
-					labpracticecommandID: id,
-					parameters: JSON.stringify([parameters][0]),
-					status: 'pending'
+		try {
+			setIsExecutingCommand(true);
+			const {data} = await updateLabPracticeSessionCommand({
+				variables: {
+					input: {
+						labpracticesessionID: labPracticeSessionId,
+						labpracticecommandID: id,
+						parameters: JSON.stringify([parameters][0]),
+						status: 'pending'
+					}
 				}
-			}
-		});
+			});
 
-		const mqttMessage = {
-			name,
-			params: [parameters],
-			uuid: data?.createLabPracticeSessionCommand?.id
-		};
+			const mqttMessage = {
+				name,
+				params: [parameters],
+				uuid: data?.createLabPracticeSessionCommand?.id
+			};
 
-		publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}});
+			await publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}});
+
+			commandExecutionTimeout.current = setTimeout(() => {
+				setIsExecutingCommand(false);
+			}, COMMAND_EXECUTION_TIMEOUT);
+		} catch (error) {
+			console.error('no se pudo ejecutar el comando', error);
+			setIsExecutingCommand(false);
+		}
 	};
 
 	return (
@@ -175,7 +195,9 @@ const LabView: React.FC<unknown> = () => {
 				description={practiceInfo?.getLabPractice?.description}
 				duration={practiceInfo?.getLabPractice?.duration}
 			/>
-			<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
+			<LoadingContainer loading={isExecutingCommand}>
+				<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
+			</LoadingContainer>
 			<LabOutputs data={outputs.map(mapOutput)} />
 		</LoadingContainer>
 	);

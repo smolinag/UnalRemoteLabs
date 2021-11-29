@@ -1,41 +1,42 @@
 import React from 'react';
 import {Row} from 'react-bootstrap';
 
-import classes from '../Lab/shared.module.scss';
+import {Identifiers} from '../../containers/LabCreationView/Identifiers';
+import {PracticeInfo} from '../../containers/LabCreationView/LabCreationView';
 import {Input} from '../UI';
+import classes from './shared.module.scss';
+
 
 interface Props {
-	name: string;
-	description: string;
-	duration: string;
+	practice: PracticeInfo;
 	onValueChange?: (value: string, id: string) => void;
 }
 
-const LabPractice: React.FC<Props> = ({onValueChange, name, description, duration}) => {
+const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
 	return (
 		<Row className={classes.section}>
 			<h3 className={classes.title}>Información de la práctica de laboratorio</h3>
 			<div className={classes.options}>
 				<Input
-					id="name"
+					id={Identifiers.NAME}
 					type="text"
 					placeholder={'Nombre'}
-					value={name}
+					value={practice.practiceInfoName}
 					tooltip="Ingrese el nombre del laboratorio"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id="description"
+					id={Identifiers.DESCRIPTION}
 					type="text"
 					placeholder={'Descripción'}
-					value={description}
+					value={practice.practiceInfoDescription}
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id="duration"
+					id={Identifiers.DURATION}
 					type="number"
 					placeholder={'Duración'}
-					value={duration}
+					value={practice.practiceInfoDuration}
 					tooltip="Ingrese la duración que tendrá la sesión en minutos"
 					unit
 					onValueChange={onValueChange}

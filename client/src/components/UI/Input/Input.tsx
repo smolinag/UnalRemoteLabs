@@ -28,23 +28,29 @@ const Input: React.FC<Props> = ({id, type, placeholder, disabled, required, valu
 
 	return (
 		<div className={generalClasses.wrapper}>
-			<input
-				id={id}
-				type={type}
-				placeholder={placeholder}
-				required={required}
-				value={value}
-				onChange={(e) => valueChange(e.target.value, id)}
-				className={classes.input}
-			/>
+			<div className={classes.inputWrapper}>
+				<span className={classes.inputTitle}>{placeholder}</span>
+				<div className={classes.inputSubwrapper}>
+					<input
+						id={id}
+						type={type}
+						placeholder={placeholder}
+						required={required}
+						value={value}
+						onChange={(e) => valueChange(e.target.value, id)}
+						className={classes.input}
+					/>
+					{unit && <span className={classes.input}>minutos</span>}
 
-			{unit && <span className={classes.input}>minutos</span>}
-
-			{tooltip && (
-				<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
-					<BsQuestionCircle />
-				</OverlayTrigger>
-			)}
+					{tooltip ? (
+						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
+							<BsQuestionCircle />
+						</OverlayTrigger>
+					) : (
+						<div style={{width: '16px'}} />
+					)}
+				</div>
+			</div>
 		</div>
 	);
 };

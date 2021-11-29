@@ -1,103 +1,107 @@
 import React from 'react';
 import {Row} from 'react-bootstrap';
 
-import classes from '../../components/Lab/shared.module.scss';
 import {LabPractice, LabPracticeCommand, LabPracticeOutput} from '../../components/LabCreation';
-import {Button} from '../../components/UI';
+import {Button, LoadingContainer} from '../../components/UI';
+import {Identifiers} from './Identifiers';
+import classes from './LabCreationView.module.scss';
 
-export interface Practice {
-	id: string;
-	name: string;
-	description: string;
-	duration: number;
+interface action {
+	type: string;
+	payload: string;
 }
 
-const LabCreationView: React.FC<unknown> = () => {
-	const [practiceInfoName, setPracticeInfoName] = React.useState<string>('');
-	const [practiceInfoDescription, setPracticeInfoDescription] = React.useState<string>('');
-	const [practiceInfoDuration, setPracticeInfoDuration] = React.useState<string>('');
+export interface PracticeInfo {
+	practiceInfoName: string;
+	practiceInfoDescription: string;
+	practiceInfoDuration: string;
+	commandName: string;
+	commandDescription: string;
+	parameterName: string;
+	parameterDescription: string;
+	parameterDefaultValue: string;
+	parameterUnit: string;
+	parameterMaxValue: string;
+	parameterMinValue: string;
+	parameterRegex: string;
+	ouputName: string;
+	outputDescription: string;
+}
 
-	const [commandName, setCommandName] = React.useState<string>('');
-	const [commandDescription, setCommandDescription] = React.useState<string>('');
-	const [parameterName, setParameterName] = React.useState<string>('');
-	const [parameterDescription, setParameterDescription] = React.useState<string>('');
-	const [parameterDefaultValue, setParameterDefaultValue] = React.useState<string>('');
-	const [parameterUnit, setParameterUnit] = React.useState<string>('');
-	const [parameterMaxValue, setParameterMaxValue] = React.useState<string>('');
-	const [parameterMinValue, setParameterMinValue] = React.useState<string>('');
-	const [parameterRegex, setParameterRegex] = React.useState<string>('');
+function reducer(practice: PracticeInfo, action: action): PracticeInfo {
+	switch (action.type) {
+		case Identifiers.NAME:
+			return {...practice, practiceInfoName: action.payload};
+		case Identifiers.DESCRIPTION:
+			return {...practice, practiceInfoDescription: action.payload};
+		case Identifiers.DURATION:
+			return {...practice, practiceInfoDuration: action.payload};
+		case Identifiers.COMMANDNAME:
+			return {...practice, commandName: action.payload};
+		case Identifiers.COMMANDDESCRIPTION:
+			return {...practice, commandDescription: action.payload};
+		case Identifiers.PARAMETERNAME:
+			return {...practice, parameterName: action.payload};
+		case Identifiers.PARAMETERDESCRIPTION:
+			return {...practice, parameterDescription: action.payload};
+		case Identifiers.PARAMETERDEFAULTVALUE:
+			return {...practice, parameterDefaultValue: action.payload};
+		case Identifiers.PARAMETERUNIT:
+			return {...practice, parameterUnit: action.payload};
+		case Identifiers.PARAMETERMAXVALUE:
+			return {...practice, parameterMaxValue: action.payload};
+		case Identifiers.PARAMETERMINVALUE:
+			return {...practice, parameterMinValue: action.payload};
+		case Identifiers.PARAMETERREGEX:
+			return {...practice, parameterRegex: action.payload};
+		case Identifiers.OUTPUTNAME:
+			return {...practice, ouputName: action.payload};
+		case Identifiers.OUTPUTDESCRIPTION:
+			return {...practice, outputDescription: action.payload};
+		default:
+			return practice;
+	}
+}
+
+const initialValue: PracticeInfo = {
+	practiceInfoName: '',
+	practiceInfoDescription: '',
+	practiceInfoDuration: ',',
+	commandName: '',
+	commandDescription: '',
+	parameterName: '',
+	parameterDescription: '',
+	parameterDefaultValue: '',
+	parameterUnit: '',
+	parameterMaxValue: '',
+	parameterMinValue: '',
+	parameterRegex: '',
+	ouputName: '',
+	outputDescription: ''
+};
+
+const LabCreationView: React.FC<unknown> = () => {
+	const [practice, dispatch] = React.useReducer(reducer, initialValue);
 
 	const practiceChange = (value: string, id: string) => {
-		switch (id) {
-			case 'name':
-				setPracticeInfoName(value);
-				break;
-			case 'description':
-				setPracticeInfoDescription(value);
-				break;
-			case 'duration':
-				setPracticeInfoDuration(value);
-				break;
-
-			case 'commandName':
-				setCommandName(value);
-				break;
-			case 'commandDescription':
-				setCommandDescription(value);
-				break;
-			case 'parameterName':
-				setParameterName(value);
-				break;
-			case 'parameterDescription':
-				setParameterDescription(value);
-				break;
-			case 'parameterDefaultValue':
-				setParameterDefaultValue(value);
-				break;
-			case 'parameterUnit':
-				setParameterUnit(value);
-				break;
-			case 'parameterMaxValue':
-				setParameterMaxValue(value);
-				break;
-			case 'parameterMinValue':
-				setParameterMinValue(value);
-				break;
-			case 'parameterRegex':
-				setParameterRegex(value);
-				break;
-		}
+		dispatch({type: id, payload: value});
 	};
 
 	return (
 		<>
-			<LabPractice
-				name={practiceInfoName}
-				description={practiceInfoDescription}
-				duration={practiceInfoDuration}
-				onValueChange={practiceChange}
-			/>
+			<LoadingContainer loading={false}>
+				<LabPractice practice={practice} onValueChange={practiceChange} />
 
-			<LabPracticeCommand
-				commandName={commandName}
-				commandDescription={commandDescription}
-				parameterName={parameterName}
-				parameterDescription={parameterDescription}
-				parameterDefaultValue={parameterDefaultValue}
-				parameterUnit={parameterUnit}
-				parameterMaxValue={parameterMaxValue}
-				parameterMinValue={parameterMinValue}
-				parameterRegex={parameterRegex}
-				onValueChange={practiceChange}
-			/>
+				<LabPracticeCommand practice={practice} onValueChange={practiceChange} />
 
-			<LabPracticeOutput />
+				<LabPracticeOutput practice={practice} onValueChange={practiceChange} />
 
-			<Row className={classes.section}>
-				<Button loading={false} justifyEnd>
-					Guardar
-				</Button>
-			</Row>
+				<Row className={classes.section}>
+					<Button loading={false} justifyEnd>
+						Guardar
+					</Button>
+				</Row>
+			</LoadingContainer>
 		</>
 	);
 };

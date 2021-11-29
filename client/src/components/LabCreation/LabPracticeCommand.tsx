@@ -1,35 +1,34 @@
 import React from 'react';
 import {Row} from 'react-bootstrap';
 
-import classes from '../Lab/shared.module.scss';
+import {Identifiers} from '../../containers/LabCreationView/Identifiers';
+import {PracticeInfo} from '../../containers/LabCreationView/LabCreationView';
 import {Input, DropdownComponent} from '../UI';
+import {Option} from '../UI/DropdownComponent/DropdownComponent';
+import classes from './shared.module.scss';
 
 interface Props {
-	commandName: string;
-	commandDescription: string;
-	parameterName: string;
-	parameterDescription: string;
-	parameterDefaultValue: string | number;
-	parameterUnit: string;
-	parameterMaxValue: string;
-	parameterMinValue: string;
-	parameterRegex: string;
+	practice: PracticeInfo;
 	onValueChange?: (value: string, id: string) => void;
 }
 
-const LabPracticeCommand: React.FC<Props> = ({
-	onValueChange,
-	commandName,
-	commandDescription,
-	parameterName,
-	parameterDescription,
-	parameterDefaultValue,
-	parameterUnit,
-	parameterMaxValue,
-	parameterMinValue,
-	parameterRegex
-}) => {
-	const [defaultValueType] = React.useState<string>('string');
+const Types = {
+	string: 'string',
+	number: 'number'
+};
+
+const TypesArray = [
+	{value: Types.number, label: 'numero'},
+	{value: Types.string, label: 'string'}
+];
+
+const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
+	const [valueType, setValueType] = React.useState<Option>(TypesArray[0]);
+
+	const onSelect = (selection: Option) => {
+		setValueType(selection);
+	};
+
 	return (
 		<Row className={classes.section}>
 			<h3 className={classes.title}>Commandos de la práctica de laboratorio</h3>
@@ -37,18 +36,18 @@ const LabPracticeCommand: React.FC<Props> = ({
 			<h5>Información de los comandos</h5>
 			<div className={classes.options}>
 				<Input
-					id="commandName"
+					id={Identifiers.COMMANDNAME}
 					type="text"
 					placeholder={'Nombre'}
-					value={commandName}
+					value={practice.commandName}
 					tooltip="Ingrese el nombre del comando"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id="commandDescription"
+					id={Identifiers.COMMANDDESCRIPTION}
 					type="text"
 					placeholder={'Descripción'}
-					value={commandDescription}
+					value={practice.commandDescription}
 					tooltip="Ingrese la descripción del comando"
 					onValueChange={onValueChange}
 				/>
@@ -57,66 +56,63 @@ const LabPracticeCommand: React.FC<Props> = ({
 			<h5>Parámetros del comando</h5>
 			<div className={classes.options}>
 				<Input
-					id="parameterName"
+					id={Identifiers.PARAMETERNAME}
 					type="text"
 					placeholder={'Nombre'}
-					value={parameterName}
+					value={practice.parameterName}
 					tooltip="Ingrese el nombre del laboratorio"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id="parameterDescription"
+					id={Identifiers.PARAMETERDESCRIPTION}
 					type="text"
 					placeholder={'Descripción'}
-					value={parameterDescription}
+					value={practice.parameterDescription}
 					onValueChange={onValueChange}
 				/>
 
 				{/* componente dropdown para elegir el tipo de valor por defecto*/}
-				<DropdownComponent
-					text="Comando"
-					options={[
-						{value: 'number', label: 'numero'},
-						{value: 'string', label: 'string'}
-					]}
-					tooltip=""
-				/>
+				<DropdownComponent text="Comando" options={TypesArray} tooltip="" onValueChange={onSelect} value={valueType.value} />
 				<Input
-					id="parameterDefaultValue"
-					type={defaultValueType}
+					id={Identifiers.PARAMETERDEFAULTVALUE}
+					type={valueType.value}
 					placeholder={'Valor por defecto'}
-					value={parameterDefaultValue}
+					value={practice.parameterDefaultValue}
 					onValueChange={onValueChange}
 				/>
 
 				<Input
-					id="parameterUnit"
+					id={Identifiers.PARAMETERUNIT}
 					type="text"
 					placeholder={'Unidad'}
-					value={parameterUnit}
+					value={practice.parameterUnit}
 					onValueChange={onValueChange}
 				/>
 
-				<Input
-					id="parameterMaxValue"
-					type="number"
-					placeholder={'Valor máximo'}
-					value={parameterMaxValue}
-					onValueChange={onValueChange}
-				/>
-				<Input
-					id="parameterMinValue"
-					type="number"
-					placeholder={'Valor mínimo'}
-					value={parameterMinValue}
-					onValueChange={onValueChange}
-				/>
+				{valueType.value === Types.number && (
+					<>
+						<Input
+							id={Identifiers.PARAMETERMAXVALUE}
+							type="number"
+							placeholder={'Valor máximo'}
+							value={practice.parameterMaxValue}
+							onValueChange={onValueChange}
+						/>
+						<Input
+							id={Identifiers.PARAMETERMINVALUE}
+							type="number"
+							placeholder={'Valor mínimo'}
+							value={practice.parameterMinValue}
+							onValueChange={onValueChange}
+						/>
+					</>
+				)}
 
 				<Input
-					id="parameterRegex"
+					id={Identifiers.PARAMETERREGEX}
 					type="string"
 					placeholder={'Expresión regular'}
-					value={parameterRegex}
+					value={practice.parameterRegex}
 					onValueChange={onValueChange}
 				/>
 			</div>

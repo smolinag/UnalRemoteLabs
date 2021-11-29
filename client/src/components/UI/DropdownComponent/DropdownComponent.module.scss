@@ -1,8 +1,30 @@
-.wrapper {
+.inputWrapper {
 	display: flex;
-	flex-direction: row;
-	align-items: center;
-	& p {
-		margin: 0 10px 0 0;
-	}
+	flex-direction: column;
+	position: relative;
+	vertical-align: top;
+	border: 1pt solid gray;
+	border-radius: 5px;
+	width: 250px;
+	height: 52px;
+}
+
+.inputTitle{
+	font-size: 0.8rem;
+	padding: 1px 20px
+}
+
+.inputSubwrapper {
+	padding: 1px 5px;
+}
+
+.input {
+	margin-right: 5px;
+	border: 0px;
+	width:210px;
+	min-width: -webkit-fill-available;	
+}
+
+.dropdown-toggle {
+	min-width: inherit;
 }

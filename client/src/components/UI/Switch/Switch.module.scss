@@ -14,14 +14,14 @@ $indicator-diameter: ($button-height - ($button-padding * 2));
   }
 }
 
-button,
+.button,
 .indicator {
 	transition-duration: 200ms;
 	transition-timing-function: ease-out;
 	transition-property: background-color;
 }
 
-button {
+.button {
 	position: relative;
 	outline: none;
 	border: 0;

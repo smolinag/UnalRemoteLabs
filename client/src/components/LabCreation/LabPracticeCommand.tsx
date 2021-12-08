@@ -25,8 +25,8 @@ const TypesArray = [
 const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 	const [valueType, setValueType] = React.useState<Option>(TypesArray[0]);
 
-	const onSelect = (selection: Option) => {
-		setValueType(selection);
+	const onSelect = (id: string, value: string) => {
+		setValueType({label: id, value: value});
 	};
 
 	return (
@@ -72,7 +72,13 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 				/>
 
 				{/* componente dropdown para elegir el tipo de valor por defecto*/}
-				<DropdownComponent text="Comando" options={TypesArray} tooltip="" onValueChange={onSelect} value={valueType.value} />
+				<DropdownComponent
+					text="Comando"
+					options={TypesArray}
+					tooltip=""
+					onValueChange={onSelect}
+					value={valueType.label}
+				/>
 				<Input
 					id={Identifiers.PARAMETERDEFAULTVALUE}
 					type={valueType.value}

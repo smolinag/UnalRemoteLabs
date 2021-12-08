@@ -15,7 +15,7 @@ interface Props {
 	options: Option[];
 	tooltip?: string;
 	value: string;
-	onValueChange: (option: Option) => void;
+	onValueChange: (value: string, id: string) => void;
 }
 
 const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onValueChange}) => {
@@ -24,7 +24,7 @@ const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onVa
 	const renderItem = (option: Option): JSX.Element => {
 		return (
 			<div key={option.value} className={classes.command}>
-				<Dropdown.Item eventKey={option.value} onClick={() => onValueChange(option)}>
+				<Dropdown.Item eventKey={option.value} onClick={() => onValueChange(option.label, option.value)}>
 					{option.label}
 				</Dropdown.Item>
 			</div>
@@ -34,7 +34,7 @@ const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onVa
 	return (
 		<div className={generalClasses.wrapper}>
 			<div className={classes.inputWrapper}>
-				<span className={classes.inputTitle}>{text}</span>
+				<span className={classes.inputTitle}>{text}:</span>
 				<div className={classes.inputSubwrapper}>
 					<DropdownButton id="dropdown-basic-button" title={`${value}`} className={classes.input}>
 						{options.map((option) => renderItem(option))}

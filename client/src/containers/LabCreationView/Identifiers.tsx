@@ -11,6 +11,9 @@ export enum Identifiers {
 	PARAMETERMAXVALUE = 'parameterMaxValue',
 	PARAMETERMINVALUE = 'parameterMinValue',
 	PARAMETERREGEX = 'parameterRegex',
+	OUTPUTTYPE = 'outputType',
 	OUTPUTNAME = 'ouputName',
-	OUTPUTDESCRIPTION = 'outputDescription'
+	OUTPUTDESCRIPTION = 'outputDescription',
+	OUTPUTUNIT = 'outputUnit',
+	ADDCOMMAND = 'addCommand'
 }

@@ -10,36 +10,34 @@ import {
 } from '../../components/LabCreation';
 import {Button} from '../../components/UI';
 import {Justify} from '../../components/UI/Button/Button';
+import {
+	useOnCreateLabPracticeMutation,
+	useOnCreateLabPracticeCommandMutation,
+	useOnCreateLabPracticeParameterMutation,
+	useOnCreateLabPracticeOutputMutation
+} from '../../graphql/generated/schema';
 import {Identifiers} from './Identifiers';
 import classes from './LabCreationView.module.scss';
+
+const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 
 interface action {
 	type: string;
 	payload: string;
 }
 
-export interface PracticeInfo {
+export interface LabPracticeInfo extends LabPracticeCommandInfo, OutputInfo {
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
-	commandName: string;
-	commandDescription: string;
-	parameterName: string;
-	parameterDescription: string;
-	parameterDefaultValue: string;
-	parameterUnit: string;
-	parameterMaxValue: string;
-	parameterMinValue: string;
-	parameterRegex: string;
-	outputType: string;
-	ouputName: string;
-	outputDescription: string;
-	outputUnit: string;
 }
 
-export interface CommandInfo {
+export interface LabPracticeCommandInfo extends LabPracticeParameterInfo {
 	commandName: string;
 	commandDescription: string;
+}
+
+export interface LabPracticeParameterInfo {
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
@@ -56,7 +54,7 @@ export interface OutputInfo {
 	outputUnit: string;
 }
 
-function reducer(state: PracticeInfo, action: action): PracticeInfo {
+function reducer(state: LabPracticeInfo, action: action): LabPracticeInfo {
 	switch (action.type) {
 		case Identifiers.NAME:
 			return {...state, practiceInfoName: action.payload};
@@ -95,7 +93,7 @@ function reducer(state: PracticeInfo, action: action): PracticeInfo {
 	}
 }
 
-const initialCommands: PracticeInfo = {
+const initialCommands: LabPracticeInfo = {
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: ',',
@@ -116,29 +114,90 @@ const initialCommands: PracticeInfo = {
 
 const LabCreationView: React.FC<unknown> = () => {
 	const [practice, dispatch] = React.useReducer(reducer, initialCommands);
-	const [commandsList, setCommandsList] = React.useState<PracticeInfo[]>([]);
-	const [outputsList, setOutputsList] = React.useState<PracticeInfo[]>([]);
+	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
+	const [outputsList, setOutputsList] = React.useState<LabPracticeInfo[]>([]);
+
+	const [createLabPractice] = useOnCreateLabPracticeMutation({});
+	const [createLabPracticeCommand] = useOnCreateLabPracticeCommandMutation({});
+	const [createLabPracticeParameter] = useOnCreateLabPracticeParameterMutation({});
+	const [createLabPracticeOutput] = useOnCreateLabPracticeOutputMutation({});
 
 	const practiceChange = (value: string, id: string) => {
 		dispatch({type: id, payload: value});
 	};
 
-	const addCommand = (practice: PracticeInfo): void => {
+	const addCommand = (practice: LabPracticeInfo): void => {
 		setCommandsList((previousState) => {
 			const commandsList = previousState.concat(practice);
 			return commandsList;
 		});
 	};
 
-	const addOutput = (practice: PracticeInfo): void => {
+	const addOutput = (practice: LabPracticeInfo): void => {
 		setOutputsList((previousState) => {
 			const outputsList = previousState.concat(practice);
 			return outputsList;
 		});
 	};
 
-	const createPractice = (): void => {
-		console.warn(practice);
+	const createPractice = async () => {
+		const {data: labPracticeData} = await createLabPractice({
+			variables: {
+				input: {
+					laboratoryID: PRACTICE_ID,
+					name: practice.practiceInfoName,
+					description: practice.practiceInfoDescription,
+					duration: parseInt(practice.practiceInfoDuration)
+				}
+			}
+		});
+
+		if (labPracticeData?.createLabPractice && labPracticeData?.createLabPractice.id && commandsList.length > 0) {
+			commandsList.map(async (obj) => {
+				const {data: labPracticeCommandData} = await createLabPracticeCommand({
+					variables: {
+						input: {
+							labpracticeID: labPracticeData.createLabPractice?.id,
+							name: obj.commandName,
+							description: obj.commandDescription
+						}
+					}
+				});
+
+				if(labPracticeCommandData?.createLabPracticeCommand && labPracticeCommandData.createLabPracticeCommand.id) {
+					await createLabPracticeParameter({
+						variables: {
+							input: {
+								labpracticecommandID: labPracticeCommandData.createLabPracticeCommand.id,
+								labpracticeID: labPracticeData.createLabPractice?.id,
+								name: obj.parameterName,
+								description: obj.parameterDescription,
+								defaultValue: obj.parameterDefaultValue,
+								minValue: parseInt(obj.parameterMinValue),
+								maxValue: parseInt(obj.parameterMaxValue),
+								regex: obj.parameterRegex
+							}
+						}
+					});
+				}
+			});
+		}
+
+		if (labPracticeData?.createLabPractice && labPracticeData?.createLabPractice.id && outputsList.length > 0) {
+			outputsList.map(async (obj) => {
+				await createLabPracticeOutput({
+					variables: {
+						input: {
+							labpracticeID: labPracticeData.createLabPractice?.id,
+							outputType: obj.outputType,
+							name: obj.ouputName,
+							description: obj.outputDescription,
+							units: JSON.stringify(obj.outputUnit)
+						}
+					}
+				});
+			});
+		}
 	};
 
 	return (

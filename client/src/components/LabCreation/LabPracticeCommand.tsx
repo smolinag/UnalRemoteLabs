@@ -2,13 +2,13 @@ import React from 'react';
 import {Row} from 'react-bootstrap';
 
 import {Identifiers} from '../../containers/LabCreationView/Identifiers';
-import {PracticeInfo} from '../../containers/LabCreationView/LabCreationView';
+import {LabPracticeInfo} from '../../containers/LabCreationView/LabCreationView';
 import {Input, DropdownComponent} from '../UI';
 import {Option} from '../UI/DropdownComponent/DropdownComponent';
 import classes from './shared.module.scss';
 
 interface Props {
-	practice: PracticeInfo;
+	practice: LabPracticeInfo;
 	onValueChange?: (value: string, id: string) => void;
 }
 
@@ -39,6 +39,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 					id={Identifiers.COMMANDNAME}
 					type="text"
 					placeholder={'Nombre'}
+					required
 					value={practice.commandName}
 					tooltip="Ingrese el nombre del comando"
 					onValueChange={onValueChange}
@@ -47,6 +48,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 					id={Identifiers.COMMANDDESCRIPTION}
 					type="text"
 					placeholder={'Descripción'}
+					required
 					value={practice.commandDescription}
 					tooltip="Ingrese la descripción del comando"
 					onValueChange={onValueChange}

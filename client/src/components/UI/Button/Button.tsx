@@ -2,7 +2,6 @@ import React from 'react';
 import BootstrapButton from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
-import generalClasses from '../../Lab/shared.module.scss';
 import classes from './Button.module.scss';
 
 type BootstrapVariants = 'primary' | 'secondary' | 'success' | 'warning' | 'danger' | 'info' | 'light' | 'dark';
@@ -36,12 +35,12 @@ const Button: React.FC<Props> = ({children, variant = DEFAULT_VARIANT, loading, 
 		</>
 	);
 
-	let justifyWhere: string = generalClasses.justifyStart;
+	let justifyWhere: string = classes.justifyStart;
 
 	if (justify === JUSTIFY_END) {
-		justifyWhere = generalClasses.justifyEnd;
+		justifyWhere = classes.justifyEnd;
 	} else if (justify === JUSTIFY_CENTER) {
-		justifyWhere = generalClasses.justifyCenter;
+		justifyWhere = classes.justifyCenter;
 	}
 
 	return (

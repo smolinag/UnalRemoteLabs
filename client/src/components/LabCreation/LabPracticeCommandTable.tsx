@@ -1,12 +1,12 @@
 import React from 'react';
 import {Row} from 'react-bootstrap';
 
-import {CommandInfo} from '../../containers/LabCreationView/LabCreationView';
+import {LabPracticeCommandInfo} from '../../containers/LabCreationView/LabCreationView';
 import {Table} from '../UI/index';
 import classes from './shared.module.scss';
 
 interface Props {
-	data: CommandInfo[];
+	data: LabPracticeCommandInfo[];
 	onValueChange?: (value: string, id: string) => void;
 }
 
@@ -33,7 +33,7 @@ const LabPracticeCommandTable: React.FC<Props> = ({data, onValueChange}) => {
 		parameterMaxValue,
 		parameterMinValue,
 		parameterRegex
-	}: CommandInfo): [string, string, string, string, string, string, string, string, string] => [
+	}: LabPracticeCommandInfo): [string, string, string, string, string, string, string, string, string] => [
 		commandName as string,
 		commandDescription as string,
 		parameterName as string,

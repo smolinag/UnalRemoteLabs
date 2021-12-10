@@ -29,7 +29,7 @@ const Input: React.FC<Props> = ({id, type, placeholder, disabled, required, valu
 	return (
 		<div className={generalClasses.wrapper}>
 			<div className={classes.inputWrapper}>
-				<span className={classes.inputTitle}>{placeholder}:</span>
+				<span className={classes.inputTitle}>{placeholder}: {required && "(Requerido)"}</span>
 				<div className={classes.inputSubwrapper}>
 					<input
 						id={id}

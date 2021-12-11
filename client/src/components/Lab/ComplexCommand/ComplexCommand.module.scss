@@ -15,6 +15,11 @@
 	text-transform: uppercase;
 }
 
+.command_name {
+	width: 80px;
+	min-width: fit-content;
+}
+
 .container {
 	display: flex;
 	flex-direction: column;

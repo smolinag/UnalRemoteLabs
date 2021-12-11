@@ -73,12 +73,12 @@ const LabView: React.FC<unknown> = () => {
 		// DE LOS PARÁMETROS RETORNADOS DESDE EL BE
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
 			const commands: CommandListDto[] = labCommandsData.listLabPracticeCommands.items
-				.filter(({name}) => name && name.startsWith(COMMAND_NAME_PREFIX))
+				.filter((command ) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
 				.map((command) => {
-					const parameter = command.LabPracticeParameters?.items[0];
+					const parameter = command?.LabPracticeParameters?.items?.[0];
 					return {
-						name: command.name as string,
-						id: command.id,
+						name: command?.name as string,
+						id: command?.id as string,
 						parameters: {name: parameter?.name, id: parameter?.id as string, value: false}
 					};
 				});
@@ -90,13 +90,13 @@ const LabView: React.FC<unknown> = () => {
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
 		if (receivedOutputs) {
-			const outputs: OutputListDto[] = receivedOutputs.map(({id, name}) => ({id, name, value: '-'}));
+			const outputs: OutputListDto[] = receivedOutputs.map((output) => ({id:output?.id as string, name: output?.name as string, value: '-'}));
 			setOutputs(outputs);
 		}
 	}, [practiceOutputs]);
 
 	useEffect(() => {
-		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items[0];
+		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items?.[0];
 		if (sessionData) {
 			setLabPracticeSessionId(sessionData.id);
 		}

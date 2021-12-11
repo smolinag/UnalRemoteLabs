@@ -1,0 +1,22 @@
+.button {
+	height: fit-content;
+	min-width: 50px;
+	width: fit-content;
+}
+
+// Override bootstrap styles
+.input {
+	width: 100px !important;
+	flex: inherit !important;
+}
+
+.title {
+	margin-bottom: 4px;
+	text-transform: uppercase;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}

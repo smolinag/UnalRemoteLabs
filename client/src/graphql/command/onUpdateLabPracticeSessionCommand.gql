@@ -1,7 +1,6 @@
 subscription onUpdateLabPracticeSessionCommand($id: ID!) {
 	onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 		status
-		parameters
 		labpracticecommandID
 	}
 }

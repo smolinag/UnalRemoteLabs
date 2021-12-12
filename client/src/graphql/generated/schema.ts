@@ -2456,10 +2456,7 @@ export type OnUpdateLabPracticeSessionCommandSubscriptionVariables = Exact<{
 
 export type OnUpdateLabPracticeSessionCommandSubscription = {__typename?: 'Subscription'} & {
 	onCreateLabPracticeSessionCommandBySessionID?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<
-			LabPracticeSessionCommand,
-			'status' | 'parameters' | 'labpracticecommandID'
-		>
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'status' | 'labpracticecommandID'>
 	>;
 };
 
@@ -2641,7 +2638,6 @@ export const OnUpdateLabPracticeSessionCommandDocument = gql`
 	subscription onUpdateLabPracticeSessionCommand($id: ID!) {
 		onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 			status
-			parameters
 			labpracticecommandID
 		}
 	}

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command} from '../../components/Lab/Commands/Commands';
@@ -13,6 +13,7 @@ import {
 	useOnUpdateLabPracticeSessionOutputSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
+import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
@@ -43,6 +44,7 @@ const LabView: React.FC<unknown> = () => {
 	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>();
+	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
@@ -123,14 +125,15 @@ const LabView: React.FC<unknown> = () => {
 			return;
 		}
 		setIsExecutingCommand(false);
+		const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
 		if (updatedCommand.status === CommandExecutionState.Success) {
-			// success
+			showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
 		} else {
-			// error
+			showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
 		}
 	}, [updatedSessionCommand]);
 
-	const handleCommandChange = async ({parameters, name}: Command, id: string) => {
+	const handleCommandChange = async ({parameters, name, label}: Command, id: string) => {
 		try {
 			setIsExecutingCommand(true);
 			const {data} = await updateLabPracticeSessionCommand({
@@ -156,6 +159,7 @@ const LabView: React.FC<unknown> = () => {
 
 			commandExecutionTimeout.current = setTimeout(() => {
 				setIsExecutingCommand(false);
+				showErrorBanner(`No se pudo ejecutar el comando ${label}`);
 			}, COMMAND_EXECUTION_TIMEOUT);
 		} catch (error) {
 			console.error('no se pudo ejecutar el comando', error);

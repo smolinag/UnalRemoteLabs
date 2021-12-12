@@ -7,18 +7,18 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import classes from './ComplexCommand.module.scss';
 
 export interface Parameter {
-	name: string;
+	label: string;
 	id: string;
 	value: number;
 }
 
 interface Props {
 	onExecute: (parameters: Parameter[]) => void;
-	name: string;
+	label: string;
 	parameters: Parameter[];
 }
 
-const ComplexCommand: React.FC<Props> = ({onExecute, name, parameters}) => {
+const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters}) => {
 	const [formParametersValues, setFormParametersValues] = useState<Parameter[]>(parameters);
 
 	const handleParameterValueChange = (newValue: number, id: string) => {
@@ -36,12 +36,12 @@ const ComplexCommand: React.FC<Props> = ({onExecute, name, parameters}) => {
 	};
 
 	return (
-		<>
-			<h6 className={classes.title}>{name}</h6>
+		<div>
+			<h6 className={classes.title}>{label}</h6>
 			<div className={classes.container}>
 				{formParametersValues.map((parameter) => (
 					<InputGroup key={parameter.id}>
-						<InputGroup.Text>{parameter.name}</InputGroup.Text>
+						<InputGroup.Text className={classes.command_name}>{parameter.label}</InputGroup.Text>
 						<Form.Control
 							type="number"
 							className={classes.input}
@@ -54,7 +54,7 @@ const ComplexCommand: React.FC<Props> = ({onExecute, name, parameters}) => {
 					ejecutar
 				</Button>
 			</div>
-		</>
+		</div>
 	);
 };
 

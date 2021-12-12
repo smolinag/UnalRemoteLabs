@@ -4,14 +4,14 @@ import Button from 'react-bootstrap/Button';
 import classes from './SimpleCommand.module.scss';
 
 interface Props {
-	onClick?: () => void;
-	text: string;
+	onExecute: () => void;
+	label: string;
 }
 
-const SimpleCommand: React.FC<Props> = ({onClick, text}) => {
+const SimpleCommand: React.FC<Props> = ({onExecute, label}) => {
 	return (
-		<Button variant='green' className={classes.button} onClick={onClick}>
-			{text}
+		<Button variant="green" className={classes.button} onClick={onExecute}>
+			{label}
 		</Button>
 	);
 };

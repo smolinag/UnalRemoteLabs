@@ -2414,7 +2414,10 @@ export type GetLabPracticeCommandQuery = {__typename?: 'Query'} & {
 			items?: Maybe<
 				Array<
 					Maybe<
-						{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name' | 'labpracticeID'> & {
+						{__typename?: 'LabPracticeCommand'} & Pick<
+							LabPracticeCommand,
+							'id' | 'name' | 'labelName' | 'labpracticeID'
+						> & {
 								LabPracticeParameters?: Maybe<
 									{__typename?: 'ModelLabPracticeParameterConnection'} & {
 										items?: Maybe<
@@ -2422,7 +2425,7 @@ export type GetLabPracticeCommandQuery = {__typename?: 'Query'} & {
 												Maybe<
 													{__typename?: 'LabPracticeParameter'} & Pick<
 														LabPracticeParameter,
-														'id' | 'name' | 'defaultValue'
+														'id' | 'name' | 'labelName' | 'defaultValue'
 													>
 												>
 											>
@@ -2527,11 +2530,13 @@ export const GetLabPracticeCommandDocument = gql`
 			items {
 				id
 				name
+				labelName
 				labpracticeID
 				LabPracticeParameters {
 					items {
 						id
 						name
+						labelName
 						defaultValue
 					}
 				}

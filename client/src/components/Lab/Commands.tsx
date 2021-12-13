@@ -1,17 +1,15 @@
 import React from 'react';
 import {Row} from 'react-bootstrap';
 
-import {Switch} from '../../components/UI/index';
-import {Maybe} from '../../graphql/generated/schema';
-import classes from './Commands.module.scss';
+import {RadioGroup} from '../../components/UI/index';
 import sharedClasses from './shared.module.scss';
 
 // TODO Extend with other type of commands
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
 export interface Command {
-	id: Maybe<string>;
-	name: Maybe<string>;
-	label: Maybe<string>;
+	id: string;
+	name: string;
+	label: string;
 	parameters: ParameterDto | undefined | null;
 }
 
@@ -24,35 +22,34 @@ export interface ParameterDto {
 
 interface Props {
 	commands: Command[];
-	onCommandChange?: (command: Command, id: string) => void;
+	onCommandChange: (command: Command, id: string) => void;
 }
 
-const getCommand = (command: Command, handler: (command: Command, id: string) => void): JSX.Element => {
-	return (
-		<div key={command.id} className={classes.command}>
-			<Switch
-				label={command.label}
-				state={command.parameters?.value}
-				onToggle={(newValue) =>
-					handler({...command, parameters: {...command.parameters, value: newValue}} as Command, `${command.id}`)
-				}
-			/>
-		</div>
-	);
+const getActiveCommandId = (commands: Command[]): string | null => {
+	const activeCommand = commands.find((command) => {
+		if (command.parameters) {
+			return command.parameters.value;
+		}
+	});
+	return activeCommand?.id ?? null;
 };
 
 const Commands: React.FC<Props> = ({commands, onCommandChange}) => {
-	const handleCommandChange = (command: Command, id: string): void => {
-		if (onCommandChange) {
-			onCommandChange(command, id);
+	const handleCommandChange = (commandId: string) => {
+		const command = commands.find(({id}) => id === commandId);
+		if (command) {
+			onCommandChange({...command, parameters: {...command.parameters, value: true}} as Command, command.id);
 		}
 	};
-
 	return (
 		<Row className={sharedClasses.section}>
 			<h4 className={sharedClasses.title}>Comandos de entrada</h4>
 			<Row>
-				<div className={classes.commands}>{commands.map((command) => getCommand(command, handleCommandChange))}</div>
+				<RadioGroup
+					selectedEntryValue={getActiveCommandId(commands)}
+					entries={commands.map(({label, id}) => ({label, value: id}))}
+					onChange={handleCommandChange}
+				/>
 			</Row>
 		</Row>
 	);

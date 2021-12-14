@@ -3,11 +3,13 @@ query getLabPracticeCommand {
 		items {
 			id
 			name
+			labelName
 			labpracticeID
 			LabPracticeParameters {
 				items {
 					id
 					name
+					labelName
 					defaultValue
 				}
 			}

@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
-import {Command, ParameterDto} from '../../components/Lab/Commands';
+import {Command} from '../../components/Lab/Commands/Commands';
 import {LoadingContainer} from '../../components/UI/index';
 import {
 	useGetLabPracticeQuery,
@@ -13,17 +13,13 @@ import {
 	useOnUpdateLabPracticeSessionOutputSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
+import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
-interface CommandListDto {
-	id: string;
-	name: Maybe<string>;
-	parameters: ParameterDto | undefined | null;
-}
 
 interface OutputListDto {
 	id: Maybe<string> | undefined;
@@ -33,53 +29,46 @@ interface OutputListDto {
 
 enum CommandExecutionState {
 	Success = 'success',
+	Error = 'error',
 	Pending = 'pending'
 }
-
-const mapCommand = ({id, name, parameters}: CommandListDto): Command => {
-	return {
-		id,
-		name: name as string,
-		label: name as string,
-		parameters
-	};
-};
 
 const COMMAND_EXECUTION_TIMEOUT = 5000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
 const LabView: React.FC<unknown> = () => {
-	const [labCommands, setLabCommands] = useState<CommandListDto[]>([]);
+	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>();
+	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
 	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
-	const {data: updatedSessionCommands} = useOnUpdateLabPracticeSessionCommandSubscription({
-		variables: {id: SESSION_ID}
-	});
 
+	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandSubscription({variables: {id: SESSION_ID}});
 	const {data: updatedSessionOutput} = useOnUpdateLabPracticeSessionOutputSubscription();
 
 	useEffect(() => {
-		// REFACTORIZAR FUNCIÓN, TENIENDO EN CUENTA LOS TIPOS DE LOS
-		// DE LOS PARÁMETROS RETORNADOS DESDE EL BE
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
-			const commands: CommandListDto[] = labCommandsData.listLabPracticeCommands.items
-				.filter(({name}) => name && name.startsWith(COMMAND_NAME_PREFIX))
+			const commands: Command[] = labCommandsData.listLabPracticeCommands.items
+				.filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
 				.map((command) => {
-					const parameter = command.LabPracticeParameters?.items[0];
 					return {
-						name: command.name as string,
-						id: command.id,
-						parameters: {name: parameter?.name, id: parameter?.id as string, value: false}
+						name: command?.name as string,
+						id: command?.id as string,
+						parameters: command?.LabPracticeParameters?.items?.map((parameter) => ({
+							label: (parameter?.labelName ?? parameter?.name) as string,
+							id: parameter?.id as string,
+							value: Number((parameter?.defaultValue as string) ?? 0)
+						})),
+						label: (command?.labelName ?? command?.name) as string
 					};
 				});
 
@@ -90,13 +79,17 @@ const LabView: React.FC<unknown> = () => {
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
 		if (receivedOutputs) {
-			const outputs: OutputListDto[] = receivedOutputs.map(({id, name}) => ({id, name, value: '-'}));
+			const outputs: OutputListDto[] = receivedOutputs.map((output) => ({
+				id: output?.id as string,
+				name: output?.name as string,
+				value: '-'
+			}));
 			setOutputs(outputs);
 		}
 	}, [practiceOutputs]);
 
 	useEffect(() => {
-		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items[0];
+		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items?.[0];
 		if (sessionData) {
 			setLabPracticeSessionId(sessionData.id);
 		}
@@ -127,37 +120,20 @@ const LabView: React.FC<unknown> = () => {
 	}, [updatedSessionOutput]);
 
 	useEffect(() => {
-		const newCommand = updatedSessionCommands?.onCreateLabPracticeSessionCommandBySessionID;
-
-		if (!newCommand || newCommand.status !== CommandExecutionState.Success) {
+		const updatedCommand = updatedSessionCommand?.onCreateLabPracticeSessionCommandBySessionID;
+		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
 			return;
 		}
-
 		setIsExecutingCommand(false);
-		if (commandExecutionTimeout.current) {
-			clearTimeout(commandExecutionTimeout.current);
+		const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
+		if (updatedCommand.status === CommandExecutionState.Success) {
+			showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
+		} else {
+			showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
 		}
+	}, [updatedSessionCommand]);
 
-		const commandToUpdateIndex = labCommands.findIndex((command) => command.id === newCommand.labpracticecommandID);
-		if (commandToUpdateIndex < 0) {
-			return;
-		}
-
-		setLabCommands((oldCommands) => {
-			oldCommands = oldCommands.map((command) => ({
-				...command,
-				parameters: {...command.parameters, value: false} as ParameterDto
-			}));
-			oldCommands[commandToUpdateIndex] = {
-				...oldCommands[commandToUpdateIndex],
-				parameters: JSON.parse(newCommand.parameters)
-			};
-
-			return oldCommands;
-		});
-	}, [updatedSessionCommands]);
-
-	const handleCommandChange = async ({parameters, name}: Command, id: string) => {
+	const handleCommandChange = async ({parameters, name, label}: Command, id: string) => {
 		try {
 			setIsExecutingCommand(true);
 			const {data} = await updateLabPracticeSessionCommand({
@@ -177,10 +153,13 @@ const LabView: React.FC<unknown> = () => {
 				uuid: data?.createLabPracticeSessionCommand?.id
 			};
 
-			await publishMqttMessageMutation({variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}});
+			await publishMqttMessageMutation({
+				variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}
+			});
 
 			commandExecutionTimeout.current = setTimeout(() => {
 				setIsExecutingCommand(false);
+				showErrorBanner(`No se pudo ejecutar el comando ${label}`);
 			}, COMMAND_EXECUTION_TIMEOUT);
 		} catch (error) {
 			console.error('no se pudo ejecutar el comando', error);
@@ -196,7 +175,7 @@ const LabView: React.FC<unknown> = () => {
 				duration={practiceInfo?.getLabPractice?.duration}
 			/>
 			<LoadingContainer loading={isExecutingCommand}>
-				<Commands commands={labCommands.map(mapCommand)} onCommandChange={handleCommandChange} />
+				<Commands commands={labCommands} onCommandChange={handleCommandChange} />
 			</LoadingContainer>
 			<LabOutputs data={outputs.map(mapOutput)} />
 		</LoadingContainer>

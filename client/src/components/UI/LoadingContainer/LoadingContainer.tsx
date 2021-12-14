@@ -22,13 +22,20 @@ const transitionStyles: Record<string, React.CSSProperties> = {
 	exited: {opacity: 0}
 };
 
+const overlayTransitionStyles: Record<string, React.CSSProperties> = {
+	entering: {},
+	entered: {},
+	exiting: {},
+	exited: {width: 0, height: 0}
+};
+
 const LoadingContainer: React.FC<Props> = ({children, loading}) => {
 	return (
 		<div className={classes.wrapper}>
 			<Transition in={loading} timeout={duration}>
 				{(state) => (
 					<div style={{...defaultStyle, ...transitionStyles[state]}}>
-						<div className={classes.overlay} />
+						<div className={classes.overlay} style={overlayTransitionStyles[state]} />
 						<Spinner className={classes.indicator} animation="border" variant="green" />
 					</div>
 				)}

@@ -1,7 +1,7 @@
 import React from 'react';
-import {Row} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
-import {LabPracticeCommandInfo} from '../../containers/LabCreationView/LabCreationView';
+import {LabPracticeCommandInfo} from '../../containers/LabCreationView/types';
 import {Table} from '../UI/index';
 import classes from './shared.module.scss';
 
@@ -22,28 +22,29 @@ const COLUMNS = [
 	'Expresión regular'
 ];
 
+const mapOutput = ({
+	commandName,
+	commandDescription,
+	parameterName,
+	parameterDescription,
+	parameterDefaultValue,
+	parameterUnit,
+	parameterMaxValue,
+	parameterMinValue,
+	parameterRegex
+}: LabPracticeCommandInfo): [string, string, string, string, string, string, string, string, string] => [
+	commandName as string,
+	commandDescription as string,
+	parameterName as string,
+	parameterDescription as string,
+	parameterDefaultValue as string,
+	parameterUnit as string,
+	parameterMaxValue as string,
+	parameterMinValue as string,
+	parameterRegex as string
+];
+
 const LabPracticeCommandTable: React.FC<Props> = ({data, onValueChange}) => {
-	const mapOutput = ({
-		commandName,
-		commandDescription,
-		parameterName,
-		parameterDescription,
-		parameterDefaultValue,
-		parameterUnit,
-		parameterMaxValue,
-		parameterMinValue,
-		parameterRegex
-	}: LabPracticeCommandInfo): [string, string, string, string, string, string, string, string, string] => [
-		commandName as string,
-		commandDescription as string,
-		parameterName as string,
-		parameterDescription as string,
-		parameterDefaultValue as string,
-		parameterUnit as string,
-		parameterMaxValue as string,
-		parameterMinValue as string,
-		parameterRegex as string
-	];
 
 	return (
 		<Row className={classes.section}>

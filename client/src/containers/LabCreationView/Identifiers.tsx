@@ -1,4 +1,4 @@
-export enum Identifiers {
+export enum Identifier {
 	NAME = 'name',
 	DESCRIPTION = 'description',
 	DURATION = 'duration',

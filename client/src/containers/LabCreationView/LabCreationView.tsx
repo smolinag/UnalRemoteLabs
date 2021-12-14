@@ -8,92 +8,64 @@ import {
 	LabPracticeOutput,
 	LabPracticeOuputTable
 } from '../../components/LabCreation';
-import {Button} from '../../components/UI';
-import {Justify} from '../../components/UI/Button/Button';
+import {Button, LoadingContainer} from '../../components/UI';
 import {
 	useOnCreateLabPracticeMutation,
 	useOnCreateLabPracticeCommandMutation,
 	useOnCreateLabPracticeParameterMutation,
 	useOnCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
-import {Identifiers} from './Identifiers';
+import {Identifier} from './Identifiers';
 import classes from './LabCreationView.module.scss';
+import {LabPracticeInfo, LabPracticeCommandInfo} from './types';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 
-interface action {
+interface Action {
 	type: string;
 	payload: string;
 }
 
-export interface LabPracticeInfo extends LabPracticeCommandInfo, OutputInfo {
-	practiceInfoName: string;
-	practiceInfoDescription: string;
-	practiceInfoDuration: string;
-}
-
-export interface LabPracticeCommandInfo extends LabPracticeParameterInfo {
-	commandName: string;
-	commandDescription: string;
-}
-
-export interface LabPracticeParameterInfo {
-	parameterName: string;
-	parameterDescription: string;
-	parameterDefaultValue: string;
-	parameterUnit: string;
-	parameterMaxValue: string;
-	parameterMinValue: string;
-	parameterRegex: string;
-}
-
-export interface OutputInfo {
-	outputType: string;
-	ouputName: string;
-	outputDescription: string;
-	outputUnit: string;
-}
-
-function reducer(state: LabPracticeInfo, action: action): LabPracticeInfo {
+function reducer(state: LabPracticeInfo, action: Action): LabPracticeInfo {
 	switch (action.type) {
-		case Identifiers.NAME:
+		case Identifier.NAME:
 			return {...state, practiceInfoName: action.payload};
-		case Identifiers.DESCRIPTION:
+		case Identifier.DESCRIPTION:
 			return {...state, practiceInfoDescription: action.payload};
-		case Identifiers.DURATION:
+		case Identifier.DURATION:
 			return {...state, practiceInfoDuration: action.payload};
-		case Identifiers.COMMANDNAME:
+		case Identifier.COMMANDNAME:
 			return {...state, commandName: action.payload};
-		case Identifiers.COMMANDDESCRIPTION:
+		case Identifier.COMMANDDESCRIPTION:
 			return {...state, commandDescription: action.payload};
-		case Identifiers.PARAMETERNAME:
+		case Identifier.PARAMETERNAME:
 			return {...state, parameterName: action.payload};
-		case Identifiers.PARAMETERDESCRIPTION:
+		case Identifier.PARAMETERDESCRIPTION:
 			return {...state, parameterDescription: action.payload};
-		case Identifiers.PARAMETERDEFAULTVALUE:
+		case Identifier.PARAMETERDEFAULTVALUE:
 			return {...state, parameterDefaultValue: action.payload};
-		case Identifiers.PARAMETERUNIT:
+		case Identifier.PARAMETERUNIT:
 			return {...state, parameterUnit: action.payload};
-		case Identifiers.PARAMETERMAXVALUE:
+		case Identifier.PARAMETERMAXVALUE:
 			return {...state, parameterMaxValue: action.payload};
-		case Identifiers.PARAMETERMINVALUE:
+		case Identifier.PARAMETERMINVALUE:
 			return {...state, parameterMinValue: action.payload};
-		case Identifiers.PARAMETERREGEX:
+		case Identifier.PARAMETERREGEX:
 			return {...state, parameterRegex: action.payload};
-		case Identifiers.OUTPUTTYPE:
+		case Identifier.OUTPUTTYPE:
 			return {...state, outputType: action.payload};
-		case Identifiers.OUTPUTNAME:
+		case Identifier.OUTPUTNAME:
 			return {...state, ouputName: action.payload};
-		case Identifiers.OUTPUTDESCRIPTION:
+		case Identifier.OUTPUTDESCRIPTION:
 			return {...state, outputDescription: action.payload};
-		case Identifiers.OUTPUTUNIT:
+		case Identifier.OUTPUTUNIT:
 			return {...state, outputUnit: action.payload};
 		default:
 			return state;
 	}
 }
 
-const initialCommands: LabPracticeInfo = {
+const initialCommand: LabPracticeInfo = {
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: ',',
@@ -113,9 +85,10 @@ const initialCommands: LabPracticeInfo = {
 };
 
 const LabCreationView: React.FC<unknown> = () => {
-	const [practice, dispatch] = React.useReducer(reducer, initialCommands);
+	const [practice, dispatch] = React.useReducer(reducer, initialCommand);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
 	const [outputsList, setOutputsList] = React.useState<LabPracticeInfo[]>([]);
+	const [loading, setLoading] = React.useState<boolean>(false);
 
 	const [createLabPractice] = useOnCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useOnCreateLabPracticeCommandMutation({});
@@ -141,6 +114,7 @@ const LabCreationView: React.FC<unknown> = () => {
 	};
 
 	const createPractice = async () => {
+		setLoading(true);
 		const {data: labPracticeData} = await createLabPractice({
 			variables: {
 				input: {
@@ -164,7 +138,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					}
 				});
 
-				if(labPracticeCommandData?.createLabPracticeCommand && labPracticeCommandData.createLabPracticeCommand.id) {
+				if (labPracticeCommandData?.createLabPracticeCommand && labPracticeCommandData.createLabPracticeCommand.id) {
 					await createLabPracticeParameter({
 						variables: {
 							input: {
@@ -198,35 +172,43 @@ const LabCreationView: React.FC<unknown> = () => {
 				});
 			});
 		}
+
+		setLoading(false);
 	};
 
 	return (
 		<>
-			{/* <LoadingContainer loading={false}> */}
-			<LabPractice practice={practice} onValueChange={practiceChange} />
+			<LoadingContainer loading={loading}>
+				<LabPractice practice={practice} onValueChange={practiceChange} />
 
-			<LabPracticeCommand practice={practice} onValueChange={practiceChange} />
+				<LabPracticeCommand practice={practice} onValueChange={practiceChange} />
 
-			<Button loading={false} justify={Justify.JUSTIFY_CENTER} onClick={() => addCommand(practice)}>
-				Añadir
-			</Button>
+				<div className={classes.justifyCenter}>
+					<Button loading={false} onClick={() => addCommand(practice)}>
+						Añadir
+					</Button>
+				</div>
 
-			{commandsList.length > 0 && <LabPracticeCommandTable data={commandsList} />}
+				{commandsList.length > 0 && <LabPracticeCommandTable data={commandsList} />}
 
-			<LabPracticeOutput practice={practice} onValueChange={practiceChange} />
+				<LabPracticeOutput practice={practice} onValueChange={practiceChange} />
 
-			<Button loading={false} justify={Justify.JUSTIFY_CENTER} onClick={() => addOutput(practice)}>
-				Añadir
-			</Button>
+				<div className={classes.justifyCenter}>
+					<Button loading={false} onClick={() => addOutput(practice)}>
+						Añadir
+					</Button>
+				</div>
 
-			{outputsList.length > 0 && <LabPracticeOuputTable data={outputsList} />}
+				{outputsList.length > 0 && <LabPracticeOuputTable data={outputsList} />}
 
-			<Row className={classes.section}>
-				<Button loading={false} justify={Justify.JUSTIFY_END} onClick={createPractice}>
-					Guardar
-				</Button>
-			</Row>
-			{/* </LoadingContainer> */}
+				<Row className={classes.section}>
+					<div className={classes.justifyEnd}>
+						<Button loading={loading} onClick={createPractice}>
+							Guardar
+						</Button>
+					</div>
+				</Row>
+			</LoadingContainer>
 		</>
 	);
 };

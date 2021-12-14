@@ -1,8 +1,8 @@
 import React from 'react';
-import {Row} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
-import {Identifiers} from '../../containers/LabCreationView/Identifiers';
-import {LabPracticeInfo} from '../../containers/LabCreationView/LabCreationView';
+import {Identifier} from '../../containers/LabCreationView/Identifiers';
+import {LabPracticeInfo} from '../../containers/LabCreationView/types';
 import {Input, DropdownComponent} from '../UI';
 import {Option} from '../UI/DropdownComponent/DropdownComponent';
 import classes from './shared.module.scss';
@@ -18,12 +18,11 @@ const TYPES = {
 };
 
 const OUTPUT_TYPE: Option[] = [
-	{value: TYPES.number, label: 'numero'},
-	{value: TYPES.string, label: 'string'}
+	{id: TYPES.number, value: 'numero'},
+	{id: TYPES.string, value: 'string'}
 ];
 
 const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
-	const [valueType] = React.useState<Option>(OUTPUT_TYPE[0]);
 
 	return (
 		<Row className={classes.section}>
@@ -35,29 +34,29 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 					text="Tipo de salida"
 					options={OUTPUT_TYPE}
 					tooltip=""
-					onValueChange={(e) => onValueChange(e, Identifiers.OUTPUTTYPE)}
-					value={valueType.label}
+					onValueChange={(id) => onValueChange(id, Identifier.OUTPUTTYPE)}
+					value={OUTPUT_TYPE[0].value}
 				/>
 				<Input
-					id={Identifiers.OUTPUTNAME}
+					id={Identifier.OUTPUTNAME}
 					type="text"
-					placeholder={'Nombre'}
+					placeholder='Nombre'
 					value={practice.ouputName}
 					tooltip="Ingrese el nombre del parámetro de salida"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifiers.OUTPUTDESCRIPTION}
+					id={Identifier.OUTPUTDESCRIPTION}
 					type="text"
-					placeholder={'Descripción'}
+					placeholder='Descripción'
 					value={practice.outputDescription}
 					tooltip="Ingrese la descripción del parámetro de salida"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifiers.OUTPUTUNIT}
+					id={Identifier.OUTPUTUNIT}
 					type="text"
-					placeholder={'Unidad'}
+					placeholder='Unidad'
 					value={practice.outputUnit}
 					onValueChange={onValueChange}
 				/>

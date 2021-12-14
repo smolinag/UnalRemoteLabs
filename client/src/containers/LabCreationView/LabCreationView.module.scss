@@ -1,6 +1,14 @@
-@import '../../styles/mixins/colors';
-
 .section {
    padding: 0 3% 1%;
    margin: 3% 0%;
+}
+
+.justifyCenter {
+	display: flex;
+	justify-content: center;
+}
+
+.justifyEnd {
+	display: flex;
+	justify-content: flex-end;
 }

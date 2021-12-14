@@ -1,7 +1,7 @@
 import React from 'react';
-import {Row} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
-import {OutputInfo} from '../../containers/LabCreationView/LabCreationView';
+import {OutputInfo} from '../../containers/LabCreationView/types';
 import {Table} from '../UI/index';
 import classes from './shared.module.scss';
 

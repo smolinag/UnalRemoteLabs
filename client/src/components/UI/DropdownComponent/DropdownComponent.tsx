@@ -1,13 +1,16 @@
 import React from 'react';
-import {DropdownButton, Dropdown, OverlayTrigger, Tooltip} from 'react-bootstrap';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import {BsQuestionCircle} from 'react-icons/bs';
 
 import generalClasses from '../../Lab/shared.module.scss';
 import classes from './DropdownComponent.module.scss';
 
 export interface Option {
-	label: string;
 	value: string;
+	id: string;
 }
 
 interface Props {
@@ -23,9 +26,9 @@ const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onVa
 
 	const renderItem = (option: Option): JSX.Element => {
 		return (
-			<div key={option.value} className={classes.command}>
-				<Dropdown.Item eventKey={option.value} onClick={() => onValueChange(option.label, option.value)}>
-					{option.label}
+			<div key={option.id} className={classes.command}>
+				<Dropdown.Item eventKey={option.id} onClick={() => onValueChange(option.value, option.id)}>
+					{option.value}
 				</Dropdown.Item>
 			</div>
 		);

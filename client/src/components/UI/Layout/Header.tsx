@@ -1,5 +1,7 @@
 import React from 'react';
-import {Navbar, Nav, Image} from 'react-bootstrap';
+import Image from 'react-bootstrap/Image';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import {BiExit} from 'react-icons/bi';
 import {BsPersonCircle} from 'react-icons/bs';
 

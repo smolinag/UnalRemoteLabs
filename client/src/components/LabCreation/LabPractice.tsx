@@ -1,8 +1,8 @@
 import React from 'react';
-import {Row} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
-import {Identifiers} from '../../containers/LabCreationView/Identifiers';
-import {LabPracticeInfo} from '../../containers/LabCreationView/LabCreationView';
+import {Identifier} from '../../containers/LabCreationView/Identifiers';
+import {LabPracticeInfo} from '../../containers/LabCreationView/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
 
@@ -18,25 +18,25 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
 			<h3 className={classes.title}>Información de la práctica de laboratorio</h3>
 			<div className={classes.options}>
 				<Input
-					id={Identifiers.NAME}
+					id={Identifier.NAME}
 					type="text"
-					placeholder={'Nombre'}
+					placeholder='Nombre'
 					required
 					value={practice.practiceInfoName}
 					tooltip="Ingrese el nombre del laboratorio"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifiers.DESCRIPTION}
+					id={Identifier.DESCRIPTION}
 					type="text"
-					placeholder={'Descripción'}
+					placeholder='Descripción'
 					value={practice.practiceInfoDescription}
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifiers.DURATION}
+					id={Identifier.DURATION}
 					type="number"
-					placeholder={'Duración'}
+					placeholder='Duración'
 					required
 					value={practice.practiceInfoDuration}
 					tooltip="Ingrese la duración que tendrá la sesión en minutos"

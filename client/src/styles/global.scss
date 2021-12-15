@@ -14,11 +14,20 @@ body {
 	font-family: 'AncizarSerif';
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
-	color: $black
+	color: $black;
 }
 
 body {
 	margin: 0;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+}
+
+.section {
+	padding: 0 3% 1%;
+	margin: 3% 0%;
+}
+
+.title {
+	border-bottom: 1px solid $green;
 }

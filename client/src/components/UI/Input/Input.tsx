@@ -3,7 +3,6 @@ import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
 import {BsQuestionCircle} from 'react-icons/bs';
 
-import generalClasses from '../../Lab/shared.module.scss';
 import classes from './Input.module.scss';
 
 interface Props {
@@ -28,7 +27,7 @@ const Input: React.FC<Props> = ({id, type, placeholder, disabled, required, valu
 	};
 
 	return (
-		<div className={generalClasses.wrapper}>
+		<div className={classes.wrapper}>
 			<div className={classes.inputWrapper}>
 				<span className={classes.inputTitle}>{placeholder}: {required && "(Requerido)"}</span>
 				<div className={classes.inputSubwrapper}>

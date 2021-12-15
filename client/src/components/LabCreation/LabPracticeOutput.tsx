@@ -34,19 +34,19 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 					text="Tipo de salida"
 					options={OUTPUT_TYPE}
 					tooltip=""
-					onValueChange={(id) => onValueChange(id, Identifier.OUTPUTTYPE)}
+					onValueChange={(id) => onValueChange(id, Identifier.OUTPUT_TYPE)}
 					value={OUTPUT_TYPE[0].value}
 				/>
 				<Input
-					id={Identifier.OUTPUTNAME}
+					id={Identifier.OUTPUT_NAME}
 					type="text"
 					placeholder='Nombre'
-					value={practice.ouputName}
+					value={practice.outputName}
 					tooltip="Ingrese el nombre del parámetro de salida"
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifier.OUTPUTDESCRIPTION}
+					id={Identifier.OUTPUT_DESCRIPTION}
 					type="text"
 					placeholder='Descripción'
 					value={practice.outputDescription}
@@ -54,7 +54,7 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifier.OUTPUTUNIT}
+					id={Identifier.OUTPUT_UNIT}
 					type="text"
 					placeholder='Unidad'
 					value={practice.outputUnit}

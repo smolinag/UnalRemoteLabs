@@ -11,8 +11,8 @@
 	background-color: $color;
 }
 
-@mixin btn-focus($color) {
-	box-shadow: 0 0 0 0.25rem rgba($color: $color, $alpha: 0.7);
+@mixin focus-shadow($color, $opacity: 0.7) {
+	box-shadow: 0 0 0 0.25rem rgba($color: $color, $alpha: $opacity);
 }
 
 .btn {
@@ -24,7 +24,7 @@
 		}
 
 		&:focus {
-			@include btn-focus($red);
+			@include focus-shadow($red);
 		}
 	}
 
@@ -36,8 +36,15 @@
 		}
 
 		&:focus {
-			@include btn-focus($green);
+			@include focus-shadow($green);
 		}
+	}
+}
+
+.form-control {
+	&:focus {
+		border-color: $green;
+		@include focus-shadow($green, 0.5);
 	}
 }
 

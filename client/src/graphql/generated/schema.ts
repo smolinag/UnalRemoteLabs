@@ -24,6 +24,8 @@ export type Scalars = {
 export type CreateLabPracticeCommandInput = {
 	id?: Maybe<Scalars['ID']>;
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -59,6 +61,8 @@ export type CreateLabPracticeInput = {
 export type CreateLabPracticeOutputInput = {
 	id?: Maybe<Scalars['ID']>;
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
@@ -72,6 +76,8 @@ export type CreateLabPracticeOutputInput = {
 export type CreateLabPracticeParameterInput = {
 	id?: Maybe<Scalars['ID']>;
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	defaultValue?: Maybe<Scalars['String']>;
 	minValue?: Maybe<Scalars['Int']>;
@@ -369,6 +375,8 @@ export type LabPracticeCommand = {
 	__typename?: 'LabPracticeCommand';
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -417,6 +425,8 @@ export type LabPracticeOutput = {
 	__typename?: 'LabPracticeOutput';
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
@@ -443,6 +453,8 @@ export type LabPracticeParameter = {
 	__typename?: 'LabPracticeParameter';
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	defaultValue?: Maybe<Scalars['String']>;
 	minValue?: Maybe<Scalars['Int']>;
@@ -664,6 +676,8 @@ export type ModelIntInput = {
 
 export type ModelLabPracticeCommandConditionInput = {
 	name?: Maybe<ModelStringInput>;
+	labelName?: Maybe<ModelStringInput>;
+	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -675,7 +689,7 @@ export type ModelLabPracticeCommandConditionInput = {
 
 export type ModelLabPracticeCommandConnection = {
 	__typename?: 'ModelLabPracticeCommandConnection';
-	items: Array<LabPracticeCommand>;
+	items?: Maybe<Array<Maybe<LabPracticeCommand>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -683,6 +697,8 @@ export type ModelLabPracticeCommandConnection = {
 export type ModelLabPracticeCommandFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
+	labelName?: Maybe<ModelStringInput>;
+	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -706,7 +722,7 @@ export type ModelLabPracticeConditionInput = {
 
 export type ModelLabPracticeConnection = {
 	__typename?: 'ModelLabPracticeConnection';
-	items: Array<LabPractice>;
+	items?: Maybe<Array<Maybe<LabPractice>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -724,7 +740,7 @@ export type ModelLabPracticeDeviceConditionInput = {
 
 export type ModelLabPracticeDeviceConnection = {
 	__typename?: 'ModelLabPracticeDeviceConnection';
-	items: Array<LabPracticeDevice>;
+	items?: Maybe<Array<Maybe<LabPracticeDevice>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -756,6 +772,8 @@ export type ModelLabPracticeFilterInput = {
 
 export type ModelLabPracticeOutputConditionInput = {
 	name?: Maybe<ModelStringInput>;
+	labelName?: Maybe<ModelStringInput>;
+	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	units?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
@@ -769,7 +787,7 @@ export type ModelLabPracticeOutputConditionInput = {
 
 export type ModelLabPracticeOutputConnection = {
 	__typename?: 'ModelLabPracticeOutputConnection';
-	items: Array<LabPracticeOutput>;
+	items?: Maybe<Array<Maybe<LabPracticeOutput>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -777,6 +795,8 @@ export type ModelLabPracticeOutputConnection = {
 export type ModelLabPracticeOutputFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
+	labelName?: Maybe<ModelStringInput>;
+	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	units?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
@@ -790,6 +810,8 @@ export type ModelLabPracticeOutputFilterInput = {
 
 export type ModelLabPracticeParameterConditionInput = {
 	name?: Maybe<ModelStringInput>;
+	labelName?: Maybe<ModelStringInput>;
+	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	defaultValue?: Maybe<ModelStringInput>;
 	minValue?: Maybe<ModelIntInput>;
@@ -806,7 +828,7 @@ export type ModelLabPracticeParameterConditionInput = {
 
 export type ModelLabPracticeParameterConnection = {
 	__typename?: 'ModelLabPracticeParameterConnection';
-	items: Array<LabPracticeParameter>;
+	items?: Maybe<Array<Maybe<LabPracticeParameter>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -814,6 +836,8 @@ export type ModelLabPracticeParameterConnection = {
 export type ModelLabPracticeParameterFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
+	labelName?: Maybe<ModelStringInput>;
+	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	defaultValue?: Maybe<ModelStringInput>;
 	minValue?: Maybe<ModelIntInput>;
@@ -842,7 +866,7 @@ export type ModelLabPracticeSessionCommandConditionInput = {
 
 export type ModelLabPracticeSessionCommandConnection = {
 	__typename?: 'ModelLabPracticeSessionCommandConnection';
-	items: Array<LabPracticeSessionCommand>;
+	items?: Maybe<Array<Maybe<LabPracticeSessionCommand>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -874,7 +898,7 @@ export type ModelLabPracticeSessionConditionInput = {
 
 export type ModelLabPracticeSessionConnection = {
 	__typename?: 'ModelLabPracticeSessionConnection';
-	items: Array<LabPracticeSession>;
+	items?: Maybe<Array<Maybe<LabPracticeSession>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -905,7 +929,7 @@ export type ModelLabPracticeSessionOutputConditionInput = {
 
 export type ModelLabPracticeSessionOutputConnection = {
 	__typename?: 'ModelLabPracticeSessionOutputConnection';
-	items: Array<LabPracticeSessionOutput>;
+	items?: Maybe<Array<Maybe<LabPracticeSessionOutput>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -936,7 +960,7 @@ export type ModelLabSemesterConditionInput = {
 
 export type ModelLabSemesterConnection = {
 	__typename?: 'ModelLabSemesterConnection';
-	items: Array<LabSemester>;
+	items?: Maybe<Array<Maybe<LabSemester>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -967,7 +991,7 @@ export type ModelLaboratoryConditionInput = {
 
 export type ModelLaboratoryConnection = {
 	__typename?: 'ModelLaboratoryConnection';
-	items: Array<Laboratory>;
+	items?: Maybe<Array<Maybe<Laboratory>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1002,7 +1026,7 @@ export type ModelOrganizationConditionInput = {
 
 export type ModelOrganizationConnection = {
 	__typename?: 'ModelOrganizationConnection';
-	items: Array<Organization>;
+	items?: Maybe<Array<Maybe<Organization>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1034,7 +1058,7 @@ export type ModelPrivilegeConditionInput = {
 
 export type ModelPrivilegeConnection = {
 	__typename?: 'ModelPrivilegeConnection';
-	items: Array<Privilege>;
+	items?: Maybe<Array<Maybe<Privilege>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1058,7 +1082,7 @@ export type ModelPrivilegeRoleConditionInput = {
 
 export type ModelPrivilegeRoleConnection = {
 	__typename?: 'ModelPrivilegeRoleConnection';
-	items: Array<PrivilegeRole>;
+	items?: Maybe<Array<Maybe<PrivilegeRole>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1084,7 +1108,7 @@ export type ModelRoleConditionInput = {
 
 export type ModelRoleConnection = {
 	__typename?: 'ModelRoleConnection';
-	items: Array<Role>;
+	items?: Maybe<Array<Maybe<Role>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1110,7 +1134,7 @@ export type ModelRoleUserConditionInput = {
 
 export type ModelRoleUserConnection = {
 	__typename?: 'ModelRoleUserConnection';
-	items: Array<RoleUser>;
+	items?: Maybe<Array<Maybe<RoleUser>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1173,7 +1197,7 @@ export type ModelUserConditionInput = {
 
 export type ModelUserConnection = {
 	__typename?: 'ModelUserConnection';
-	items: Array<User>;
+	items?: Maybe<Array<Maybe<User>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1208,7 +1232,7 @@ export type ModelUserLabPracticeSessionConditionInput = {
 
 export type ModelUserLabPracticeSessionConnection = {
 	__typename?: 'ModelUserLabPracticeSessionConnection';
-	items: Array<UserLabPracticeSession>;
+	items?: Maybe<Array<Maybe<UserLabPracticeSession>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -1235,7 +1259,7 @@ export type ModelUserLabSemesterConditionInput = {
 
 export type ModelUserLabSemesterConnection = {
 	__typename?: 'ModelUserLabSemesterConnection';
-	items: Array<UserLabSemester>;
+	items?: Maybe<Array<Maybe<UserLabSemester>>>;
 	nextToken?: Maybe<Scalars['String']>;
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
@@ -2098,6 +2122,8 @@ export type SubscriptionOnCreateLabPracticeSessionCommandBySessionIdArgs = {
 export type UpdateLabPracticeCommandInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -2133,6 +2159,8 @@ export type UpdateLabPracticeInput = {
 export type UpdateLabPracticeOutputInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
@@ -2146,6 +2174,8 @@ export type UpdateLabPracticeOutputInput = {
 export type UpdateLabPracticeParameterInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
+	labelName?: Maybe<Scalars['String']>;
+	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	defaultValue?: Maybe<Scalars['String']>;
 	minValue?: Maybe<Scalars['Int']>;
@@ -2381,16 +2411,30 @@ export type GetLabPracticeCommandQueryVariables = Exact<{[key: string]: never}>;
 export type GetLabPracticeCommandQuery = {__typename?: 'Query'} & {
 	listLabPracticeCommands?: Maybe<
 		{__typename?: 'ModelLabPracticeCommandConnection'} & {
-			items: Array<
-				{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name' | 'labpracticeID'> & {
-						LabPracticeParameters?: Maybe<
-							{__typename?: 'ModelLabPracticeParameterConnection'} & {
-								items: Array<
-									{__typename?: 'LabPracticeParameter'} & Pick<LabPracticeParameter, 'id' | 'name' | 'defaultValue'>
+			items?: Maybe<
+				Array<
+					Maybe<
+						{__typename?: 'LabPracticeCommand'} & Pick<
+							LabPracticeCommand,
+							'id' | 'name' | 'labelName' | 'labpracticeID'
+						> & {
+								LabPracticeParameters?: Maybe<
+									{__typename?: 'ModelLabPracticeParameterConnection'} & {
+										items?: Maybe<
+											Array<
+												Maybe<
+													{__typename?: 'LabPracticeParameter'} & Pick<
+														LabPracticeParameter,
+														'id' | 'name' | 'labelName' | 'defaultValue'
+													>
+												>
+											>
+										>;
+									}
 								>;
 							}
-						>;
-					}
+					>
+				>
 			>;
 		}
 	>;
@@ -2412,10 +2456,7 @@ export type OnUpdateLabPracticeSessionCommandSubscriptionVariables = Exact<{
 
 export type OnUpdateLabPracticeSessionCommandSubscription = {__typename?: 'Subscription'} & {
 	onCreateLabPracticeSessionCommandBySessionID?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<
-			LabPracticeSessionCommand,
-			'status' | 'parameters' | 'labpracticecommandID'
-		>
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'status' | 'labpracticecommandID'>
 	>;
 };
 
@@ -2441,7 +2482,7 @@ export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 		{__typename?: 'LabPractice'} & Pick<LabPractice, 'name' | 'description' | 'duration'> & {
 				LabPracticeSessions?: Maybe<
 					{__typename?: 'ModelLabPracticeSessionConnection'} & {
-						items: Array<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>;
+						items?: Maybe<Array<Maybe<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>>>;
 					}
 				>;
 			}
@@ -2515,7 +2556,7 @@ export type GetLabPracticeOutputQueryVariables = Exact<{[key: string]: never}>;
 export type GetLabPracticeOutputQuery = {__typename?: 'Query'} & {
 	listLabPracticeOutputs?: Maybe<
 		{__typename?: 'ModelLabPracticeOutputConnection'} & {
-			items: Array<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'name'>>;
+			items?: Maybe<Array<Maybe<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'name'>>>>;
 		}
 	>;
 };
@@ -2548,11 +2589,13 @@ export const GetLabPracticeCommandDocument = gql`
 			items {
 				id
 				name
+				labelName
 				labpracticeID
 				LabPracticeParameters {
 					items {
 						id
 						name
+						labelName
 						defaultValue
 					}
 				}
@@ -2657,7 +2700,6 @@ export const OnUpdateLabPracticeSessionCommandDocument = gql`
 	subscription onUpdateLabPracticeSessionCommand($id: ID!) {
 		onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 			status
-			parameters
 			labpracticecommandID
 		}
 	}

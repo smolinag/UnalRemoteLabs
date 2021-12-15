@@ -7,6 +7,7 @@ export interface LabPracticeInfo extends LabPracticeCommandInfo, OutputInfo {
 export interface LabPracticeCommandInfo extends LabPracticeParameterInfo {
 	commandName: string;
 	commandDescription: string;
+   parameters: LabPracticeParameterInfo[];
 }
 
 export interface LabPracticeParameterInfo {
@@ -21,7 +22,7 @@ export interface LabPracticeParameterInfo {
 
 export interface OutputInfo {
 	outputType: string;
-	ouputName: string;
+	outputName: string;
 	outputDescription: string;
 	outputUnit: string;
 }

@@ -36,7 +36,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 			<h5>Información de los comandos</h5>
 			<div className={classes.options}>
 				<Input
-					id={Identifier.COMMANDNAME}
+					id={Identifier.COMMAND_NAME}
 					type="text"
 					placeholder='Nombre'
 					required
@@ -45,7 +45,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifier.COMMANDDESCRIPTION}
+					id={Identifier.COMMAND_DESCRIPTION}
 					type="text"
 					placeholder='Descripción'
 					required
@@ -58,7 +58,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 			<h5>Parámetros del comando</h5>
 			<div className={classes.options}>
 				<Input
-					id={Identifier.PARAMETERNAME}
+					id={Identifier.PARAMETER_NAME}
 					type="text"
 					placeholder='Nombre'
 					value={practice.parameterName}
@@ -66,7 +66,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 					onValueChange={onValueChange}
 				/>
 				<Input
-					id={Identifier.PARAMETERDESCRIPTION}
+					id={Identifier.PARAMETER_DESCRIPTION}
 					type="text"
 					placeholder='Descripción'
 					value={practice.parameterDescription}
@@ -81,7 +81,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 					value={valueType.value}
 				/>
 				<Input
-					id={Identifier.PARAMETERDEFAULTVALUE}
+					id={Identifier.PARAMETER_DEFAULT_VALUE}
 					type={valueType.id}
 					placeholder='Valor por defecto'
 					value={practice.parameterDefaultValue}
@@ -89,7 +89,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 				/>
 
 				<Input
-					id={Identifier.PARAMETERUNIT}
+					id={Identifier.PARAMETER_UNIT}
 					type="text"
 					placeholder='Unidad'
 					value={practice.parameterUnit}
@@ -99,14 +99,14 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 				{valueType.id === Types.number && (
 					<>
 						<Input
-							id={Identifier.PARAMETERMAXVALUE}
+							id={Identifier.PARAMETER_MAX_VALUE}
 							type="number"
 							placeholder='Valor máximo'
 							value={practice.parameterMaxValue}
 							onValueChange={onValueChange}
 						/>
 						<Input
-							id={Identifier.PARAMETERMINVALUE}
+							id={Identifier.PARAMETER_MIN_VALUE}
 							type="number"
 							placeholder='Valor mínimo'
 							value={practice.parameterMinValue}
@@ -116,7 +116,7 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 				)}
 
 				<Input
-					id={Identifier.PARAMETERREGEX}
+					id={Identifier.PARAMETER_REGEX}
 					type="string"
 					placeholder='Expresión regular'
 					value={practice.parameterRegex}

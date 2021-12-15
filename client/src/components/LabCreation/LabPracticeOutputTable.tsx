@@ -17,15 +17,15 @@ const COLUMNS = [
 	'Unidad'
 ];
 
-const LabPracticeOuputTable: React.FC<Props> = ({data, onValueChange}) => {
+const LabPracticeOutputTable: React.FC<Props> = ({data, onValueChange}) => {
 	const mapOutput = ({
       outputType,
-      ouputName,
+      outputName: outputName,
       outputDescription,
       outputUnit
 	}: OutputInfo): [string, string, string, string] => [
 		outputType as string,
-		ouputName as string,
+		outputName as string,
 		outputDescription as string,
 		outputUnit as string
 	];
@@ -38,4 +38,4 @@ const LabPracticeOuputTable: React.FC<Props> = ({data, onValueChange}) => {
 	);
 };
 
-export default LabPracticeOuputTable;
+export default LabPracticeOutputTable;

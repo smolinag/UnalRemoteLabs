@@ -127,6 +127,7 @@ const LabCreationView: React.FC<unknown> = () => {
 		if (!labPracticeData?.createLabPractice?.id) {
 			return;
 		}
+
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const creationPromises: Promise<any>[] = [];
 		if (commandsList.length > 0) {
@@ -142,27 +143,27 @@ const LabCreationView: React.FC<unknown> = () => {
 						}
 					}).then((commandData) => {
 						const commandId = commandData?.data?.createLabPracticeCommand?.id;
+
 						if (!commandId) {
 							return;
 						}
-						return Promise.all(
-							command.parameters.map((param) =>
-								createLabPracticeParameter({
-									variables: {
-										input: {
-											labpracticecommandID: commandId,
-											labpracticeID: labPracticeData.createLabPractice?.id,
-											name: param.parameterName,
-											description: param.parameterDescription,
-											defaultValue: param.parameterDefaultValue,
-											minValue: parseInt(param.parameterMinValue),
-											maxValue: parseInt(param.parameterMaxValue),
-											regex: param.parameterRegex
-										}
+
+						return Promise.all([
+							createLabPracticeParameter({
+								variables: {
+									input: {
+										labpracticecommandID: commandId,
+										labpracticeID: labPracticeData.createLabPractice?.id,
+										name: command.parameterName,
+										description: command.parameterDescription,
+										defaultValue: command.parameterDefaultValue,
+										minValue: parseInt(command.parameterMinValue),
+										maxValue: parseInt(command.parameterMaxValue),
+										regex: command.parameterRegex
 									}
-								})
-							)
-						);
+								}
+							})
+						]);
 					})
 				)
 			);

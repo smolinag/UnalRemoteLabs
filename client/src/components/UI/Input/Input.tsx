@@ -6,7 +6,6 @@ import {BsQuestionCircle} from 'react-icons/bs';
 import classes from './Input.module.scss';
 
 interface Props {
-	id: string;
 	type: string;
 	placeholder: string;
 	disabled?: boolean;
@@ -14,15 +13,15 @@ interface Props {
 	value: string | number;
 	tooltip?: string;
 	unit?: boolean;
-	onValueChange?: (value: string, id: string) => void;
+	onValueChange: (value: string) => void;
 }
 
-const Input: React.FC<Props> = ({id, type, placeholder, disabled, required, value, tooltip, unit, onValueChange}) => {
+const Input: React.FC<Props> = ({type, placeholder, disabled, required, value, tooltip, unit, onValueChange}) => {
 	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
 
-	const valueChange = (value: string, id: string): void => {
+	const valueChange = (value: string): void => {
 		if (onValueChange) {
-			onValueChange(value, id);
+			onValueChange(value);
 		}
 	};
 
@@ -32,12 +31,12 @@ const Input: React.FC<Props> = ({id, type, placeholder, disabled, required, valu
 				<span className={classes.inputTitle}>{placeholder}: {required && "(Requerido)"}</span>
 				<div className={classes.inputSubwrapper}>
 					<input
-						id={id}
+						id={placeholder}
 						type={type}
 						placeholder={placeholder}
 						required={required}
 						value={value}
-						onChange={(e) => valueChange(e.target.value, id)}
+						onChange={(e) => valueChange(e.target.value)}
 						className={classes.input}
 					/>
 					{unit && <span className={classes.input}>minutos</span>}

@@ -9,7 +9,7 @@ import classes from './shared.module.scss';
 
 interface Props {
 	practice: LabPracticeInfo;
-	onValueChange?: (value: string, id: string) => void;
+	onValueChange: (value: string, id: string) => void;
 }
 
 const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
@@ -18,30 +18,27 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
 			<h3 className={classes.title}>Información de la práctica de laboratorio</h3>
 			<div className={classes.options}>
 				<Input
-					id={Identifier.NAME}
 					type="text"
 					placeholder='Nombre'
 					required
 					value={practice.practiceInfoName}
 					tooltip="Ingrese el nombre del laboratorio"
-					onValueChange={onValueChange}
+					onValueChange={(value) => onValueChange(value, Identifier.NAME)}
 				/>
 				<Input
-					id={Identifier.DESCRIPTION}
 					type="text"
 					placeholder='Descripción'
 					value={practice.practiceInfoDescription}
-					onValueChange={onValueChange}
+					onValueChange={(value) => onValueChange(value, Identifier.DESCRIPTION)}
 				/>
 				<Input
-					id={Identifier.DURATION}
 					type="number"
 					placeholder='Duración'
 					required
 					value={practice.practiceInfoDuration}
 					tooltip="Ingrese la duración que tendrá la sesión en minutos"
 					unit
-					onValueChange={onValueChange}
+					onValueChange={(value) => onValueChange(value, Identifier.DURATION)}
 				/>
 			</div>
 		</Row>

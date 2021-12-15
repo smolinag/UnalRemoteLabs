@@ -1,3 +1,5 @@
+@import '../../../styles/mixins/colors';
+
 .wrapper {
 	display: flex;
 	align-items: center;
@@ -12,12 +14,13 @@
 	border: 1pt solid gray;
 	border-radius: 5px;
 	min-width: 250px;
-	height: 52px;
+	height: 70px;
 }
 
 .inputTitle{
 	font-size: 0.8rem;
-	padding: 1px 20px
+	padding: 1px 20px;
+	height: 20px;
 }
 
 .inputSubwrapper {
@@ -27,9 +30,15 @@
 .input {
 	margin-right: 5px;
 	border: 0px;
-	width:210px
+	width: 210px;
+	height: 40px;
 }
 
-.input :focus {
-	color: green;
+.input:focus-visible {
+	outline: -webkit-focus-ring-color auto 0px;
+}
+
+.input:focus {
+	border: 1px $green-dark solid;
+	border-radius: 5px;
 }

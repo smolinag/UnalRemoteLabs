@@ -2,7 +2,7 @@ import React from 'react';
 
 import classes from './App.module.scss';
 import {Footer, Header, NotificationBanner} from './components/UI';
-import {LabCreationView} from './containers';
+import {LabView} from './containers';
 
 function App(): JSX.Element {
 	return (
@@ -10,7 +10,7 @@ function App(): JSX.Element {
 			<NotificationBanner />
 			<Header />
 			<div className={classes.content}>
-				<LabCreationView />
+				<LabView />
 			</div>
 			<Footer />
 		</div>

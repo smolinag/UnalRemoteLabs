@@ -31,3 +31,7 @@ body {
 .title {
 	border-bottom: 1px solid $green;
 }
+
+#dropdown-basic-button{
+	inline-size: -webkit-fill-available;
+}

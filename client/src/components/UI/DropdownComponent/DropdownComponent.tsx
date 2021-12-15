@@ -38,7 +38,7 @@ const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onVa
 			<div className={classes.inputWrapper}>
 				<span className={classes.inputTitle}>{text}:</span>
 				<div className={classes.inputSubwrapper}>
-					<DropdownButton id="dropdown-basic-button" title={`${value}`} className={classes.input}>
+					<DropdownButton id="dropdown-basic-button" title={`${value}`} className={classes.dropdownToggle}>
 						{options.map((option) => renderItem(option))}
 					</DropdownButton>
 

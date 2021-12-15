@@ -12,25 +12,15 @@
 	border: 1pt solid gray;
 	border-radius: 5px;
 	width: 250px;
-	height: 52px;
+	height: 70px;
 }
 
 .inputTitle{
 	font-size: 0.8rem;
-	padding: 1px 20px
+	padding: 1px 20px;
+	height: 20px;
 }
 
 .inputSubwrapper {
 	padding: 1px 5px;
-}
-
-.input {
-	margin-right: 5px;
-	border: 0px;
-	width:210px;
-	min-width: -webkit-fill-available;	
-}
-
-.dropdown-toggle {
-	min-width: inherit;
 }

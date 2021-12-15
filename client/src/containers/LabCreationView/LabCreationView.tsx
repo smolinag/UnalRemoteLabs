@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Row} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
 import {
 	LabPractice,

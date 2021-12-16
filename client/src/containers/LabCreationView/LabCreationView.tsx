@@ -27,37 +27,37 @@ interface Action {
 }
 function reducer(state: LabPracticeInfo, action: Action): LabPracticeInfo {
 	switch (action.type) {
-		case Identifier.NAME:
+		case Identifier.Name:
 			return {...state, practiceInfoName: action.payload};
-		case Identifier.DESCRIPTION:
+		case Identifier.Description:
 			return {...state, practiceInfoDescription: action.payload};
-		case Identifier.DURATION:
+		case Identifier.Duration:
 			return {...state, practiceInfoDuration: action.payload};
-		case Identifier.COMMAND_NAME:
+		case Identifier.CommandName:
 			return {...state, commandName: action.payload};
-		case Identifier.COMMAND_DESCRIPTION:
+		case Identifier.CommandDescription:
 			return {...state, commandDescription: action.payload};
-		case Identifier.PARAMETER_NAME:
+		case Identifier.ParameterName:
 			return {...state, parameterName: action.payload};
-		case Identifier.PARAMETER_DESCRIPTION:
+		case Identifier.ParameterDescription:
 			return {...state, parameterDescription: action.payload};
-		case Identifier.PARAMETER_DEFAULT_VALUE:
+		case Identifier.ParameterDefaultValue:
 			return {...state, parameterDefaultValue: action.payload};
-		case Identifier.PARAMETER_UNIT:
+		case Identifier.ParameterUnit:
 			return {...state, parameterUnit: action.payload};
-		case Identifier.PARAMETER_MAX_VALUE:
+		case Identifier.ParameterMaxValue:
 			return {...state, parameterMaxValue: action.payload};
-		case Identifier.PARAMETER_MIN_VALUE:
+		case Identifier.ParameterMinValue:
 			return {...state, parameterMinValue: action.payload};
-		case Identifier.PARAMETER_REGEX:
+		case Identifier.ParameterRegex:
 			return {...state, parameterRegex: action.payload};
-		case Identifier.OUTPUT_TYPE:
+		case Identifier.OutputType:
 			return {...state, outputType: action.payload};
-		case Identifier.OUTPUT_NAME:
+		case Identifier.OutputName:
 			return {...state, outputName: action.payload};
-		case Identifier.OUTPUT_DESCRIPTION:
+		case Identifier.OutputDescription:
 			return {...state, outputDescription: action.payload};
-		case Identifier.OUTPUT_UNIT:
+		case Identifier.OutputUnit:
 			return {...state, outputUnit: action.payload};
 		default:
 			return state;

@@ -12,18 +12,28 @@ interface Props {
 	required?: boolean;
 	value: string | number;
 	tooltip?: string;
-	unit?: boolean;
+	unit?: string;
 	onValueChange: (value: string) => void;
 }
 
 const Input: React.FC<Props> = ({type, placeholder, disabled, required, value, tooltip, unit, onValueChange}) => {
 	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
+	let unitString = ""
 
 	const valueChange = (value: string): void => {
 		if (onValueChange) {
 			onValueChange(value);
 		}
 	};
+
+	if(unit) {
+		switch(unit) {
+			case "minutos" :
+				unitString = "minutos"
+				break 
+		}
+	}
+
 
 	return (
 		<div className={classes.wrapper}>
@@ -39,7 +49,9 @@ const Input: React.FC<Props> = ({type, placeholder, disabled, required, value, t
 						onChange={(e) => valueChange(e.target.value)}
 						className={classes.input}
 					/>
-					{unit && <span className={classes.input}>minutos</span>}
+					{
+						unit && <span className={classes.input}>{unitString}</span>
+					}
 
 					{tooltip ? (
 						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>

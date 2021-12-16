@@ -23,13 +23,13 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
 					required
 					value={practice.practiceInfoName}
 					tooltip="Ingrese el nombre del laboratorio"
-					onValueChange={(value) => onValueChange(value, Identifier.NAME)}
+					onValueChange={(value) => onValueChange(value, Identifier.Name)}
 				/>
 				<Input
 					type="text"
 					placeholder='Descripción'
 					value={practice.practiceInfoDescription}
-					onValueChange={(value) => onValueChange(value, Identifier.DESCRIPTION)}
+					onValueChange={(value) => onValueChange(value, Identifier.Description)}
 				/>
 				<Input
 					type="number"
@@ -37,8 +37,8 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
 					required
 					value={practice.practiceInfoDuration}
 					tooltip="Ingrese la duración que tendrá la sesión en minutos"
-					unit
-					onValueChange={(value) => onValueChange(value, Identifier.DURATION)}
+					unit='minutos'
+					onValueChange={(value) => onValueChange(value, Identifier.Duration)}
 				/>
 			</div>
 		</Row>

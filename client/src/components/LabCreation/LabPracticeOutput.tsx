@@ -33,8 +33,7 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 				<DropdownComponent
 					text="Tipo de salida"
 					options={OUTPUT_TYPE}
-					tooltip=""
-					onValueChange={(value) => onValueChange(value, Identifier.OUTPUT_TYPE)}
+					onValueChange={(value) => onValueChange(value, Identifier.OutputType)}
 					value={OUTPUT_TYPE[0].value}
 				/>
 				<Input
@@ -42,20 +41,20 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 					placeholder='Nombre'
 					value={practice.outputName}
 					tooltip="Ingrese el nombre del parámetro de salida"
-					onValueChange={(value) => onValueChange(value, Identifier.OUTPUT_NAME)}
+					onValueChange={(value) => onValueChange(value, Identifier.OutputName)}
 				/>
 				<Input
 					type="text"
 					placeholder='Descripción'
 					value={practice.outputDescription}
 					tooltip="Ingrese la descripción del parámetro de salida"
-					onValueChange={(value) => onValueChange(value, Identifier.OUTPUT_DESCRIPTION)}
+					onValueChange={(value) => onValueChange(value, Identifier.OutputDescription)}
 				/>
 				<Input
 					type="text"
 					placeholder='Unidad'
 					value={practice.outputUnit}
-					onValueChange={(value) => onValueChange(value, Identifier.OUTPUT_UNIT)}
+					onValueChange={(value) => onValueChange(value, Identifier.OutputUnit)}
 				/>
 			</div>
 		</Row>

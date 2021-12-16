@@ -32,16 +32,16 @@ const mapOutput = ({
 	parameterMaxValue,
 	parameterMinValue,
 	parameterRegex
-}: LabPracticeCommandInfo): [string, string, string, string, string, string, string, string, string] => [
-	commandName as string,
-	commandDescription as string,
-	parameterName as string,
-	parameterDescription as string,
-	parameterDefaultValue as string,
-	parameterUnit as string,
-	parameterMaxValue as string,
-	parameterMinValue as string,
-	parameterRegex as string
+}: LabPracticeCommandInfo): string[] => [
+	commandName,
+	commandDescription,
+	parameterName,
+	parameterDescription,
+	parameterDefaultValue,
+	parameterUnit,
+	parameterMaxValue,
+	parameterMinValue,
+	parameterRegex
 ];
 
 const LabPracticeCommandTable: React.FC<Props> = ({data, onValueChange}) => {

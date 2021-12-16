@@ -2489,6 +2489,68 @@ export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 	>;
 };
 
+export type OnCreateLabPracticeMutationVariables = Exact<{
+	input: CreateLabPracticeInput;
+}>;
+
+export type OnCreateLabPracticeMutation = {__typename?: 'Mutation'} & {
+	createLabPractice?: Maybe<
+		{__typename?: 'LabPractice'} & Pick<
+			LabPractice,
+			'id' | 'laboratoryID' | 'name' | 'description' | 'duration' | 'updatedBy' | 'createdBy'
+		>
+	>;
+};
+
+export type OnCreateLabPracticeCommandMutationVariables = Exact<{
+	input: CreateLabPracticeCommandInput;
+}>;
+
+export type OnCreateLabPracticeCommandMutation = {__typename?: 'Mutation'} & {
+	createLabPracticeCommand?: Maybe<
+		{__typename?: 'LabPracticeCommand'} & Pick<
+			LabPracticeCommand,
+			'id' | 'labpracticeID' | 'name' | 'description' | 'updatedBy' | 'createdBy'
+		>
+	>;
+};
+
+export type OnCreateLabPracticeOutputMutationVariables = Exact<{
+	input: CreateLabPracticeOutputInput;
+}>;
+
+export type OnCreateLabPracticeOutputMutation = {__typename?: 'Mutation'} & {
+	createLabPracticeOutput?: Maybe<
+		{__typename?: 'LabPracticeOutput'} & Pick<
+			LabPracticeOutput,
+			'id' | 'labpracticeID' | 'name' | 'description' | 'units' | 'updatedBy' | 'createdBy'
+		>
+	>;
+};
+
+export type OnCreateLabPracticeParameterMutationVariables = Exact<{
+	input: CreateLabPracticeParameterInput;
+}>;
+
+export type OnCreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
+	createLabPracticeParameter?: Maybe<
+		{__typename?: 'LabPracticeParameter'} & Pick<
+			LabPracticeParameter,
+			| 'id'
+			| 'labpracticecommandID'
+			| 'labpracticeID'
+			| 'name'
+			| 'description'
+			| 'defaultValue'
+			| 'minValue'
+			| 'maxValue'
+			| 'regex'
+			| 'updatedBy'
+			| 'createdBy'
+		>
+	>;
+};
+
 export type GetLabPracticeOutputQueryVariables = Exact<{[key: string]: never}>;
 
 export type GetLabPracticeOutputQuery = {__typename?: 'Query'} & {
@@ -2776,6 +2838,218 @@ export function useGetLabPracticeLazyQuery(
 export type GetLabPracticeQueryHookResult = ReturnType<typeof useGetLabPracticeQuery>;
 export type GetLabPracticeLazyQueryHookResult = ReturnType<typeof useGetLabPracticeLazyQuery>;
 export type GetLabPracticeQueryResult = Apollo.QueryResult<GetLabPracticeQuery, GetLabPracticeQueryVariables>;
+export const OnCreateLabPracticeDocument = gql`
+	mutation onCreateLabPractice($input: CreateLabPracticeInput!) {
+		createLabPractice(input: $input) {
+			id
+			laboratoryID
+			name
+			description
+			duration
+			updatedBy
+			createdBy
+		}
+	}
+`;
+export type OnCreateLabPracticeMutationFn = Apollo.MutationFunction<
+	OnCreateLabPracticeMutation,
+	OnCreateLabPracticeMutationVariables
+>;
+
+/**
+ * __useOnCreateLabPracticeMutation__
+ *
+ * To run a mutation, you first call `useOnCreateLabPracticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOnCreateLabPracticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [onCreateLabPracticeMutation, { data, loading, error }] = useOnCreateLabPracticeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useOnCreateLabPracticeMutation(
+	baseOptions?: Apollo.MutationHookOptions<OnCreateLabPracticeMutation, OnCreateLabPracticeMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<OnCreateLabPracticeMutation, OnCreateLabPracticeMutationVariables>(
+		OnCreateLabPracticeDocument,
+		options
+	);
+}
+export type OnCreateLabPracticeMutationHookResult = ReturnType<typeof useOnCreateLabPracticeMutation>;
+export type OnCreateLabPracticeMutationResult = Apollo.MutationResult<OnCreateLabPracticeMutation>;
+export type OnCreateLabPracticeMutationOptions = Apollo.BaseMutationOptions<
+	OnCreateLabPracticeMutation,
+	OnCreateLabPracticeMutationVariables
+>;
+export const OnCreateLabPracticeCommandDocument = gql`
+	mutation onCreateLabPracticeCommand($input: CreateLabPracticeCommandInput!) {
+		createLabPracticeCommand(input: $input) {
+			id
+			labpracticeID
+			name
+			description
+			updatedBy
+			createdBy
+		}
+	}
+`;
+export type OnCreateLabPracticeCommandMutationFn = Apollo.MutationFunction<
+	OnCreateLabPracticeCommandMutation,
+	OnCreateLabPracticeCommandMutationVariables
+>;
+
+/**
+ * __useOnCreateLabPracticeCommandMutation__
+ *
+ * To run a mutation, you first call `useOnCreateLabPracticeCommandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOnCreateLabPracticeCommandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [onCreateLabPracticeCommandMutation, { data, loading, error }] = useOnCreateLabPracticeCommandMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useOnCreateLabPracticeCommandMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		OnCreateLabPracticeCommandMutation,
+		OnCreateLabPracticeCommandMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<OnCreateLabPracticeCommandMutation, OnCreateLabPracticeCommandMutationVariables>(
+		OnCreateLabPracticeCommandDocument,
+		options
+	);
+}
+export type OnCreateLabPracticeCommandMutationHookResult = ReturnType<typeof useOnCreateLabPracticeCommandMutation>;
+export type OnCreateLabPracticeCommandMutationResult = Apollo.MutationResult<OnCreateLabPracticeCommandMutation>;
+export type OnCreateLabPracticeCommandMutationOptions = Apollo.BaseMutationOptions<
+	OnCreateLabPracticeCommandMutation,
+	OnCreateLabPracticeCommandMutationVariables
+>;
+export const OnCreateLabPracticeOutputDocument = gql`
+	mutation onCreateLabPracticeOutput($input: CreateLabPracticeOutputInput!) {
+		createLabPracticeOutput(input: $input) {
+			id
+			labpracticeID
+			name
+			description
+			units
+			updatedBy
+			createdBy
+		}
+	}
+`;
+export type OnCreateLabPracticeOutputMutationFn = Apollo.MutationFunction<
+	OnCreateLabPracticeOutputMutation,
+	OnCreateLabPracticeOutputMutationVariables
+>;
+
+/**
+ * __useOnCreateLabPracticeOutputMutation__
+ *
+ * To run a mutation, you first call `useOnCreateLabPracticeOutputMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOnCreateLabPracticeOutputMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [onCreateLabPracticeOutputMutation, { data, loading, error }] = useOnCreateLabPracticeOutputMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useOnCreateLabPracticeOutputMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		OnCreateLabPracticeOutputMutation,
+		OnCreateLabPracticeOutputMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<OnCreateLabPracticeOutputMutation, OnCreateLabPracticeOutputMutationVariables>(
+		OnCreateLabPracticeOutputDocument,
+		options
+	);
+}
+export type OnCreateLabPracticeOutputMutationHookResult = ReturnType<typeof useOnCreateLabPracticeOutputMutation>;
+export type OnCreateLabPracticeOutputMutationResult = Apollo.MutationResult<OnCreateLabPracticeOutputMutation>;
+export type OnCreateLabPracticeOutputMutationOptions = Apollo.BaseMutationOptions<
+	OnCreateLabPracticeOutputMutation,
+	OnCreateLabPracticeOutputMutationVariables
+>;
+export const OnCreateLabPracticeParameterDocument = gql`
+	mutation onCreateLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
+		createLabPracticeParameter(input: $input) {
+			id
+			labpracticecommandID
+			labpracticeID
+			name
+			description
+			defaultValue
+			minValue
+			maxValue
+			regex
+			updatedBy
+			createdBy
+		}
+	}
+`;
+export type OnCreateLabPracticeParameterMutationFn = Apollo.MutationFunction<
+	OnCreateLabPracticeParameterMutation,
+	OnCreateLabPracticeParameterMutationVariables
+>;
+
+/**
+ * __useOnCreateLabPracticeParameterMutation__
+ *
+ * To run a mutation, you first call `useOnCreateLabPracticeParameterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useOnCreateLabPracticeParameterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [onCreateLabPracticeParameterMutation, { data, loading, error }] = useOnCreateLabPracticeParameterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useOnCreateLabPracticeParameterMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		OnCreateLabPracticeParameterMutation,
+		OnCreateLabPracticeParameterMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<OnCreateLabPracticeParameterMutation, OnCreateLabPracticeParameterMutationVariables>(
+		OnCreateLabPracticeParameterDocument,
+		options
+	);
+}
+export type OnCreateLabPracticeParameterMutationHookResult = ReturnType<typeof useOnCreateLabPracticeParameterMutation>;
+export type OnCreateLabPracticeParameterMutationResult = Apollo.MutationResult<OnCreateLabPracticeParameterMutation>;
+export type OnCreateLabPracticeParameterMutationOptions = Apollo.BaseMutationOptions<
+	OnCreateLabPracticeParameterMutation,
+	OnCreateLabPracticeParameterMutationVariables
+>;
 export const GetLabPracticeOutputDocument = gql`
 	query getLabPracticeOutput {
 		listLabPracticeOutputs {

@@ -1,0 +1,27 @@
+@import '../../styles/mixins/colors';
+
+.section {
+	padding: 0 3% 1%;
+	margin: 3% 0%;
+}
+
+.title {
+	border-bottom: 1px solid $green;
+}
+
+.options {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+}
+
+.justifyEnd {
+	display: flex;
+	justify-content: flex-end;
+}

@@ -1,5 +1,6 @@
 import React from 'react';
 import BootstrapButton from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 import classes from './Button.module.scss';
 
@@ -11,15 +12,26 @@ type Variants = BootstrapVariants | CustomVariants;
 
 interface Props {
 	variant?: Variants;
+	loading: boolean;
+	onClick: () => void;
 }
 
 const DEFAULT_VARIANT: Variants = 'red';
 
-const Button: React.FC<Props> = ({children, variant = DEFAULT_VARIANT}) => {
+const Button: React.FC<Props> = ({children, variant = DEFAULT_VARIANT, loading, onClick}) => {
+	const loadingSpinner = (
+		<>
+			<Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+			<span>{children}</span>
+		</>
+	);
+
 	return (
-		<BootstrapButton variant={variant} size="lg" className={classes.button}>
-			{children}
-		</BootstrapButton>
+		<div className={classes.button}>
+			<BootstrapButton variant={variant} size="lg" className={classes.button} disabled={loading} onClick={onClick}>
+				{loading ? loadingSpinner : children}
+			</BootstrapButton>
+		</div>
 	);
 };
 

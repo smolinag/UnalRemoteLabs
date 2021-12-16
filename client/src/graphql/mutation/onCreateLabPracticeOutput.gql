@@ -1,0 +1,11 @@
+mutation onCreateLabPracticeOutput($input: CreateLabPracticeOutputInput!) {
+	createLabPracticeOutput (input: $input) {
+		id
+		labpracticeID
+		name
+		description
+      units
+      updatedBy
+      createdBy
+	}
+}

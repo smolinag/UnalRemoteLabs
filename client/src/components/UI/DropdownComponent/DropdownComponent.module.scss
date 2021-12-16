@@ -1,0 +1,26 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+}
+
+.inputWrapper {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	vertical-align: top;
+	border: 1pt solid gray;
+	border-radius: 5px;
+	width: 250px;
+	height: 70px;
+}
+
+.inputTitle{
+	font-size: 0.8rem;
+	padding: 1px 20px;
+	height: 20px;
+}
+
+.inputSubwrapper {
+	padding: 1px 5px;
+}

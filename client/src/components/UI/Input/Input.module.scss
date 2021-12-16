@@ -1,0 +1,46 @@
+@import '../../../styles/mixins/colors';
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+}
+
+.inputWrapper {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	vertical-align: top;
+	border: 1pt solid gray;
+	border-radius: 5px;
+	min-width: 250px;
+	height: 70px;
+}
+
+.inputTitle{
+	font-size: 0.8rem;
+	padding: 1px 20px;
+	height: 20px;
+}
+
+.inputSubwrapper {
+	padding: 1px 5px;
+}
+
+.input {
+	margin-right: 5px;
+	border: 0px;
+	width: 210px;
+	height: 40px;
+
+	&:focus-visible {
+		outline: -webkit-focus-ring-color auto 0px;
+	}
+	
+	&:focus {
+		border: 1px $green-dark solid;
+		border-radius: 5px;
+	}
+}
+
+

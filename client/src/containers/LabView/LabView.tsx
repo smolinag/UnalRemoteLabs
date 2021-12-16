@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command} from '../../components/Lab/Commands/Commands';
-import {LoadingContainer} from '../../components/UI/index';
+import {LoadingContainer} from '../../components/UI';
 import {
 	useGetLabPracticeQuery,
 	useGetLabPracticeCommandQuery,

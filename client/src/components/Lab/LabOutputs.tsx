@@ -1,8 +1,9 @@
 import React from 'react';
-import {Row, Col} from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 import {Maybe} from '../../graphql/generated/schema';
-import {Table} from '../UI/index';
+import {Table} from '../UI';
 
 type Data = [string, string | number][];
 

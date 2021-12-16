@@ -3,4 +3,6 @@ export {default as Header} from './Layout/Header';
 export {default as Footer} from './Layout/Footer';
 export {default as Button} from './Button/Button';
 export {default as LoadingContainer} from './LoadingContainer/LoadingContainer';
+export {default as Input} from './Input/Input';
+export {default as DropdownComponent} from './DropdownComponent/DropdownComponent';
 export {default as NotificationBanner} from './NotificationBanner/NotificationBanner';

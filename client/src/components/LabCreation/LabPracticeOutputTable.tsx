@@ -23,11 +23,11 @@ const LabPracticeOutputTable: React.FC<Props> = ({data, onValueChange}) => {
       outputName: outputName,
       outputDescription,
       outputUnit
-	}: OutputInfo): [string, string, string, string] => [
-		outputType as string,
-		outputName as string,
-		outputDescription as string,
-		outputUnit as string
+	}: OutputInfo): string[] => [
+		outputType,
+		outputName,
+		outputDescription,
+		outputUnit
 	];
 
 	return (

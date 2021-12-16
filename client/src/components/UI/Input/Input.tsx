@@ -8,7 +8,6 @@ import classes from './Input.module.scss';
 interface Props {
 	type: string;
 	placeholder: string;
-	disabled?: boolean;
 	required?: boolean;
 	value: string | number;
 	tooltip?: string;
@@ -16,7 +15,7 @@ interface Props {
 	onValueChange: (value: string) => void;
 }
 
-const Input: React.FC<Props> = ({type, placeholder, disabled, required, value, tooltip, unit, onValueChange}) => {
+const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, onValueChange}) => {
 	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
 	let unitString = ""
 
@@ -34,14 +33,12 @@ const Input: React.FC<Props> = ({type, placeholder, disabled, required, value, t
 		}
 	}
 
-
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.inputWrapper}>
 				<span className={classes.inputTitle}>{placeholder}: {required && "(Requerido)"}</span>
 				<div className={classes.inputSubwrapper}>
 					<input
-						id={placeholder}
 						type={type}
 						placeholder={placeholder}
 						required={required}

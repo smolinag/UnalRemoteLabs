@@ -16,9 +16,8 @@ import {
 	useOnCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
-import {Identifier} from './Identifiers';
 import classes from './LabCreationView.module.scss';
-import {LabPracticeInfo, LabPracticeCommandInfo} from './types';
+import {LabPracticeInfo, LabPracticeCommandInfo, Identifier} from './types';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 interface Action {

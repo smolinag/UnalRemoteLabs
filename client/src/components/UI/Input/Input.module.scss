@@ -32,13 +32,15 @@
 	border: 0px;
 	width: 210px;
 	height: 40px;
+
+	&:focus-visible {
+		outline: -webkit-focus-ring-color auto 0px;
+	}
+	
+	&:focus {
+		border: 1px $green-dark solid;
+		border-radius: 5px;
+	}
 }
 
-.input:focus-visible {
-	outline: -webkit-focus-ring-color auto 0px;
-}
 
-.input:focus {
-	border: 1px $green-dark solid;
-	border-radius: 5px;
-}

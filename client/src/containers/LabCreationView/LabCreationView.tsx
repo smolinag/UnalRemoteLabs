@@ -1,13 +1,11 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {
-	LabPractice,
-	LabPracticeCommand,
-	LabPracticeCommandTable,
-	LabPracticeOutput,
-	LabPracticeOutputTable
-} from '../../components/LabCreation';
+import LabPractice from '../../components/LabCreation/LabPractice';
+import LabPracticeCommand from '../../components/LabCreation/LabPracticeCommand';
+import LabPracticeCommandTable from '../../components/LabCreation/LabPracticeCommandTable';
+import LabPracticeOutput from '../../components/LabCreation/LabPracticeOutput';
+import LabPracticeOutputTable from '../../components/LabCreation/LabPracticeOutputTable';
 import {Button, LoadingContainer} from '../../components/UI';
 import {
 	useOnCreateLabPracticeMutation,
@@ -174,6 +172,7 @@ const LabCreationView: React.FC<unknown> = () => {
 						variables: {
 							input: {
 								labpracticeID: labPracticeData.createLabPractice?.id,
+								// outputType: obj.outputType,
 								name: obj.outputName,
 								description: obj.outputDescription,
 								units: JSON.stringify(obj.outputUnit)

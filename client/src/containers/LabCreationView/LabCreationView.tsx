@@ -210,7 +210,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					</Button>
 				</div>
 				{outputsList.length > 0 && <LabPracticeOutputTable data={outputsList} />}
-				<Row className={classes.section}>
+				<Row className="section">
 					<div className={classes.justifyEnd}>
 						<Button loading={loading} onClick={createPractice}>
 							Guardar

@@ -3,7 +3,6 @@ import Row from 'react-bootstrap/Row';
 
 import {LabPracticeCommandInfo} from '../../containers/LabCreationView/types';
 import {Table} from '../UI/index';
-import classes from './shared.module.scss';
 
 interface Props {
 	data: LabPracticeCommandInfo[];
@@ -47,7 +46,7 @@ const mapOutput = ({
 const LabPracticeCommandTable: React.FC<Props> = ({data, onValueChange}) => {
 
 	return (
-		<Row className={classes.section}>
+		<Row className="section">
 			<h5>Comandos añadidos</h5>
 			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} />
 		</Row>

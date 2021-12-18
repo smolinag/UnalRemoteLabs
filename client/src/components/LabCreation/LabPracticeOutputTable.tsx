@@ -11,7 +11,6 @@ interface Props {
 }
 
 const COLUMNS = [
-	'Tipo de salida',
 	'Nombre',
 	'Descripción',
 	'Unidad'
@@ -19,12 +18,10 @@ const COLUMNS = [
 
 const LabPracticeOutputTable: React.FC<Props> = ({data, onValueChange}) => {
 	const mapOutput = ({
-      outputType,
       outputName: outputName,
       outputDescription,
       outputUnit
 	}: OutputInfo): string[] => [
-		outputType,
 		outputName,
 		outputDescription,
 		outputUnit

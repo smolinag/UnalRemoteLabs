@@ -2,24 +2,13 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {LabPracticeInfo, Identifier} from '../../containers/LabCreationView/types';
-import {Input, DropdownComponent} from '../UI';
-import {Option} from '../UI/DropdownComponent/DropdownComponent';
+import {Input} from '../UI';
 import classes from './shared.module.scss';
 
 interface Props {
 	practice: LabPracticeInfo;
 	onValueChange: (value: string, id: string) => void;
 }
-
-const TYPES = {
-	string: 'string',
-	number: 'number'
-};
-
-const OUTPUT_TYPE: Option[] = [
-	{id: TYPES.number, value: 'numero'},
-	{id: TYPES.string, value: 'string'}
-];
 
 const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 
@@ -29,12 +18,6 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, practice}) => {
 
 			<h5>Información de los comandos</h5>
 			<div className={classes.options}>
-				<DropdownComponent
-					text="Tipo de salida"
-					options={OUTPUT_TYPE}
-					onValueChange={(value) => onValueChange(value, Identifier.OutputType)}
-					value={OUTPUT_TYPE[0].value}
-				/>
 				<Input
 					type="text"
 					placeholder='Nombre'

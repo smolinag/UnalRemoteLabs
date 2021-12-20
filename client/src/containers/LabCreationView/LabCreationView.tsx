@@ -46,7 +46,6 @@ const initialPracticeValue: LabPracticeInfo = {
 		parameterRegex: ''
 	},
 	output: {
-		outputType: 'string',
 		outputName: '',
 		outputDescription: '',
 		outputUnit: ''
@@ -139,12 +138,6 @@ const LabCreationView: React.FC<unknown> = () => {
 						parameterRegex: value
 					};
 					return {...previousState, parameter: practice1.parameter};
-				case Identifier.OutputType:
-					practice1.output = {
-						...practiceInfo.output,
-						outputType: value
-					};
-					return {...previousState, output: practice1.output};
 				case Identifier.OutputName:
 					practice1.output = {
 						...practiceInfo.output,
@@ -225,7 +218,6 @@ const LabCreationView: React.FC<unknown> = () => {
 				outputName: output.outputName,
 				outputDescription: output.outputDescription,
 				outputUnit: output.outputUnit,
-				outputType: 'string'
 			};
 			return previousState.concat(newOutput);
 		});
@@ -235,7 +227,6 @@ const LabCreationView: React.FC<unknown> = () => {
 				outputName: '',
 				outputDescription: '',
 				outputUnit: '',
-				outputType: 'string'
 			};
 			return {...previousState, output: output};
 		});

@@ -24,7 +24,6 @@ export interface LabPracticeParameterInfo {
 }
 
 export interface OutputInfo {
-	outputType: string;
 	outputName: string;
 	outputDescription: string;
 	outputUnit: string;

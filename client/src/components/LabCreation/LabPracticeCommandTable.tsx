@@ -12,35 +12,14 @@ interface Props {
 const COLUMNS = [
 	'Nombre del comando',
 	'Descripción del comando',
-	'Nombre del parámetro',
-	'Descripción del parámetro',
-	'Valor por defecto',
-	'Unidad',
-	'Valor máximo',
-	'Valor mínimo',
-	'Expresión regular'
 ];
 
 const mapOutput = ({
 	commandName,
 	commandDescription,
-	parameterName,
-	parameterDescription,
-	parameterDefaultValue,
-	parameterUnit,
-	parameterMaxValue,
-	parameterMinValue,
-	parameterRegex
 }: LabPracticeCommandInfo): string[] => [
 	commandName,
 	commandDescription,
-	parameterName,
-	parameterDescription,
-	parameterDefaultValue,
-	parameterUnit,
-	parameterMaxValue,
-	parameterMinValue,
-	parameterRegex
 ];
 
 const LabPracticeCommandTable: React.FC<Props> = ({data, onValueChange}) => {

@@ -9,6 +9,18 @@
 	position: -webkit-sticky;
 	position: sticky;
 	top: -1px;
-  /* Requerido para sobreescribir el estilo de bootstrap */
-	background-color: $white !important; 
+	/* Requerido para sobreescribir el estilo de bootstrap */
+	background-color: $white !important;
+}
+
+.actionIcon {
+	cursor: pointer;
+	user-select: none;
+	fill: $gray-700;
+	&:first-child {
+		margin-right: 4px;
+	}
+	&.delete {
+		fill: $red-dark;
+	}
 }

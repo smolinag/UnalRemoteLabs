@@ -56,9 +56,6 @@ module.exports = {
 				tsx: 'never',
 				css: 'ignorePackages'
 			}
-		],
-
-		// Deshabilitada para poder habilitar paquetes de amplify.
-		'import/no-unresolved': 'off'
+		]
 	}
 };

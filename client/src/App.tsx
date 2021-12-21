@@ -1,4 +1,5 @@
 import {Authenticator} from '@aws-amplify/ui-react';
+// eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import {Amplify} from 'aws-amplify';
 import React from 'react';

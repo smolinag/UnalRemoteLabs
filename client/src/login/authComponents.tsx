@@ -10,7 +10,7 @@ I18n.putVocabularies({
 	es: {
 		'Sign In': 'Acceder',
 		'Create Account': 'Crear cuenta',
-		'Sign In with Google': 'Ingresa con Google',
+		'Sign In with Google': 'Acceder con Google',
 		'Sign Up with Google': 'Crear cuenta con Google'
 	}
 });

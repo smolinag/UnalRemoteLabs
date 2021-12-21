@@ -186,6 +186,14 @@ const LabCreationView: React.FC<unknown> = () => {
 		}
 	};
 
+	const handleDeleteParameter = (index: number, action: Action) => {
+		if (action === Action.Delete) {
+			setParametersList((previousState) => {
+				return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
+			});
+		}
+	};
+
 	const addParameter = (parameter: LabPracticeParameterInfo): void => {
 		setParametersList((previousState) => {
 			const newParameter: LabPracticeParameterInfo = {
@@ -353,7 +361,7 @@ const LabCreationView: React.FC<unknown> = () => {
 						Añadir
 					</Button>
 				</div>
-				{parametersList.length > 0 && <LabPracticeParametersTable data={parametersList} />}
+				{parametersList.length > 0 && <LabPracticeParametersTable data={parametersList} onDelete={handleDeleteParameter} />}
 
 				<LabPracticeOutput output={practiceInfo.output} onValueChange={practiceChange} />
 				<div className={classes.justifyCenter}>

@@ -1,13 +1,15 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 
-import LabPractice from '../../components/LabCreation/LabPractice';
-import LabPracticeCommand from '../../components/LabCreation/LabPracticeCommand';
-import LabPracticeCommandTable from '../../components/LabCreation/LabPracticeCommandTable';
-import LabPracticeOutput from '../../components/LabCreation/LabPracticeOutput';
-import LabPracticeOutputTable from '../../components/LabCreation/LabPracticeOutputTable';
-import LabPracticeParameters from '../../components/LabCreation/LabPracticeParameters';
-import LabPracticeParametersTable from '../../components/LabCreation/LabPracticeParametersTable';
+import {
+	LabPractice,
+	LabPracticeCommand,
+	LabPracticeCommandTable,
+	LabPracticeParameters,
+	LabPracticeParametersTable,
+	LabPracticeOutput,
+	LabPracticeOutputTable
+} from '../../components/LabCreation';
 import {Button, LoadingContainer} from '../../components/UI';
 import {
 	useOnCreateLabPracticeMutation,
@@ -17,13 +19,7 @@ import {
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import classes from './LabCreationView.module.scss';
-import {
-	Identifier,
-	OutputInfo,
-	LabPracticeCommandInfo,
-	LabPracticeParameterInfo,
-	LabPracticeInfo
-} from './types';
+import {Identifier, OutputInfo, LabPracticeCommandInfo, LabPracticeParameterInfo, LabPracticeInfo} from './types';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 
@@ -217,7 +213,7 @@ const LabCreationView: React.FC<unknown> = () => {
 			const newOutput: OutputInfo = {
 				outputName: output.outputName,
 				outputDescription: output.outputDescription,
-				outputUnit: output.outputUnit,
+				outputUnit: output.outputUnit
 			};
 			return previousState.concat(newOutput);
 		});
@@ -226,7 +222,7 @@ const LabCreationView: React.FC<unknown> = () => {
 			const output: OutputInfo = {
 				outputName: '',
 				outputDescription: '',
-				outputUnit: '',
+				outputUnit: ''
 			};
 			return {...previousState, output: output};
 		});

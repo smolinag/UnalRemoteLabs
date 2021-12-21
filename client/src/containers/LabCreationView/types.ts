@@ -1,16 +1,19 @@
-export interface LabPracticeInfo extends LabPracticeCommandInfo, OutputInfo {
+export interface LabPracticeInfo {
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
+	command: LabPracticeCommandInfo;
+	parameter: LabPracticeParameterInfo;
+	output: OutputInfo
 }
 
-export interface LabPracticeCommandInfo extends LabPracticeParameterInfo {
+export interface LabPracticeCommandInfo {
 	commandName: string;
 	commandDescription: string;
-   parameters: LabPracticeParameterInfo[];
 }
 
 export interface LabPracticeParameterInfo {
+	selectedCommandName: string;
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
@@ -21,7 +24,6 @@ export interface LabPracticeParameterInfo {
 }
 
 export interface OutputInfo {
-	outputType: string;
 	outputName: string;
 	outputDescription: string;
 	outputUnit: string;
@@ -33,6 +35,7 @@ export enum Identifier {
 	Duration = 'duration',
 	CommandName = 'commandName',
 	CommandDescription = 'commandDescription',
+	SelectedCommand = 'selectedCommand',
 	ParameterName = 'parameterName',
 	ParameterDescription = 'parameterDescription',
 	ParameterDefaultValue = 'parameterDefaultValue',

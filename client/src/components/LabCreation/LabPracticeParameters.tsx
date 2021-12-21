@@ -9,31 +9,17 @@ import classes from './shared.module.scss';
 interface Props {
 	parameter: LabPracticeParameterInfo;
 	commands: LabPracticeCommandInfo[];
-	onValueChange: (value: string, id: string) => void;
+	onValueChange: (value: string, id: Identifier) => void;
 }
-
-enum Types {
-	string = 'string',
-	number = 'number'
-}
-
-const typesArray = [
-	{id: Types.number, value: 'numero'},
-	{id: Types.string, value: 'string'}
-];
 
 const initialCommand: Option = {id: 'Comando', value: 'Comando'};
 
 const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueChange}) => {
 	const [command, setCommand] = React.useState<Option>(initialCommand);
-	const [valueType, setValueType] = React.useState<Option>(typesArray[0]);
 
 	const handleSelectCommand = (value: string) => {
 		setCommand({value, id: value});
-	};
-
-	const handleSelectType = (id: string, value: string) => {
-		setValueType({value: id, id: value});
+		onValueChange(value, Identifier.SelectedCommand);
 	};
 
 	return (
@@ -46,8 +32,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 						return {value: command.commandName, id: command.commandDescription};
 					})}
 					onValueChange={(value) => {
-						onValueChange(value, Identifier.SelectedCommand)
-						handleSelectCommand(value)
+						handleSelectCommand(value);
 					}}
 					value={command.value}
 				/>
@@ -65,10 +50,8 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 					onValueChange={(value) => onValueChange(value, Identifier.ParameterDescription)}
 				/>
 
-				{/* componente dropdown para elegir el tipo de valor por defecto*/}
-				<DropdownComponent text="Comando" options={typesArray} onValueChange={handleSelectType} value={valueType.value} />
 				<Input
-					type={valueType.id}
+					type="number"
 					placeholder="Valor por defecto"
 					value={parameter.parameterDefaultValue}
 					onValueChange={(value) => onValueChange(value, Identifier.ParameterDefaultValue)}
@@ -81,22 +64,19 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 					onValueChange={(value) => onValueChange(value, Identifier.ParameterUnit)}
 				/>
 
-				{valueType.id === Types.number && (
-					<>
-						<Input
-							type="number"
-							placeholder="Valor máximo"
-							value={parameter.parameterMaxValue}
-							onValueChange={(value) => onValueChange(value, Identifier.ParameterMaxValue)}
-						/>
-						<Input
-							type="number"
-							placeholder="Valor mínimo"
-							value={parameter.parameterMinValue}
-							onValueChange={(value) => onValueChange(value, Identifier.ParameterMinValue)}
-						/>
-					</>
-				)}
+				<Input
+					type="number"
+					placeholder="Valor mínimo"
+					value={parameter.parameterMinValue}
+					onValueChange={(value) => onValueChange(value, Identifier.ParameterMinValue)}
+				/>
+
+				<Input
+					type="number"
+					placeholder="Valor máximo"
+					value={parameter.parameterMaxValue}
+					onValueChange={(value) => onValueChange(value, Identifier.ParameterMaxValue)}
+				/>
 
 				<Input
 					type="string"

@@ -53,7 +53,8 @@ module.exports = {
 			2,
 			{
 				ts: 'never',
-				tsx: 'never'
+				tsx: 'never',
+				css: 'ignorePackages'
 			}
 		]
 	}

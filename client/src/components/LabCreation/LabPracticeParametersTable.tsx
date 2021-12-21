@@ -6,7 +6,6 @@ import {Table} from '../UI/index';
 
 interface Props {
 	data: LabPracticeParameterInfo[];
-	onValueChange?: (value: string, id: string) => void;
 }
 
 const COLUMNS = [
@@ -40,7 +39,7 @@ const mapOutput = ({
 	parameterRegex
 ];
 
-const LabPracticeParametersTable: React.FC<Props> = ({data, onValueChange}) => {
+const LabPracticeParametersTable: React.FC<Props> = ({data}) => {
 
 	return (
 		<Row className="section">

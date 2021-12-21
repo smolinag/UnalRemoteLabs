@@ -11,7 +11,7 @@ import {
 	LabPracticeOutputTable
 } from '../../components/LabCreation';
 import {Button, LoadingContainer} from '../../components/UI';
-import { Action } from '../../components/UI/Table/Table';
+import {Action} from '../../components/UI/Table/Table';
 import {
 	useOnCreateLabPracticeMutation,
 	useOnCreateLabPracticeCommandMutation,
@@ -178,19 +178,13 @@ const LabCreationView: React.FC<unknown> = () => {
 		});
 	};
 
-	const handleDeleteCommand = (row: number, action: Action) => {
-		console.warn(row)
-		console.warn(action)
-
-		if(action === Action.Delete) {
-			const newArray = commandsList;
-			setCommandsList(newArray.splice(1,1))
-			// setCommandsList((previousState) => {
-			// 	console.warn(previousState.splice(1,1))
-			// 	return previousState.splice(1, 1)
-			// });
+	const handleDeleteCommand = (index: number, action: Action) => {
+		if (action === Action.Delete) {
+			setCommandsList((previousState) => {
+				return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
+			});
 		}
-	}
+	};
 
 	const addParameter = (parameter: LabPracticeParameterInfo): void => {
 		setParametersList((previousState) => {
@@ -347,7 +341,7 @@ const LabCreationView: React.FC<unknown> = () => {
 						Añadir
 					</Button>
 				</div>
-				{commandsList.length > 0 && <LabPracticeCommandTable data={commandsList} onDelete={handleDeleteCommand}/>}
+				{commandsList.length > 0 && <LabPracticeCommandTable data={commandsList} onDelete={handleDeleteCommand} />}
 
 				<LabPracticeParameters
 					parameter={practiceInfo.parameter}

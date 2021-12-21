@@ -53,8 +53,12 @@ module.exports = {
 			2,
 			{
 				ts: 'never',
-				tsx: 'never'
+				tsx: 'never',
+				css: 'ignorePackages'
 			}
-		]
+		],
+
+		// Deshabilitada para poder habilitar paquetes de amplify.
+		'import/no-unresolved': 'off'
 	}
 };

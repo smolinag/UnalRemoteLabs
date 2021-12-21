@@ -1,4 +1,6 @@
-import React from 'react';
+import {Auth} from '@aws-amplify/auth';
+import {useAuthenticator} from '@aws-amplify/ui-react';
+import React, {useState, useEffect} from 'react';
 import Image from 'react-bootstrap/Image';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,6 +11,17 @@ import logosimbolo from '../../../assets/images/logosimbolo.png';
 import classes from './Header.module.scss';
 
 const Header: React.FC<unknown> = () => {
+	const [loggedUser, setLoggedUser] = useState<string>('');
+	const {signOut} = useAuthenticator();
+
+	useEffect(() => {
+		(async () => {
+			let response = (await Auth.currentUserInfo()).attributes.email;
+			response = await response;
+			setLoggedUser(response);
+		})();
+	}, [loggedUser]);
+
 	return (
 		<header>
 			<Navbar expand="lg" className={classes.navbar}>
@@ -25,12 +38,12 @@ const Header: React.FC<unknown> = () => {
 					<Nav className={classes.optionNavbar}>
 						<div className={classes.option}>
 							<BsPersonCircle className={classes.icon} />
-							<span>Daniel Molina</span>
+							<span>{loggedUser}</span>
 						</div>
 
 						<div className={classes.option}>
 							<BiExit className={classes.icon} />
-							<span>Salir</span>
+							<span onClick={signOut}>Salir</span>
 						</div>
 					</Nav>
 				</Navbar.Collapse>

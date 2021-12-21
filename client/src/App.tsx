@@ -2,11 +2,12 @@ import {Authenticator} from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 import {Amplify} from 'aws-amplify';
 import React from 'react';
+import {Route, Routes} from 'react-router-dom';
 
 import classes from './App.module.scss';
 import awsExports from './aws-exports';
 import {Footer, Header, NotificationBanner} from './components/UI';
-import {LabView} from './containers';
+import {LabView, LabCreationView} from './containers';
 import authComponents from './login/authComponents';
 
 Amplify.configure(awsExports);
@@ -19,7 +20,12 @@ const App = (): JSX.Element => {
 					<NotificationBanner />
 					<Header />
 					<div className={classes.content}>
-						<LabView />
+						<Routes>
+							<Route path="/" element={<LabView />} />
+							<Route path="/create-lab" element={<LabCreationView />} />
+							{/* Crear componente para rutas no existentes */}
+							<Route path="*" element={<div> Pagina no existe </div>} />
+						</Routes>
 					</div>
 					<Footer />
 				</div>
@@ -27,4 +33,5 @@ const App = (): JSX.Element => {
 		</Authenticator>
 	);
 };
+
 export default App;

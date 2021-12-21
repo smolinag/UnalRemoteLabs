@@ -1,6 +1,7 @@
 import {ApolloProvider} from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import './styles/global.scss';
@@ -11,9 +12,11 @@ import NotificationBannerProvider from './state/NotificationBannerProvider';
 ReactDOM.render(
 	<React.StrictMode>
 		<ApolloProvider client={apolloClient}>
-			<NotificationBannerProvider>
-				<App />
-			</NotificationBannerProvider>
+			<BrowserRouter>
+				<NotificationBannerProvider>
+					<App />
+				</NotificationBannerProvider>
+			</BrowserRouter>
 		</ApolloProvider>
 	</React.StrictMode>,
 	document.getElementById('root')

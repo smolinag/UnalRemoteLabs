@@ -13,8 +13,8 @@ interface Props {
 
 const LabPractice: React.FC<Props> = ({onValueChange, practice}) => {
 	return (
-		<Row className={classes.section}>
-			<h3 className={classes.title}>Información de la práctica de laboratorio</h3>
+		<Row className="section">
+			<h3 className="title">Información de la práctica de laboratorio</h3>
 			<div className={classes.options}>
 				<Input
 					type="text"

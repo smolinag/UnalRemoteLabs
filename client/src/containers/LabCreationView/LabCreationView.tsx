@@ -75,7 +75,7 @@ const initialCommand: LabPracticeInfo = {
 	parameterMaxValue: '',
 	parameterMinValue: '',
 	parameterRegex: '',
-	outputType: '',
+	outputType: 'string',
 	outputName: '',
 	outputDescription: '',
 	outputUnit: '',
@@ -174,7 +174,7 @@ const LabCreationView: React.FC<unknown> = () => {
 						variables: {
 							input: {
 								labpracticeID: labPracticeData.createLabPractice?.id,
-								outputType: obj.outputType,
+								// outputType: obj.outputType,
 								name: obj.outputName,
 								description: obj.outputDescription,
 								units: JSON.stringify(obj.outputUnit)
@@ -212,7 +212,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					</Button>
 				</div>
 				{outputsList.length > 0 && <LabPracticeOutputTable data={outputsList} />}
-				<Row className={classes.section}>
+				<Row className="section">
 					<div className={classes.justifyEnd}>
 						<Button loading={loading} onClick={createPractice}>
 							Guardar

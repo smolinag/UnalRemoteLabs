@@ -3,7 +3,6 @@ import Row from 'react-bootstrap/Row';
 
 import {OutputInfo} from '../../containers/LabCreationView/types';
 import {Table} from '../UI/index';
-import classes from './shared.module.scss';
 
 interface Props {
 	data: OutputInfo[];
@@ -11,7 +10,6 @@ interface Props {
 }
 
 const COLUMNS = [
-	'Tipo de salida',
 	'Nombre',
 	'Descripción',
 	'Unidad'
@@ -19,19 +17,17 @@ const COLUMNS = [
 
 const LabPracticeOutputTable: React.FC<Props> = ({data, onValueChange}) => {
 	const mapOutput = ({
-      outputType,
       outputName: outputName,
       outputDescription,
       outputUnit
 	}: OutputInfo): string[] => [
-		outputType,
 		outputName,
 		outputDescription,
 		outputUnit
 	];
 
 	return (
-		<Row className={classes.section}>
+		<Row className="section">
 			<h5>Comandos añadidos</h5>
 			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} />
 		</Row>

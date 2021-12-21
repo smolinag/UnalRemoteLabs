@@ -29,8 +29,8 @@ const LabPracticeCommand: React.FC<Props> = ({practice, onValueChange}) => {
 	};
 
 	return (
-		<Row className={classes.section}>
-			<h3 className={classes.title}>Commandos de la práctica de laboratorio</h3>
+		<Row className="section">
+			<h3 className="title">Commandos de la práctica de laboratorio</h3>
 
 			<h5>Información de los comandos</h5>
 			<div className={classes.options}>

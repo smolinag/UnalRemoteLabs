@@ -11,7 +11,7 @@ const appSyncConfig = {
 	aws_user_pools_id: 'us-east-2_zsUbsMO4I',
 	aws_user_pools_web_client_id: '456sd4us2915jjlpfest04v9jl',
 	oauth: {
-		domain: 'unalvirtuallabs8e3eb079-8e3eb079-dev.auth.us-east-2.amazoncognito.com',
+		domain: 'unalvirtuallabs62fe9bab-62fe9bab-dev.auth.us-east-2.amazoncognito.com',
 		scope: ['phone', 'email', 'openid', 'profile', 'aws.cognito.signin.user.admin'],
 		redirectSignIn: 'http://localhost:3000/',
 		redirectSignOut: 'http://localhost:3000/',

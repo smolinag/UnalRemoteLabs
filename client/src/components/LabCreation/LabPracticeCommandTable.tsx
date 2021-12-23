@@ -7,7 +7,7 @@ import { Action } from '../UI/Table/Table';
 
 interface Props {
 	data: LabPracticeCommandInfo[];
-	onDelete?: (rowIndex: number, action: Action) => void;
+	handleAction?: (rowIndex: number, action: Action) => void;
 }
 
 const COLUMNS = [
@@ -23,7 +23,7 @@ const mapOutput = ({
 	commandDescription,
 ];
 
-const LabPracticeCommandTable: React.FC<Props> = ({data, onDelete}) => {
+const LabPracticeCommandTable: React.FC<Props> = ({data, handleAction: onDelete}) => {
 
 	return (
 		<Row className="section">

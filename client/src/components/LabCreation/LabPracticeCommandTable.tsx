@@ -7,7 +7,7 @@ import { Action } from '../UI/Table/Table';
 
 interface Props {
 	data: LabPracticeCommandInfo[];
-	handleAction?: (rowIndex: number, action: Action) => void;
+	onAction?: (rowIndex: number, action: Action) => void;
 }
 
 const COLUMNS = [
@@ -23,12 +23,12 @@ const mapOutput = ({
 	commandDescription,
 ];
 
-const LabPracticeCommandTable: React.FC<Props> = ({data, handleAction: onDelete}) => {
+const LabPracticeCommandTable: React.FC<Props> = ({data, onAction}) => {
 
 	return (
 		<Row className="section">
 			<h5>Comandos añadidos</h5>
-			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} removable onAction={onDelete}/>
+			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} removable onAction={onAction}/>
 		</Row>
 	);
 };

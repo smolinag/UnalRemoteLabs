@@ -11,6 +11,7 @@ import {
 	LabPracticeOutputTable
 } from '../../components/LabCreation';
 import {Button, LoadingContainer} from '../../components/UI';
+import {Action} from '../../components/UI/Table/Table';
 import {
 	useOnCreateLabPracticeMutation,
 	useOnCreateLabPracticeCommandMutation,
@@ -177,6 +178,26 @@ const LabCreationView: React.FC<unknown> = () => {
 		});
 	};
 
+	const handleCommandAction = (index: number, action: Action) => {
+		switch (action) {
+			case Action.Delete:
+				setCommandsList((previousState) => {
+					return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
+				});
+				break;
+		}
+	};
+
+	const handleParameterAction = (index: number, action: Action) => {
+		switch (action) {
+			case Action.Delete:
+				setParametersList((previousState) => {
+					return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
+				});
+				break;
+		}
+	};
+
 	const addParameter = (parameter: LabPracticeParameterInfo): void => {
 		setParametersList((previousState) => {
 			const newParameter: LabPracticeParameterInfo = {
@@ -332,7 +353,7 @@ const LabCreationView: React.FC<unknown> = () => {
 						Añadir
 					</Button>
 				</div>
-				{commandsList.length > 0 && <LabPracticeCommandTable data={commandsList} />}
+				{commandsList.length > 0 && <LabPracticeCommandTable data={commandsList} onAction={handleCommandAction} />}
 
 				<LabPracticeParameters
 					parameter={practiceInfo.parameter}
@@ -344,7 +365,9 @@ const LabCreationView: React.FC<unknown> = () => {
 						Añadir
 					</Button>
 				</div>
-				{parametersList.length > 0 && <LabPracticeParametersTable data={parametersList} />}
+				{parametersList.length > 0 && (
+					<LabPracticeParametersTable data={parametersList} onAction={handleParameterAction} />
+				)}
 
 				<LabPracticeOutput output={practiceInfo.output} onValueChange={practiceChange} />
 				<div className={classes.justifyCenter}>

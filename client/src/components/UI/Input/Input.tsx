@@ -13,11 +13,12 @@ interface Props {
 	tooltip?: string;
 	unit?: string;
 	onValueChange: (value: string) => void;
+	error?: boolean;
 }
 
-const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, onValueChange}) => {
+const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, onValueChange, error}) => {
 	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
-	let unitString = ""
+	let unitString = '';
 
 	const valueChange = (value: string): void => {
 		if (onValueChange) {
@@ -25,18 +26,20 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 		}
 	};
 
-	if(unit) {
-		switch(unit) {
-			case "minutos" :
-				unitString = "minutos"
-				break 
+	if (unit) {
+		switch (unit) {
+			case 'minutos':
+				unitString = 'minutos';
+				break;
 		}
 	}
 
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.inputWrapper}>
-				<span className={classes.inputTitle}>{placeholder}: {required && "(Requerido)"}</span>
+				<span className={classes.inputTitle}>
+					{placeholder}: {required && '(Requerido)'}
+				</span>
 				<div className={classes.inputSubwrapper}>
 					<input
 						type={type}
@@ -46,9 +49,7 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 						onChange={(e) => valueChange(e.target.value)}
 						className={classes.input}
 					/>
-					{
-						unit && <span className={classes.input}>{unitString}</span>
-					}
+					{unit && <span className={classes.input}>{unitString}</span>}
 
 					{tooltip ? (
 						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
@@ -58,6 +59,8 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 						<div style={{width: '16px'}} />
 					)}
 				</div>
+
+				{error && <p className="errorMessage">Campo requerido</p>}
 			</div>
 		</div>
 	);

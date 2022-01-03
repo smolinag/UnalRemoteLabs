@@ -10,7 +10,7 @@ import {
 	LabPracticeOutput,
 	LabPracticeOutputTable
 } from '../../components/LabCreation';
-import {Button, LoadingContainer} from '../../components/UI';
+import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
 	useOnCreateLabPracticeMutation,
@@ -57,6 +57,8 @@ const initialPracticeValue: LabPracticeInfo = {
 	}
 };
 
+let rowIndex = -1;
+
 const LabCreationView: React.FC<unknown> = () => {
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
@@ -64,6 +66,10 @@ const LabCreationView: React.FC<unknown> = () => {
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
+	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
+
+	const [modalTitle, setModalTitle] = React.useState<string>('');
+	const [commandToEdit, setCommandToEdit] = React.useState<LabPracticeCommandInfo>(initialPracticeValue.command);
 
 	const [createLabPractice] = useOnCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useOnCreateLabPracticeCommandMutation({});
@@ -197,7 +203,17 @@ const LabCreationView: React.FC<unknown> = () => {
 					return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
 				});
 				break;
+			case Action.Edit:
+				setDisplayModal(true);
+				setModalTitle(`Commando: ${commandsList[index].commandName}`);
+				setCommandToEdit(commandsList[index]);
+				rowIndex = index;
+				break;
 		}
+	};
+
+	const handleDisplayModal = (display: boolean) => {
+		setDisplayModal(display);
 	};
 
 	const addParameter = (parameter: LabPracticeParameterInfo): void => {
@@ -257,7 +273,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				};
 				return previousState.concat(newOutput);
 			});
-	
+
 			setPracticeInfo((previousState) => {
 				const output: OutputInfo = {
 					outputName: '',
@@ -386,7 +402,6 @@ const LabCreationView: React.FC<unknown> = () => {
 				errors.filter((error) => error.identifier === Params.ParameterDefaultValue).length === 1;
 			const notOutputName = errors.filter((error) => error.identifier === Params.OutputName).length === 1;
 
-
 			if (section === Section.PracticeInfo) {
 				if (!notAddedName && practiceInfo.practiceInfoName.length === 0) {
 					previousState.push({
@@ -451,8 +466,52 @@ const LabCreationView: React.FC<unknown> = () => {
 		});
 	};
 
+	const editInformation = (
+		param: string,
+		value: string,
+		command?: LabPracticeCommandInfo,
+		parameter?: LabPracticeParameterInfo
+	) => {
+		if (command) {
+			setCommandToEdit((previousState) => {
+				switch (param) {
+					case Params.CommandName:
+						return {...previousState, commandName: value};
+					case Params.CommandDescription:
+						return {...previousState, commandDescription: value};
+					default:
+						return previousState;
+				}
+			});
+		}
+	};
+
+	const handleSaveEdit = () => {
+		setCommandsList((previousState) => {
+			const command = previousState[rowIndex];
+
+			previousState.map((obj) => {
+				if (obj.commandName === command.commandName) {
+					(obj.commandName = commandToEdit.commandName), (obj.commandDescription = commandToEdit.commandDescription);
+				}
+			});
+			return previousState;
+		});
+
+		setDisplayModal(false);
+	};
+
 	return (
 		<>
+			{
+				<ModalComponent
+					display={displayModal}
+					onDisplay={handleDisplayModal}
+					onSave={handleSaveEdit}
+					title={modalTitle}>
+					<LabPracticeCommand command={commandToEdit} onValueEdit={editInformation} errors={errors} />
+				</ModalComponent>
+			}
 			<LoadingContainer loading={loading}>
 				<LabPractice practice={practiceInfo} onValueChange={practiceChange} errors={errors} />
 
@@ -483,7 +542,8 @@ const LabCreationView: React.FC<unknown> = () => {
 				<div className={classes.justifyCenter}>
 					<Button loading={false} onClick={() => addOutput(practiceInfo.output)}>
 						Añadir
-					</Button>|
+					</Button>
+					|
 				</div>
 				{outputsList.length > 0 && <LabPracticeOutputTable data={outputsList} />}
 

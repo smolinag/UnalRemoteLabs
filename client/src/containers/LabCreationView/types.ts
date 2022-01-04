@@ -29,7 +29,7 @@ export interface OutputInfo {
 	outputUnit: string;
 }
 
-export enum Identifier {
+export enum Params {
 	Name = 'name',
 	Description = 'description',
 	Duration = 'duration',
@@ -48,4 +48,15 @@ export enum Identifier {
 	OutputDescription = 'outputDescription',
 	OutputUnit = 'outputUnit',
 	AddCommand = 'addCommand'
+}
+
+export interface ErrorIdentifier {
+	identifier: string,
+}
+
+export enum Section {
+	PracticeInfo = 'PracticeInfo',
+	CommandInfo = 'CommandInfo',
+	ParameterInfo = 'ParameterInfo',
+	OutputInfo = 'OutputInfo',
 }

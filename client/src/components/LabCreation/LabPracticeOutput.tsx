@@ -1,16 +1,27 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {OutputInfo, Identifier} from '../../containers/LabCreationView/types';
+import {OutputInfo, Params, ErrorIdentifier} from '../../containers/LabCreationView/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
 
 interface Props {
 	output: OutputInfo;
 	onValueChange: (value: string, id: string) => void;
+	errors: ErrorIdentifier[];
 }
 
-const LabPracticeOutput: React.FC<Props> = ({onValueChange, output}) => {
+const LabPracticeOutput: React.FC<Props> = ({onValueChange, output, errors}) => {
+	const checkErrorMessage = (parameter: string): boolean => {
+		let message = false;
+		errors.map((error) => {
+			if (error.identifier === parameter) {
+				message = true;
+			}
+		});
+
+		return message;
+	};
 
 	return (
 		<Row className="section">
@@ -20,23 +31,24 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, output}) => {
 			<div className={classes.options}>
 				<Input
 					type="text"
-					placeholder='Nombre'
+					placeholder="Nombre"
 					value={output.outputName}
 					tooltip="Ingrese el nombre del parámetro de salida"
-					onValueChange={(value) => onValueChange(value, Identifier.OutputName)}
+					onValueChange={(value) => onValueChange(value, Params.OutputName)}
+					error={checkErrorMessage(Params.OutputName)}
 				/>
 				<Input
 					type="text"
-					placeholder='Descripción'
+					placeholder="Descripción"
 					value={output.outputDescription}
 					tooltip="Ingrese la descripción del parámetro de salida"
-					onValueChange={(value) => onValueChange(value, Identifier.OutputDescription)}
+					onValueChange={(value) => onValueChange(value, Params.OutputDescription)}
 				/>
 				<Input
 					type="text"
-					placeholder='Unidad'
+					placeholder="Unidad"
 					value={output.outputUnit}
-					onValueChange={(value) => onValueChange(value, Identifier.OutputUnit)}
+					onValueChange={(value) => onValueChange(value, Params.OutputUnit)}
 				/>
 			</div>
 		</Row>

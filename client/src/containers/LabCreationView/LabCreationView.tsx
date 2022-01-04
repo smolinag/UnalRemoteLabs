@@ -66,10 +66,14 @@ const LabCreationView: React.FC<unknown> = () => {
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
-	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
 
+	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
+	const [modalType, setModalType] = React.useState<Section>(Section.CommandInfo);
 	const [modalTitle, setModalTitle] = React.useState<string>('');
 	const [commandToEdit, setCommandToEdit] = React.useState<LabPracticeCommandInfo>(initialPracticeValue.command);
+	const [parameterToEdit, setParameterToEdit] = React.useState<LabPracticeParameterInfo>(
+		initialPracticeValue.parameter
+	);
 
 	const [createLabPractice] = useOnCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useOnCreateLabPracticeCommandMutation({});
@@ -205,6 +209,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				break;
 			case Action.Edit:
 				setDisplayModal(true);
+				setModalType(Section.CommandInfo);
 				setModalTitle(`Commando: ${commandsList[index].commandName}`);
 				setCommandToEdit(commandsList[index]);
 				rowIndex = index;
@@ -214,12 +219,13 @@ const LabCreationView: React.FC<unknown> = () => {
 
 	const handleDisplayModal = (display: boolean) => {
 		setDisplayModal(display);
+		setCommandToEdit(initialPracticeValue.command);
 	};
 
 	const addParameter = (parameter: LabPracticeParameterInfo): void => {
 		checkErrorMessage(Section.ParameterInfo);
 
-		if (parameter.parameterName.length > 0 && parameter.parameterDefaultValue.length > 0) {
+		if (parameter.selectedCommandName.length > 0 && parameter.parameterName.length > 0 && parameter.parameterDefaultValue.length > 0) {
 			setParametersList((previousState) => {
 				const newParameter: LabPracticeParameterInfo = {
 					selectedCommandName: parameter.selectedCommandName,
@@ -257,6 +263,13 @@ const LabCreationView: React.FC<unknown> = () => {
 				setParametersList((previousState) => {
 					return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
 				});
+				break;
+			case Action.Edit:
+				setModalType(Section.ParameterInfo);
+				setDisplayModal(true);
+				setModalTitle(`Parametro: ${parametersList[index].parameterName}`);
+				setParameterToEdit(parametersList[index]);
+				rowIndex = index;
 				break;
 		}
 	};
@@ -397,6 +410,7 @@ const LabCreationView: React.FC<unknown> = () => {
 			const notAddedName = errors.filter((error) => error.identifier === Params.Name).length === 1;
 			const notAddedDuration = errors.filter((error) => error.identifier === Params.Duration).length === 1;
 			const notCommandName = errors.filter((error) => error.identifier === Params.CommandName).length === 1;
+			const notCommandSelected = errors.filter((error) => error.identifier === Params.SelectedCommand).length === 1;
 			const notParameterName = errors.filter((error) => error.identifier === Params.ParameterName).length === 1;
 			const notParameterDefaultValue =
 				errors.filter((error) => error.identifier === Params.ParameterDefaultValue).length === 1;
@@ -409,7 +423,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					});
 				} else if (notAddedName && practiceInfo.practiceInfoName.length > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.Name);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+					previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
 
 				if (!notAddedDuration && parseInt(practiceInfo.practiceInfoDuration) === 0) {
@@ -418,7 +432,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					});
 				} else if (notAddedDuration && parseInt(practiceInfo.practiceInfoDuration) > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.Duration);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+					previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
 			}
 			if (section === Section.CommandInfo) {
@@ -428,10 +442,19 @@ const LabCreationView: React.FC<unknown> = () => {
 					});
 				} else if (notCommandName && practiceInfo.command.commandName.length > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.CommandName);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+					previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
 			}
 			if (section === Section.ParameterInfo) {
+				if (!notCommandSelected && practiceInfo.parameter.selectedCommandName.length === 0) {
+					previousState.push({
+						identifier: Params.SelectedCommand
+					});
+				} else if (notCommandSelected && practiceInfo.parameter.selectedCommandName.length > 0) {
+					const index = errors.findIndex((error) => error.identifier === Params.SelectedCommand);
+					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+				}
+
 				if (!notParameterName && practiceInfo.parameter.parameterName.length === 0) {
 					previousState.push({
 						identifier: Params.ParameterName
@@ -458,7 +481,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					});
 				} else if (notOutputName && practiceInfo.output.outputName.length > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.OutputName);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+					previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
 			}
 
@@ -483,22 +506,85 @@ const LabCreationView: React.FC<unknown> = () => {
 						return previousState;
 				}
 			});
+		} else if (parameter) {
+			setParameterToEdit((previousState) => {
+				switch (param) {
+					case Params.SelectedCommand:
+						return {...previousState, selectedCommandName: value};
+					case Params.ParameterName:
+						return {...previousState, parameterName: value};
+					case Params.ParameterDescription:
+						return {...previousState, parameterDescription: value};
+					case Params.ParameterDefaultValue:
+						return {...previousState, parameterDefaultValue: value};
+					case Params.ParameterUnit:
+						return {...previousState, parameterUnit: value};
+					case Params.ParameterMinValue:
+						return {...previousState, parameterMinValue: value};
+					case Params.ParameterMaxValue:
+						return {...previousState, parameterMaxValue: value};
+					case Params.ParameterRegex:
+						return {...previousState, parameterRegex: value};
+					default:
+						return previousState;
+				}
+			});
 		}
 	};
 
 	const handleSaveEdit = () => {
-		setCommandsList((previousState) => {
-			const command = previousState[rowIndex];
+		if (commandToEdit.commandName !== '') {
+			setCommandsList((previousState) => {
+				const command = previousState[rowIndex];
 
-			previousState.map((obj) => {
-				if (obj.commandName === command.commandName) {
-					(obj.commandName = commandToEdit.commandName), (obj.commandDescription = commandToEdit.commandDescription);
-				}
+				previousState.map((obj) => {
+					if (obj.commandName === command.commandName) {
+						(obj.commandName = commandToEdit.commandName), (obj.commandDescription = commandToEdit.commandDescription);
+					}
+				});
+				return previousState;
 			});
-			return previousState;
-		});
+			setCommandToEdit(initialPracticeValue.command);
+		} else if (parameterToEdit.parameterName !== '') {
+			setParametersList((previousState) => {
+				const parameter = previousState[rowIndex];
+
+				previousState.map((obj) => {
+					if (obj.parameterName === parameter.parameterName) {
+						obj.selectedCommandName = parameterToEdit.selectedCommandName;
+						obj.parameterName = parameterToEdit.parameterName;
+						obj.parameterDescription = parameterToEdit.parameterDescription;
+						obj.parameterUnit = parameterToEdit.parameterUnit;
+						obj.parameterDefaultValue = parameterToEdit.parameterDefaultValue;
+						obj.parameterMinValue = parameterToEdit.parameterMinValue;
+						obj.parameterMaxValue = parameterToEdit.parameterMaxValue;
+						obj.parameterRegex = parameterToEdit.parameterRegex
+					}
+				});
+				return previousState;
+			});
+			setParameterToEdit(initialPracticeValue.parameter);
+		}
 
 		setDisplayModal(false);
+	};
+
+	const modalSection = () => {
+		switch (modalType) {
+			case Section.CommandInfo:
+				return <LabPracticeCommand command={commandToEdit} onValueEdit={editInformation} errors={errors} />;
+			case Section.ParameterInfo:
+				return (
+					<LabPracticeParameters
+						parameter={parameterToEdit}
+						commands={commandsList}
+						onValueEdit={editInformation}
+						errors={errors}
+					/>
+				);
+			default:
+				break;
+		}
 	};
 
 	return (
@@ -509,7 +595,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					onDisplay={handleDisplayModal}
 					onSave={handleSaveEdit}
 					title={modalTitle}>
-					<LabPracticeCommand command={commandToEdit} onValueEdit={editInformation} errors={errors} />
+					{modalSection()}
 				</ModalComponent>
 			}
 			<LoadingContainer loading={loading}>

@@ -18,9 +18,10 @@ interface Props {
 	tooltip?: string;
 	value: string;
 	onValueChange: (value: string, id: string) => void;
+	error?: boolean;
 }
 
-const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onValueChange}) => {
+const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onValueChange, error}) => {
 	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
 
 	const renderItem = (option: Option): JSX.Element => {
@@ -47,6 +48,8 @@ const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onVa
 							<BsQuestionCircle />
 						</OverlayTrigger>
 					)}
+
+					{error && <p className="errorMessage">Campo requerido</p>}
 				</div>
 			</div>
 		</div>

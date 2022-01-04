@@ -14,18 +14,32 @@ import classes from './shared.module.scss';
 interface Props {
 	parameter: LabPracticeParameterInfo;
 	commands: LabPracticeCommandInfo[];
-	onValueChange: (value: string, id: Params) => void;
+	onValueChange?: (value: string, id: Params) => void;
 	errors: ErrorIdentifier[];
+	onValueEdit?: (
+		paramType: string,
+		value: string,
+		command?: LabPracticeCommandInfo,
+		parameter?: LabPracticeParameterInfo
+	) => void;
 }
 
-const initialCommand: Option = {id: 'Comando', value: 'Comando'};
+const initialCommand: Option = {id: '', value: 'Comando'};
 
-const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueChange, errors}) => {
+const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueChange, onValueEdit, errors}) => {
 	const [command, setCommand] = React.useState<Option>(initialCommand);
+
+	React.useEffect(() => {
+		if (parameter.selectedCommandName === '') {
+			setCommand(initialCommand);
+		}
+	}, [parameter.selectedCommandName]);
 
 	const handleSelectCommand = (value: string) => {
 		setCommand({value, id: value});
-		onValueChange(value, Params.SelectedCommand);
+		onValueChange
+			? onValueChange(value, Params.SelectedCommand)
+			: onValueEdit && onValueEdit(Params.SelectedCommand, value, undefined, parameter);
 	};
 
 	const checkErrorMessage = (parameter: string): boolean => {
@@ -52,27 +66,40 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 						handleSelectCommand(value);
 					}}
 					value={command.value}
+					error={checkErrorMessage(Params.SelectedCommand)}
 				/>
 				<Input
 					type="text"
 					placeholder="Nombre"
 					value={parameter.parameterName}
 					tooltip="Ingrese el nombre del laboratorio"
-					onValueChange={(value) => onValueChange(value, Params.ParameterName)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterName)
+							: onValueEdit && onValueEdit(Params.ParameterName, value, undefined, parameter)
+					}
 					error={checkErrorMessage(Params.ParameterName)}
 				/>
 				<Input
 					type="text"
 					placeholder="Descripción"
 					value={parameter.parameterDescription}
-					onValueChange={(value) => onValueChange(value, Params.ParameterDescription)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterDescription)
+							: onValueEdit && onValueEdit(Params.ParameterDescription, value, undefined, parameter)
+					}
 				/>
 
 				<Input
 					type="number"
 					placeholder="Valor por defecto"
 					value={parameter.parameterDefaultValue}
-					onValueChange={(value) => onValueChange(value, Params.ParameterDefaultValue)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterDefaultValue)
+							: onValueEdit && onValueEdit(Params.ParameterDefaultValue, value, undefined, parameter)
+					}
 					error={checkErrorMessage(Params.ParameterDefaultValue)}
 				/>
 
@@ -80,28 +107,44 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 					type="text"
 					placeholder="Unidad"
 					value={parameter.parameterUnit}
-					onValueChange={(value) => onValueChange(value, Params.ParameterUnit)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterUnit)
+							: onValueEdit && onValueEdit(Params.ParameterUnit, value, undefined, parameter)
+					}
 				/>
 
 				<Input
 					type="number"
 					placeholder="Valor mínimo"
 					value={parameter.parameterMinValue}
-					onValueChange={(value) => onValueChange(value, Params.ParameterMinValue)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterMinValue)
+							: onValueEdit && onValueEdit(Params.ParameterMinValue, value, undefined, parameter)
+					}
 				/>
 
 				<Input
 					type="number"
 					placeholder="Valor máximo"
 					value={parameter.parameterMaxValue}
-					onValueChange={(value) => onValueChange(value, Params.ParameterMaxValue)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterMaxValue)
+							: onValueEdit && onValueEdit(Params.ParameterMaxValue, value, undefined, parameter)
+					}
 				/>
 
 				<Input
 					type="string"
 					placeholder="Expresión regular"
 					value={parameter.parameterRegex}
-					onValueChange={(value) => onValueChange(value, Params.ParameterRegex)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.ParameterRegex)
+							: onValueEdit && onValueEdit(Params.ParameterRegex, value, undefined, parameter)
+					}
 				/>
 			</div>
 		</Row>

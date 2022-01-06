@@ -6,18 +6,20 @@ import classes from './Table.module.scss';
 
 export enum Action {
 	Edit,
-	Delete
+	Delete,
+	DeleteAll
 }
 
 interface Props {
 	headers: string[];
-	data: (string | number)[][];
+	data: (string | number | React.ReactNode)[][];
 	overflow?: boolean;
 	stickyHeader?: boolean;
 	maxHeight?: string;
 	removable?: boolean;
+	hasRemoveAll?: boolean;
 	editable?: boolean;
-	onAction?: (rowIndex: number, action: Action) => void;
+	onAction?: (rowIndex: number, action: Action, row?: React.ReactNode[]) => void;
 }
 
 const Table: React.FC<Props> = ({
@@ -28,6 +30,7 @@ const Table: React.FC<Props> = ({
 	maxHeight,
 	editable = false,
 	removable = false,
+	hasRemoveAll = false,
 	onAction
 }) => {
 	return (
@@ -44,7 +47,16 @@ const Table: React.FC<Props> = ({
 								{header}
 							</th>
 						))}
-						{(editable || removable) && <th className={stickyHeader ? classes.stickyHeader : ''} />}
+						{(editable || removable) && (
+							<th className={stickyHeader ? classes.stickyHeader : ''}>
+								{removable && hasRemoveAll && (
+									<BsXCircleFill
+										onClick={() => onAction?.(0, Action.DeleteAll)}
+										className={`${classes.actionIcon} ${classes.delete}`}
+									/>
+								)}
+							</th>
+						)}
 					</tr>
 				</thead>
 				<tbody>
@@ -56,11 +68,11 @@ const Table: React.FC<Props> = ({
 							{(editable || removable) && (
 								<td style={{width: editable && removable ? '70px' : '30px'}}>
 									{editable && (
-										<BsPencilFill onClick={() => onAction?.(i, Action.Edit)} className={classes.actionIcon} />
+										<BsPencilFill onClick={() => onAction?.(i, Action.Edit, row)} className={classes.actionIcon} />
 									)}
 									{removable && (
 										<BsXCircleFill
-											onClick={() => onAction?.(i, Action.Delete)}
+											onClick={() => onAction?.(i, Action.Delete, row)}
 											className={`${classes.actionIcon} ${classes.delete}`}
 										/>
 									)}

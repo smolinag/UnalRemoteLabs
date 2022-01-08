@@ -5,7 +5,8 @@ import {
 	LabPracticeParameterInfo,
 	Params,
 	LabPracticeCommandInfo,
-	ErrorIdentifier
+	ErrorIdentifier,
+	OutputInfo
 } from '../../containers/LabCreationView/types';
 import {Input, DropdownComponent} from '../UI';
 import {Option} from '../UI/DropdownComponent/DropdownComponent';
@@ -20,7 +21,8 @@ interface Props {
 		paramType: string,
 		value: string,
 		command?: LabPracticeCommandInfo,
-		parameter?: LabPracticeParameterInfo
+		parameter?: LabPracticeParameterInfo,
+		output?: OutputInfo
 	) => void;
 }
 

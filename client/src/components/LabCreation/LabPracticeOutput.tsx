@@ -1,17 +1,24 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {OutputInfo, Params, ErrorIdentifier} from '../../containers/LabCreationView/types';
+import {OutputInfo, Params, ErrorIdentifier, LabPracticeCommandInfo, LabPracticeParameterInfo} from '../../containers/LabCreationView/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
 
 interface Props {
 	output: OutputInfo;
-	onValueChange: (value: string, id: string) => void;
+	onValueChange?: (value: string, id: string) => void;
 	errors: ErrorIdentifier[];
+	onValueEdit?: (
+		paramType: string,
+		value: string,
+		command?: LabPracticeCommandInfo,
+		parameter?: LabPracticeParameterInfo,
+		output?: OutputInfo
+	) => void;
 }
 
-const LabPracticeOutput: React.FC<Props> = ({onValueChange, output, errors}) => {
+const LabPracticeOutput: React.FC<Props> = ({onValueChange, onValueEdit, output, errors}) => {
 	const checkErrorMessage = (parameter: string): boolean => {
 		let message = false;
 		errors.map((error) => {
@@ -34,7 +41,7 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, output, errors}) => 
 					placeholder="Nombre"
 					value={output.outputName}
 					tooltip="Ingrese el nombre del parámetro de salida"
-					onValueChange={(value) => onValueChange(value, Params.OutputName)}
+					onValueChange={(value) => onValueChange ? onValueChange(value, Params.OutputName) : (onValueEdit && onValueEdit(Params.OutputName, value, undefined, undefined, output)) }
 					error={checkErrorMessage(Params.OutputName)}
 				/>
 				<Input
@@ -42,13 +49,13 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, output, errors}) => 
 					placeholder="Descripción"
 					value={output.outputDescription}
 					tooltip="Ingrese la descripción del parámetro de salida"
-					onValueChange={(value) => onValueChange(value, Params.OutputDescription)}
+					onValueChange={(value) => onValueChange ? onValueChange(value, Params.OutputDescription) : (onValueEdit && onValueEdit(Params.OutputDescription, value, undefined, undefined, output)) }
 				/>
 				<Input
 					type="text"
 					placeholder="Unidad"
 					value={output.outputUnit}
-					onValueChange={(value) => onValueChange(value, Params.OutputUnit)}
+					onValueChange={(value) => onValueChange ? onValueChange(value, Params.OutputUnit) : (onValueEdit && onValueEdit(Params.OutputUnit, value, undefined, undefined, output)) }
 				/>
 			</div>
 		</Row>

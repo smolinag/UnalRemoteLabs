@@ -5,7 +5,8 @@ import {
 	LabPracticeCommandInfo,
 	Params,
 	ErrorIdentifier,
-	LabPracticeParameterInfo
+	LabPracticeParameterInfo,
+	OutputInfo
 } from '../../containers/LabCreationView/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
@@ -18,7 +19,8 @@ interface Props {
 		paramType: string,
 		value: string,
 		command?: LabPracticeCommandInfo,
-		parameter?: LabPracticeParameterInfo
+		parameter?: LabPracticeParameterInfo,
+		output?: OutputInfo
 	) => void;
 }
 

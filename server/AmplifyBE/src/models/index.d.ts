@@ -11,18 +11,6 @@ export declare class LabOutputOut {
   constructor(init: ModelInit<LabOutputOut>);
 }
 
-type LabPracticeSessionCommandMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type LabPracticeSessionMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type LabPracticeOutputMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
 type UserLabPracticeSessionMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -63,6 +51,18 @@ type OrganizationMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type LabPracticeSessionMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type LabPracticeOutputMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type LabPracticeSessionCommandMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type LabPracticeCommandMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -77,56 +77,6 @@ type LabPracticeDeviceMetaData = {
 
 type LabPracticeMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-export declare class LabPracticeSessionCommand {
-  readonly id: string;
-  readonly requestDate: string;
-  readonly executionDate?: string;
-  readonly status: string;
-  readonly parameters?: string;
-  readonly LabPracticeSession?: LabPracticeSession;
-  readonly labpracticesessionID: string;
-  readonly LabPracticeCommand?: LabPracticeCommand;
-  readonly labpracticecommandID: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<LabPracticeSessionCommand, LabPracticeSessionCommandMetaData>);
-  static copyOf(source: LabPracticeSessionCommand, mutator: (draft: MutableModel<LabPracticeSessionCommand, LabPracticeSessionCommandMetaData>) => MutableModel<LabPracticeSessionCommand, LabPracticeSessionCommandMetaData> | void): LabPracticeSessionCommand;
-}
-
-export declare class LabPracticeSession {
-  readonly id: string;
-  readonly startDate: string;
-  readonly endDate: string;
-  readonly description?: string;
-  readonly updatedBy?: string;
-  readonly createdBy: string;
-  readonly LabPractice?: LabPracticeOutput;
-  readonly labpracticeID: string;
-  readonly LabPracticeSessionCommands?: (LabPracticeSessionCommand | null)[];
-  readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[];
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<LabPracticeSession, LabPracticeSessionMetaData>);
-  static copyOf(source: LabPracticeSession, mutator: (draft: MutableModel<LabPracticeSession, LabPracticeSessionMetaData>) => MutableModel<LabPracticeSession, LabPracticeSessionMetaData> | void): LabPracticeSession;
-}
-
-export declare class LabPracticeOutput {
-  readonly id: string;
-  readonly name: string;
-  readonly labelName?: string;
-  readonly order?: number;
-  readonly description?: string;
-  readonly units?: string;
-  readonly updatedBy?: string;
-  readonly createdBy: string;
-  readonly labpracticeID: string;
-  readonly outputType: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<LabPracticeOutput, LabPracticeOutputMetaData>);
-  static copyOf(source: LabPracticeOutput, mutator: (draft: MutableModel<LabPracticeOutput, LabPracticeOutputMetaData>) => MutableModel<LabPracticeOutput, LabPracticeOutputMetaData> | void): LabPracticeOutput;
 }
 
 export declare class UserLabPracticeSession {
@@ -269,6 +219,56 @@ export declare class Organization {
   readonly updatedAt?: string;
   constructor(init: ModelInit<Organization, OrganizationMetaData>);
   static copyOf(source: Organization, mutator: (draft: MutableModel<Organization, OrganizationMetaData>) => MutableModel<Organization, OrganizationMetaData> | void): Organization;
+}
+
+export declare class LabPracticeSession {
+  readonly id: string;
+  readonly startDate: string;
+  readonly endDate: string;
+  readonly description?: string;
+  readonly updatedBy?: string;
+  readonly createdBy: string;
+  readonly LabPractice?: LabPracticeOutput;
+  readonly labpracticeID: string;
+  readonly LabPracticeSessionCommands?: (LabPracticeSessionCommand | null)[];
+  readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<LabPracticeSession, LabPracticeSessionMetaData>);
+  static copyOf(source: LabPracticeSession, mutator: (draft: MutableModel<LabPracticeSession, LabPracticeSessionMetaData>) => MutableModel<LabPracticeSession, LabPracticeSessionMetaData> | void): LabPracticeSession;
+}
+
+export declare class LabPracticeOutput {
+  readonly id: string;
+  readonly name: string;
+  readonly labelName?: string;
+  readonly order?: number;
+  readonly description?: string;
+  readonly units?: string;
+  readonly updatedBy?: string;
+  readonly createdBy: string;
+  readonly labpracticeID: string;
+  readonly outputType: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<LabPracticeOutput, LabPracticeOutputMetaData>);
+  static copyOf(source: LabPracticeOutput, mutator: (draft: MutableModel<LabPracticeOutput, LabPracticeOutputMetaData>) => MutableModel<LabPracticeOutput, LabPracticeOutputMetaData> | void): LabPracticeOutput;
+}
+
+export declare class LabPracticeSessionCommand {
+  readonly id: string;
+  readonly requestDate: string;
+  readonly executionDate?: string;
+  readonly status: string;
+  readonly parameters?: string;
+  readonly LabPracticeSession?: LabPracticeSession;
+  readonly labpracticesessionID: string;
+  readonly LabPracticeCommand?: LabPracticeCommand;
+  readonly labpracticecommandID: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<LabPracticeSessionCommand, LabPracticeSessionCommandMetaData>);
+  static copyOf(source: LabPracticeSessionCommand, mutator: (draft: MutableModel<LabPracticeSessionCommand, LabPracticeSessionCommandMetaData>) => MutableModel<LabPracticeSessionCommand, LabPracticeSessionCommandMetaData> | void): LabPracticeSessionCommand;
 }
 
 export declare class LabPracticeCommand {

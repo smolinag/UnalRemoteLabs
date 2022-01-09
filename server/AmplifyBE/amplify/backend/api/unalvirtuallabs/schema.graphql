@@ -223,13 +223,17 @@ input LambdaInput {
   topic: String!
 }
 
+type Query{
+  getUserLabPracticeSessionByUserId(userID:ID!):UserLabPracticeSession
+}
+
 type Mutation {
   publishMqttMessage(input: LambdaInput!): String @function(name: "iotpub-${env}")
   labOutputListen(input: LabOutputIn!): LabOutputOut @function(name: "laboutputlogger-${env}")
 }
 
 type Subscription {
-  onLabOutputListenBySessionID(labpracticesessionID: ID!): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
+  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
   onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
 }
  

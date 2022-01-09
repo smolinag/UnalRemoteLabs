@@ -1,0 +1,14 @@
+query getUserLabPracticeSession($id: ID!) {
+	getUserLabPracticeSession(id: $id) {
+		userID
+		LabPracticeSession {
+			startDate
+			endDate
+         description
+			LabPractice {
+				name
+            description
+			}
+		}
+	}
+}

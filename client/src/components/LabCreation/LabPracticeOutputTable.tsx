@@ -3,10 +3,11 @@ import Row from 'react-bootstrap/Row';
 
 import {OutputInfo} from '../../containers/LabCreationView/types';
 import {Table} from '../UI/index';
+import { Action } from '../UI/Table/Table';
 
 interface Props {
 	data: OutputInfo[];
-	onValueChange?: (value: string, id: string) => void;
+	onAction?: (rowIndex: number, action: Action) => void;
 }
 
 const COLUMNS = [
@@ -15,7 +16,7 @@ const COLUMNS = [
 	'Unidad'
 ];
 
-const LabPracticeOutputTable: React.FC<Props> = ({data, onValueChange}) => {
+const LabPracticeOutputTable: React.FC<Props> = ({data, onAction}) => {
 	const mapOutput = ({
       outputName: outputName,
       outputDescription,
@@ -29,7 +30,7 @@ const LabPracticeOutputTable: React.FC<Props> = ({data, onValueChange}) => {
 	return (
 		<Row className="section">
 			<h5>Comandos añadidos</h5>
-			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} />
+			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} editable removable onAction={onAction}/>
 		</Row>
 	);
 };

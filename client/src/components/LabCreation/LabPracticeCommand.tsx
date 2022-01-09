@@ -1,23 +1,36 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {LabPracticeCommandInfo, Params, ErrorIdentifier} from '../../containers/LabCreationView/types';
+import {
+	LabPracticeCommandInfo,
+	Params,
+	ErrorIdentifier,
+	LabPracticeParameterInfo,
+	OutputInfo
+} from '../../containers/LabCreationView/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
 
 interface Props {
 	command: LabPracticeCommandInfo;
-	onValueChange: (value: string, id: string) => void;
+	onValueChange?: (value: string, id: string) => void;
 	errors: ErrorIdentifier[];
+	onValueEdit?: (
+		paramType: string,
+		value: string,
+		command?: LabPracticeCommandInfo,
+		parameter?: LabPracticeParameterInfo,
+		output?: OutputInfo
+	) => void;
 }
 
-const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, errors}) => {
+const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdit, errors}) => {
 	const checkErrorMessage = (parameter: string): boolean => {
 		let message = false;
 		errors.map((error) => {
-			if(error.identifier === parameter) {
+			if (error.identifier === parameter) {
 				message = true;
-			} 
+			}
 		});
 
 		return message;
@@ -31,19 +44,27 @@ const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, errors}) =
 			<div className={classes.options}>
 				<Input
 					type="text"
-					placeholder='Nombre'
+					placeholder="Nombre"
 					required
 					value={command.commandName}
 					tooltip="Ingrese el nombre del comando"
-					onValueChange={(value) => onValueChange(value, Params.CommandName)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.CommandName)
+							: onValueEdit && onValueEdit(Params.CommandName, value, command)
+					}
 					error={checkErrorMessage(Params.CommandName)}
 				/>
 				<Input
 					type="text"
-					placeholder='Descripción'
+					placeholder="Descripción"
 					value={command.commandDescription}
 					tooltip="Ingrese la descripción del comando"
-					onValueChange={(value) => onValueChange(value, Params.CommandDescription)}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.CommandDescription)
+							: onValueEdit && onValueEdit(Params.CommandDescription, value, command)
+					}
 				/>
 			</div>
 		</Row>

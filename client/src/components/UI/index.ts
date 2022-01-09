@@ -6,3 +6,4 @@ export {default as LoadingContainer} from './LoadingContainer/LoadingContainer';
 export {default as Input} from './Input/Input';
 export {default as DropdownComponent} from './DropdownComponent/DropdownComponent';
 export {default as NotificationBanner} from './NotificationBanner/NotificationBanner';
+export {default as ModalComponent} from './ModalComponent/ModalComponent';

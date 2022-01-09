@@ -46,7 +46,7 @@ const LabPracticeParametersTable: React.FC<Props> = ({data, onAction}) => {
 	return (
 		<Row className="section">
 			<h5>Comandos añadidos</h5>
-			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} removable onAction={onAction}/>
+			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} editable removable onAction={onAction}/>
 		</Row>
 	);
 };

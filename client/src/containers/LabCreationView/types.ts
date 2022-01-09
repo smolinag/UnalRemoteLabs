@@ -27,6 +27,7 @@ export interface OutputInfo {
 	outputName: string;
 	outputDescription: string;
 	outputUnit: string;
+	outputType: string;
 }
 
 export enum Params {

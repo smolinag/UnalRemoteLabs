@@ -62,11 +62,11 @@
     "Ref": "AWS::StackId"
   },
   "permissions": [],
-  "hostedUIDomainName": "unalvirtuallabs62fe9bab-62fe9bab",
+  "hostedUIDomainName": "unalvirtuallabs747b40c4-747b40c4",
   "authProvidersUserPool": [
     "Google"
   ],
   "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-  "authProviders": [],
-  "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}"
+  "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
+  "authProviders": []
 }

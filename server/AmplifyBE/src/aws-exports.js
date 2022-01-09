@@ -11,7 +11,7 @@ const awsmobile = {
     "aws_user_pools_id": "us-east-2_zsUbsMO4I",
     "aws_user_pools_web_client_id": "456sd4us2915jjlpfest04v9jl",
     "oauth": {
-        "domain": "unalvirtuallabs62fe9bab-62fe9bab-dev.auth.us-east-2.amazoncognito.com",
+        "domain": "unalvirtuallabs747b40c4-747b40c4-dev.auth.us-east-2.amazoncognito.com",
         "scope": [
             "phone",
             "email",

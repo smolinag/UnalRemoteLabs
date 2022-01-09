@@ -1,0 +1,1570 @@
+type Organization {
+  id: ID!
+  country: String!
+  region: String!
+  city: String!
+  type: String!
+  name: String!
+  description: String
+  phone: String
+  address: String
+  createdBy: String!
+  updatedBy: String
+  Laboratories(filter: ModelLaboratoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLaboratoryConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Role {
+  id: ID!
+  name: String!
+  description: String
+  createdBy: String!
+  updatedBy: String
+  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
+  Privileges(privilegeID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection
+  Users(userID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Privilege {
+  id: ID!
+  name: String!
+  description: String
+  Roles(roleID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type UserLabPracticeSession {
+  id: ID!
+  sessionStartDate: AWSDateTime
+  sessionEndDate: AWSDateTime
+  User: User
+  LabPracticeSession: LabPracticeSession
+  userID: ID!
+  labpracticesessionID: ID!
+  roleID: ID
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type User {
+  id: ID!
+  name: String!
+  lastNames: String!
+  documentIdNumber: String
+  email: String!
+  phone: String
+  userName: String
+  s3AvatarPath: String
+  dateOfBirth: String
+  updatedBy: String
+  createdBy: String!
+  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
+  Roles(roleID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection
+  UserLabSemesters(labsemesterID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPracticeSessionCommand {
+  id: ID!
+  requestDate: AWSDateTime!
+  executionDate: AWSDateTime
+  status: String!
+  parameters: AWSJSON
+  LabPracticeSession: LabPracticeSession
+  labpracticesessionID: ID!
+  LabPracticeCommand: LabPracticeCommand
+  labpracticecommandID: ID!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPracticeOutput {
+  id: ID!
+  name: String!
+  labelName: String
+  order: Int
+  description: String
+  units: AWSJSON
+  updatedBy: String
+  createdBy: String!
+  labpracticeID: ID!
+  outputType: String!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPracticeSession {
+  id: ID!
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  description: String
+  updatedBy: String
+  createdBy: String!
+  LabPractice: LabPracticeOutput
+  labpracticeID: ID!
+  LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
+  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPracticeDevice {
+  id: ID!
+  name: String!
+  description: String
+  type: String
+  updatedBy: String
+  createdBy: String
+  LabPractice: LabPracticeOutput
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPracticeParameter {
+  id: ID!
+  name: String!
+  labelName: String
+  order: Int
+  description: String
+  defaultValue: String!
+  minValue: Int
+  maxValue: Int
+  regex: String
+  updatedBy: String
+  createdBy: String
+  LabPracticeCommand: LabPracticeCommand
+  labpracticecommandID: ID
+  LabPractice: LabPracticeDevice
+  labpracticeID: ID
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPracticeCommand {
+  id: ID!
+  name: String!
+  labelName: String
+  order: Int
+  description: String
+  updatedBy: String
+  createdBy: String!
+  LabPractice: LabPracticeParameter
+  labpracticeID: ID!
+  LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
+  LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabPractice {
+  id: ID!
+  name: String!
+  description: String
+  duration: Int!
+  updatedBy: String
+  createdBy: String!
+  Laboratory: Laboratory
+  laboratoryID: ID!
+  LabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeCommandConnection
+  LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
+  LabPracticeDevice: LabPracticeDevice
+  LabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionConnection
+  LabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeOutputConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type LabSemester {
+  id: ID!
+  semesterName: String!
+  description: String
+  emailUserList: AWSJSON
+  updatedBy: String
+  createdBy: String!
+  Laboratory: Laboratory
+  laboratoryID: ID!
+  users(userID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type Laboratory {
+  id: ID!
+  name: String!
+  description: String
+  updatedBy: String
+  createdBy: String!
+  LabSemesters(filter: ModelLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabSemesterConnection
+  organizationID: ID!
+  Organization: Organization
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type PrivilegeRole {
+  id: ID!
+  privilegeID: ID!
+  roleID: ID!
+  privilege: Privilege!
+  role: Role!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type RoleUser {
+  id: ID!
+  userID: ID!
+  roleID: ID!
+  user: User!
+  role: Role!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+type UserLabSemester {
+  id: ID!
+  userID: ID!
+  labsemesterID: ID!
+  user: User!
+  labsemester: LabSemester!
+  _version: Int!
+  _deleted: Boolean
+  _lastChangedAt: AWSTimestamp!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+}
+
+input LabOutputIn {
+  id: ID!
+  captureDate: AWSDateTime
+  value: String
+  labpracticeoutputID: ID!
+  labpracticesessionID: ID!
+}
+
+type LabOutputOut {
+  id: ID!
+  captureDate: AWSDateTime
+  value: String
+  labpracticeoutputID: ID!
+  labpracticesessionID: ID!
+}
+
+input LambdaInput {
+  message: String!
+  topic: String!
+}
+
+type Mutation {
+  publishMqttMessage(input: LambdaInput!): String
+  labOutputListen(input: LabOutputIn!): LabOutputOut
+  createOrganization(input: CreateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization
+  updateOrganization(input: UpdateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization
+  deleteOrganization(input: DeleteOrganizationInput!, condition: ModelOrganizationConditionInput): Organization
+  createRole(input: CreateRoleInput!, condition: ModelRoleConditionInput): Role
+  updateRole(input: UpdateRoleInput!, condition: ModelRoleConditionInput): Role
+  deleteRole(input: DeleteRoleInput!, condition: ModelRoleConditionInput): Role
+  createPrivilege(input: CreatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege
+  updatePrivilege(input: UpdatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege
+  deletePrivilege(input: DeletePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege
+  createUserLabPracticeSession(input: CreateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession
+  updateUserLabPracticeSession(input: UpdateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession
+  deleteUserLabPracticeSession(input: DeleteUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+  createLabPracticeSessionCommand(input: CreateLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand
+  updateLabPracticeSessionCommand(input: UpdateLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand
+  deleteLabPracticeSessionCommand(input: DeleteLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand
+  createLabPracticeOutput(input: CreateLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput
+  updateLabPracticeOutput(input: UpdateLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput
+  deleteLabPracticeOutput(input: DeleteLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput
+  createLabPracticeSession(input: CreateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession
+  updateLabPracticeSession(input: UpdateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession
+  deleteLabPracticeSession(input: DeleteLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession
+  createLabPracticeDevice(input: CreateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice
+  updateLabPracticeDevice(input: UpdateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice
+  deleteLabPracticeDevice(input: DeleteLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice
+  createLabPracticeParameter(input: CreateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter
+  updateLabPracticeParameter(input: UpdateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter
+  deleteLabPracticeParameter(input: DeleteLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter
+  createLabPracticeCommand(input: CreateLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand
+  updateLabPracticeCommand(input: UpdateLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand
+  deleteLabPracticeCommand(input: DeleteLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand
+  createLabPractice(input: CreateLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice
+  updateLabPractice(input: UpdateLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice
+  deleteLabPractice(input: DeleteLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice
+  createLabSemester(input: CreateLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester
+  updateLabSemester(input: UpdateLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester
+  deleteLabSemester(input: DeleteLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester
+  createLaboratory(input: CreateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory
+  updateLaboratory(input: UpdateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory
+  deleteLaboratory(input: DeleteLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory
+  createPrivilegeRole(input: CreatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole
+  updatePrivilegeRole(input: UpdatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole
+  deletePrivilegeRole(input: DeletePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole
+  createRoleUser(input: CreateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser
+  updateRoleUser(input: UpdateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser
+  deleteRoleUser(input: DeleteRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser
+  createUserLabSemester(input: CreateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester
+  updateUserLabSemester(input: UpdateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester
+  deleteUserLabSemester(input: DeleteUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester
+}
+
+type Subscription {
+  onLabOutputListenBySessionID(labpracticesessionID: ID!): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
+  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
+  onCreateOrganization: Organization @aws_subscribe(mutations: ["createOrganization"])
+  onUpdateOrganization: Organization @aws_subscribe(mutations: ["updateOrganization"])
+  onDeleteOrganization: Organization @aws_subscribe(mutations: ["deleteOrganization"])
+  onCreateRole: Role @aws_subscribe(mutations: ["createRole"])
+  onUpdateRole: Role @aws_subscribe(mutations: ["updateRole"])
+  onDeleteRole: Role @aws_subscribe(mutations: ["deleteRole"])
+  onCreatePrivilege: Privilege @aws_subscribe(mutations: ["createPrivilege"])
+  onUpdatePrivilege: Privilege @aws_subscribe(mutations: ["updatePrivilege"])
+  onDeletePrivilege: Privilege @aws_subscribe(mutations: ["deletePrivilege"])
+  onCreateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["createUserLabPracticeSession"])
+  onUpdateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["updateUserLabPracticeSession"])
+  onDeleteUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["deleteUserLabPracticeSession"])
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
+  onCreateLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
+  onUpdateLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["updateLabPracticeSessionCommand"])
+  onDeleteLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["deleteLabPracticeSessionCommand"])
+  onCreateLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["createLabPracticeOutput"])
+  onUpdateLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["updateLabPracticeOutput"])
+  onDeleteLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["deleteLabPracticeOutput"])
+  onCreateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["createLabPracticeSession"])
+  onUpdateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["updateLabPracticeSession"])
+  onDeleteLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["deleteLabPracticeSession"])
+  onCreateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["createLabPracticeDevice"])
+  onUpdateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["updateLabPracticeDevice"])
+  onDeleteLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["deleteLabPracticeDevice"])
+  onCreateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["createLabPracticeParameter"])
+  onUpdateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["updateLabPracticeParameter"])
+  onDeleteLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["deleteLabPracticeParameter"])
+  onCreateLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["createLabPracticeCommand"])
+  onUpdateLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["updateLabPracticeCommand"])
+  onDeleteLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["deleteLabPracticeCommand"])
+  onCreateLabPractice: LabPractice @aws_subscribe(mutations: ["createLabPractice"])
+  onUpdateLabPractice: LabPractice @aws_subscribe(mutations: ["updateLabPractice"])
+  onDeleteLabPractice: LabPractice @aws_subscribe(mutations: ["deleteLabPractice"])
+  onCreateLabSemester: LabSemester @aws_subscribe(mutations: ["createLabSemester"])
+  onUpdateLabSemester: LabSemester @aws_subscribe(mutations: ["updateLabSemester"])
+  onDeleteLabSemester: LabSemester @aws_subscribe(mutations: ["deleteLabSemester"])
+  onCreateLaboratory: Laboratory @aws_subscribe(mutations: ["createLaboratory"])
+  onUpdateLaboratory: Laboratory @aws_subscribe(mutations: ["updateLaboratory"])
+  onDeleteLaboratory: Laboratory @aws_subscribe(mutations: ["deleteLaboratory"])
+  onCreatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["createPrivilegeRole"])
+  onUpdatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["updatePrivilegeRole"])
+  onDeletePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["deletePrivilegeRole"])
+  onCreateRoleUser: RoleUser @aws_subscribe(mutations: ["createRoleUser"])
+  onUpdateRoleUser: RoleUser @aws_subscribe(mutations: ["updateRoleUser"])
+  onDeleteRoleUser: RoleUser @aws_subscribe(mutations: ["deleteRoleUser"])
+  onCreateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["createUserLabSemester"])
+  onUpdateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["updateUserLabSemester"])
+  onDeleteUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["deleteUserLabSemester"])
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelOrganizationConnection {
+  items: [Organization!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+input ModelOrganizationFilterInput {
+  id: ModelIDInput
+  country: ModelStringInput
+  region: ModelStringInput
+  city: ModelStringInput
+  type: ModelStringInput
+  name: ModelStringInput
+  description: ModelStringInput
+  phone: ModelStringInput
+  address: ModelStringInput
+  createdBy: ModelStringInput
+  updatedBy: ModelStringInput
+  and: [ModelOrganizationFilterInput]
+  or: [ModelOrganizationFilterInput]
+  not: ModelOrganizationFilterInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+type Query {
+  syncOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelOrganizationConnection
+  getOrganization(id: ID!): Organization
+  listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection
+  syncRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleConnection
+  getRole(id: ID!): Role
+  listRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String): ModelRoleConnection
+  syncPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeConnection
+  getPrivilege(id: ID!): Privilege
+  listPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String): ModelPrivilegeConnection
+  syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection
+  getUserLabPracticeSession(id: ID!): UserLabPracticeSession
+  listUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
+  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  syncLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionCommandConnection
+  getLabPracticeSessionCommand(id: ID!): LabPracticeSessionCommand
+  listLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
+  syncLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeOutputConnection
+  getLabPracticeOutput(id: ID!): LabPracticeOutput
+  listLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String): ModelLabPracticeOutputConnection
+  syncLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionConnection
+  getLabPracticeSession(id: ID!): LabPracticeSession
+  listLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionConnection
+  syncLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeDeviceConnection
+  getLabPracticeDevice(id: ID!): LabPracticeDevice
+  listLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String): ModelLabPracticeDeviceConnection
+  syncLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeParameterConnection
+  getLabPracticeParameter(id: ID!): LabPracticeParameter
+  listLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
+  syncLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeCommandConnection
+  getLabPracticeCommand(id: ID!): LabPracticeCommand
+  listLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeCommandConnection
+  syncLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeConnection
+  getLabPractice(id: ID!): LabPractice
+  listLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String): ModelLabPracticeConnection
+  syncLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabSemesterConnection
+  getLabSemester(id: ID!): LabSemester
+  listLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String): ModelLabSemesterConnection
+  syncLaboratories(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLaboratoryConnection
+  getLaboratory(id: ID!): Laboratory
+  listLaboratorys(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String): ModelLaboratoryConnection
+  syncPrivilegeRoles(filter: ModelPrivilegeRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeRoleConnection
+  syncRoleUsers(filter: ModelRoleUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleUserConnection
+  syncUserLabSemesters(filter: ModelUserLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabSemesterConnection
+}
+
+input CreateOrganizationInput {
+  id: ID
+  country: String!
+  region: String!
+  city: String!
+  type: String!
+  name: String!
+  description: String
+  phone: String
+  address: String
+  createdBy: String!
+  updatedBy: String
+  _version: Int
+}
+
+input UpdateOrganizationInput {
+  id: ID!
+  country: String
+  region: String
+  city: String
+  type: String
+  name: String
+  description: String
+  phone: String
+  address: String
+  createdBy: String
+  updatedBy: String
+  _version: Int
+}
+
+input DeleteOrganizationInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelOrganizationConditionInput {
+  country: ModelStringInput
+  region: ModelStringInput
+  city: ModelStringInput
+  type: ModelStringInput
+  name: ModelStringInput
+  description: ModelStringInput
+  phone: ModelStringInput
+  address: ModelStringInput
+  createdBy: ModelStringInput
+  updatedBy: ModelStringInput
+  and: [ModelOrganizationConditionInput]
+  or: [ModelOrganizationConditionInput]
+  not: ModelOrganizationConditionInput
+}
+
+type ModelRoleConnection {
+  items: [Role!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelRoleFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  createdBy: ModelStringInput
+  updatedBy: ModelStringInput
+  and: [ModelRoleFilterInput]
+  or: [ModelRoleFilterInput]
+  not: ModelRoleFilterInput
+}
+
+input CreateRoleInput {
+  id: ID
+  name: String!
+  description: String
+  createdBy: String!
+  updatedBy: String
+  _version: Int
+}
+
+input UpdateRoleInput {
+  id: ID!
+  name: String
+  description: String
+  createdBy: String
+  updatedBy: String
+  _version: Int
+}
+
+input DeleteRoleInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelRoleConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  createdBy: ModelStringInput
+  updatedBy: ModelStringInput
+  and: [ModelRoleConditionInput]
+  or: [ModelRoleConditionInput]
+  not: ModelRoleConditionInput
+}
+
+type ModelPrivilegeConnection {
+  items: [Privilege!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPrivilegeFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelPrivilegeFilterInput]
+  or: [ModelPrivilegeFilterInput]
+  not: ModelPrivilegeFilterInput
+}
+
+input CreatePrivilegeInput {
+  id: ID
+  name: String!
+  description: String
+  _version: Int
+}
+
+input UpdatePrivilegeInput {
+  id: ID!
+  name: String
+  description: String
+  _version: Int
+}
+
+input DeletePrivilegeInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelPrivilegeConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  and: [ModelPrivilegeConditionInput]
+  or: [ModelPrivilegeConditionInput]
+  not: ModelPrivilegeConditionInput
+}
+
+type ModelUserLabPracticeSessionConnection {
+  items: [UserLabPracticeSession!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelUserLabPracticeSessionFilterInput {
+  id: ModelIDInput
+  sessionStartDate: ModelStringInput
+  sessionEndDate: ModelStringInput
+  userID: ModelIDInput
+  labpracticesessionID: ModelIDInput
+  roleID: ModelIDInput
+  and: [ModelUserLabPracticeSessionFilterInput]
+  or: [ModelUserLabPracticeSessionFilterInput]
+  not: ModelUserLabPracticeSessionFilterInput
+}
+
+input CreateUserLabPracticeSessionInput {
+  id: ID
+  sessionStartDate: AWSDateTime
+  sessionEndDate: AWSDateTime
+  userID: ID!
+  labpracticesessionID: ID!
+  roleID: ID
+  _version: Int
+  userLabPracticeSessionUserId: ID
+  userLabPracticeSessionLabPracticeSessionId: ID
+}
+
+input UpdateUserLabPracticeSessionInput {
+  id: ID!
+  sessionStartDate: AWSDateTime
+  sessionEndDate: AWSDateTime
+  userID: ID
+  labpracticesessionID: ID
+  roleID: ID
+  _version: Int
+  userLabPracticeSessionUserId: ID
+  userLabPracticeSessionLabPracticeSessionId: ID
+}
+
+input DeleteUserLabPracticeSessionInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelUserLabPracticeSessionConditionInput {
+  sessionStartDate: ModelStringInput
+  sessionEndDate: ModelStringInput
+  userID: ModelIDInput
+  labpracticesessionID: ModelIDInput
+  roleID: ModelIDInput
+  and: [ModelUserLabPracticeSessionConditionInput]
+  or: [ModelUserLabPracticeSessionConditionInput]
+  not: ModelUserLabPracticeSessionConditionInput
+}
+
+type ModelUserConnection {
+  items: [User!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelUserFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  lastNames: ModelStringInput
+  documentIdNumber: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  userName: ModelStringInput
+  s3AvatarPath: ModelStringInput
+  dateOfBirth: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  and: [ModelUserFilterInput]
+  or: [ModelUserFilterInput]
+  not: ModelUserFilterInput
+}
+
+input CreateUserInput {
+  id: ID
+  name: String!
+  lastNames: String!
+  documentIdNumber: String
+  email: String!
+  phone: String
+  userName: String
+  s3AvatarPath: String
+  dateOfBirth: String
+  updatedBy: String
+  createdBy: String!
+  _version: Int
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  lastNames: String
+  documentIdNumber: String
+  email: String
+  phone: String
+  userName: String
+  s3AvatarPath: String
+  dateOfBirth: String
+  updatedBy: String
+  createdBy: String
+  _version: Int
+}
+
+input DeleteUserInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelUserConditionInput {
+  name: ModelStringInput
+  lastNames: ModelStringInput
+  documentIdNumber: ModelStringInput
+  email: ModelStringInput
+  phone: ModelStringInput
+  userName: ModelStringInput
+  s3AvatarPath: ModelStringInput
+  dateOfBirth: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  and: [ModelUserConditionInput]
+  or: [ModelUserConditionInput]
+  not: ModelUserConditionInput
+}
+
+type ModelLabPracticeSessionCommandConnection {
+  items: [LabPracticeSessionCommand!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeSessionCommandFilterInput {
+  id: ModelIDInput
+  requestDate: ModelStringInput
+  executionDate: ModelStringInput
+  status: ModelStringInput
+  parameters: ModelStringInput
+  labpracticesessionID: ModelIDInput
+  labpracticecommandID: ModelIDInput
+  and: [ModelLabPracticeSessionCommandFilterInput]
+  or: [ModelLabPracticeSessionCommandFilterInput]
+  not: ModelLabPracticeSessionCommandFilterInput
+}
+
+input CreateLabPracticeSessionCommandInput {
+  id: ID
+  requestDate: AWSDateTime!
+  executionDate: AWSDateTime
+  status: String!
+  parameters: AWSJSON
+  labpracticesessionID: ID!
+  labpracticecommandID: ID!
+  _version: Int
+  labPracticeSessionCommandLabPracticeSessionId: ID
+  labPracticeSessionCommandLabPracticeCommandId: ID
+}
+
+input UpdateLabPracticeSessionCommandInput {
+  id: ID!
+  requestDate: AWSDateTime
+  executionDate: AWSDateTime
+  status: String
+  parameters: AWSJSON
+  labpracticesessionID: ID
+  labpracticecommandID: ID
+  _version: Int
+  labPracticeSessionCommandLabPracticeSessionId: ID
+  labPracticeSessionCommandLabPracticeCommandId: ID
+}
+
+input DeleteLabPracticeSessionCommandInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeSessionCommandConditionInput {
+  requestDate: ModelStringInput
+  executionDate: ModelStringInput
+  status: ModelStringInput
+  parameters: ModelStringInput
+  labpracticesessionID: ModelIDInput
+  labpracticecommandID: ModelIDInput
+  and: [ModelLabPracticeSessionCommandConditionInput]
+  or: [ModelLabPracticeSessionCommandConditionInput]
+  not: ModelLabPracticeSessionCommandConditionInput
+}
+
+type ModelLabPracticeOutputConnection {
+  items: [LabPracticeOutput!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeOutputFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  labelName: ModelStringInput
+  order: ModelIntInput
+  description: ModelStringInput
+  units: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
+  outputType: ModelStringInput
+  and: [ModelLabPracticeOutputFilterInput]
+  or: [ModelLabPracticeOutputFilterInput]
+  not: ModelLabPracticeOutputFilterInput
+}
+
+input CreateLabPracticeOutputInput {
+  id: ID
+  name: String!
+  labelName: String
+  order: Int
+  description: String
+  units: AWSJSON
+  updatedBy: String
+  createdBy: String!
+  labpracticeID: ID!
+  outputType: String!
+  _version: Int
+}
+
+input UpdateLabPracticeOutputInput {
+  id: ID!
+  name: String
+  labelName: String
+  order: Int
+  description: String
+  units: AWSJSON
+  updatedBy: String
+  createdBy: String
+  labpracticeID: ID
+  outputType: String
+  _version: Int
+}
+
+input DeleteLabPracticeOutputInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeOutputConditionInput {
+  name: ModelStringInput
+  labelName: ModelStringInput
+  order: ModelIntInput
+  description: ModelStringInput
+  units: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
+  outputType: ModelStringInput
+  and: [ModelLabPracticeOutputConditionInput]
+  or: [ModelLabPracticeOutputConditionInput]
+  not: ModelLabPracticeOutputConditionInput
+}
+
+type ModelLabPracticeSessionConnection {
+  items: [LabPracticeSession!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeSessionFilterInput {
+  id: ModelIDInput
+  startDate: ModelStringInput
+  endDate: ModelStringInput
+  description: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
+  and: [ModelLabPracticeSessionFilterInput]
+  or: [ModelLabPracticeSessionFilterInput]
+  not: ModelLabPracticeSessionFilterInput
+}
+
+input CreateLabPracticeSessionInput {
+  id: ID
+  startDate: AWSDateTime!
+  endDate: AWSDateTime!
+  description: String
+  updatedBy: String
+  createdBy: String!
+  labpracticeID: ID!
+  _version: Int
+  labPracticeSessionLabPracticeId: ID
+}
+
+input UpdateLabPracticeSessionInput {
+  id: ID!
+  startDate: AWSDateTime
+  endDate: AWSDateTime
+  description: String
+  updatedBy: String
+  createdBy: String
+  labpracticeID: ID
+  _version: Int
+  labPracticeSessionLabPracticeId: ID
+}
+
+input DeleteLabPracticeSessionInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeSessionConditionInput {
+  startDate: ModelStringInput
+  endDate: ModelStringInput
+  description: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
+  and: [ModelLabPracticeSessionConditionInput]
+  or: [ModelLabPracticeSessionConditionInput]
+  not: ModelLabPracticeSessionConditionInput
+}
+
+type ModelLabPracticeDeviceConnection {
+  items: [LabPracticeDevice!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeDeviceFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  type: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  and: [ModelLabPracticeDeviceFilterInput]
+  or: [ModelLabPracticeDeviceFilterInput]
+  not: ModelLabPracticeDeviceFilterInput
+}
+
+input CreateLabPracticeDeviceInput {
+  id: ID
+  name: String!
+  description: String
+  type: String
+  updatedBy: String
+  createdBy: String
+  _version: Int
+  labPracticeDeviceLabPracticeId: ID
+}
+
+input UpdateLabPracticeDeviceInput {
+  id: ID!
+  name: String
+  description: String
+  type: String
+  updatedBy: String
+  createdBy: String
+  _version: Int
+  labPracticeDeviceLabPracticeId: ID
+}
+
+input DeleteLabPracticeDeviceInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeDeviceConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  type: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  and: [ModelLabPracticeDeviceConditionInput]
+  or: [ModelLabPracticeDeviceConditionInput]
+  not: ModelLabPracticeDeviceConditionInput
+}
+
+type ModelLabPracticeParameterConnection {
+  items: [LabPracticeParameter!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeParameterFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  labelName: ModelStringInput
+  order: ModelIntInput
+  description: ModelStringInput
+  defaultValue: ModelStringInput
+  minValue: ModelIntInput
+  maxValue: ModelIntInput
+  regex: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticecommandID: ModelIDInput
+  labpracticeID: ModelIDInput
+  and: [ModelLabPracticeParameterFilterInput]
+  or: [ModelLabPracticeParameterFilterInput]
+  not: ModelLabPracticeParameterFilterInput
+}
+
+input CreateLabPracticeParameterInput {
+  id: ID
+  name: String!
+  labelName: String
+  order: Int
+  description: String
+  defaultValue: String!
+  minValue: Int
+  maxValue: Int
+  regex: String
+  updatedBy: String
+  createdBy: String
+  labpracticecommandID: ID
+  labpracticeID: ID
+  _version: Int
+  labPracticeParameterLabPracticeCommandId: ID
+  labPracticeParameterLabPracticeId: ID
+}
+
+input UpdateLabPracticeParameterInput {
+  id: ID!
+  name: String
+  labelName: String
+  order: Int
+  description: String
+  defaultValue: String
+  minValue: Int
+  maxValue: Int
+  regex: String
+  updatedBy: String
+  createdBy: String
+  labpracticecommandID: ID
+  labpracticeID: ID
+  _version: Int
+  labPracticeParameterLabPracticeCommandId: ID
+  labPracticeParameterLabPracticeId: ID
+}
+
+input DeleteLabPracticeParameterInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeParameterConditionInput {
+  name: ModelStringInput
+  labelName: ModelStringInput
+  order: ModelIntInput
+  description: ModelStringInput
+  defaultValue: ModelStringInput
+  minValue: ModelIntInput
+  maxValue: ModelIntInput
+  regex: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticecommandID: ModelIDInput
+  labpracticeID: ModelIDInput
+  and: [ModelLabPracticeParameterConditionInput]
+  or: [ModelLabPracticeParameterConditionInput]
+  not: ModelLabPracticeParameterConditionInput
+}
+
+type ModelLabPracticeCommandConnection {
+  items: [LabPracticeCommand!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeCommandFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  labelName: ModelStringInput
+  order: ModelIntInput
+  description: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
+  and: [ModelLabPracticeCommandFilterInput]
+  or: [ModelLabPracticeCommandFilterInput]
+  not: ModelLabPracticeCommandFilterInput
+}
+
+input CreateLabPracticeCommandInput {
+  id: ID
+  name: String!
+  labelName: String
+  order: Int
+  description: String
+  updatedBy: String
+  createdBy: String!
+  labpracticeID: ID!
+  _version: Int
+  labPracticeCommandLabPracticeId: ID
+}
+
+input UpdateLabPracticeCommandInput {
+  id: ID!
+  name: String
+  labelName: String
+  order: Int
+  description: String
+  updatedBy: String
+  createdBy: String
+  labpracticeID: ID
+  _version: Int
+  labPracticeCommandLabPracticeId: ID
+}
+
+input DeleteLabPracticeCommandInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeCommandConditionInput {
+  name: ModelStringInput
+  labelName: ModelStringInput
+  order: ModelIntInput
+  description: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
+  and: [ModelLabPracticeCommandConditionInput]
+  or: [ModelLabPracticeCommandConditionInput]
+  not: ModelLabPracticeCommandConditionInput
+}
+
+type ModelLabPracticeConnection {
+  items: [LabPractice!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabPracticeFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  duration: ModelIntInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  laboratoryID: ModelIDInput
+  and: [ModelLabPracticeFilterInput]
+  or: [ModelLabPracticeFilterInput]
+  not: ModelLabPracticeFilterInput
+}
+
+input CreateLabPracticeInput {
+  id: ID
+  name: String!
+  description: String
+  duration: Int!
+  updatedBy: String
+  createdBy: String!
+  laboratoryID: ID!
+  _version: Int
+  labPracticeLaboratoryId: ID
+  labPracticeLabPracticeDeviceId: ID
+}
+
+input UpdateLabPracticeInput {
+  id: ID!
+  name: String
+  description: String
+  duration: Int
+  updatedBy: String
+  createdBy: String
+  laboratoryID: ID
+  _version: Int
+  labPracticeLaboratoryId: ID
+  labPracticeLabPracticeDeviceId: ID
+}
+
+input DeleteLabPracticeInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabPracticeConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  duration: ModelIntInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  laboratoryID: ModelIDInput
+  and: [ModelLabPracticeConditionInput]
+  or: [ModelLabPracticeConditionInput]
+  not: ModelLabPracticeConditionInput
+}
+
+type ModelLabSemesterConnection {
+  items: [LabSemester!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLabSemesterFilterInput {
+  id: ModelIDInput
+  semesterName: ModelStringInput
+  description: ModelStringInput
+  emailUserList: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  laboratoryID: ModelIDInput
+  and: [ModelLabSemesterFilterInput]
+  or: [ModelLabSemesterFilterInput]
+  not: ModelLabSemesterFilterInput
+}
+
+input CreateLabSemesterInput {
+  id: ID
+  semesterName: String!
+  description: String
+  emailUserList: AWSJSON
+  updatedBy: String
+  createdBy: String!
+  laboratoryID: ID!
+  _version: Int
+  labSemesterLaboratoryId: ID
+}
+
+input UpdateLabSemesterInput {
+  id: ID!
+  semesterName: String
+  description: String
+  emailUserList: AWSJSON
+  updatedBy: String
+  createdBy: String
+  laboratoryID: ID
+  _version: Int
+  labSemesterLaboratoryId: ID
+}
+
+input DeleteLabSemesterInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLabSemesterConditionInput {
+  semesterName: ModelStringInput
+  description: ModelStringInput
+  emailUserList: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  laboratoryID: ModelIDInput
+  and: [ModelLabSemesterConditionInput]
+  or: [ModelLabSemesterConditionInput]
+  not: ModelLabSemesterConditionInput
+}
+
+type ModelLaboratoryConnection {
+  items: [Laboratory!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelLaboratoryFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  description: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  organizationID: ModelIDInput
+  and: [ModelLaboratoryFilterInput]
+  or: [ModelLaboratoryFilterInput]
+  not: ModelLaboratoryFilterInput
+}
+
+input CreateLaboratoryInput {
+  id: ID
+  name: String!
+  description: String
+  updatedBy: String
+  createdBy: String!
+  organizationID: ID!
+  _version: Int
+  laboratoryOrganizationId: ID
+}
+
+input UpdateLaboratoryInput {
+  id: ID!
+  name: String
+  description: String
+  updatedBy: String
+  createdBy: String
+  organizationID: ID
+  _version: Int
+  laboratoryOrganizationId: ID
+}
+
+input DeleteLaboratoryInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelLaboratoryConditionInput {
+  name: ModelStringInput
+  description: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
+  organizationID: ModelIDInput
+  and: [ModelLaboratoryConditionInput]
+  or: [ModelLaboratoryConditionInput]
+  not: ModelLaboratoryConditionInput
+}
+
+type ModelPrivilegeRoleConnection {
+  items: [PrivilegeRole!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelPrivilegeRoleFilterInput {
+  id: ModelIDInput
+  privilegeID: ModelIDInput
+  roleID: ModelIDInput
+  and: [ModelPrivilegeRoleFilterInput]
+  or: [ModelPrivilegeRoleFilterInput]
+  not: ModelPrivilegeRoleFilterInput
+}
+
+input CreatePrivilegeRoleInput {
+  id: ID
+  privilegeID: ID!
+  roleID: ID!
+  _version: Int
+}
+
+input UpdatePrivilegeRoleInput {
+  id: ID!
+  privilegeID: ID
+  roleID: ID
+  _version: Int
+}
+
+input DeletePrivilegeRoleInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelPrivilegeRoleConditionInput {
+  privilegeID: ModelIDInput
+  roleID: ModelIDInput
+  and: [ModelPrivilegeRoleConditionInput]
+  or: [ModelPrivilegeRoleConditionInput]
+  not: ModelPrivilegeRoleConditionInput
+}
+
+type ModelRoleUserConnection {
+  items: [RoleUser!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelRoleUserFilterInput {
+  id: ModelIDInput
+  userID: ModelIDInput
+  roleID: ModelIDInput
+  and: [ModelRoleUserFilterInput]
+  or: [ModelRoleUserFilterInput]
+  not: ModelRoleUserFilterInput
+}
+
+input CreateRoleUserInput {
+  id: ID
+  userID: ID!
+  roleID: ID!
+  _version: Int
+}
+
+input UpdateRoleUserInput {
+  id: ID!
+  userID: ID
+  roleID: ID
+  _version: Int
+}
+
+input DeleteRoleUserInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelRoleUserConditionInput {
+  userID: ModelIDInput
+  roleID: ModelIDInput
+  and: [ModelRoleUserConditionInput]
+  or: [ModelRoleUserConditionInput]
+  not: ModelRoleUserConditionInput
+}
+
+type ModelUserLabSemesterConnection {
+  items: [UserLabSemester!]!
+  nextToken: String
+  startedAt: AWSTimestamp
+}
+
+input ModelUserLabSemesterFilterInput {
+  id: ModelIDInput
+  userID: ModelIDInput
+  labsemesterID: ModelIDInput
+  and: [ModelUserLabSemesterFilterInput]
+  or: [ModelUserLabSemesterFilterInput]
+  not: ModelUserLabSemesterFilterInput
+}
+
+input CreateUserLabSemesterInput {
+  id: ID
+  userID: ID!
+  labsemesterID: ID!
+  _version: Int
+}
+
+input UpdateUserLabSemesterInput {
+  id: ID!
+  userID: ID
+  labsemesterID: ID
+  _version: Int
+}
+
+input DeleteUserLabSemesterInput {
+  id: ID!
+  _version: Int
+}
+
+input ModelUserLabSemesterConditionInput {
+  userID: ModelIDInput
+  labsemesterID: ModelIDInput
+  and: [ModelUserLabSemesterConditionInput]
+  or: [ModelUserLabSemesterConditionInput]
+  not: ModelUserLabSemesterConditionInput
+}
+
+input ModelIDKeyConditionInput {
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  between: [ID]
+  beginsWith: ID
+}

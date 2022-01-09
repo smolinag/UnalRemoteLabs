@@ -1,0 +1,6 @@
+subscription onUpdateLabOutputListen {
+	onLabOutputListen {
+		value
+		labpracticeoutputID
+	}
+}

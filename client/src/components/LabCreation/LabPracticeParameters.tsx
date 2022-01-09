@@ -60,6 +60,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 					tooltip="Ingrese el nombre del laboratorio"
 					onValueChange={(value) => onValueChange(value, Params.ParameterName)}
 					error={checkErrorMessage(Params.ParameterName)}
+					required
 				/>
 				<Input
 					type="text"
@@ -74,6 +75,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 					value={parameter.parameterDefaultValue}
 					onValueChange={(value) => onValueChange(value, Params.ParameterDefaultValue)}
 					error={checkErrorMessage(Params.ParameterDefaultValue)}
+					required
 				/>
 
 				<Input

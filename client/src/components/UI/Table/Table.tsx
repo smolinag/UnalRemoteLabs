@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import BootstrapTable from 'react-bootstrap/Table';
 import {BsPencilFill, BsXCircleFill} from 'react-icons/bs';
 
@@ -6,12 +6,12 @@ import classes from './Table.module.scss';
 
 export enum Action {
 	Edit,
-	Delete
+	Delete,
 }
 
 interface Props {
 	headers: string[];
-	data: (string | number)[][];
+	data: (string | number | boolean | ReactNode)[][];
 	overflow?: boolean;
 	stickyHeader?: boolean;
 	maxHeight?: string;
@@ -30,6 +30,36 @@ const Table: React.FC<Props> = ({
 	removable = false,
 	onAction
 }) => {
+
+	const renderRows = () => {
+		if (data.length > 0) {
+			return data.map((row, i) => (
+				<tr key={`row_${i}`}>
+					{row.map((cell, j) => (
+						<td key={`cell_${i}_${j}`}>{cell}</td>
+					))}
+					{(editable || removable) && (
+						<td style={{width: editable && removable && removable ? '70px' : '30px'}}>
+							{editable && <BsPencilFill onClick={() => onAction?.(i, Action.Edit)} className={classes.actionIcon} />}
+							{removable && (
+								<BsXCircleFill
+									onClick={() => onAction?.(i, Action.Delete)}
+									className={`${classes.actionIcon} ${classes.delete}`}
+								/>
+							)}
+						</td>
+					)}
+				</tr>
+			));
+		} else {
+			return (
+				<tr key={`row_1`} style={{textAlign: 'center'}}>
+					<td colSpan={headers.length}>No se encontraron registros</td>
+				</tr>
+			);
+		}
+	};
+
 	return (
 		<div
 			style={{
@@ -44,31 +74,12 @@ const Table: React.FC<Props> = ({
 								{header}
 							</th>
 						))}
-						{(editable || removable) && <th className={stickyHeader ? classes.stickyHeader : ''} />}
+						{data.length > 0 && (editable || removable) && (
+							<th className={stickyHeader ? classes.stickyHeader : ''} />
+						)}
 					</tr>
 				</thead>
-				<tbody>
-					{data.map((row, i) => (
-						<tr key={`row_${i}`}>
-							{row.map((cell, j) => (
-								<td key={`cell_${i}_${j}`}>{cell}</td>
-							))}
-							{(editable || removable) && (
-								<td style={{width: editable && removable ? '70px' : '30px'}}>
-									{editable && (
-										<BsPencilFill onClick={() => onAction?.(i, Action.Edit)} className={classes.actionIcon} />
-									)}
-									{removable && (
-										<BsXCircleFill
-											onClick={() => onAction?.(i, Action.Delete)}
-											className={`${classes.actionIcon} ${classes.delete}`}
-										/>
-									)}
-								</td>
-							)}
-						</tr>
-					))}
-				</tbody>
+				<tbody>{renderRows()}</tbody>
 			</BootstrapTable>
 		</div>
 	);

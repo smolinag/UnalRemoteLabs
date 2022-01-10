@@ -1,0 +1,14 @@
+@import '../../styles/mixins/_colors.scss';
+
+.actionIcon {
+	cursor: pointer;
+	user-select: none;
+	fill: $gray-700;
+	&:first-child {
+		margin-right: 5px;
+	}
+	&.delete {
+		fill: $red-dark;
+	}
+}
+

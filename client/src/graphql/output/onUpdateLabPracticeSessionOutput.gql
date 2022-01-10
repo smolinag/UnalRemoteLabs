@@ -1,6 +1,0 @@
-subscription onUpdateLabPracticeSessionOutput {
-	onCreateLabPracticeSessionOutput {
-		value
-		labpracticeoutputID
-	}
-}

@@ -10,7 +10,7 @@ import {
 	useUpdateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandSubscription,
 	usePublishMqttMessageMutation,
-	useOnUpdateLabPracticeSessionOutputSubscription,
+	useOnUpdateLabOutputListenSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -43,7 +43,7 @@ const LabView: React.FC<unknown> = () => {
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
-	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>();
+	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>('');
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
@@ -53,7 +53,7 @@ const LabView: React.FC<unknown> = () => {
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandSubscription({variables: {id: SESSION_ID}});
-	const {data: updatedSessionOutput} = useOnUpdateLabPracticeSessionOutputSubscription();
+	const {data: updatedSessionOutput} = useOnUpdateLabOutputListenSubscription();
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
@@ -96,7 +96,7 @@ const LabView: React.FC<unknown> = () => {
 	}, [practiceInfo]);
 
 	useEffect(() => {
-		const updatedSessionOutputData = updatedSessionOutput?.onCreateLabPracticeSessionOutput;
+		const updatedSessionOutputData = updatedSessionOutput?.onLabOutputListen;
 		if (!updatedSessionOutputData) {
 			return;
 		}
@@ -142,7 +142,8 @@ const LabView: React.FC<unknown> = () => {
 						labpracticesessionID: labPracticeSessionId,
 						labpracticecommandID: id,
 						parameters: JSON.stringify([parameters][0]),
-						status: 'pending'
+						status: 'pending',
+						requestDate: new Date().toDateString
 					}
 				}
 			});

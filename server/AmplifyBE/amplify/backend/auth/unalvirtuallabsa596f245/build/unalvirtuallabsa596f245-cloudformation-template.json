@@ -131,11 +131,11 @@
     "hostedUIProviderMeta": {
       "Type": "String"
     },
-    "authProviders": {
-      "Type": "CommaDelimitedList"
-    },
     "oAuthMetadata": {
       "Type": "String"
+    },
+    "authProviders": {
+      "Type": "CommaDelimitedList"
     },
     "hostedUIProviderCreds": {
       "Type": "String"

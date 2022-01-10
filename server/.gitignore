@@ -1,0 +1,9 @@
+AmplifyBE/amplify/\#current-cloud-backend
+AmplifyBE/amplify/.config/local-*
+AmplifyBE/amplify/backend/amplify-meta.json
+AmplifyBE/amplify/backend/awscloudformation
+AmplifyBE/build/
+AmplifyBE/dist/
+AmplifyBE/node_modules/
+AmplifyBE/aws-exports.js
+AmplifyBE/awsconfiguration.json

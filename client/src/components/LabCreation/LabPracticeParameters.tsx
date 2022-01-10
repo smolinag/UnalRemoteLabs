@@ -81,6 +81,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 							: onValueEdit && onValueEdit(Params.ParameterName, value, undefined, parameter)
 					}
 					error={checkErrorMessage(Params.ParameterName)}
+					required
 				/>
 				<Input
 					type="text"
@@ -103,6 +104,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 							: onValueEdit && onValueEdit(Params.ParameterDefaultValue, value, undefined, parameter)
 					}
 					error={checkErrorMessage(Params.ParameterDefaultValue)}
+					required
 				/>
 
 				<Input

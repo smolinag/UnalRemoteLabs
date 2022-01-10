@@ -308,6 +308,55 @@ input LambdaInput {
   topic: String!
 }
 
+type Query {
+  getUserLabPracticeSessionByUserId(userID: ID!): UserLabPracticeSession
+  syncOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelOrganizationConnection
+  getOrganization(id: ID!): Organization
+  listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection
+  syncRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleConnection
+  getRole(id: ID!): Role
+  listRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String): ModelRoleConnection
+  syncPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeConnection
+  getPrivilege(id: ID!): Privilege
+  listPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String): ModelPrivilegeConnection
+  syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection
+  getUserLabPracticeSession(id: ID!): UserLabPracticeSession
+  listUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
+  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
+  getUser(id: ID!): User
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  syncLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionCommandConnection
+  getLabPracticeSessionCommand(id: ID!): LabPracticeSessionCommand
+  listLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
+  syncLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeOutputConnection
+  getLabPracticeOutput(id: ID!): LabPracticeOutput
+  listLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String): ModelLabPracticeOutputConnection
+  syncLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionConnection
+  getLabPracticeSession(id: ID!): LabPracticeSession
+  listLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionConnection
+  syncLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeDeviceConnection
+  getLabPracticeDevice(id: ID!): LabPracticeDevice
+  listLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String): ModelLabPracticeDeviceConnection
+  syncLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeParameterConnection
+  getLabPracticeParameter(id: ID!): LabPracticeParameter
+  listLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
+  syncLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeCommandConnection
+  getLabPracticeCommand(id: ID!): LabPracticeCommand
+  listLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeCommandConnection
+  syncLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeConnection
+  getLabPractice(id: ID!): LabPractice
+  listLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String): ModelLabPracticeConnection
+  syncLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabSemesterConnection
+  getLabSemester(id: ID!): LabSemester
+  listLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String): ModelLabSemesterConnection
+  syncLaboratories(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLaboratoryConnection
+  getLaboratory(id: ID!): Laboratory
+  listLaboratorys(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String): ModelLaboratoryConnection
+  syncPrivilegeRoles(filter: ModelPrivilegeRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeRoleConnection
+  syncRoleUsers(filter: ModelRoleUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleUserConnection
+  syncUserLabSemesters(filter: ModelUserLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabSemesterConnection
+}
+
 type Mutation {
   publishMqttMessage(input: LambdaInput!): String
   labOutputListen(input: LabOutputIn!): LabOutputOut
@@ -365,7 +414,7 @@ type Mutation {
 }
 
 type Subscription {
-  onLabOutputListenBySessionID(labpracticesessionID: ID!): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
+  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
   onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
   onCreateOrganization: Organization @aws_subscribe(mutations: ["createOrganization"])
   onUpdateOrganization: Organization @aws_subscribe(mutations: ["updateOrganization"])
@@ -426,7 +475,7 @@ enum ModelSortDirection {
 }
 
 type ModelOrganizationConnection {
-  items: [Organization]!
+  items: [Organization!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -534,54 +583,6 @@ enum ModelAttributeTypes {
   _null
 }
 
-type Query {
-  syncOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelOrganizationConnection
-  getOrganization(id: ID!): Organization
-  listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection
-  syncRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleConnection
-  getRole(id: ID!): Role
-  listRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String): ModelRoleConnection
-  syncPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeConnection
-  getPrivilege(id: ID!): Privilege
-  listPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String): ModelPrivilegeConnection
-  syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection
-  getUserLabPracticeSession(id: ID!): UserLabPracticeSession
-  listUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
-  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
-  getUser(id: ID!): User
-  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
-  syncLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionCommandConnection
-  getLabPracticeSessionCommand(id: ID!): LabPracticeSessionCommand
-  listLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
-  syncLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeOutputConnection
-  getLabPracticeOutput(id: ID!): LabPracticeOutput
-  listLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String): ModelLabPracticeOutputConnection
-  syncLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionConnection
-  getLabPracticeSession(id: ID!): LabPracticeSession
-  listLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionConnection
-  syncLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeDeviceConnection
-  getLabPracticeDevice(id: ID!): LabPracticeDevice
-  listLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String): ModelLabPracticeDeviceConnection
-  syncLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeParameterConnection
-  getLabPracticeParameter(id: ID!): LabPracticeParameter
-  listLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
-  syncLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeCommandConnection
-  getLabPracticeCommand(id: ID!): LabPracticeCommand
-  listLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeCommandConnection
-  syncLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeConnection
-  getLabPractice(id: ID!): LabPractice
-  listLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String): ModelLabPracticeConnection
-  syncLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabSemesterConnection
-  getLabSemester(id: ID!): LabSemester
-  listLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String): ModelLabSemesterConnection
-  syncLaboratories(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLaboratoryConnection
-  getLaboratory(id: ID!): Laboratory
-  listLaboratorys(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String): ModelLaboratoryConnection
-  syncPrivilegeRoles(filter: ModelPrivilegeRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeRoleConnection
-  syncRoleUsers(filter: ModelRoleUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleUserConnection
-  syncUserLabSemesters(filter: ModelUserLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabSemesterConnection
-}
-
 input CreateOrganizationInput {
   id: ID
   country: String!
@@ -634,7 +635,7 @@ input ModelOrganizationConditionInput {
 }
 
 type ModelRoleConnection {
-  items: [Role]!
+  items: [Role!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -684,7 +685,7 @@ input ModelRoleConditionInput {
 }
 
 type ModelPrivilegeConnection {
-  items: [Privilege]!
+  items: [Privilege!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -726,7 +727,7 @@ input ModelPrivilegeConditionInput {
 }
 
 type ModelUserLabPracticeSessionConnection {
-  items: [UserLabPracticeSession]!
+  items: [UserLabPracticeSession!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -784,7 +785,7 @@ input ModelUserLabPracticeSessionConditionInput {
 }
 
 type ModelUserConnection {
-  items: [User]!
+  items: [User!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -858,7 +859,7 @@ input ModelUserConditionInput {
 }
 
 type ModelLabPracticeSessionCommandConnection {
-  items: [LabPracticeSessionCommand]!
+  items: [LabPracticeSessionCommand!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -920,7 +921,7 @@ input ModelLabPracticeSessionCommandConditionInput {
 }
 
 type ModelLabPracticeOutputConnection {
-  items: [LabPracticeOutput]!
+  items: [LabPracticeOutput!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -990,7 +991,7 @@ input ModelLabPracticeOutputConditionInput {
 }
 
 type ModelLabPracticeSessionConnection {
-  items: [LabPracticeSession]!
+  items: [LabPracticeSession!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1050,7 +1051,7 @@ input ModelLabPracticeSessionConditionInput {
 }
 
 type ModelLabPracticeDeviceConnection {
-  items: [LabPracticeDevice]!
+  items: [LabPracticeDevice!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1106,7 +1107,7 @@ input ModelLabPracticeDeviceConditionInput {
 }
 
 type ModelLabPracticeParameterConnection {
-  items: [LabPracticeParameter]!
+  items: [LabPracticeParameter!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1192,7 +1193,7 @@ input ModelLabPracticeParameterConditionInput {
 }
 
 type ModelLabPracticeCommandConnection {
-  items: [LabPracticeCommand]!
+  items: [LabPracticeCommand!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1256,7 +1257,7 @@ input ModelLabPracticeCommandConditionInput {
 }
 
 type ModelLabPracticeConnection {
-  items: [LabPractice]!
+  items: [LabPractice!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1318,7 +1319,7 @@ input ModelLabPracticeConditionInput {
 }
 
 type ModelLabSemesterConnection {
-  items: [LabSemester]!
+  items: [LabSemester!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1378,7 +1379,7 @@ input ModelLabSemesterConditionInput {
 }
 
 type ModelLaboratoryConnection {
-  items: [Laboratory]!
+  items: [Laboratory!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1434,7 +1435,7 @@ input ModelLaboratoryConditionInput {
 }
 
 type ModelPrivilegeRoleConnection {
-  items: [PrivilegeRole]!
+  items: [PrivilegeRole!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1476,7 +1477,7 @@ input ModelPrivilegeRoleConditionInput {
 }
 
 type ModelRoleUserConnection {
-  items: [RoleUser]!
+  items: [RoleUser!]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1518,7 +1519,7 @@ input ModelRoleUserConditionInput {
 }
 
 type ModelUserLabSemesterConnection {
-  items: [UserLabSemester]!
+  items: [UserLabSemester!]!
   nextToken: String
   startedAt: AWSTimestamp
 }

@@ -319,7 +319,8 @@ const LabCreationView: React.FC<unknown> = () => {
 							laboratoryID: PRACTICE_ID,
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
-							duration: parseInt(practiceInfo.practiceInfoDuration)
+							duration: parseInt(practiceInfo.practiceInfoDuration),
+							createdBy: '1'
 						}
 					}
 				});
@@ -328,6 +329,11 @@ const LabCreationView: React.FC<unknown> = () => {
 					throw Error('');
 				}
 
+				const practiceId = labPracticeData.createLabPractice?.id;
+
+				if (!practiceId) {
+					return;
+				}
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const creationPromises: Promise<any>[] = [];
 				if (commandsList.length > 0) {
@@ -336,9 +342,10 @@ const LabCreationView: React.FC<unknown> = () => {
 							createLabPracticeCommand({
 								variables: {
 									input: {
-										labpracticeID: labPracticeData.createLabPractice?.id,
+										labpracticeID: practiceId,
 										name: command.commandName,
-										description: command.commandDescription
+										description: command.commandDescription,
+										createdBy: '1'
 									}
 								}
 							}).then((commandData) => {
@@ -381,11 +388,12 @@ const LabCreationView: React.FC<unknown> = () => {
 							createLabPracticeOutput({
 								variables: {
 									input: {
-										labpracticeID: labPracticeData.createLabPractice?.id,
-										// outputType: obj.outputType,
+										labpracticeID: practiceId,
+										outputType: 'string',
 										name: obj.outputName,
 										description: obj.outputDescription,
-										units: JSON.stringify(obj.outputUnit)
+										units: JSON.stringify(obj.outputUnit),
+										createdBy: '1'
 									}
 								}
 							})

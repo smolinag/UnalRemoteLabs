@@ -13,10 +13,10 @@ import {
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
-	useOnCreateLabPracticeMutation,
-	useOnCreateLabPracticeCommandMutation,
-	useOnCreateLabPracticeParameterMutation,
-	useOnCreateLabPracticeOutputMutation
+	useCreateLabPracticeMutation,
+	useCreateLabPracticeCommandMutation,
+	useCreateLabPracticeParameterMutation,
+	useCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import classes from './LabCreationView.module.scss';
@@ -77,10 +77,10 @@ const LabCreationView: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
-	const [createLabPractice] = useOnCreateLabPracticeMutation({});
-	const [createLabPracticeCommand] = useOnCreateLabPracticeCommandMutation({});
-	const [createLabPracticeParameter] = useOnCreateLabPracticeParameterMutation({});
-	const [createLabPracticeOutput] = useOnCreateLabPracticeOutputMutation({});
+	const [createLabPractice] = useCreateLabPracticeMutation({});
+	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
+	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
+	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const practiceChange = (value: string, id: string) => {

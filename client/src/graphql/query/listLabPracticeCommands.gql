@@ -1,4 +1,4 @@
-query getLabPracticeCommand {
+query listLabPracticeCommands {
 	listLabPracticeCommands {
 		items {
 			id

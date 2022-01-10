@@ -5,10 +5,10 @@ import {Command} from '../../components/Lab/Commands/Commands';
 import {LoadingContainer} from '../../components/UI';
 import {
 	useGetLabPracticeQuery,
-	useGetLabPracticeCommandQuery,
-	useGetLabPracticeOutputQuery,
-	useUpdateLabPracticeSessionCommandMutation,
-	useOnUpdateLabPracticeSessionCommandSubscription,
+	useListLabPracticeCommandsQuery,
+	useListLabPracticeOutputsQuery,
+	useCreateLabPracticeSessionCommandMutation,	
+	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,	
 	usePublishMqttMessageMutation,
 	useOnUpdateLabOutputListenSubscription,
 	Maybe
@@ -47,12 +47,12 @@ const LabView: React.FC<unknown> = () => {
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
-	const {data: practiceOutputs} = useGetLabPracticeOutputQuery();
-	const {data: labCommandsData} = useGetLabPracticeCommandQuery();
-	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
+	const {data: practiceOutputs} = useListLabPracticeOutputsQuery();
+	const {data: labCommandsData} = useListLabPracticeCommandsQuery();
+	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
-	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandSubscription({variables: {id: SESSION_ID}});
+	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({variables: {id: SESSION_ID}});
 	const {data: updatedSessionOutput} = useOnUpdateLabOutputListenSubscription();
 
 	useEffect(() => {
@@ -136,7 +136,7 @@ const LabView: React.FC<unknown> = () => {
 	const handleCommandChange = async ({parameters, name, label}: Command, id: string) => {
 		try {
 			setIsExecutingCommand(true);
-			const {data} = await updateLabPracticeSessionCommand({
+			const {data} = await createLabPracticeSessionCommand({
 				variables: {
 					input: {
 						labpracticesessionID: labPracticeSessionId,

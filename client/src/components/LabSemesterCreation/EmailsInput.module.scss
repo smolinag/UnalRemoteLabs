@@ -1,0 +1,98 @@
+@import '../../styles/mixins/colors';
+
+.wrapper {
+	display: flex;
+	align-items: center;
+	margin: 10px;
+	width: 100%;
+}
+
+.inputWrapper {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	vertical-align: top;
+	border: 1pt solid gray;
+	border-radius: 5px;
+	width: 100%;
+	min-width: 250px;
+	height: 70px;
+}
+
+.inputWrapperWithError {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	vertical-align: top;
+	border: 2pt solid tomato;
+	border-radius: 5px;
+	width: 100%;
+	min-width: 250px;
+	height: 70px;
+}
+
+.inputSubwrapper {
+	padding: 1px 5px;
+}
+
+.input {
+	margin-top: 12px;
+	border: 0px;
+	width: 100%;
+	height: 40px;
+
+	&:focus-visible {
+		outline: -webkit-focus-ring-color auto 0px;
+	}
+
+	&:focus {
+		border: 1px $green-dark solid;
+		border-radius: 5px;
+	}
+}
+
+.error {
+    margin-left: 22px;
+    font-size: 0.8rem;
+    color: red;
+}
+
+.tagItem {
+	background-color: #d4d5d6;
+	display: inline-block;
+	font-size: 14px;
+	border-radius: 30px;
+	height: 30px;
+	padding: 0 4px 0 1rem;
+	display: inline-flex;
+	align-items: center;
+	margin: 0 0.3rem 0.3rem 0;
+}
+
+.tagItemButton {
+	background-color: white;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	border: none;
+	cursor: pointer;
+	font: inherit;
+	margin-left: 10px;
+	font-weight: bold;
+	padding: 0;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.addButton {
+	display: flex;
+	justify-content: right;
+	align-items: center;
+}
+
+.table {
+	margin-left: 12px;
+	padding-right: 13px;
+}

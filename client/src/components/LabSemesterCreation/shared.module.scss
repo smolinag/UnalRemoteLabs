@@ -1,0 +1,7 @@
+@import '../../styles/mixins/colors';
+
+.options {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}

@@ -7,6 +7,7 @@ import classes from './Table.module.scss';
 export enum Action {
 	Edit,
 	Delete,
+	DeleteAll
 }
 
 interface Props {
@@ -16,8 +17,9 @@ interface Props {
 	stickyHeader?: boolean;
 	maxHeight?: string;
 	removable?: boolean;
+	hasRemoveAll?: boolean;
 	editable?: boolean;
-	onAction?: (rowIndex: number, action: Action) => void;
+	onAction?: (rowIndex: number, action: Action, row?: React.ReactNode[]) => void;
 }
 
 const Table: React.FC<Props> = ({
@@ -28,6 +30,7 @@ const Table: React.FC<Props> = ({
 	maxHeight,
 	editable = false,
 	removable = false,
+	hasRemoveAll = false,
 	onAction
 }) => {
 
@@ -75,7 +78,14 @@ const Table: React.FC<Props> = ({
 							</th>
 						))}
 						{data.length > 0 && (editable || removable) && (
-							<th className={stickyHeader ? classes.stickyHeader : ''} />
+							<th className={stickyHeader ? classes.stickyHeader : ''}>
+								{removable && hasRemoveAll && (
+									<BsXCircleFill
+										onClick={() => onAction?.(0, Action.DeleteAll)}
+										className={`${classes.actionIcon} ${classes.delete}`}
+									/>
+								)}
+							</th>
 						)}
 					</tr>
 				</thead>

@@ -1,0 +1,12 @@
+query getLaboratory($id: ID!) {
+	getLaboratory(id: $id) {
+		id
+		name
+		description
+		organizationID
+		createdBy
+		updatedAt
+		updatedBy
+		createdAt
+	}
+}

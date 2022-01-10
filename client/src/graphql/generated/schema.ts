@@ -2368,6 +2368,14 @@ export type CreateLabPracticeSessionCommandMutation = {__typename?: 'Mutation'} 
 	>;
 };
 
+export type CreateLabSemesterMutationVariables = Exact<{
+	input: CreateLabSemesterInput;
+}>;
+
+export type CreateLabSemesterMutation = {__typename?: 'Mutation'} & {
+	createLabSemester?: Maybe<{__typename?: 'LabSemester'} & Pick<LabSemester, 'id'>>;
+};
+
 export type PublishMqttMessageMutationVariables = Exact<{
 	input: LambdaInput;
 }>;
@@ -2397,6 +2405,19 @@ export type GetLabPracticeSessionCommandQueryVariables = Exact<{
 export type GetLabPracticeSessionCommandQuery = {__typename?: 'Query'} & {
 	getLabPracticeSessionCommand?: Maybe<
 		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'labpracticesessionID'>
+	>;
+};
+
+export type GetLaboratoryQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type GetLaboratoryQuery = {__typename?: 'Query'} & {
+	getLaboratory?: Maybe<
+		{__typename?: 'Laboratory'} & Pick<
+			Laboratory,
+			'id' | 'name' | 'description' | 'organizationID' | 'createdBy' | 'updatedAt' | 'updatedBy' | 'createdAt'
+		>
 	>;
 };
 
@@ -2712,6 +2733,50 @@ export type CreateLabPracticeSessionCommandMutationOptions = Apollo.BaseMutation
 	CreateLabPracticeSessionCommandMutation,
 	CreateLabPracticeSessionCommandMutationVariables
 >;
+export const CreateLabSemesterDocument = gql`
+	mutation createLabSemester($input: CreateLabSemesterInput!) {
+		createLabSemester(input: $input) {
+			id
+		}
+	}
+`;
+export type CreateLabSemesterMutationFn = Apollo.MutationFunction<
+	CreateLabSemesterMutation,
+	CreateLabSemesterMutationVariables
+>;
+
+/**
+ * __useCreateLabSemesterMutation__
+ *
+ * To run a mutation, you first call `useCreateLabSemesterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLabSemesterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLabSemesterMutation, { data, loading, error }] = useCreateLabSemesterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateLabSemesterMutation(
+	baseOptions?: Apollo.MutationHookOptions<CreateLabSemesterMutation, CreateLabSemesterMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateLabSemesterMutation, CreateLabSemesterMutationVariables>(
+		CreateLabSemesterDocument,
+		options
+	);
+}
+export type CreateLabSemesterMutationHookResult = ReturnType<typeof useCreateLabSemesterMutation>;
+export type CreateLabSemesterMutationResult = Apollo.MutationResult<CreateLabSemesterMutation>;
+export type CreateLabSemesterMutationOptions = Apollo.BaseMutationOptions<
+	CreateLabSemesterMutation,
+	CreateLabSemesterMutationVariables
+>;
 export const PublishMqttMessageDocument = gql`
 	mutation publishMqttMessage($input: LambdaInput!) {
 		publishMqttMessage(input: $input)
@@ -2853,6 +2918,52 @@ export type GetLabPracticeSessionCommandQueryResult = Apollo.QueryResult<
 	GetLabPracticeSessionCommandQuery,
 	GetLabPracticeSessionCommandQueryVariables
 >;
+export const GetLaboratoryDocument = gql`
+	query getLaboratory($id: ID!) {
+		getLaboratory(id: $id) {
+			id
+			name
+			description
+			organizationID
+			createdBy
+			updatedAt
+			updatedBy
+			createdAt
+		}
+	}
+`;
+
+/**
+ * __useGetLaboratoryQuery__
+ *
+ * To run a query within a React component, call `useGetLaboratoryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLaboratoryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLaboratoryQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetLaboratoryQuery(
+	baseOptions: Apollo.QueryHookOptions<GetLaboratoryQuery, GetLaboratoryQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<GetLaboratoryQuery, GetLaboratoryQueryVariables>(GetLaboratoryDocument, options);
+}
+export function useGetLaboratoryLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<GetLaboratoryQuery, GetLaboratoryQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<GetLaboratoryQuery, GetLaboratoryQueryVariables>(GetLaboratoryDocument, options);
+}
+export type GetLaboratoryQueryHookResult = ReturnType<typeof useGetLaboratoryQuery>;
+export type GetLaboratoryLazyQueryHookResult = ReturnType<typeof useGetLaboratoryLazyQuery>;
+export type GetLaboratoryQueryResult = Apollo.QueryResult<GetLaboratoryQuery, GetLaboratoryQueryVariables>;
 export const ListLabPracticeCommandsDocument = gql`
 	query listLabPracticeCommands {
 		listLabPracticeCommands {

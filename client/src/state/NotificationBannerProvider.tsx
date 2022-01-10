@@ -45,7 +45,7 @@ const NotificationBannerProvider: React.FC = ({children}: Props) => {
 		if (closeTimer) {
 			clearTimeout(closeTimer);
 		}
-		setState({visible: true, type: 'error', message});
+		setState({visible: true, type: 'success', message});
 		closeTimer = setTimeout(clearBanner, MESSAGE_CLOSE_DELAY);
 	};
 

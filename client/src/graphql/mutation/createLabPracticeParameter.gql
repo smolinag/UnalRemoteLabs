@@ -1,0 +1,15 @@
+mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
+	createLabPracticeParameter(input: $input) {
+		id
+		labpracticecommandID
+		labpracticeID
+		name
+		description
+		defaultValue
+		minValue
+		maxValue
+		regex
+		updatedBy
+		createdBy
+	}
+}

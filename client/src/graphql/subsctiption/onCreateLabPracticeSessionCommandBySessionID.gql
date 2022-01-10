@@ -1,4 +1,4 @@
-subscription onUpdateLabPracticeSessionCommand($id: ID!) {
+subscription onCreateLabPracticeSessionCommandBySessionID($id: ID!) {
 	onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 		status
 		labpracticecommandID

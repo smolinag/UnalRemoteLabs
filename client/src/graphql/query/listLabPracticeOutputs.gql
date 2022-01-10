@@ -1,4 +1,4 @@
-query getLabPracticeOutput {
+query listLabPracticeOutputs {
 	listLabPracticeOutputs {
 		items {
 			id

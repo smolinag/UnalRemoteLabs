@@ -30,7 +30,7 @@ import {
 	Section
 } from './types';
 
-const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+// const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 
 const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoName: '',
@@ -316,7 +316,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				const {data: labPracticeData} = await createLabPractice({
 					variables: {
 						input: {
-							laboratoryID: PRACTICE_ID,
+							laboratoryID: 'f3094551-bdd7-411b-b2e7-721bb993e138',
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
@@ -329,7 +329,11 @@ const LabCreationView: React.FC<unknown> = () => {
 					throw Error('');
 				}
 
+
 				const practiceId = labPracticeData.createLabPractice?.id;
+
+				console.warn(practiceId)
+
 
 				if (!practiceId) {
 					return;

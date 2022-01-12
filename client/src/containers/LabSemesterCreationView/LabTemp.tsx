@@ -20,6 +20,11 @@ const LabTemp: React.FC<unknown> = () => {
 					</Button>
 				</Col>
 				<Col>
+					<Button loading={false} onClick={() => createPractice('/user-labs')}>
+						Sesiones de laboratorios
+					</Button>
+				</Col>
+				<Col>
 					<Button loading={false} onClick={() => createPractice('/labs')}>
 						Laboratorios
 					</Button>

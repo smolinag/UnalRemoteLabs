@@ -240,7 +240,7 @@ const LabSemesterCreationView: React.FC<unknown> = () => {
 				</Row>
 				<Row className="section">
 					<h3 className="title" />
-					<Col className={classes.justifyEnd}>
+					<Col className="justifyEnd">
 						<Button loading={loading} onClick={createLaboratorySemester}>
 							Guardar
 						</Button>

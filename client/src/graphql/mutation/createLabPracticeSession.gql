@@ -1,0 +1,11 @@
+mutation createLabPracticeSession($input: CreateLabPracticeSessionInput!) {
+	createLabPracticeSession(input: $input) {
+		id
+		labpracticeID
+		description
+		startDate
+		endDate
+		updatedBy
+		createdBy
+	}
+}

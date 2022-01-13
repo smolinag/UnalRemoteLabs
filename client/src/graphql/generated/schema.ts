@@ -2355,6 +2355,19 @@ export type CreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 	>;
 };
 
+export type CreateLabPracticeSessionMutationVariables = Exact<{
+	input: CreateLabPracticeSessionInput;
+}>;
+
+export type CreateLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
+	createLabPracticeSession?: Maybe<
+		{__typename?: 'LabPracticeSession'} & Pick<
+			LabPracticeSession,
+			'id' | 'labpracticeID' | 'description' | 'startDate' | 'endDate' | 'updatedBy' | 'createdBy'
+		>
+	>;
+};
+
 export type CreateLabPracticeSessionCommandMutationVariables = Exact<{
 	input: CreateLabPracticeSessionCommandInput;
 }>;
@@ -2678,6 +2691,56 @@ export type CreateLabPracticeParameterMutationResult = Apollo.MutationResult<Cre
 export type CreateLabPracticeParameterMutationOptions = Apollo.BaseMutationOptions<
 	CreateLabPracticeParameterMutation,
 	CreateLabPracticeParameterMutationVariables
+>;
+export const CreateLabPracticeSessionDocument = gql`
+	mutation createLabPracticeSession($input: CreateLabPracticeSessionInput!) {
+		createLabPracticeSession(input: $input) {
+			id
+			labpracticeID
+			description
+			startDate
+			endDate
+			updatedBy
+			createdBy
+		}
+	}
+`;
+export type CreateLabPracticeSessionMutationFn = Apollo.MutationFunction<
+	CreateLabPracticeSessionMutation,
+	CreateLabPracticeSessionMutationVariables
+>;
+
+/**
+ * __useCreateLabPracticeSessionMutation__
+ *
+ * To run a mutation, you first call `useCreateLabPracticeSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLabPracticeSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLabPracticeSessionMutation, { data, loading, error }] = useCreateLabPracticeSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateLabPracticeSessionMutation(
+	baseOptions?: Apollo.MutationHookOptions<CreateLabPracticeSessionMutation, CreateLabPracticeSessionMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateLabPracticeSessionMutation, CreateLabPracticeSessionMutationVariables>(
+		CreateLabPracticeSessionDocument,
+		options
+	);
+}
+export type CreateLabPracticeSessionMutationHookResult = ReturnType<typeof useCreateLabPracticeSessionMutation>;
+export type CreateLabPracticeSessionMutationResult = Apollo.MutationResult<CreateLabPracticeSessionMutation>;
+export type CreateLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
+	CreateLabPracticeSessionMutation,
+	CreateLabPracticeSessionMutationVariables
 >;
 export const CreateLabPracticeSessionCommandDocument = gql`
 	mutation createLabPracticeSessionCommand($input: CreateLabPracticeSessionCommandInput!) {

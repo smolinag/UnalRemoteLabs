@@ -15,13 +15,14 @@ export interface Option {
 interface Props {
 	text: string;
 	options: Option[];
+	required?: boolean;
 	tooltip?: string;
 	value: string;
 	onValueChange: (value: string, id: string) => void;
 	error?: boolean;
 }
 
-const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onValueChange, error}) => {
+const DropdownComponent: React.FC<Props> = ({text, options, required, tooltip, value, onValueChange, error}) => {
 	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
 
 	const renderItem = (option: Option): JSX.Element => {
@@ -37,7 +38,9 @@ const DropdownComponent: React.FC<Props> = ({text, options, tooltip, value, onVa
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.inputWrapper}>
-				<span className={classes.inputTitle}>{text}:</span>
+				<span className={classes.inputTitle}>
+					{text}: : {required && '(Requerido)'}
+				</span>
 				<div className={classes.inputSubwrapper}>
 					<DropdownButton id="dropdown-basic-button" title={`${value}`} className={classes.dropdownToggle}>
 						{options.map((option) => renderItem(option))}

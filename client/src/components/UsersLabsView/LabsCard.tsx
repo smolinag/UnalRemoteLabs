@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react';
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 import {IoEnter} from 'react-icons/io5';
 import {Link} from 'react-router-dom';
@@ -30,7 +30,7 @@ const mapOutput = ({
 	sessionStartDate,
 	sessionEndDate,
 	labPracticeSession
-}: UserLabPracticeSession): (boolean | string | ReactNode | number)[] => [
+}: UserLabPracticeSession): (boolean | string | React.ReactNode | number)[] => [
 	<span key={labPracticeSession.labPracticeInfo.laboratory.name} style={{fontWeight: 'bold'}}>
 		{labPracticeSession.labPracticeInfo.laboratory.name}
 	</span>,

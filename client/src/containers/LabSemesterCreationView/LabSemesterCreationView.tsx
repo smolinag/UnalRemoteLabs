@@ -176,7 +176,7 @@ const LabSemesterCreationView: React.FC<unknown> = () => {
 						input: {
 							laboratoryID: laboratoryId,
 							semesterName: labSemesterInfo.semesterName,
-							emailUserList: JSON.stringify(emails),
+							studentEmailList: JSON.stringify(emails),
 							description: labSemesterInfo.semesterDescription,
 							createdBy: '1'
 						}

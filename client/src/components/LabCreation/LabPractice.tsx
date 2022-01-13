@@ -47,7 +47,8 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice, laboratories, er
 						handleSelectCommand(value, id);
 					}}
 					value={laboratory.value}
-					error={checkErrorMessage(Params.SelectedCommand)}
+					error={checkErrorMessage(Params.Laboratory)}
+					required
 				/>
 				<Input
 					type="text"

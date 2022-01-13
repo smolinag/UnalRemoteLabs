@@ -13,6 +13,7 @@ import {
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
+	useListLaboratoriesQuery,
 	useCreateLabPracticeMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
@@ -26,7 +27,8 @@ import {
 	LabPracticeParameterInfo,
 	LabPracticeInfo,
 	ErrorIdentifier,
-	Section
+	Section,
+	LaboratoryInfo
 } from './types';
 
 // const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
@@ -67,6 +69,7 @@ const LabCreationView: React.FC<unknown> = () => {
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
+	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
 
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
 	const [modalType, setModalType] = React.useState<Section>(Section.CommandInfo);
@@ -77,11 +80,23 @@ const LabCreationView: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
+	const {data: laboratoriesList} = useListLaboratoriesQuery();
 	const [createLabPractice] = useCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+
+	React.useEffect(() => {
+		const labs = laboratoriesList?.listLaboratorys?.items;
+		if (labs) {
+			setLaboratories(
+				labs.map((obj) => {
+					return {id: obj.id, name: obj.name};
+				})
+			);
+		}
+	}, [laboratoriesList]);
 
 	const practiceChange = (value: string, id: string) => {
 		const practice: LabPracticeInfo = {
@@ -310,6 +325,8 @@ const LabCreationView: React.FC<unknown> = () => {
 
 	const createPractice = async () => {
 		checkErrorMessage(Section.PracticeInfo);
+
+		console.warn(errors)
 
 		if (errors.length === 0) {
 			setLoading(true);
@@ -663,7 +680,12 @@ const LabCreationView: React.FC<unknown> = () => {
 				</ModalComponent>
 			}
 			<LoadingContainer loading={loading}>
-				<LabPractice practice={practiceInfo} laboratories={[]} onValueChange={practiceChange} errors={errors} />
+				<LabPractice
+					practice={practiceInfo}
+					laboratories={laboratories}
+					onValueChange={practiceChange}
+					errors={errors}
+				/>
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className="justifyCenter">
@@ -679,7 +701,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					onValueChange={practiceChange}
 					errors={errors}
 				/>
-				<div className='justifyCenter'>
+				<div className="justifyCenter">
 					<Button loading={false} onClick={() => addParameter(practiceInfo.parameter)}>
 						Añadir
 					</Button>
@@ -689,7 +711,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				)}
 
 				<LabPracticeOutput output={practiceInfo.output} onValueChange={practiceChange} errors={errors} />
-				<div className='justifyCenter'>
+				<div className="justifyCenter">
 					<Button loading={false} onClick={() => addOutput(practiceInfo.output)}>
 						Añadir
 					</Button>
@@ -697,7 +719,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				{outputsList.length > 0 && <LabPracticeOutputTable data={outputsList} onAction={handleOutputAction} />}
 
 				<Row className="section">
-					<div className='justifyEnd'>
+					<div className="justifyEnd">
 						<Button loading={loading} onClick={createPractice}>
 							Guardar
 						</Button>

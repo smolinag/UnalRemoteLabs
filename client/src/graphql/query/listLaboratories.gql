@@ -1,0 +1,13 @@
+query listLaboratories {
+   listLaboratorys {
+     items {
+       id
+       name
+       description
+       createdAt
+       updatedAt
+       organizationID
+       _version
+     }
+   }
+}

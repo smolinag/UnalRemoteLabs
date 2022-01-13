@@ -1,5 +1,5 @@
-query getLaboratory($id: ID!) {
-	getLaboratory(id: $id) {
+mutation createLaboratory($input: CreateLaboratoryInput!) {
+	createLaboratory (input: $input) {
 		id
 		name
 		description

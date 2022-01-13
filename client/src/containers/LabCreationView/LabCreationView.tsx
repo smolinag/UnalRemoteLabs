@@ -19,7 +19,6 @@ import {
 	useCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
-import classes from './LabCreationView.module.scss';
 import {
 	Params,
 	OutputInfo,
@@ -329,11 +328,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					throw Error('');
 				}
 
-
 				const practiceId = labPracticeData.createLabPractice?.id;
-
-				console.warn(practiceId)
-
 
 				if (!practiceId) {
 					return;
@@ -658,7 +653,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				<LabPractice practice={practiceInfo} onValueChange={practiceChange} errors={errors} />
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
-				<div className={classes.justifyCenter}>
+				<div className="justifyCenter">
 					<Button loading={false} onClick={() => addCommand(practiceInfo.command)}>
 						Añadir
 					</Button>
@@ -671,7 +666,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					onValueChange={practiceChange}
 					errors={errors}
 				/>
-				<div className={classes.justifyCenter}>
+				<div className='justifyCenter'>
 					<Button loading={false} onClick={() => addParameter(practiceInfo.parameter)}>
 						Añadir
 					</Button>
@@ -681,7 +676,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				)}
 
 				<LabPracticeOutput output={practiceInfo.output} onValueChange={practiceChange} errors={errors} />
-				<div className={classes.justifyCenter}>
+				<div className='justifyCenter'>
 					<Button loading={false} onClick={() => addOutput(practiceInfo.output)}>
 						Añadir
 					</Button>
@@ -689,7 +684,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				{outputsList.length > 0 && <LabPracticeOutputTable data={outputsList} onAction={handleOutputAction} />}
 
 				<Row className="section">
-					<div className={classes.justifyEnd}>
+					<div className='justifyEnd'>
 						<Button loading={loading} onClick={createPractice}>
 							Guardar
 						</Button>

@@ -41,3 +41,13 @@ body {
 	font-size: .8rem;
 	color: red
 }
+
+.justifyCenter {
+	display: flex;
+	justify-content: center;
+}
+
+.justifyEnd {
+	display: flex;
+	justify-content: flex-end;
+}

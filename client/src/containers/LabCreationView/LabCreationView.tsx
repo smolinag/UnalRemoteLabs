@@ -33,6 +33,7 @@ import {
 // const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 
 const initialPracticeValue: LabPracticeInfo = {
+	laboratoryId: '',
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
@@ -89,6 +90,8 @@ const LabCreationView: React.FC<unknown> = () => {
 		};
 		setPracticeInfo((previousState) => {
 			switch (id) {
+				case Params.Laboratory:
+					return {...previousState, laboratoryId: value};
 				case Params.Name:
 					return {...previousState, practiceInfoName: value};
 				case Params.Description:
@@ -316,7 +319,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				const {data: labPracticeData} = await createLabPractice({
 					variables: {
 						input: {
-							laboratoryID: 'f3094551-bdd7-411b-b2e7-721bb993e138',
+							laboratoryID: practiceInfo.laboratoryId,
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
@@ -329,11 +332,7 @@ const LabCreationView: React.FC<unknown> = () => {
 					throw Error('');
 				}
 
-
 				const practiceId = labPracticeData.createLabPractice?.id;
-
-				console.warn(practiceId)
-
 
 				if (!practiceId) {
 					return;
@@ -417,6 +416,7 @@ const LabCreationView: React.FC<unknown> = () => {
 
 	const checkErrorMessage = (section: string) => {
 		setErrors((previousState: ErrorIdentifier[]) => {
+			const notAddedLab = errors.filter((error) => error.identifier === Params.Laboratory).length === 1;
 			const notAddedName = errors.filter((error) => error.identifier === Params.Name).length === 1;
 			const notAddedDuration = errors.filter((error) => error.identifier === Params.Duration).length === 1;
 			const notCommandName = errors.filter((error) => error.identifier === Params.CommandName).length === 1;
@@ -427,6 +427,15 @@ const LabCreationView: React.FC<unknown> = () => {
 			const notOutputName = errors.filter((error) => error.identifier === Params.OutputName).length === 1;
 
 			if (section === Section.PracticeInfo) {
+				if (!notAddedLab && practiceInfo.laboratoryId.length === 0) {
+					previousState.push({
+						identifier: Params.Laboratory
+					});
+				} else if (notAddedLab && practiceInfo.laboratoryId.length > 0) {
+					const index = errors.findIndex((error) => error.identifier === Params.Laboratory);
+					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+				}
+
 				if (!notAddedName && practiceInfo.practiceInfoName.length === 0) {
 					previousState.push({
 						identifier: Params.Name
@@ -655,7 +664,7 @@ const LabCreationView: React.FC<unknown> = () => {
 				</ModalComponent>
 			}
 			<LoadingContainer loading={loading}>
-				<LabPractice practice={practiceInfo} onValueChange={practiceChange} errors={errors} />
+				<LabPractice practice={practiceInfo} laboratories={[]} onValueChange={practiceChange} errors={errors} />
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className={classes.justifyCenter}>

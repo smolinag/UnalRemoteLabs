@@ -1,23 +1,34 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {Params, LabPracticeInfo, ErrorIdentifier} from '../../containers/LabCreationView/types';
-import {Input} from '../UI';
+import {Params, LabPracticeInfo, ErrorIdentifier, LaboratoryInfo} from '../../containers/LabCreationView/types';
+import {DropdownComponent, Input} from '../UI';
+import {Option} from '../UI/DropdownComponent/DropdownComponent';
 import classes from './shared.module.scss';
 
 interface Props {
 	practice: LabPracticeInfo;
+	laboratories: LaboratoryInfo[];
 	onValueChange: (value: string, id: string) => void;
 	errors: ErrorIdentifier[];
 }
 
-const LabPractice: React.FC<Props> = ({onValueChange, practice, errors}) => {
+const initialLaboratory: Option = {id: '', value: 'Laboratorio'};
+
+const LabPractice: React.FC<Props> = ({onValueChange, practice, laboratories, errors}) => {
+	const [laboratory, setCommand] = React.useState<Option>(initialLaboratory);
+
+	const handleSelectCommand = (value: string, id: string) => {
+		setCommand({value, id});
+		onValueChange(id, Params.Laboratory);
+	};
+
 	const checkErrorMessage = (parameter: string): boolean => {
 		let message = false;
 		errors.map((error) => {
-			if(error.identifier === parameter) {
+			if (error.identifier === parameter) {
 				message = true;
-			} 
+			}
 		});
 
 		return message;
@@ -27,6 +38,17 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice, errors}) => {
 		<Row className="section">
 			<h3 className="title">Información de la práctica de laboratorio</h3>
 			<div className={classes.options}>
+				<DropdownComponent
+					text="Laboratorio"
+					options={laboratories.map((laboratory) => {
+						return {value: laboratory.name, id: laboratory.id};
+					})}
+					onValueChange={(value, id) => {
+						handleSelectCommand(value, id);
+					}}
+					value={laboratory.value}
+					error={checkErrorMessage(Params.SelectedCommand)}
+				/>
 				<Input
 					type="text"
 					placeholder="Nombre"

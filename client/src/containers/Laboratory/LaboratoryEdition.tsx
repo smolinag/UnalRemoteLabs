@@ -7,7 +7,7 @@ import {Button, LoadingContainer} from '../../components/UI';
 import {
 	useGetLaboratoryQuery,
 	useListOrganizationsQuery,
-	useCreateLaboratoryMutation
+	useUpdateLaboratoryMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Laboratory, LocationState, Organization, Params} from './types';
@@ -32,7 +32,7 @@ const LaboratoryEdition: React.FC<unknown> = () => {
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<string[]>([]);
 
-	const [createLaboratory] = useCreateLaboratoryMutation({});
+	const [updateLaboratory] = useUpdateLaboratoryMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	useEffect(() => {
@@ -113,10 +113,10 @@ const LaboratoryEdition: React.FC<unknown> = () => {
 		if (!hasError) {
 			setLoading(true);
 			try {
-				const {data: laboratoryData} = await createLaboratory({
+				const {data: laboratoryData} = await updateLaboratory({
 					variables: {
 						input: {
-							id: laboratory.id,
+							id: laboratory.id ? laboratory.id : '',
 							name: laboratory.name,
 							description: laboratory.description,
 							organizationID: laboratory.organizationId,
@@ -125,16 +125,16 @@ const LaboratoryEdition: React.FC<unknown> = () => {
 						}
 					}
 				});
-				if (!laboratoryData?.createLaboratory?.id) {
+				if (!laboratoryData?.updateLaboratory?.id) {
 					throw Error('');
 				}
-				showSuccessBanner(`El laboratorio ${laboratory.name} fue creado exitosamente`);
+				showSuccessBanner(`El laboratorio ${laboratoryData.updateLaboratory.name} fue editado exitosamente`);
 				setLaboratory({
-					id: laboratoryData.createLaboratory?.id,
-					name: laboratoryData.createLaboratory?.name,
-					description: laboratoryData.createLaboratory?.description ? laboratoryData.createLaboratory?.description : '',
-					organizationId: laboratoryData.createLaboratory?.organizationID,
-					version: laboratoryData.createLaboratory?._version
+					id: laboratoryData.updateLaboratory?.id,
+					name: laboratoryData.updateLaboratory?.name,
+					description: laboratoryData.updateLaboratory?.description ? laboratoryData.updateLaboratory?.description : '',
+					organizationId: laboratoryData.updateLaboratory?.organizationID,
+					version: laboratoryData.updateLaboratory?._version
 				});
 			} catch (error) {
 				showErrorBanner(`Error en la creación del laboratorio ${laboratory.name}`);

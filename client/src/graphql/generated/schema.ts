@@ -554,6 +554,7 @@ export type Laboratory = {
 	LabSemesters?: Maybe<ModelLabSemesterConnection>;
 	organizationID: Scalars['ID'];
 	Organization?: Maybe<Organization>;
+	LabPractices?: Maybe<ModelLabPracticeConnection>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -563,6 +564,13 @@ export type Laboratory = {
 
 export type LaboratoryLabSemestersArgs = {
 	filter?: Maybe<ModelLabSemesterFilterInput>;
+	sortDirection?: Maybe<ModelSortDirection>;
+	limit?: Maybe<Scalars['Int']>;
+	nextToken?: Maybe<Scalars['String']>;
+};
+
+export type LaboratoryLabPracticesArgs = {
+	filter?: Maybe<ModelLabPracticeFilterInput>;
 	sortDirection?: Maybe<ModelSortDirection>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
@@ -2413,6 +2421,27 @@ export type PublishMqttMessageMutationVariables = Exact<{
 
 export type PublishMqttMessageMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'publishMqttMessage'>;
 
+export type UpdateLaboratoryMutationVariables = Exact<{
+	input: UpdateLaboratoryInput;
+}>;
+
+export type UpdateLaboratoryMutation = {__typename?: 'Mutation'} & {
+	updateLaboratory?: Maybe<
+		{__typename?: 'Laboratory'} & Pick<
+			Laboratory,
+			| 'id'
+			| 'name'
+			| 'description'
+			| 'organizationID'
+			| 'createdBy'
+			| 'updatedAt'
+			| 'updatedBy'
+			| 'createdAt'
+			| '_version'
+		>
+	>;
+};
+
 export type GetUserLabPracticeSessionQueryVariables = Exact<{
 	id: Scalars['ID'];
 }>;
@@ -2977,6 +3006,58 @@ export type PublishMqttMessageMutationResult = Apollo.MutationResult<PublishMqtt
 export type PublishMqttMessageMutationOptions = Apollo.BaseMutationOptions<
 	PublishMqttMessageMutation,
 	PublishMqttMessageMutationVariables
+>;
+export const UpdateLaboratoryDocument = gql`
+	mutation updateLaboratory($input: UpdateLaboratoryInput!) {
+		updateLaboratory(input: $input) {
+			id
+			name
+			description
+			organizationID
+			createdBy
+			updatedAt
+			updatedBy
+			createdAt
+			_version
+		}
+	}
+`;
+export type UpdateLaboratoryMutationFn = Apollo.MutationFunction<
+	UpdateLaboratoryMutation,
+	UpdateLaboratoryMutationVariables
+>;
+
+/**
+ * __useUpdateLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useUpdateLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLaboratoryMutation, { data, loading, error }] = useUpdateLaboratoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLaboratoryMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>(
+		UpdateLaboratoryDocument,
+		options
+	);
+}
+export type UpdateLaboratoryMutationHookResult = ReturnType<typeof useUpdateLaboratoryMutation>;
+export type UpdateLaboratoryMutationResult = Apollo.MutationResult<UpdateLaboratoryMutation>;
+export type UpdateLaboratoryMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLaboratoryMutation,
+	UpdateLaboratoryMutationVariables
 >;
 export const GetUserLabPracticeSessionDocument = gql`
 	query getUserLabPracticeSession($id: ID!) {

@@ -13,11 +13,9 @@ const LaboratoriesList: React.FC<unknown> = () => {
 
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [labs, setLabs] = React.useState<Laboratory[]>([]);
-	const {data} = useListLaboratoriesQuery();
+	const {data, loading: retrievingInfo} = useListLaboratoriesQuery();
 
 	React.useEffect(() => {
-		setLoading(true);
-
 		if (data && data.listLaboratorys?.items) {
 			const labsList: Laboratory[] = data?.listLaboratorys?.items.map((obj) => {
 				return {
@@ -31,7 +29,7 @@ const LaboratoriesList: React.FC<unknown> = () => {
 			setLabs(labsList);
 		}
 
-		setLoading(false);
+		setLoading(retrievingInfo);
 	}, [data]);
 
 	const handleLaboratoryAction = (index: number, action: Action) => {

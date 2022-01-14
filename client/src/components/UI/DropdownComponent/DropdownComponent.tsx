@@ -39,7 +39,7 @@ const DropdownComponent: React.FC<Props> = ({text, options, required, tooltip, v
 		<div className={classes.wrapper}>
 			<div className={classes.inputWrapper}>
 				<span className={classes.inputTitle}>
-					{text}: : {required && '(Requerido)'}
+					{text}: {required && '(Requerido)'}
 				</span>
 				<div className={classes.inputSubwrapper}>
 					<DropdownButton id="dropdown-basic-button" title={`${value}`} className={classes.dropdownToggle}>

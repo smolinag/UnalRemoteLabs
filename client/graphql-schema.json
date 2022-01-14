@@ -1170,7 +1170,31 @@
             "deprecationReason": null
           },
           {
-            "name": "emailUserList",
+            "name": "professorEmailList",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "AWSJSON",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "monitorEmailList",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "AWSJSON",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "studentEmailList",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -4620,7 +4644,7 @@
             "args": [],
             "type": {
               "kind": "OBJECT",
-              "name": "LabPracticeOutput",
+              "name": "LabPractice",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5111,7 +5135,31 @@
             "deprecationReason": null
           },
           {
-            "name": "emailUserList",
+            "name": "professorEmailList",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "AWSJSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "monitorEmailList",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "AWSJSON",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "studentEmailList",
             "description": null,
             "args": [],
             "type": {
@@ -8802,7 +8850,31 @@
             "deprecationReason": null
           },
           {
-            "name": "emailUserList",
+            "name": "professorEmailList",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "monitorEmailList",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "studentEmailList",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -9000,7 +9072,31 @@
             "deprecationReason": null
           },
           {
-            "name": "emailUserList",
+            "name": "professorEmailList",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "monitorEmailList",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "studentEmailList",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -19271,7 +19367,31 @@
             "deprecationReason": null
           },
           {
-            "name": "emailUserList",
+            "name": "professorEmailList",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "AWSJSON",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "monitorEmailList",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "AWSJSON",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "studentEmailList",
             "description": null,
             "type": {
               "kind": "SCALAR",

@@ -10,7 +10,6 @@ query getUserLabPractices {
 				LabPractice {
 					id
 					name
-					labelName
 					description
 				}
 			}

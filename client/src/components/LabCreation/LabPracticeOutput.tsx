@@ -43,6 +43,7 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, onValueEdit, output,
 					tooltip="Ingrese el nombre del parámetro de salida"
 					onValueChange={(value) => onValueChange ? onValueChange(value, Params.OutputName) : (onValueEdit && onValueEdit(Params.OutputName, value, undefined, undefined, output)) }
 					error={checkErrorMessage(Params.OutputName)}
+					required
 				/>
 				<Input
 					type="text"

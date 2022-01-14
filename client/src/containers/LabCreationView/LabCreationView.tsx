@@ -326,8 +326,6 @@ const LabCreationView: React.FC<unknown> = () => {
 	const createPractice = async () => {
 		checkErrorMessage(Section.PracticeInfo);
 
-		console.warn(errors)
-
 		if (errors.length === 0) {
 			setLoading(true);
 

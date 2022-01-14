@@ -69,7 +69,6 @@ const LaboratoryInfo: React.FC<Props> = ({onValueChange, laboratory, organizatio
 						return {value: organization.name, id: organization.id};
 					})}
 					onValueChange={(value, id) => {
-						console.warn(id);
 						handleSelectCommand(value, id);
 					}}
 					value={organization.value}

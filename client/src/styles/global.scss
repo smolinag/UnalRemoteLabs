@@ -51,3 +51,10 @@ body {
 	display: flex;
 	justify-content: flex-end;
 }
+
+/*Estilo para sobrescribir los estilos de bootstrap*/
+#dropdown-basic-button {
+	background-color: white;
+	border-color: gray;
+	color: black;
+}

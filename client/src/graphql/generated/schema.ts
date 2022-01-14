@@ -120,7 +120,9 @@ export type CreateLabSemesterInput = {
 	id?: Maybe<Scalars['ID']>;
 	semesterName: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
-	emailUserList?: Maybe<Scalars['AWSJSON']>;
+	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
+	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	laboratoryID: Scalars['ID'];
@@ -471,7 +473,7 @@ export type LabPracticeSession = {
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	LabPractice?: Maybe<LabPracticeOutput>;
+	LabPractice?: Maybe<LabPractice>;
 	labpracticeID: Scalars['ID'];
 	LabPracticeSessionCommands?: Maybe<ModelLabPracticeSessionCommandConnection>;
 	UserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
@@ -519,7 +521,9 @@ export type LabSemester = {
 	id: Scalars['ID'];
 	semesterName: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
-	emailUserList?: Maybe<Scalars['AWSJSON']>;
+	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
+	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	Laboratory?: Maybe<Laboratory>;
@@ -884,7 +888,9 @@ export type ModelLabPracticeSessionFilterInput = {
 export type ModelLabSemesterConditionInput = {
 	semesterName?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	emailUserList?: Maybe<ModelStringInput>;
+	professorEmailList?: Maybe<ModelStringInput>;
+	monitorEmailList?: Maybe<ModelStringInput>;
+	studentEmailList?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
@@ -904,7 +910,9 @@ export type ModelLabSemesterFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	semesterName?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	emailUserList?: Maybe<ModelStringInput>;
+	professorEmailList?: Maybe<ModelStringInput>;
+	monitorEmailList?: Maybe<ModelStringInput>;
+	studentEmailList?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
@@ -2118,7 +2126,9 @@ export type UpdateLabSemesterInput = {
 	id: Scalars['ID'];
 	semesterName?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
-	emailUserList?: Maybe<Scalars['AWSJSON']>;
+	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
+	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	laboratoryID?: Maybe<Scalars['ID']>;
@@ -2466,6 +2476,26 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	listLabPracticeOutputs?: Maybe<
 		{__typename?: 'ModelLabPracticeOutputConnection'} & {
 			items: Array<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'name'>>;
+		}
+	>;
+};
+
+export type ListUsersBySemesterQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type ListUsersBySemesterQuery = {__typename?: 'Query'} & {
+	listLabSemesters?: Maybe<
+		{__typename?: 'ModelLabSemesterConnection'} & {
+			items: Array<
+				{__typename?: 'LabSemester'} & {
+					users?: Maybe<
+						{__typename?: 'ModelUserLabSemesterConnection'} & {
+							items: Array<{__typename?: 'UserLabSemester'} & {user: {__typename?: 'User'} & Pick<User, 'name'>}>;
+						}
+					>;
+				}
+			>;
 		}
 	>;
 };
@@ -3136,6 +3166,62 @@ export type ListLabPracticeOutputsLazyQueryHookResult = ReturnType<typeof useLis
 export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 	ListLabPracticeOutputsQuery,
 	ListLabPracticeOutputsQueryVariables
+>;
+export const ListUsersBySemesterDocument = gql`
+	query listUsersBySemester($id: ID!) {
+		listLabSemesters(filter: {id: {eq: $id}}) {
+			items {
+				users {
+					items {
+						user {
+							name
+						}
+					}
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useListUsersBySemesterQuery__
+ *
+ * To run a query within a React component, call `useListUsersBySemesterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUsersBySemesterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUsersBySemesterQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useListUsersBySemesterQuery(
+	baseOptions: Apollo.QueryHookOptions<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>(
+		ListUsersBySemesterDocument,
+		options
+	);
+}
+export function useListUsersBySemesterLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>(
+		ListUsersBySemesterDocument,
+		options
+	);
+}
+export type ListUsersBySemesterQueryHookResult = ReturnType<typeof useListUsersBySemesterQuery>;
+export type ListUsersBySemesterLazyQueryHookResult = ReturnType<typeof useListUsersBySemesterLazyQuery>;
+export type ListUsersBySemesterQueryResult = Apollo.QueryResult<
+	ListUsersBySemesterQuery,
+	ListUsersBySemesterQueryVariables
 >;
 export const OnCreateLabPracticeSessionCommandBySessionIdDocument = gql`
 	subscription onCreateLabPracticeSessionCommandBySessionID($id: ID!) {

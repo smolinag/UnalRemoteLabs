@@ -1,9 +1,9 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
 
 import LabSessionData from '../../components/LabSessionProgramming/LabSessionData';
 import {LoadingContainer, Button} from '../../components/UI';
-import {useCreateLabPracticeSessionMutation} from '../../graphql/generated/schema';
+import {useCreateLabPracticeSessionMutation, useListUsersBySemesterQuery} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import classes from './LabSessionProgrammingView.module.scss';
 import {LabSessionInfo} from './types';
@@ -25,10 +25,10 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 
   const [createLabPracticeSession] = useCreateLabPracticeSessionMutation({}); 
 
-	useEffect(() => {
-	})
-
 	const onSessionDescriptionChange = (value: string) => {
+
+		useListUsersBySemesterQuery({variables: {id:"1"}})
+
 		setSessionInfo((previousState) => {
 			return {...previousState, description: value};
 		});

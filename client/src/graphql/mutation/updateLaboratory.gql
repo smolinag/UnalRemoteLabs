@@ -1,0 +1,13 @@
+mutation updateLaboratory($input: UpdateLaboratoryInput!) {
+	updateLaboratory (input: $input) {
+		id
+		name
+		description
+		organizationID
+		createdBy
+		updatedAt
+		updatedBy
+		createdAt
+		_version
+	}
+}

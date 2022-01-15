@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import {LoadingContainer} from '../../components/UI';
 import {LabsCards} from '../../components/UsersLabsView';
 import {UserLabPracticeSession} from '../../containers/UserListLaboratories/types';
-import {useGetUserLabPracticesQuery} from '../../graphql/generated/schema';
+import {useListUserLabPracticeSessionsQuery} from '../../graphql/generated/schema';
 
 export const DUMMY_DATA: UserLabPracticeSession[] = [
 	{
@@ -13,10 +13,10 @@ export const DUMMY_DATA: UserLabPracticeSession[] = [
 		sessionEndDate: '',
 		labPracticeSession: {
 			id: '93a1909e-eef3-421c-9cca-22396177f39c',
-			startDate: '2022-01-10T16:25:00-05:00',
-			endDate: '2022-01-10T17:00:00-05:00',
+			startDate: '2022-01-14T15:00:00-05:00',
+			endDate: '2022-01-14T17:00:00-05:00',
 			labPracticeInfo: {
-				id: '6e2bdc2c-7e30-40b9-99ef-ea7c1d19a8cf',
+				id: '7f735a8d-2d46-466f-a40e-49a32d891654',
 				practiceInfoName: 'test456',
 				practiceInfoDescription: 'test456',
 				practiceInfoDuration: 60,
@@ -176,24 +176,59 @@ export const DUMMY_DATA: UserLabPracticeSession[] = [
 		}
 	}
 ];
-// const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
 
 const UserListLaboratories: React.FC<unknown> = () => {
-   const [loading, setLoading] = React.useState<boolean>(true)
-   const {data, loading: retrievingInfo} = useGetUserLabPracticesQuery();
+	const [loading, setLoading] = React.useState<boolean>(true);
+	const [userLabPracticeSessionsList, setUserLabPracticeSessionsList] = React.useState<UserLabPracticeSession[]>();
 
-   console.warn(data)
+	const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery();
 
-   React.useEffect(() => {
-      console.warn(retrievingInfo)
-      
-      setLoading(false)
-   }, [])
+	React.useEffect(() => {
+		const receivedList = data?.listUserLabPracticeSessions?.items;
+		if (receivedList) {
+			const list: UserLabPracticeSession[] = receivedList.map((session) => ({
+				id: session.id,
+				sessionStartDate: session.sessionStartDate,
+				sessionEndDate: session.sessionEndDate,
+				labPracticeSession: {
+					id: session.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
+					startDate: session.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
+					endDate: session.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
+					labPracticeInfo: {
+						id: session.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
+						practiceInfoName: session.LabPracticeSession?.LabPractice?.name
+							? session.LabPracticeSession?.LabPractice?.name
+							: '',
+						practiceInfoDescription: session.LabPracticeSession?.LabPractice?.description
+							? session.LabPracticeSession?.LabPractice?.description
+							: '',
+						practiceInfoDuration: session.LabPracticeSession?.LabPractice?.duration
+							? session.LabPracticeSession?.LabPractice?.duration
+							: 0,
+						laboratory: {
+							id: session.LabPracticeSession?.LabPractice?.Laboratory?.id
+								? session.LabPracticeSession?.LabPractice?.Laboratory?.id
+								: '',
+							name: session.LabPracticeSession?.LabPractice?.Laboratory?.name
+								? session.LabPracticeSession?.LabPractice?.Laboratory?.name
+								: '',
+							description: session.LabPracticeSession?.LabPractice?.Laboratory?.description
+								? session.LabPracticeSession?.LabPractice?.Laboratory?.description
+								: ''
+						}
+					}
+				}
+			}));
+			setUserLabPracticeSessionsList(list);
+		}
+		console.warn(userLabPracticeSessionsList);
+		setLoading(retrievingInfo);
+	}, [data]);
 
 	return (
 		<LoadingContainer loading={loading}>
 			<Row className="section">
-				<h3 className="title">Laboratorios</h3>
+				<h3 className="title">Sesiones de Prácticas</h3>
 			</Row>
 			<Row className="section">
 				<LabsCards laboratories={DUMMY_DATA} />

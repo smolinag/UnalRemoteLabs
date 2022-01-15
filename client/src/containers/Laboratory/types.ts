@@ -1,5 +1,5 @@
 export interface Laboratory {
-   id?: string | undefined,
+   id?: string,
 	name: string;
 	description?: string;
    organizationId: string;

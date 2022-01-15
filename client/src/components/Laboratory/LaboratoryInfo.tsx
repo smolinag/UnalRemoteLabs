@@ -31,13 +31,15 @@ const LaboratoryInfo: React.FC<Props> = ({onValueChange, laboratory, organizatio
 
 	React.useEffect(() => {
 		if (laboratory.organizationId) {
-			const org = organizations.filter((obj) => obj.id === laboratory.organizationId)[0];
-			setOrganization({
-				id: org.id,
-				value: org.name
-			});
+			if (organizations.length > 0) {
+				const org = organizations.filter((obj) => obj.id === laboratory.organizationId)[0];
+				setOrganization({
+					id: org.id,
+					value: org.name
+				});
+			}
 		}
-	}, [laboratory.organizationId]);
+	}, [laboratory.organizationId, organizations]);
 
 	const handleSelectCommand = (value: string, id: string) => {
 		setOrganization({value, id: id});
@@ -69,7 +71,6 @@ const LaboratoryInfo: React.FC<Props> = ({onValueChange, laboratory, organizatio
 						return {value: organization.name, id: organization.id};
 					})}
 					onValueChange={(value, id) => {
-						console.warn(id);
 						handleSelectCommand(value, id);
 					}}
 					value={organization.value}

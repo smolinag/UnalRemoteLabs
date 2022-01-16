@@ -2,9 +2,9 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {LoadingContainer} from '../../components/UI';
-import {LabsCards} from '../../components/UsersLabsView';
-import {UserLabPracticeSession} from '../../containers/UserListLaboratories/types';
+import {UserLabPracticeSessionsTable} from '../../components/UsersLabsView';
 import {useListUserLabPracticeSessionsQuery} from '../../graphql/generated/schema';
+import {UserLabPracticeSession} from './types';
 
 export const DUMMY_DATA: UserLabPracticeSession[] = [
 	{
@@ -177,7 +177,7 @@ export const DUMMY_DATA: UserLabPracticeSession[] = [
 	}
 ];
 
-const UserListLaboratories: React.FC<unknown> = () => {
+const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [userLabPracticeSessionsList, setUserLabPracticeSessionsList] = React.useState<UserLabPracticeSession[]>();
 
@@ -228,13 +228,13 @@ const UserListLaboratories: React.FC<unknown> = () => {
 	return (
 		<LoadingContainer loading={loading}>
 			<Row className="section">
-				<h3 className="title">Sesiones de Prácticas</h3>
+				<h3 className="title">Sesiones de prácticas de laboratorios</h3>
 			</Row>
 			<Row className="section">
-				<LabsCards laboratories={DUMMY_DATA} />
+				<UserLabPracticeSessionsTable laboratories={DUMMY_DATA} />
 			</Row>
 		</LoadingContainer>
 	);
 };
 
-export default UserListLaboratories;
+export default UserLabPracticeSessionsList;

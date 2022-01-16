@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {OutputInfo, Params, ErrorIdentifier, LabPracticeCommandInfo, LabPracticeParameterInfo} from '../../containers/LabCreationView/types';
+import {OutputInfo, Params, ErrorIdentifier, LabPracticeCommandInfo, LabPracticeParameterInfo} from '../../containers/LabPractice/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
 

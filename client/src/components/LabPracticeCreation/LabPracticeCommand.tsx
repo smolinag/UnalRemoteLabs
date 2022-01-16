@@ -7,7 +7,7 @@ import {
 	ErrorIdentifier,
 	LabPracticeParameterInfo,
 	OutputInfo
-} from '../../containers/LabCreationView/types';
+} from '../../containers/LabPractice/types';
 import {Input} from '../UI';
 import classes from './shared.module.scss';
 

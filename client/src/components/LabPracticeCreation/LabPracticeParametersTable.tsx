@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {LabPracticeParameterInfo} from '../../containers/LabCreationView/types';
+import {LabPracticeParameterInfo} from '../../containers/LabPractice/types';
 import {Table} from '../UI/index';
 import { Action } from '../UI/Table/Table';
 

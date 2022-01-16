@@ -35,9 +35,9 @@ type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: pr
   id: ID!
   sessionStartDate: AWSDateTime
   sessionEndDate: AWSDateTime
-  User: User @connection
-  LabPracticeSession: LabPracticeSession @connection
+  User: User @connection(fields: ["userID"])
   userID: ID!
+  LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
   roleID: ID
 }
@@ -65,9 +65,9 @@ type LabPracticeSessionCommand @model @auth(rules: [{ allow: public },  { allow:
   executionDate: AWSDateTime
   status: String!
   parameters: AWSJSON
-  LabPracticeSession: LabPracticeSession @connection
+  LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
-  LabPracticeCommand: LabPracticeCommand @connection
+  LabPracticeCommand: LabPracticeCommand @connection(fields: ["labpracticecommandID"])
   labpracticecommandID: ID!
 }
 
@@ -78,10 +78,11 @@ type LabPracticeOutput @model @auth(rules: [{ allow: public },  { allow: private
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String!
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   outputType: String!
+  updatedBy: String
+  createdBy: String!
 }
 
 type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
@@ -91,7 +92,7 @@ type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: privat
   description: String
   updatedBy: String
   createdBy: String!
-  LabPractice: LabPracticeOutput @connection
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeSession", fields: ["id"])
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byLabPracticeSession", fields: ["id"])
@@ -104,7 +105,7 @@ type LabPracticeDevice @model @auth(rules: [{ allow: public },  { allow: private
   type: String
   updatedBy: String
   createdBy: String
-  LabPractice: LabPracticeOutput @connection
+  LabPractice: LabPractice @connection
 }
 
 type LabPracticeParameter @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
@@ -119,7 +120,7 @@ type LabPracticeParameter @model @auth(rules: [{ allow: public },  { allow: priv
   regex: String
   updatedBy: String
   createdBy: String
-  LabPracticeCommand: LabPracticeCommand @connection
+  LabPracticeCommand: LabPracticeCommand @connection(fields: ["labpracticecommandID"])
   labpracticecommandID: ID
   LabPractice: LabPracticeDevice @connection
   labpracticeID: ID
@@ -133,7 +134,7 @@ type LabPracticeCommand @model @auth(rules: [{ allow: public },  { allow: privat
   description: String
   updatedBy: String
   createdBy: String!
-  LabPractice: LabPracticeParameter @connection
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   LabPracticeParameters: [LabPracticeParameter] @connection(keyName: "byLabPracticeCommand", fields: ["id"])
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeCommand", fields: ["id"])
@@ -146,7 +147,7 @@ type LabPractice @model @auth(rules: [{ allow: public },  { allow: private}]) @k
   duration: Int!
   updatedBy: String
   createdBy: String!
-  Laboratory: Laboratory @connection
+  Laboratory: Laboratory @connection(fields: ["laboratoryID"])
   laboratoryID: ID!
   LabPracticeCommands: [LabPracticeCommand] @connection(keyName: "byLabPractice", fields: ["id"])
   LabPracticeParameters: [LabPracticeParameter] @connection(keyName: "byLabPractice", fields: ["id"])
@@ -159,10 +160,12 @@ type LabSemester @model @auth(rules: [{ allow: public },  { allow: private}]) @k
   id: ID!
   semesterName: String!
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String!
-  Laboratory: Laboratory @connection
+  Laboratory: Laboratory @connection(fields: ["laboratoryID"])
   laboratoryID: ID!
   users: [UserLabSemester] @connection(keyName: "byLabSemester", fields: ["id"])
 }
@@ -175,7 +178,7 @@ type Laboratory @model @auth(rules: [{ allow: public },  { allow: private}]) @ke
   createdBy: String!
   LabSemesters: [LabSemester] @connection(keyName: "byLaboratory", fields: ["id"])
   organizationID: ID!
-  Organization: Organization @connection
+  Organization: Organization @connection(fields: ["organizationID"])
   LabPractices: [LabPractice] @connection(keyName: "byLaboratory", fields: ["id"])
 }
 

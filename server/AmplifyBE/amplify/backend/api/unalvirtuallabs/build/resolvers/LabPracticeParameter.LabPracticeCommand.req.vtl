@@ -1,11 +1,11 @@
-#if( $util.isNull($ctx.source.labPracticeParameterLabPracticeCommandId) )
+#if( $util.isNull($ctx.source.labpracticecommandID) )
   #return
 #else
 {
       "version": "2018-05-29",
       "operation": "GetItem",
       "key": {
-          "id": $util.dynamodb.toDynamoDBJson($util.defaultIfNullOrBlank($ctx.source.labPracticeParameterLabPracticeCommandId, "___xamznone____"))
+          "id": $util.dynamodb.toDynamoDBJson($util.defaultIfNullOrBlank($ctx.source.labpracticecommandID, "___xamznone____"))
     }
   }
 #end

@@ -1269,7 +1269,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "LabPracticeOutputDataSource",
+                                "LabPracticeDataSource",
                                 "Name"
                             ]
                         ]
@@ -1488,7 +1488,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "LabPracticeParameterDataSource",
+                                "LabPracticeDataSource",
                                 "Name"
                             ]
                         ]

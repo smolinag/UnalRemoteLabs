@@ -108,10 +108,10 @@ type LabPracticeOutput @aws_api_key @aws_cognito_user_pools {
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String!
   labpracticeID: ID!
   outputType: String!
+  updatedBy: String
+  createdBy: String!
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
@@ -150,7 +150,7 @@ type LabPracticeDevice @aws_api_key @aws_cognito_user_pools {
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  LabPractice: LabPracticeOutput @aws_api_key @aws_cognito_user_pools
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
 type LabPracticeParameter @aws_api_key @aws_cognito_user_pools {
@@ -191,8 +191,8 @@ type LabPracticeCommand @aws_api_key @aws_cognito_user_pools {
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
-  LabPractice: LabPracticeParameter @aws_api_key @aws_cognito_user_pools
   LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
 type LabPractice @aws_api_key @aws_cognito_user_pools {
@@ -220,7 +220,9 @@ type LabSemester @aws_api_key @aws_cognito_user_pools {
   id: ID!
   semesterName: String!
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String!
   laboratoryID: ID!
@@ -753,8 +755,6 @@ input CreateUserLabPracticeSessionInput {
   labpracticesessionID: ID!
   roleID: ID
   _version: Int
-  userLabPracticeSessionUserId: ID
-  userLabPracticeSessionLabPracticeSessionId: ID
 }
 
 input UpdateUserLabPracticeSessionInput {
@@ -765,8 +765,6 @@ input UpdateUserLabPracticeSessionInput {
   labpracticesessionID: ID
   roleID: ID
   _version: Int
-  userLabPracticeSessionUserId: ID
-  userLabPracticeSessionLabPracticeSessionId: ID
 }
 
 input DeleteUserLabPracticeSessionInput {
@@ -930,10 +928,10 @@ input ModelLabPracticeOutputFilterInput {
   order: ModelIntInput
   description: ModelStringInput
   units: ModelStringInput
-  updatedBy: ModelStringInput
-  createdBy: ModelStringInput
   labpracticeID: ModelIDInput
   outputType: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
   and: [ModelLabPracticeOutputFilterInput]
   or: [ModelLabPracticeOutputFilterInput]
   not: ModelLabPracticeOutputFilterInput
@@ -946,10 +944,10 @@ input CreateLabPracticeOutputInput {
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String!
   labpracticeID: ID!
   outputType: String!
+  updatedBy: String
+  createdBy: String!
   _version: Int
 }
 
@@ -960,10 +958,10 @@ input UpdateLabPracticeOutputInput {
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String
   labpracticeID: ID
   outputType: String
+  updatedBy: String
+  createdBy: String
   _version: Int
 }
 
@@ -978,10 +976,10 @@ input ModelLabPracticeOutputConditionInput {
   order: ModelIntInput
   description: ModelStringInput
   units: ModelStringInput
-  updatedBy: ModelStringInput
-  createdBy: ModelStringInput
   labpracticeID: ModelIDInput
   outputType: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
   and: [ModelLabPracticeOutputConditionInput]
   or: [ModelLabPracticeOutputConditionInput]
   not: ModelLabPracticeOutputConditionInput
@@ -1141,7 +1139,6 @@ input CreateLabPracticeParameterInput {
   labpracticecommandID: ID
   labpracticeID: ID
   _version: Int
-  labPracticeParameterLabPracticeCommandId: ID
   labPracticeParameterLabPracticeId: ID
 }
 
@@ -1160,7 +1157,6 @@ input UpdateLabPracticeParameterInput {
   labpracticecommandID: ID
   labpracticeID: ID
   _version: Int
-  labPracticeParameterLabPracticeCommandId: ID
   labPracticeParameterLabPracticeId: ID
 }
 
@@ -1217,7 +1213,6 @@ input CreateLabPracticeCommandInput {
   createdBy: String!
   labpracticeID: ID!
   _version: Int
-  labPracticeCommandLabPracticeId: ID
 }
 
 input UpdateLabPracticeCommandInput {
@@ -1230,7 +1225,6 @@ input UpdateLabPracticeCommandInput {
   createdBy: String
   labpracticeID: ID
   _version: Int
-  labPracticeCommandLabPracticeId: ID
 }
 
 input DeleteLabPracticeCommandInput {
@@ -1321,7 +1315,9 @@ input ModelLabSemesterFilterInput {
   id: ModelIDInput
   semesterName: ModelStringInput
   description: ModelStringInput
-  emailUserList: ModelStringInput
+  professorEmailList: ModelStringInput
+  monitorEmailList: ModelStringInput
+  studentEmailList: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   laboratoryID: ModelIDInput
@@ -1334,24 +1330,26 @@ input CreateLabSemesterInput {
   id: ID
   semesterName: String!
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String!
   laboratoryID: ID!
   _version: Int
-  labSemesterLaboratoryId: ID
 }
 
 input UpdateLabSemesterInput {
   id: ID!
   semesterName: String
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String
   laboratoryID: ID
   _version: Int
-  labSemesterLaboratoryId: ID
 }
 
 input DeleteLabSemesterInput {
@@ -1362,7 +1360,9 @@ input DeleteLabSemesterInput {
 input ModelLabSemesterConditionInput {
   semesterName: ModelStringInput
   description: ModelStringInput
-  emailUserList: ModelStringInput
+  professorEmailList: ModelStringInput
+  monitorEmailList: ModelStringInput
+  studentEmailList: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   laboratoryID: ModelIDInput
@@ -1397,7 +1397,6 @@ input CreateLaboratoryInput {
   createdBy: String!
   organizationID: ID!
   _version: Int
-  laboratoryOrganizationId: ID
 }
 
 input UpdateLaboratoryInput {
@@ -1408,7 +1407,6 @@ input UpdateLaboratoryInput {
   createdBy: String
   organizationID: ID
   _version: Int
-  laboratoryOrganizationId: ID
 }
 
 input DeleteLaboratoryInput {

@@ -2,7 +2,7 @@
   "AppSyncApiName": "unalvirtuallabs",
   "DynamoDBBillingMode": "PAY_PER_REQUEST",
   "DynamoDBEnableServerSideEncryption": false,
-  "AuthModeLastUpdated": "2021-12-20T23:02:07.894Z",
+  "AuthModeLastUpdated": "2022-01-15T19:06:09.922Z",
   "AuthCognitoUserPoolId": {
     "Fn::GetAtt": [
       "authunalvirtuallabsa596f245",

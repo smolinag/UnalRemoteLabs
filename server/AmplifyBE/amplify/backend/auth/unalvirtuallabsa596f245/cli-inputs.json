@@ -64,7 +64,7 @@
       "Ref": "AWS::StackId"
     },
     "permissions": [],
-    "hostedUIDomainName": "unalvirtuallabs747b40c4-747b40c4",
+    "hostedUIDomainName": "unalvirtuallabsfab5cbf4-fab5cbf4",
     "authProvidersUserPool": [
       "Google"
     ],

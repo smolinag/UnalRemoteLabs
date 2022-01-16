@@ -6,13 +6,20 @@
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authunalvirtuallabsa596f245"
     },
-    "additionalAuthTypes": [],
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2023-01-15T19:06:06.539Z",
+        "keyDescription": "Api Key for dev"
+      }
+    ],
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
       }
     },
     "apiName": "unalvirtuallabs",
-    "gqlSchemaPath": "C:\\Users\\AFS-2140\\Desktop\\UNAL\\Unal-Labs\\server\\amplify\\backend\\api\\unalvirtuallabs\\schema.graphql"
+    "gqlSchemaPath": "C:\\Users\\AFS-2140\\Desktop\\UNAL\\Unal-Labs\\server\\AmplifyBE\\amplify\\backend\\api\\unalvirtuallabs\\schema.graphql"
   }
 }

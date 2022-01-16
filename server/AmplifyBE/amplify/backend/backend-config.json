@@ -23,7 +23,16 @@
               "userPoolId": "authunalvirtuallabsa596f245"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2023-01-15T19:06:06.539Z",
+                "description": "Api Key for dev"
+              }
+            }
+          ]
         }
       }
     }

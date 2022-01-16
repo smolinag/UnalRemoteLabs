@@ -1,13 +1,13 @@
 query listUsersBySemester($id: ID!) {
-  listLabSemesters(filter: {id: {eq: $id}}) {
-    items {
-      users {
-        items {
-          user {
-            name
-          }
-        }
-      }
-    }
-  }
+	getLabSemester(id: $id) {
+		users {
+			items {
+				user {
+					id
+					name
+					email
+				}
+			}
+		}
+	}
 }

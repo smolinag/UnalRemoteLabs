@@ -41,3 +41,8 @@ body {
 	font-size: .8rem;
 	color: red
 }
+
+
+.react-datetime-picker__calendar {
+	z-index: 999 !important;
+}

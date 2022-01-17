@@ -208,7 +208,6 @@ type UserLabSemester @model(queries: null) @auth(rules: [{ allow: public },  { a
 }
 
 input LabOutputIn{
-  id: ID!
   captureDate: AWSDateTime
   value: String
   labpracticeoutputID: ID!
@@ -216,11 +215,10 @@ input LabOutputIn{
 }
 
 type LabOutputOut{
-  id: ID!
   captureDate: AWSDateTime
   value: String
-  labpracticeoutputID: ID!
-  labpracticesessionID: ID!
+  labpracticeoutputID: ID
+  labpracticesessionID: ID
 }
 
 input LambdaInput {

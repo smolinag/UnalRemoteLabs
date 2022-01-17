@@ -293,7 +293,6 @@ type UserLabSemester @aws_api_key @aws_cognito_user_pools {
 }
 
 input LabOutputIn {
-  id: ID!
   captureDate: AWSDateTime
   value: String
   labpracticeoutputID: ID!
@@ -301,11 +300,10 @@ input LabOutputIn {
 }
 
 type LabOutputOut {
-  id: ID!
   captureDate: AWSDateTime
   value: String
-  labpracticeoutputID: ID!
-  labpracticesessionID: ID!
+  labpracticeoutputID: ID
+  labpracticesessionID: ID
 }
 
 input LambdaInput {

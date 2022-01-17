@@ -39,6 +39,7 @@ type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: pr
   userID: ID!
   LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
+  role: Role @connection(fields: ["roleID"])
   roleID: ID
 }
 
@@ -122,7 +123,7 @@ type LabPracticeParameter @model @auth(rules: [{ allow: public },  { allow: priv
   createdBy: String
   LabPracticeCommand: LabPracticeCommand @connection(fields: ["labpracticecommandID"])
   labpracticecommandID: ID
-  LabPractice: LabPracticeDevice @connection
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID
 }
 

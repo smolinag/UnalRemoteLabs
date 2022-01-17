@@ -58,6 +58,7 @@ type UserLabPracticeSession @aws_api_key @aws_cognito_user_pools {
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  role: Role @aws_api_key @aws_cognito_user_pools
   User: User @aws_api_key @aws_cognito_user_pools
   LabPracticeSession: LabPracticeSession @aws_api_key @aws_cognito_user_pools
 }
@@ -172,8 +173,8 @@ type LabPracticeParameter @aws_api_key @aws_cognito_user_pools {
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  LabPractice: LabPracticeDevice @aws_api_key @aws_cognito_user_pools
   LabPracticeCommand: LabPracticeCommand @aws_api_key @aws_cognito_user_pools
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
 type LabPracticeCommand @aws_api_key @aws_cognito_user_pools {
@@ -1139,7 +1140,6 @@ input CreateLabPracticeParameterInput {
   labpracticecommandID: ID
   labpracticeID: ID
   _version: Int
-  labPracticeParameterLabPracticeId: ID
 }
 
 input UpdateLabPracticeParameterInput {
@@ -1157,7 +1157,6 @@ input UpdateLabPracticeParameterInput {
   labpracticecommandID: ID
   labpracticeID: ID
   _version: Int
-  labPracticeParameterLabPracticeId: ID
 }
 
 input DeleteLabPracticeParameterInput {

@@ -26,21 +26,26 @@ Amplify.configure(awsExports);
 const App = (): JSX.Element => {
 	return (
 		<Authenticator components={authComponents} socialProviders={['google']}>
-			{(response) => (
+			{() => (
 				<div className={classes.wrapper}>
 					<NotificationBanner />
 					<Header />
 					<div className={classes.content}>
 						<Routes>
-							<Route path="/" element={<LabPracticeView />} />
-							<Route path="/create-lab" element={<LabPracticeCreation />} />
-							<Route path="/user-labs" element={<UserLabPracticeSessionsList />} />
-							<Route path="/create-lab-semester" element={<LabSemesterCreationView />} />
-							<Route path="/create-lab-session" element={<LabSessionProgrammingView />} />
-							<Route path="/temp" element={<LabTemp />} />
+							<Route path="/" element={<LabTemp />} />
+
+							<Route path="/create-lab-practice-semester" element={<LabSemesterCreationView />} />
+							<Route path="/create-lab-practice-session" element={<LabSessionProgrammingView />} />
+
+							<Route path="/user-labs-sessions" element={<UserLabPracticeSessionsList />} />
 							<Route path="/labs" element={<LaboratoriesList />} />
+
+							<Route path="/lab-practice" element={<LabPracticeView />} />
 							<Route path="/lab-creation" element={<LaboratoryCreation />} />
 							<Route path="/lab-edition" element={<LaboratoryEdition />} />
+
+							<Route path="/create-lab-practice" element={<LabPracticeCreation />} />
+
 							{/* Crear componente para rutas no existentes */}
 							<Route path="*" element={<div> Pagina no existe </div>} />
 						</Routes>

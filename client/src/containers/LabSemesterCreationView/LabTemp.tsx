@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container, Row} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 
 import {Button} from '../../components/UI';
@@ -14,21 +14,25 @@ const LabTemp: React.FC<unknown> = () => {
 	return (
 		<Container fluid>
 			<Row>
-				<Col>
-					<Button loading={false} onClick={() => createPractice('/create-lab-semester')}>
-						Crear Semestre
-					</Button>
-				</Col>
-				<Col>
-					<Button loading={false} onClick={() => createPractice('/user-labs')}>
-						Sesiones de prácticas de laboratorios
-					</Button>
-				</Col>
-				<Col>
-					<Button loading={false} onClick={() => createPractice('/labs')}>
-						Laboratorios
-					</Button>
-				</Col>
+				<Button loading={false} onClick={() => createPractice('/create-lab-practice-semester')}>
+					Crear Semestre
+				</Button>
+
+				<Button loading={false} onClick={() => createPractice('/user-labs-sessions')}>
+					Sesiones de prácticas de laboratorios
+				</Button>
+
+				<Button loading={false} onClick={() => createPractice('/labs')}>
+					Laboratorios
+				</Button>
+
+				<Button loading={false} onClick={() => createPractice('/create-lab-practice')}>
+					Crear Práctica de Laboratorio
+				</Button>
+
+				<Button loading={false} onClick={() => createPractice('/create-lab-practice-session')}>
+					Crear Sesión de Práctica de Laboratorio
+				</Button>
 			</Row>
 		</Container>
 	);

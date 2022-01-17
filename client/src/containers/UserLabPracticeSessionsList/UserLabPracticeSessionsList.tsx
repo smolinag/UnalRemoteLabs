@@ -13,8 +13,8 @@ export const DUMMY_DATA: UserLabPracticeSession[] = [
 		sessionEndDate: '',
 		labPracticeSession: {
 			id: '93a1909e-eef3-421c-9cca-22396177f39c',
-			startDate: '2022-01-14T15:00:00-05:00',
-			endDate: '2022-01-14T17:00:00-05:00',
+			startDate: '2022-01-17T11:25:00-05:00',
+			endDate: '2022-01-17T17:00:00-05:00',
 			labPracticeInfo: {
 				id: '7f735a8d-2d46-466f-a40e-49a32d891654',
 				practiceInfoName: 'test456',

@@ -3,10 +3,10 @@ import Row from 'react-bootstrap/Row';
 import {IoEnter} from 'react-icons/io5';
 import {useNavigate} from 'react-router-dom';
 
-import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserListLaboratories/types';
+import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserLabPracticeSessionsList/types';
 import {Table} from '../UI/index';
 import {Action} from '../UI/Table/Table';
-import classes from './LabsCard.module.scss';
+import classes from './UserLabPracticeSessionsTable.module.scss';
 
 interface Props {
 	laboratories?: UserLabPracticeSession[];
@@ -41,7 +41,7 @@ const showDate = (date: string) => {
 	}
 };
 
-const LabsCard: React.FC<Props> = ({laboratories, onAction}) => {
+const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction}) => {
 	const navigate = useNavigate();
 
 	if (!laboratories) {
@@ -99,4 +99,4 @@ const LabsCard: React.FC<Props> = ({laboratories, onAction}) => {
 	);
 };
 
-export default LabsCard;
+export default UserLabPracticeSessionsTable;

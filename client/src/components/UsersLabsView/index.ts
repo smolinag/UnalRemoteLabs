@@ -1,1 +1,1 @@
-export {default as LabsCards} from './LabsCard';
+export {default as UserLabPracticeSessionsTable} from './UserLabPracticeSessionsTable';

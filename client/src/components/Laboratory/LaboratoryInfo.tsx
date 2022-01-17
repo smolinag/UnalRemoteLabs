@@ -2,7 +2,7 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {Laboratory, Organization, Params} from '../../containers/Laboratory/types';
-import classes from '../LabCreation/shared.module.scss';
+import classes from '../LabPracticeCreation/shared.module.scss';
 import {DropdownComponent, Input} from '../UI';
 import {Option} from '../UI/DropdownComponent/DropdownComponent';
 

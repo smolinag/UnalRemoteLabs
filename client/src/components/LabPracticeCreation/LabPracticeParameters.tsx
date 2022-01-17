@@ -7,7 +7,7 @@ import {
 	LabPracticeCommandInfo,
 	ErrorIdentifier,
 	OutputInfo
-} from '../../containers/LabCreationView/types';
+} from '../../containers/LabPractice/types';
 import {Input, DropdownComponent} from '../UI';
 import {Option} from '../UI/DropdownComponent/DropdownComponent';
 import classes from './shared.module.scss';

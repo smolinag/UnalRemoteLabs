@@ -1,7 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {Params, LabPracticeInfo, ErrorIdentifier, LaboratoryInfo} from '../../containers/LabCreationView/types';
+import {Params, LabPracticeInfo, ErrorIdentifier, LaboratoryInfo} from '../../containers/LabPractice/types';
 import {DropdownComponent, Input} from '../UI';
 import {Option} from '../UI/DropdownComponent/DropdownComponent';
 import classes from './shared.module.scss';

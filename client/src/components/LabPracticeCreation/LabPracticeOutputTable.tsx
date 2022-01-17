@@ -1,29 +1,31 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import {LabPracticeCommandInfo} from '../../containers/LabCreationView/types';
+import {OutputInfo} from '../../containers/LabPractice/types';
 import {Table} from '../UI/index';
 import { Action } from '../UI/Table/Table';
 
 interface Props {
-	data: LabPracticeCommandInfo[];
+	data: OutputInfo[];
 	onAction?: (rowIndex: number, action: Action) => void;
 }
 
 const COLUMNS = [
-	'Nombre del comando',
-	'Descripción del comando',
+	'Nombre',
+	'Descripción',
+	'Unidad'
 ];
 
-const mapOutput = ({
-	commandName,
-	commandDescription,
-}: LabPracticeCommandInfo): string[] => [
-	commandName,
-	commandDescription,
-];
-
-const LabPracticeCommandTable: React.FC<Props> = ({data, onAction}) => {
+const LabPracticeOutputTable: React.FC<Props> = ({data, onAction}) => {
+	const mapOutput = ({
+      outputName: outputName,
+      outputDescription,
+      outputUnit
+	}: OutputInfo): string[] => [
+		outputName,
+		outputDescription,
+		outputUnit
+	];
 
 	return (
 		<Row className="section">
@@ -33,4 +35,4 @@ const LabPracticeCommandTable: React.FC<Props> = ({data, onAction}) => {
 	);
 };
 
-export default LabPracticeCommandTable;
+export default LabPracticeOutputTable;

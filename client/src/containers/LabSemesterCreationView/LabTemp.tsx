@@ -14,16 +14,12 @@ const LabTemp: React.FC<unknown> = () => {
 	return (
 		<Container fluid>
 			<Row>
-				<Button loading={false} onClick={() => createPractice('/create-lab-practice-semester')}>
-					Crear Semestre
-				</Button>
-
-				<Button loading={false} onClick={() => createPractice('/user-labs-sessions')}>
-					Sesiones de prácticas de laboratorios
-				</Button>
-
 				<Button loading={false} onClick={() => createPractice('/labs')}>
 					Laboratorios
+				</Button>
+
+				<Button loading={false} onClick={() => createPractice('/create-lab-practice-semester')}>
+					Crear Semestre
 				</Button>
 
 				<Button loading={false} onClick={() => createPractice('/create-lab-practice')}>
@@ -32,6 +28,10 @@ const LabTemp: React.FC<unknown> = () => {
 
 				<Button loading={false} onClick={() => createPractice('/create-lab-practice-session')}>
 					Crear Sesión de Práctica de Laboratorio
+				</Button>
+				
+				<Button loading={false} onClick={() => createPractice('/user-labs-sessions')}>
+					Sesiones de prácticas de laboratorios
 				</Button>
 			</Row>
 		</Container>

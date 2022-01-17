@@ -1,4 +1,10 @@
+export interface LaboratoryInfo {
+	id: string;
+	name: string;
+}
+
 export interface LabPracticeInfo {
+	laboratoryId: string;
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
@@ -48,7 +54,8 @@ export enum Params {
 	OutputName = 'outputName',
 	OutputDescription = 'outputDescription',
 	OutputUnit = 'outputUnit',
-	AddCommand = 'addCommand'
+	AddCommand = 'addCommand',
+	Laboratory = 'laboratoryId'
 }
 
 export interface ErrorIdentifier {

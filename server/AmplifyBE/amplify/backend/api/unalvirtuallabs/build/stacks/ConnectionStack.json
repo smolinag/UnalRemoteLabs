@@ -962,6 +962,79 @@
                 }
             }
         },
+        "LabPracticeOutputLabPracticeResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "LabPracticeDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "LabPractice",
+                "TypeName": "LabPracticeOutput",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "LabPracticeOutput",
+                                        "LabPractice",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "LabPracticeOutput",
+                                        "LabPractice",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
         "LabPracticeSessionLabPracticeResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
@@ -977,7 +1050,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "LabPracticeOutputDataSource",
+                                "LabPracticeDataSource",
                                 "Name"
                             ]
                         ]
@@ -1196,7 +1269,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "LabPracticeOutputDataSource",
+                                "LabPracticeDataSource",
                                 "Name"
                             ]
                         ]
@@ -1415,7 +1488,7 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "LabPracticeParameterDataSource",
+                                "LabPracticeDataSource",
                                 "Name"
                             ]
                         ]
@@ -2339,6 +2412,79 @@
                                     [
                                         "Laboratory",
                                         "Organization",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "LaboratoryLabPracticesResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "LabPracticeDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "LabPractices",
+                "TypeName": "Laboratory",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Laboratory",
+                                        "LabPractices",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Laboratory",
+                                        "LabPractices",
                                         "res",
                                         "vtl"
                                     ]

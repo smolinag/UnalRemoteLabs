@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
+import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command} from '../../components/Lab/Commands/Commands';
@@ -15,7 +16,7 @@ import {
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
-const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+// const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 const COMMAND_NAME_PREFIX = 'cmd';
 
@@ -33,6 +34,10 @@ enum CommandExecutionState {
 	Pending = 'pending'
 }
 
+export interface LocationState {
+	labPracticeId: string;
+}
+
 const COMMAND_EXECUTION_TIMEOUT = 5000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
@@ -46,7 +51,10 @@ const LabView: React.FC<unknown> = () => {
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>('');
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
+	const location = useLocation();
+	const laboratoryId = (location.state as LocationState)?.labPracticeId;
+
+	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: laboratoryId}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery();
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery();
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
@@ -75,6 +83,7 @@ const LabView: React.FC<unknown> = () => {
 			setLabCommands(commands);
 		}
 	}, [labCommandsData]);
+
 
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;

@@ -31,7 +31,6 @@ export type CreateLabPracticeCommandInput = {
 	createdBy: Scalars['String'];
 	labpracticeID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeCommandLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabPracticeDeviceInput = {
@@ -64,10 +63,10 @@ export type CreateLabPracticeOutputInput = {
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
 	labpracticeID: Scalars['ID'];
 	outputType: Scalars['String'];
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -86,8 +85,6 @@ export type CreateLabPracticeParameterInput = {
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeParameterLabPracticeCommandId?: Maybe<Scalars['ID']>;
-	labPracticeParameterLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabPracticeSessionCommandInput = {
@@ -99,8 +96,6 @@ export type CreateLabPracticeSessionCommandInput = {
 	labpracticesessionID: Scalars['ID'];
 	labpracticecommandID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeSessionCommandLabPracticeSessionId?: Maybe<Scalars['ID']>;
-	labPracticeSessionCommandLabPracticeCommandId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabPracticeSessionInput = {
@@ -112,19 +107,19 @@ export type CreateLabPracticeSessionInput = {
 	createdBy: Scalars['String'];
 	labpracticeID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeSessionLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabSemesterInput = {
 	id?: Maybe<Scalars['ID']>;
 	semesterName: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
-	emailUserList?: Maybe<Scalars['AWSJSON']>;
+	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
+	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	laboratoryID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
-	labSemesterLaboratoryId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLaboratoryInput = {
@@ -205,8 +200,6 @@ export type CreateUserLabPracticeSessionInput = {
 	labpracticesessionID: Scalars['ID'];
 	roleID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	userLabPracticeSessionUserId?: Maybe<Scalars['ID']>;
-	userLabPracticeSessionLabPracticeSessionId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateUserLabSemesterInput = {
@@ -384,8 +377,8 @@ export type LabPracticeCommand = {
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
 	LabPracticeSessionCommands?: Maybe<ModelLabPracticeSessionCommandConnection>;
-	LabPractice?: Maybe<LabPracticeParameter>;
 	LabPracticeParameters?: Maybe<ModelLabPracticeParameterConnection>;
+	LabPractice?: Maybe<LabPractice>;
 };
 
 export type LabPracticeCommandLabPracticeSessionCommandsArgs = {
@@ -426,15 +419,16 @@ export type LabPracticeOutput = {
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
 	labpracticeID: Scalars['ID'];
 	outputType: Scalars['String'];
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	LabPractice?: Maybe<LabPractice>;
 };
 
 export type LabPracticeParameter = {
@@ -457,8 +451,8 @@ export type LabPracticeParameter = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
-	LabPractice?: Maybe<LabPracticeDevice>;
 	LabPracticeCommand?: Maybe<LabPracticeCommand>;
+	LabPractice?: Maybe<LabPractice>;
 };
 
 export type LabPracticeSession = {
@@ -517,7 +511,9 @@ export type LabSemester = {
 	id: Scalars['ID'];
 	semesterName: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
-	emailUserList?: Maybe<Scalars['AWSJSON']>;
+	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
+	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	laboratoryID: Scalars['ID'];
@@ -747,10 +743,10 @@ export type ModelLabPracticeOutputConditionInput = {
 	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	units?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	outputType?: Maybe<ModelStringInput>;
+	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeOutputConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeOutputConditionInput>>>;
 	not?: Maybe<ModelLabPracticeOutputConditionInput>;
@@ -770,10 +766,10 @@ export type ModelLabPracticeOutputFilterInput = {
 	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
 	units?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	outputType?: Maybe<ModelStringInput>;
+	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeOutputFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeOutputFilterInput>>>;
 	not?: Maybe<ModelLabPracticeOutputFilterInput>;
@@ -890,7 +886,9 @@ export type ModelLabPracticeSessionFilterInput = {
 export type ModelLabSemesterConditionInput = {
 	semesterName?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	emailUserList?: Maybe<ModelStringInput>;
+	professorEmailList?: Maybe<ModelStringInput>;
+	monitorEmailList?: Maybe<ModelStringInput>;
+	studentEmailList?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
@@ -910,7 +908,9 @@ export type ModelLabSemesterFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	semesterName?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	emailUserList?: Maybe<ModelStringInput>;
+	professorEmailList?: Maybe<ModelStringInput>;
+	monitorEmailList?: Maybe<ModelStringInput>;
+	studentEmailList?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
@@ -2030,7 +2030,6 @@ export type UpdateLabPracticeCommandInput = {
 	createdBy?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeCommandLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabPracticeDeviceInput = {
@@ -2063,10 +2062,10 @@ export type UpdateLabPracticeOutputInput = {
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
 	units?: Maybe<Scalars['AWSJSON']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	outputType?: Maybe<Scalars['String']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -2085,8 +2084,6 @@ export type UpdateLabPracticeParameterInput = {
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeParameterLabPracticeCommandId?: Maybe<Scalars['ID']>;
-	labPracticeParameterLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabPracticeSessionCommandInput = {
@@ -2098,8 +2095,6 @@ export type UpdateLabPracticeSessionCommandInput = {
 	labpracticesessionID?: Maybe<Scalars['ID']>;
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeSessionCommandLabPracticeSessionId?: Maybe<Scalars['ID']>;
-	labPracticeSessionCommandLabPracticeCommandId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabPracticeSessionInput = {
@@ -2111,19 +2106,19 @@ export type UpdateLabPracticeSessionInput = {
 	createdBy?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeSessionLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabSemesterInput = {
 	id: Scalars['ID'];
 	semesterName?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
-	emailUserList?: Maybe<Scalars['AWSJSON']>;
+	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
+	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	laboratoryID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labSemesterLaboratoryId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLaboratoryInput = {
@@ -2204,8 +2199,6 @@ export type UpdateUserLabPracticeSessionInput = {
 	labpracticesessionID?: Maybe<Scalars['ID']>;
 	roleID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	userLabPracticeSessionUserId?: Maybe<Scalars['ID']>;
-	userLabPracticeSessionLabPracticeSessionId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateUserLabSemesterInput = {
@@ -2274,6 +2267,7 @@ export type UserLabPracticeSession = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	role?: Maybe<Role>;
 	User?: Maybe<User>;
 	LabPracticeSession?: Maybe<LabPracticeSession>;
 };
@@ -2388,6 +2382,27 @@ export type CreateLabSemesterMutation = {__typename?: 'Mutation'} & {
 	createLabSemester?: Maybe<{__typename?: 'LabSemester'} & Pick<LabSemester, 'id'>>;
 };
 
+export type CreateLaboratoryMutationVariables = Exact<{
+	input: CreateLaboratoryInput;
+}>;
+
+export type CreateLaboratoryMutation = {__typename?: 'Mutation'} & {
+	createLaboratory?: Maybe<
+		{__typename?: 'Laboratory'} & Pick<
+			Laboratory,
+			| 'id'
+			| 'name'
+			| 'description'
+			| 'organizationID'
+			| 'createdBy'
+			| 'updatedAt'
+			| 'updatedBy'
+			| 'createdAt'
+			| '_version'
+		>
+	>;
+};
+
 export type CreateUserLabPracticeSessionMutationVariables = Exact<{
 	input: CreateUserLabPracticeSessionInput;
 }>;
@@ -2401,6 +2416,43 @@ export type PublishMqttMessageMutationVariables = Exact<{
 }>;
 
 export type PublishMqttMessageMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'publishMqttMessage'>;
+
+export type UpdateLaboratoryMutationVariables = Exact<{
+	input: UpdateLaboratoryInput;
+}>;
+
+export type UpdateLaboratoryMutation = {__typename?: 'Mutation'} & {
+	updateLaboratory?: Maybe<
+		{__typename?: 'Laboratory'} & Pick<
+			Laboratory,
+			| 'id'
+			| 'name'
+			| 'description'
+			| 'organizationID'
+			| 'createdBy'
+			| 'updatedAt'
+			| 'updatedBy'
+			| 'createdAt'
+			| '_version'
+		>
+	>;
+};
+
+export type GetUserLabPracticeSessionQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type GetUserLabPracticeSessionQuery = {__typename?: 'Query'} & {
+	getUserLabPracticeSession?: Maybe<
+		{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'userID'> & {
+				LabPracticeSession?: Maybe<
+					{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'startDate' | 'endDate' | 'description'> & {
+							LabPractice?: Maybe<{__typename?: 'LabPractice'} & Pick<LabPractice, 'name' | 'description'>>;
+						}
+				>;
+			}
+	>;
+};
 
 export type GetLabPracticeQueryVariables = Exact<{
 	id: Scalars['ID'];
@@ -2436,7 +2488,15 @@ export type GetLaboratoryQuery = {__typename?: 'Query'} & {
 	getLaboratory?: Maybe<
 		{__typename?: 'Laboratory'} & Pick<
 			Laboratory,
-			'id' | 'name' | 'description' | 'organizationID' | 'createdBy' | 'updatedAt' | 'updatedBy' | 'createdAt'
+			| 'id'
+			| 'name'
+			| 'description'
+			| 'organizationID'
+			| 'createdBy'
+			| 'updatedAt'
+			| 'updatedBy'
+			| 'createdAt'
+			| '_version'
 		>
 	>;
 };
@@ -2473,6 +2533,58 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	listLabPracticeOutputs?: Maybe<
 		{__typename?: 'ModelLabPracticeOutputConnection'} & {
 			items: Array<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'name'>>;
+		}
+	>;
+};
+
+export type ListLaboratoriesQueryVariables = Exact<{[key: string]: never}>;
+
+export type ListLaboratoriesQuery = {__typename?: 'Query'} & {
+	listLaboratorys?: Maybe<
+		{__typename?: 'ModelLaboratoryConnection'} & {
+			items: Array<
+				{__typename?: 'Laboratory'} & Pick<
+					Laboratory,
+					'id' | 'name' | 'description' | 'createdAt' | 'updatedAt' | 'organizationID' | '_version'
+				>
+			>;
+		}
+	>;
+};
+
+export type ListOrganizationsQueryVariables = Exact<{[key: string]: never}>;
+
+export type ListOrganizationsQuery = {__typename?: 'Query'} & {
+	listOrganizations?: Maybe<
+		{__typename?: 'ModelOrganizationConnection'} & {
+			items: Array<{__typename?: 'Organization'} & Pick<Organization, 'id' | 'name' | 'description'>>;
+		}
+	>;
+};
+
+export type ListUserLabPracticeSessionsQueryVariables = Exact<{[key: string]: never}>;
+
+export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
+	listUserLabPracticeSessions?: Maybe<
+		{__typename?: 'ModelUserLabPracticeSessionConnection'} & {
+			items: Array<
+				{__typename?: 'UserLabPracticeSession'} & Pick<
+					UserLabPracticeSession,
+					'id' | 'sessionEndDate' | 'sessionStartDate'
+				> & {
+						LabPracticeSession?: Maybe<
+							{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id' | 'startDate' | 'endDate'> & {
+									LabPractice?: Maybe<
+										{__typename?: 'LabPractice'} & Pick<LabPractice, 'id' | 'name' | 'description' | 'duration'> & {
+												Laboratory?: Maybe<
+													{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>
+												>;
+											}
+									>;
+								}
+						>;
+					}
+			>;
 		}
 	>;
 };
@@ -2865,6 +2977,58 @@ export type CreateLabSemesterMutationOptions = Apollo.BaseMutationOptions<
 	CreateLabSemesterMutation,
 	CreateLabSemesterMutationVariables
 >;
+export const CreateLaboratoryDocument = gql`
+	mutation createLaboratory($input: CreateLaboratoryInput!) {
+		createLaboratory(input: $input) {
+			id
+			name
+			description
+			organizationID
+			createdBy
+			updatedAt
+			updatedBy
+			createdAt
+			_version
+		}
+	}
+`;
+export type CreateLaboratoryMutationFn = Apollo.MutationFunction<
+	CreateLaboratoryMutation,
+	CreateLaboratoryMutationVariables
+>;
+
+/**
+ * __useCreateLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useCreateLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLaboratoryMutation, { data, loading, error }] = useCreateLaboratoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateLaboratoryMutation(
+	baseOptions?: Apollo.MutationHookOptions<CreateLaboratoryMutation, CreateLaboratoryMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateLaboratoryMutation, CreateLaboratoryMutationVariables>(
+		CreateLaboratoryDocument,
+		options
+	);
+}
+export type CreateLaboratoryMutationHookResult = ReturnType<typeof useCreateLaboratoryMutation>;
+export type CreateLaboratoryMutationResult = Apollo.MutationResult<CreateLaboratoryMutation>;
+export type CreateLaboratoryMutationOptions = Apollo.BaseMutationOptions<
+	CreateLaboratoryMutation,
+	CreateLaboratoryMutationVariables
+>;
 export const CreateUserLabPracticeSessionDocument = gql`
 	mutation createUserLabPracticeSession($input: CreateUserLabPracticeSessionInput!) {
 		createUserLabPracticeSession(input: $input) {
@@ -2953,6 +3117,115 @@ export type PublishMqttMessageMutationResult = Apollo.MutationResult<PublishMqtt
 export type PublishMqttMessageMutationOptions = Apollo.BaseMutationOptions<
 	PublishMqttMessageMutation,
 	PublishMqttMessageMutationVariables
+>;
+export const UpdateLaboratoryDocument = gql`
+	mutation updateLaboratory($input: UpdateLaboratoryInput!) {
+		updateLaboratory(input: $input) {
+			id
+			name
+			description
+			organizationID
+			createdBy
+			updatedAt
+			updatedBy
+			createdAt
+			_version
+		}
+	}
+`;
+export type UpdateLaboratoryMutationFn = Apollo.MutationFunction<
+	UpdateLaboratoryMutation,
+	UpdateLaboratoryMutationVariables
+>;
+
+/**
+ * __useUpdateLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useUpdateLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLaboratoryMutation, { data, loading, error }] = useUpdateLaboratoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLaboratoryMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLaboratoryMutation, UpdateLaboratoryMutationVariables>(
+		UpdateLaboratoryDocument,
+		options
+	);
+}
+export type UpdateLaboratoryMutationHookResult = ReturnType<typeof useUpdateLaboratoryMutation>;
+export type UpdateLaboratoryMutationResult = Apollo.MutationResult<UpdateLaboratoryMutation>;
+export type UpdateLaboratoryMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLaboratoryMutation,
+	UpdateLaboratoryMutationVariables
+>;
+export const GetUserLabPracticeSessionDocument = gql`
+	query getUserLabPracticeSession($id: ID!) {
+		getUserLabPracticeSession(id: $id) {
+			userID
+			LabPracticeSession {
+				startDate
+				endDate
+				description
+				LabPractice {
+					name
+					description
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useGetUserLabPracticeSessionQuery__
+ *
+ * To run a query within a React component, call `useGetUserLabPracticeSessionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserLabPracticeSessionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserLabPracticeSessionQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetUserLabPracticeSessionQuery(
+	baseOptions: Apollo.QueryHookOptions<GetUserLabPracticeSessionQuery, GetUserLabPracticeSessionQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<GetUserLabPracticeSessionQuery, GetUserLabPracticeSessionQueryVariables>(
+		GetUserLabPracticeSessionDocument,
+		options
+	);
+}
+export function useGetUserLabPracticeSessionLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<GetUserLabPracticeSessionQuery, GetUserLabPracticeSessionQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<GetUserLabPracticeSessionQuery, GetUserLabPracticeSessionQueryVariables>(
+		GetUserLabPracticeSessionDocument,
+		options
+	);
+}
+export type GetUserLabPracticeSessionQueryHookResult = ReturnType<typeof useGetUserLabPracticeSessionQuery>;
+export type GetUserLabPracticeSessionLazyQueryHookResult = ReturnType<typeof useGetUserLabPracticeSessionLazyQuery>;
+export type GetUserLabPracticeSessionQueryResult = Apollo.QueryResult<
+	GetUserLabPracticeSessionQuery,
+	GetUserLabPracticeSessionQueryVariables
 >;
 export const GetLabPracticeDocument = gql`
 	query getLabPractice($id: ID!) {
@@ -3064,6 +3337,7 @@ export const GetLaboratoryDocument = gql`
 			updatedAt
 			updatedBy
 			createdAt
+			_version
 		}
 	}
 `;
@@ -3208,6 +3482,164 @@ export type ListLabPracticeOutputsLazyQueryHookResult = ReturnType<typeof useLis
 export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 	ListLabPracticeOutputsQuery,
 	ListLabPracticeOutputsQueryVariables
+>;
+export const ListLaboratoriesDocument = gql`
+	query listLaboratories {
+		listLaboratorys {
+			items {
+				id
+				name
+				description
+				createdAt
+				updatedAt
+				organizationID
+				_version
+			}
+		}
+	}
+`;
+
+/**
+ * __useListLaboratoriesQuery__
+ *
+ * To run a query within a React component, call `useListLaboratoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListLaboratoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListLaboratoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListLaboratoriesQuery(
+	baseOptions?: Apollo.QueryHookOptions<ListLaboratoriesQuery, ListLaboratoriesQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListLaboratoriesQuery, ListLaboratoriesQueryVariables>(ListLaboratoriesDocument, options);
+}
+export function useListLaboratoriesLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListLaboratoriesQuery, ListLaboratoriesQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListLaboratoriesQuery, ListLaboratoriesQueryVariables>(ListLaboratoriesDocument, options);
+}
+export type ListLaboratoriesQueryHookResult = ReturnType<typeof useListLaboratoriesQuery>;
+export type ListLaboratoriesLazyQueryHookResult = ReturnType<typeof useListLaboratoriesLazyQuery>;
+export type ListLaboratoriesQueryResult = Apollo.QueryResult<ListLaboratoriesQuery, ListLaboratoriesQueryVariables>;
+export const ListOrganizationsDocument = gql`
+	query listOrganizations {
+		listOrganizations {
+			items {
+				id
+				name
+				description
+			}
+		}
+	}
+`;
+
+/**
+ * __useListOrganizationsQuery__
+ *
+ * To run a query within a React component, call `useListOrganizationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListOrganizationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListOrganizationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListOrganizationsQuery(
+	baseOptions?: Apollo.QueryHookOptions<ListOrganizationsQuery, ListOrganizationsQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListOrganizationsQuery, ListOrganizationsQueryVariables>(ListOrganizationsDocument, options);
+}
+export function useListOrganizationsLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListOrganizationsQuery, ListOrganizationsQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListOrganizationsQuery, ListOrganizationsQueryVariables>(
+		ListOrganizationsDocument,
+		options
+	);
+}
+export type ListOrganizationsQueryHookResult = ReturnType<typeof useListOrganizationsQuery>;
+export type ListOrganizationsLazyQueryHookResult = ReturnType<typeof useListOrganizationsLazyQuery>;
+export type ListOrganizationsQueryResult = Apollo.QueryResult<ListOrganizationsQuery, ListOrganizationsQueryVariables>;
+export const ListUserLabPracticeSessionsDocument = gql`
+	query listUserLabPracticeSessions {
+		listUserLabPracticeSessions {
+			items {
+				id
+				sessionEndDate
+				sessionStartDate
+				LabPracticeSession {
+					id
+					startDate
+					endDate
+					LabPractice {
+						id
+						name
+						description
+						duration
+						Laboratory {
+							id
+							name
+							description
+						}
+					}
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useListUserLabPracticeSessionsQuery__
+ *
+ * To run a query within a React component, call `useListUserLabPracticeSessionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUserLabPracticeSessionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUserLabPracticeSessionsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListUserLabPracticeSessionsQuery(
+	baseOptions?: Apollo.QueryHookOptions<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>(
+		ListUserLabPracticeSessionsDocument,
+		options
+	);
+}
+export function useListUserLabPracticeSessionsLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>(
+		ListUserLabPracticeSessionsDocument,
+		options
+	);
+}
+export type ListUserLabPracticeSessionsQueryHookResult = ReturnType<typeof useListUserLabPracticeSessionsQuery>;
+export type ListUserLabPracticeSessionsLazyQueryHookResult = ReturnType<typeof useListUserLabPracticeSessionsLazyQuery>;
+export type ListUserLabPracticeSessionsQueryResult = Apollo.QueryResult<
+	ListUserLabPracticeSessionsQuery,
+	ListUserLabPracticeSessionsQueryVariables
 >;
 export const ListUsersBySemesterDocument = gql`
 	query listUsersBySemester($id: ID!) {

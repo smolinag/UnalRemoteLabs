@@ -6,6 +6,7 @@ const appSyncConfig = {
 	aws_appsync_graphqlEndpoint: 'https://4xgfahcqmvfmti2gv2rfwhflxe.appsync-api.us-east-2.amazonaws.com/graphql',
 	aws_appsync_region: 'us-east-2',
 	aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+	aws_appsync_apiKey: 'da2-oznphqdk6fhulig7ivj645d4yi',
 	aws_cognito_identity_pool_id: 'us-east-2:1cb3fb01-f5ea-46c3-81bb-44e516e42107',
 	aws_cognito_region: 'us-east-2',
 	aws_user_pools_id: 'us-east-2_zsUbsMO4I',

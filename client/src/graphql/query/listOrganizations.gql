@@ -1,0 +1,9 @@
+query listOrganizations {
+	listOrganizations {
+		items {
+			id
+         name
+         description
+		}
+	}
+}

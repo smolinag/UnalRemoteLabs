@@ -1,0 +1,13 @@
+mutation createLaboratory($input: CreateLaboratoryInput!) {
+	createLaboratory (input: $input) {
+		id
+		name
+		description
+		organizationID
+		createdBy
+		updatedAt
+		updatedBy
+		createdAt
+		_version
+	}
+}

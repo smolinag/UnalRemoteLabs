@@ -1,0 +1,25 @@
+query listUserLabPracticeSessions {
+	listUserLabPracticeSessions {
+		items {
+			id
+			sessionEndDate
+			sessionStartDate
+			LabPracticeSession {
+				id
+				startDate
+				endDate
+				LabPractice {
+				  id
+				  name
+				  description
+				  duration
+				  Laboratory {
+					  id
+					  name
+					  description
+				  }
+				}
+			}
+		}
+	}
+}

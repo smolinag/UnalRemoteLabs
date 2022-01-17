@@ -1,5 +1,5 @@
 {
-    "CreateAPIKey": 0,
+    "CreateAPIKey": 1,
     "AppSyncApiName": "unalvirtuallabs",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": false,
@@ -10,5 +10,5 @@
         ]
     },
     "S3DeploymentBucket": "amplify-unalvirtuallabs-dev-95908-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/ddbd71596b677af197c1134b0f67731dad984f77"
+    "S3DeploymentRootKey": "amplify-appsync-files/f5c8fdfc2dfb239feef5d4a3efaeb306a827675e"
 }

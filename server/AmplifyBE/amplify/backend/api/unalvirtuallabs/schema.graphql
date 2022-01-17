@@ -1,4 +1,4 @@
-type Organization @model {
+type Organization @model @auth(rules: [{ allow: public },  { allow: private}]){
   id: ID!
   country: String!
   region: String!
@@ -13,7 +13,7 @@ type Organization @model {
   Laboratories: [Laboratory] @connection(keyName: "byOrganization", fields: ["id"])
 }
 
-type Role @model {
+type Role @model @auth(rules: [{ allow: public },  { allow: private}]){
   id: ID!
   name: String!
   description: String
@@ -24,25 +24,25 @@ type Role @model {
   Users: [RoleUser] @connection(keyName: "byRole", fields: ["id"])
 }
 
-type Privilege @model {
+type Privilege @model @auth(rules: [{ allow: public },  { allow: private}]){
   id: ID!
   name: String!
   description: String
   Roles: [PrivilegeRole] @connection(keyName: "byPrivilege", fields: ["id"])
 }
 
-type UserLabPracticeSession @model @key(name: "byUser", fields: ["userID"]) @key(name: "byLabPracticeSession", fields: ["labpracticesessionID"]) @key(name: "byRole", fields: ["roleID"]) {
+type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID"]) @key(name: "byLabPracticeSession", fields: ["labpracticesessionID"]) @key(name: "byRole", fields: ["roleID"]) {
   id: ID!
   sessionStartDate: AWSDateTime
   sessionEndDate: AWSDateTime
-  User: User @connection
-  LabPracticeSession: LabPracticeSession @connection
+  User: User @connection(fields: ["userID"])
   userID: ID!
+  LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
   roleID: ID
 }
 
-type User @model {
+type User @model @auth(rules: [{ allow: public },  { allow: private}]) {
   id: ID!
   name: String!
   lastNames: String!
@@ -59,55 +59,56 @@ type User @model {
   UserLabSemesters: [UserLabSemester] @connection(keyName: "byUser", fields: ["id"])
 }
 
-type LabPracticeSessionCommand @model @key(name: "byLabPracticeSession", fields: ["labpracticesessionID"]) @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) {
+type LabPracticeSessionCommand @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPracticeSession", fields: ["labpracticesessionID"]) @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) {
   id: ID!
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
   status: String!
   parameters: AWSJSON
-  LabPracticeSession: LabPracticeSession @connection
+  LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
-  LabPracticeCommand: LabPracticeCommand @connection
+  LabPracticeCommand: LabPracticeCommand @connection(fields: ["labpracticecommandID"])
   labpracticecommandID: ID!
 }
 
-type LabPracticeOutput @model @key(name: "byLabPractice", fields: ["labpracticeID"]) {
+type LabPracticeOutput @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
   id: ID!
   name: String!
   labelName: String
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String!
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   outputType: String!
+  updatedBy: String
+  createdBy: String!
 }
 
-type LabPracticeSession @model @key(name: "byLabPractice", fields: ["labpracticeID"]) {
+type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
   id: ID!
   startDate: AWSDateTime!
   endDate: AWSDateTime!
   description: String
   updatedBy: String
   createdBy: String!
-  LabPractice: LabPracticeOutput @connection
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeSession", fields: ["id"])
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byLabPracticeSession", fields: ["id"])
 }
 
-type LabPracticeDevice @model {
+type LabPracticeDevice @model @auth(rules: [{ allow: public },  { allow: private}]) {
   id: ID!
   name: String!
   description: String
   type: String
   updatedBy: String
   createdBy: String
-  LabPractice: LabPracticeOutput @connection
+  LabPractice: LabPractice @connection
 }
 
-type LabPracticeParameter @model @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
+type LabPracticeParameter @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
   id: ID!
   name: String!
   labelName: String
@@ -119,13 +120,13 @@ type LabPracticeParameter @model @key(name: "byLabPracticeCommand", fields: ["la
   regex: String
   updatedBy: String
   createdBy: String
-  LabPracticeCommand: LabPracticeCommand @connection
+  LabPracticeCommand: LabPracticeCommand @connection(fields: ["labpracticecommandID"])
   labpracticecommandID: ID
   LabPractice: LabPracticeDevice @connection
   labpracticeID: ID
 }
 
-type LabPracticeCommand @model @key(name: "byLabPractice", fields: ["labpracticeID"]) {
+type LabPracticeCommand @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
   id: ID!
   name: String!
   labelName: String
@@ -133,20 +134,20 @@ type LabPracticeCommand @model @key(name: "byLabPractice", fields: ["labpractice
   description: String
   updatedBy: String
   createdBy: String!
-  LabPractice: LabPracticeParameter @connection
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   LabPracticeParameters: [LabPracticeParameter] @connection(keyName: "byLabPracticeCommand", fields: ["id"])
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeCommand", fields: ["id"])
 }
 
-type LabPractice @model @key(name: "byLaboratory", fields: ["laboratoryID"]) {
+type LabPractice @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLaboratory", fields: ["laboratoryID"]) {
   id: ID!
   name: String!
   description: String
   duration: Int!
   updatedBy: String
   createdBy: String!
-  Laboratory: Laboratory @connection
+  Laboratory: Laboratory @connection(fields: ["laboratoryID"])
   laboratoryID: ID!
   LabPracticeCommands: [LabPracticeCommand] @connection(keyName: "byLabPractice", fields: ["id"])
   LabPracticeParameters: [LabPracticeParameter] @connection(keyName: "byLabPractice", fields: ["id"])
@@ -155,19 +156,21 @@ type LabPractice @model @key(name: "byLaboratory", fields: ["laboratoryID"]) {
   LabPracticeOutputs: [LabPracticeOutput] @connection(keyName: "byLabPractice", fields: ["id"])
 }
 
-type LabSemester @model @key(name: "byLaboratory", fields: ["laboratoryID"]) {
+type LabSemester @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLaboratory", fields: ["laboratoryID"]) {
   id: ID!
   semesterName: String!
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String!
-  Laboratory: Laboratory @connection
+  Laboratory: Laboratory @connection(fields: ["laboratoryID"])
   laboratoryID: ID!
   users: [UserLabSemester] @connection(keyName: "byLabSemester", fields: ["id"])
 }
 
-type Laboratory @model @key(name: "byOrganization", fields: ["organizationID"]) {
+type Laboratory @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byOrganization", fields: ["organizationID"]) {
   id: ID!
   name: String!
   description: String
@@ -175,10 +178,11 @@ type Laboratory @model @key(name: "byOrganization", fields: ["organizationID"]) 
   createdBy: String!
   LabSemesters: [LabSemester] @connection(keyName: "byLaboratory", fields: ["id"])
   organizationID: ID!
-  Organization: Organization @connection
+  Organization: Organization @connection(fields: ["organizationID"])
+  LabPractices: [LabPractice] @connection(keyName: "byLaboratory", fields: ["id"])
 }
 
-type PrivilegeRole @model(queries: null) @key(name: "byPrivilege", fields: ["privilegeID", "roleID"]) @key(name: "byRole", fields: ["roleID", "privilegeID"]) {
+type PrivilegeRole @model(queries: null) @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byPrivilege", fields: ["privilegeID", "roleID"]) @key(name: "byRole", fields: ["roleID", "privilegeID"]) {
   id: ID!
   privilegeID: ID!
   roleID: ID!
@@ -186,7 +190,7 @@ type PrivilegeRole @model(queries: null) @key(name: "byPrivilege", fields: ["pri
   role: Role! @connection(fields: ["roleID"])
 }
 
-type RoleUser @model(queries: null) @key(name: "byUser", fields: ["userID", "roleID"]) @key(name: "byRole", fields: ["roleID", "userID"]) {
+type RoleUser @model(queries: null) @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID", "roleID"]) @key(name: "byRole", fields: ["roleID", "userID"]) {
   id: ID!
   userID: ID!
   roleID: ID!
@@ -194,7 +198,7 @@ type RoleUser @model(queries: null) @key(name: "byUser", fields: ["userID", "rol
   role: Role! @connection(fields: ["roleID"])
 }
 
-type UserLabSemester @model(queries: null) @key(name: "byUser", fields: ["userID", "labsemesterID"]) @key(name: "byLabSemester", fields: ["labsemesterID", "userID"]) {
+type UserLabSemester @model(queries: null) @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID", "labsemesterID"]) @key(name: "byLabSemester", fields: ["labsemesterID", "userID"]) {
   id: ID!
   userID: ID!
   labsemesterID: ID!
@@ -223,17 +227,13 @@ input LambdaInput {
   topic: String!
 }
 
-type Query{
-  getUserLabPracticeSessionByUserId(userID:ID!):UserLabPracticeSession
-}
-
 type Mutation {
-  publishMqttMessage(input: LambdaInput!): String @function(name: "iotpub-${env}")
-  labOutputListen(input: LabOutputIn!): LabOutputOut @function(name: "laboutputlogger-${env}")
+  publishMqttMessage(input: LambdaInput!): String @function(name: "iotpub-${env}") @auth(rules: [{ allow: public },  { allow: private}])
+  labOutputListen(input: LabOutputIn!): LabOutputOut @function(name: "laboutputlogger-${env}") @auth(rules: [{ allow: public },  { allow: private}])
 }
 
 type Subscription {
-  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
-  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
+  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @auth(rules: [{ allow: public },  { allow: private}])
+  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @auth(rules: [{ allow: public },  { allow: private}])
 }
  

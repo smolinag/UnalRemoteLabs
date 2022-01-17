@@ -19,7 +19,7 @@ const initialLabSessionInfo: LabSessionInfo = {
 	description: '',
 	labPracticeName: '',
 	duration: '15',
-	semesterId: '1e73cbbd-e726-4c32-ad5f-4b011b8620d7'
+	semesterId: '57f929c3-aa5a-4092-a128-659f14b06900'
 };
 
 const LabSessionProgrammingView: React.FC<unknown> = () => {
@@ -35,6 +35,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
+		console.warn(semesterUsers)
 		if (semesterUserList) {
 			const data = semesterUserList.map((item) => {
 				return {name: item.user.name, id: item.user.id, email: item.user.email};

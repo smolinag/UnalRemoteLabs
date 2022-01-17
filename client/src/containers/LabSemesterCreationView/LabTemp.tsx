@@ -7,17 +7,26 @@ import {Button} from '../../components/UI';
 const LabTemp: React.FC<unknown> = () => {
 	const navigate = useNavigate();
 
-	const createPractice = () => {
-		navigate('/create-lab-semester', {state: {laboratoryId: 'f3094551-bdd7-411b-b2e7-721bb993e138'}});
+	const createPractice = (path: string) => {
+		navigate(path, {state: {laboratoryId: 'f3094551-bdd7-411b-b2e7-721bb993e138'}});
 	};
 
 	return (
 		<Container fluid>
 			<Row>
-				<h3 />
 				<Col>
-					<Button loading={false} onClick={createPractice}>
+					<Button loading={false} onClick={() => createPractice('/create-lab-semester')}>
 						Crear Semestre
+					</Button>
+				</Col>
+				<Col>
+					<Button loading={false} onClick={() => createPractice('/user-labs')}>
+						Sesiones de laboratorios
+					</Button>
+				</Col>
+				<Col>
+					<Button loading={false} onClick={() => createPractice('/labs')}>
+						Laboratorios
 					</Button>
 				</Col>
 			</Row>

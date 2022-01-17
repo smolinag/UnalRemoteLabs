@@ -1,4 +1,4 @@
-type Organization {
+type Organization @aws_api_key @aws_cognito_user_pools {
   id: ID!
   country: String!
   region: String!
@@ -10,48 +10,46 @@ type Organization {
   address: String
   createdBy: String!
   updatedBy: String
-  Laboratories(filter: ModelLaboratoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLaboratoryConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  Laboratories(filter: ModelLaboratoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type Role {
+type Role @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: String
   createdBy: String!
   updatedBy: String
-  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
-  Privileges(privilegeID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection
-  Users(userID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  Privileges(privilegeID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools
+  Users(userID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type Privilege {
+type Privilege @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: String
-  Roles(roleID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  Roles(roleID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type UserLabPracticeSession {
+type UserLabPracticeSession @aws_api_key @aws_cognito_user_pools {
   id: ID!
   sessionStartDate: AWSDateTime
   sessionEndDate: AWSDateTime
-  User: User
-  LabPracticeSession: LabPracticeSession
   userID: ID!
   labpracticesessionID: ID!
   roleID: ID
@@ -60,9 +58,11 @@ type UserLabPracticeSession {
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  User: User @aws_api_key @aws_cognito_user_pools
+  LabPracticeSession: LabPracticeSession @aws_api_key @aws_cognito_user_pools
 }
 
-type User {
+type User @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   lastNames: String!
@@ -74,85 +74,86 @@ type User {
   dateOfBirth: String
   updatedBy: String
   createdBy: String!
-  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
-  Roles(roleID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection
-  UserLabSemesters(labsemesterID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  Roles(roleID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools
+  UserLabSemesters(labsemesterID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeSessionCommand {
+type LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools {
   id: ID!
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
   status: String!
   parameters: AWSJSON
-  LabPracticeSession: LabPracticeSession
   labpracticesessionID: ID!
-  LabPracticeCommand: LabPracticeCommand
   labpracticecommandID: ID!
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPracticeSession: LabPracticeSession @aws_api_key @aws_cognito_user_pools
+  LabPracticeCommand: LabPracticeCommand @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeOutput {
+type LabPracticeOutput @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   labelName: String
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String!
   labpracticeID: ID!
   outputType: String!
+  updatedBy: String
+  createdBy: String!
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeSession {
+type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   id: ID!
   startDate: AWSDateTime!
   endDate: AWSDateTime!
   description: String
   updatedBy: String
   createdBy: String!
-  LabPractice: LabPracticeOutput
   labpracticeID: ID!
-  LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
-  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeDevice {
+type LabPracticeDevice @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: String
   type: String
   updatedBy: String
   createdBy: String
-  LabPractice: LabPracticeOutput
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeParameter {
+type LabPracticeParameter @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   labelName: String
@@ -164,18 +165,18 @@ type LabPracticeParameter {
   regex: String
   updatedBy: String
   createdBy: String
-  LabPracticeCommand: LabPracticeCommand
   labpracticecommandID: ID
-  LabPractice: LabPracticeDevice
   labpracticeID: ID
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPractice: LabPracticeDevice @aws_api_key @aws_cognito_user_pools
+  LabPracticeCommand: LabPracticeCommand @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeCommand {
+type LabPracticeCommand @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   labelName: String
@@ -183,108 +184,111 @@ type LabPracticeCommand {
   description: String
   updatedBy: String
   createdBy: String!
-  LabPractice: LabPracticeParameter
   labpracticeID: ID!
-  LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
-  LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
+  LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
+  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPractice {
+type LabPractice @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: String
   duration: Int!
   updatedBy: String
   createdBy: String!
-  Laboratory: Laboratory
   laboratoryID: ID!
-  LabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeCommandConnection
-  LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
-  LabPracticeDevice: LabPracticeDevice
-  LabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionConnection
-  LabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeOutputConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeOutputConnection @aws_api_key @aws_cognito_user_pools
+  LabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  LabPracticeDevice: LabPracticeDevice @aws_api_key @aws_cognito_user_pools
+  LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
+  LabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeCommandConnection @aws_api_key @aws_cognito_user_pools
+  Laboratory: Laboratory @aws_api_key @aws_cognito_user_pools
 }
 
-type LabSemester {
+type LabSemester @aws_api_key @aws_cognito_user_pools {
   id: ID!
   semesterName: String!
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String!
-  Laboratory: Laboratory
   laboratoryID: ID!
-  users(userID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  Laboratory: Laboratory @aws_api_key @aws_cognito_user_pools
+  users(userID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type Laboratory {
+type Laboratory @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
   description: String
   updatedBy: String
   createdBy: String!
-  LabSemesters(filter: ModelLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabSemesterConnection
   organizationID: ID!
-  Organization: Organization
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  Organization: Organization @aws_api_key @aws_cognito_user_pools
+  LabPractices(filter: ModelLabPracticeFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeConnection @aws_api_key @aws_cognito_user_pools
+  LabSemesters(filter: ModelLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type PrivilegeRole {
+type PrivilegeRole @aws_api_key @aws_cognito_user_pools {
   id: ID!
   privilegeID: ID!
   roleID: ID!
-  privilege: Privilege!
-  role: Role!
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  role: Role! @aws_api_key @aws_cognito_user_pools
+  privilege: Privilege! @aws_api_key @aws_cognito_user_pools
 }
 
-type RoleUser {
+type RoleUser @aws_api_key @aws_cognito_user_pools {
   id: ID!
   userID: ID!
   roleID: ID!
-  user: User!
-  role: Role!
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  role: Role! @aws_api_key @aws_cognito_user_pools
+  user: User! @aws_api_key @aws_cognito_user_pools
 }
 
-type UserLabSemester {
+type UserLabSemester @aws_api_key @aws_cognito_user_pools {
   id: ID!
   userID: ID!
   labsemesterID: ID!
-  user: User!
-  labsemester: LabSemester!
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  user: User! @aws_api_key @aws_cognito_user_pools
+  labsemester: LabSemester! @aws_api_key @aws_cognito_user_pools
 }
 
 input LabOutputIn {
@@ -308,165 +312,116 @@ input LambdaInput {
   topic: String!
 }
 
-type Query {
-  getUserLabPracticeSessionByUserId(userID: ID!): UserLabPracticeSession
-  syncOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelOrganizationConnection
-  getOrganization(id: ID!): Organization
-  listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection
-  syncRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleConnection
-  getRole(id: ID!): Role
-  listRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String): ModelRoleConnection
-  syncPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeConnection
-  getPrivilege(id: ID!): Privilege
-  listPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String): ModelPrivilegeConnection
-  syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection
-  getUserLabPracticeSession(id: ID!): UserLabPracticeSession
-  listUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection
-  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection
-  getUser(id: ID!): User
-  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
-  syncLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionCommandConnection
-  getLabPracticeSessionCommand(id: ID!): LabPracticeSessionCommand
-  listLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection
-  syncLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeOutputConnection
-  getLabPracticeOutput(id: ID!): LabPracticeOutput
-  listLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String): ModelLabPracticeOutputConnection
-  syncLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionConnection
-  getLabPracticeSession(id: ID!): LabPracticeSession
-  listLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionConnection
-  syncLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeDeviceConnection
-  getLabPracticeDevice(id: ID!): LabPracticeDevice
-  listLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String): ModelLabPracticeDeviceConnection
-  syncLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeParameterConnection
-  getLabPracticeParameter(id: ID!): LabPracticeParameter
-  listLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String): ModelLabPracticeParameterConnection
-  syncLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeCommandConnection
-  getLabPracticeCommand(id: ID!): LabPracticeCommand
-  listLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeCommandConnection
-  syncLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeConnection
-  getLabPractice(id: ID!): LabPractice
-  listLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String): ModelLabPracticeConnection
-  syncLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabSemesterConnection
-  getLabSemester(id: ID!): LabSemester
-  listLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String): ModelLabSemesterConnection
-  syncLaboratories(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLaboratoryConnection
-  getLaboratory(id: ID!): Laboratory
-  listLaboratorys(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String): ModelLaboratoryConnection
-  syncPrivilegeRoles(filter: ModelPrivilegeRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeRoleConnection
-  syncRoleUsers(filter: ModelRoleUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleUserConnection
-  syncUserLabSemesters(filter: ModelUserLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabSemesterConnection
-}
-
 type Mutation {
-  publishMqttMessage(input: LambdaInput!): String
-  labOutputListen(input: LabOutputIn!): LabOutputOut
-  createOrganization(input: CreateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization
-  updateOrganization(input: UpdateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization
-  deleteOrganization(input: DeleteOrganizationInput!, condition: ModelOrganizationConditionInput): Organization
-  createRole(input: CreateRoleInput!, condition: ModelRoleConditionInput): Role
-  updateRole(input: UpdateRoleInput!, condition: ModelRoleConditionInput): Role
-  deleteRole(input: DeleteRoleInput!, condition: ModelRoleConditionInput): Role
-  createPrivilege(input: CreatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege
-  updatePrivilege(input: UpdatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege
-  deletePrivilege(input: DeletePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege
-  createUserLabPracticeSession(input: CreateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession
-  updateUserLabPracticeSession(input: UpdateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession
-  deleteUserLabPracticeSession(input: DeleteUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession
-  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
-  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
-  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
-  createLabPracticeSessionCommand(input: CreateLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand
-  updateLabPracticeSessionCommand(input: UpdateLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand
-  deleteLabPracticeSessionCommand(input: DeleteLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand
-  createLabPracticeOutput(input: CreateLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput
-  updateLabPracticeOutput(input: UpdateLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput
-  deleteLabPracticeOutput(input: DeleteLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput
-  createLabPracticeSession(input: CreateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession
-  updateLabPracticeSession(input: UpdateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession
-  deleteLabPracticeSession(input: DeleteLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession
-  createLabPracticeDevice(input: CreateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice
-  updateLabPracticeDevice(input: UpdateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice
-  deleteLabPracticeDevice(input: DeleteLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice
-  createLabPracticeParameter(input: CreateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter
-  updateLabPracticeParameter(input: UpdateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter
-  deleteLabPracticeParameter(input: DeleteLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter
-  createLabPracticeCommand(input: CreateLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand
-  updateLabPracticeCommand(input: UpdateLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand
-  deleteLabPracticeCommand(input: DeleteLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand
-  createLabPractice(input: CreateLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice
-  updateLabPractice(input: UpdateLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice
-  deleteLabPractice(input: DeleteLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice
-  createLabSemester(input: CreateLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester
-  updateLabSemester(input: UpdateLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester
-  deleteLabSemester(input: DeleteLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester
-  createLaboratory(input: CreateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory
-  updateLaboratory(input: UpdateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory
-  deleteLaboratory(input: DeleteLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory
-  createPrivilegeRole(input: CreatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole
-  updatePrivilegeRole(input: UpdatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole
-  deletePrivilegeRole(input: DeletePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole
-  createRoleUser(input: CreateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser
-  updateRoleUser(input: UpdateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser
-  deleteRoleUser(input: DeleteRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser
-  createUserLabSemester(input: CreateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester
-  updateUserLabSemester(input: UpdateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester
-  deleteUserLabSemester(input: DeleteUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester
+  createOrganization(input: CreateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
+  updateOrganization(input: UpdateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
+  deleteOrganization(input: DeleteOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
+  createRole(input: CreateRoleInput!, condition: ModelRoleConditionInput): Role @aws_api_key @aws_cognito_user_pools
+  updateRole(input: UpdateRoleInput!, condition: ModelRoleConditionInput): Role @aws_api_key @aws_cognito_user_pools
+  deleteRole(input: DeleteRoleInput!, condition: ModelRoleConditionInput): Role @aws_api_key @aws_cognito_user_pools
+  createPrivilege(input: CreatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege @aws_api_key @aws_cognito_user_pools
+  updatePrivilege(input: UpdatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege @aws_api_key @aws_cognito_user_pools
+  deletePrivilege(input: DeletePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege @aws_api_key @aws_cognito_user_pools
+  createUserLabPracticeSession(input: CreateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
+  updateUserLabPracticeSession(input: UpdateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
+  deleteUserLabPracticeSession(input: DeleteUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
+  createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_cognito_user_pools
+  updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_cognito_user_pools
+  deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User @aws_api_key @aws_cognito_user_pools
+  createLabPracticeSessionCommand(input: CreateLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools
+  updateLabPracticeSessionCommand(input: UpdateLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools
+  deleteLabPracticeSessionCommand(input: DeleteLabPracticeSessionCommandInput!, condition: ModelLabPracticeSessionCommandConditionInput): LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools
+  createLabPracticeOutput(input: CreateLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput @aws_api_key @aws_cognito_user_pools
+  updateLabPracticeOutput(input: UpdateLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput @aws_api_key @aws_cognito_user_pools
+  deleteLabPracticeOutput(input: DeleteLabPracticeOutputInput!, condition: ModelLabPracticeOutputConditionInput): LabPracticeOutput @aws_api_key @aws_cognito_user_pools
+  createLabPracticeSession(input: CreateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession @aws_api_key @aws_cognito_user_pools
+  updateLabPracticeSession(input: UpdateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession @aws_api_key @aws_cognito_user_pools
+  deleteLabPracticeSession(input: DeleteLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession @aws_api_key @aws_cognito_user_pools
+  createLabPracticeDevice(input: CreateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
+  updateLabPracticeDevice(input: UpdateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
+  deleteLabPracticeDevice(input: DeleteLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
+  createLabPracticeParameter(input: CreateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
+  updateLabPracticeParameter(input: UpdateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
+  deleteLabPracticeParameter(input: DeleteLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
+  createLabPracticeCommand(input: CreateLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand @aws_api_key @aws_cognito_user_pools
+  updateLabPracticeCommand(input: UpdateLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand @aws_api_key @aws_cognito_user_pools
+  deleteLabPracticeCommand(input: DeleteLabPracticeCommandInput!, condition: ModelLabPracticeCommandConditionInput): LabPracticeCommand @aws_api_key @aws_cognito_user_pools
+  createLabPractice(input: CreateLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice @aws_api_key @aws_cognito_user_pools
+  updateLabPractice(input: UpdateLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice @aws_api_key @aws_cognito_user_pools
+  deleteLabPractice(input: DeleteLabPracticeInput!, condition: ModelLabPracticeConditionInput): LabPractice @aws_api_key @aws_cognito_user_pools
+  createLabSemester(input: CreateLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester @aws_api_key @aws_cognito_user_pools
+  updateLabSemester(input: UpdateLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester @aws_api_key @aws_cognito_user_pools
+  deleteLabSemester(input: DeleteLabSemesterInput!, condition: ModelLabSemesterConditionInput): LabSemester @aws_api_key @aws_cognito_user_pools
+  createLaboratory(input: CreateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory @aws_api_key @aws_cognito_user_pools
+  updateLaboratory(input: UpdateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory @aws_api_key @aws_cognito_user_pools
+  deleteLaboratory(input: DeleteLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory @aws_api_key @aws_cognito_user_pools
+  createPrivilegeRole(input: CreatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole @aws_api_key @aws_cognito_user_pools
+  updatePrivilegeRole(input: UpdatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole @aws_api_key @aws_cognito_user_pools
+  deletePrivilegeRole(input: DeletePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole @aws_api_key @aws_cognito_user_pools
+  createRoleUser(input: CreateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser @aws_api_key @aws_cognito_user_pools
+  updateRoleUser(input: UpdateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser @aws_api_key @aws_cognito_user_pools
+  deleteRoleUser(input: DeleteRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser @aws_api_key @aws_cognito_user_pools
+  createUserLabSemester(input: CreateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
+  updateUserLabSemester(input: UpdateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
+  deleteUserLabSemester(input: DeleteUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
+  publishMqttMessage(input: LambdaInput!): String @aws_api_key @aws_cognito_user_pools
+  labOutputListen(input: LabOutputIn!): LabOutputOut @aws_api_key @aws_cognito_user_pools
 }
 
 type Subscription {
-  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"])
-  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
-  onCreateOrganization: Organization @aws_subscribe(mutations: ["createOrganization"])
-  onUpdateOrganization: Organization @aws_subscribe(mutations: ["updateOrganization"])
-  onDeleteOrganization: Organization @aws_subscribe(mutations: ["deleteOrganization"])
-  onCreateRole: Role @aws_subscribe(mutations: ["createRole"])
-  onUpdateRole: Role @aws_subscribe(mutations: ["updateRole"])
-  onDeleteRole: Role @aws_subscribe(mutations: ["deleteRole"])
-  onCreatePrivilege: Privilege @aws_subscribe(mutations: ["createPrivilege"])
-  onUpdatePrivilege: Privilege @aws_subscribe(mutations: ["updatePrivilege"])
-  onDeletePrivilege: Privilege @aws_subscribe(mutations: ["deletePrivilege"])
-  onCreateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["createUserLabPracticeSession"])
-  onUpdateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["updateUserLabPracticeSession"])
-  onDeleteUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["deleteUserLabPracticeSession"])
-  onCreateUser: User @aws_subscribe(mutations: ["createUser"])
-  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"])
-  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"])
-  onCreateLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"])
-  onUpdateLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["updateLabPracticeSessionCommand"])
-  onDeleteLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["deleteLabPracticeSessionCommand"])
-  onCreateLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["createLabPracticeOutput"])
-  onUpdateLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["updateLabPracticeOutput"])
-  onDeleteLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["deleteLabPracticeOutput"])
-  onCreateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["createLabPracticeSession"])
-  onUpdateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["updateLabPracticeSession"])
-  onDeleteLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["deleteLabPracticeSession"])
-  onCreateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["createLabPracticeDevice"])
-  onUpdateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["updateLabPracticeDevice"])
-  onDeleteLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["deleteLabPracticeDevice"])
-  onCreateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["createLabPracticeParameter"])
-  onUpdateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["updateLabPracticeParameter"])
-  onDeleteLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["deleteLabPracticeParameter"])
-  onCreateLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["createLabPracticeCommand"])
-  onUpdateLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["updateLabPracticeCommand"])
-  onDeleteLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["deleteLabPracticeCommand"])
-  onCreateLabPractice: LabPractice @aws_subscribe(mutations: ["createLabPractice"])
-  onUpdateLabPractice: LabPractice @aws_subscribe(mutations: ["updateLabPractice"])
-  onDeleteLabPractice: LabPractice @aws_subscribe(mutations: ["deleteLabPractice"])
-  onCreateLabSemester: LabSemester @aws_subscribe(mutations: ["createLabSemester"])
-  onUpdateLabSemester: LabSemester @aws_subscribe(mutations: ["updateLabSemester"])
-  onDeleteLabSemester: LabSemester @aws_subscribe(mutations: ["deleteLabSemester"])
-  onCreateLaboratory: Laboratory @aws_subscribe(mutations: ["createLaboratory"])
-  onUpdateLaboratory: Laboratory @aws_subscribe(mutations: ["updateLaboratory"])
-  onDeleteLaboratory: Laboratory @aws_subscribe(mutations: ["deleteLaboratory"])
-  onCreatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["createPrivilegeRole"])
-  onUpdatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["updatePrivilegeRole"])
-  onDeletePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["deletePrivilegeRole"])
-  onCreateRoleUser: RoleUser @aws_subscribe(mutations: ["createRoleUser"])
-  onUpdateRoleUser: RoleUser @aws_subscribe(mutations: ["updateRoleUser"])
-  onDeleteRoleUser: RoleUser @aws_subscribe(mutations: ["deleteRoleUser"])
-  onCreateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["createUserLabSemester"])
-  onUpdateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["updateUserLabSemester"])
-  onDeleteUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["deleteUserLabSemester"])
+  onCreateOrganization: Organization @aws_subscribe(mutations: ["createOrganization"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateOrganization: Organization @aws_subscribe(mutations: ["updateOrganization"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteOrganization: Organization @aws_subscribe(mutations: ["deleteOrganization"]) @aws_api_key @aws_cognito_user_pools
+  onCreateRole: Role @aws_subscribe(mutations: ["createRole"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateRole: Role @aws_subscribe(mutations: ["updateRole"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteRole: Role @aws_subscribe(mutations: ["deleteRole"]) @aws_api_key @aws_cognito_user_pools
+  onCreatePrivilege: Privilege @aws_subscribe(mutations: ["createPrivilege"]) @aws_api_key @aws_cognito_user_pools
+  onUpdatePrivilege: Privilege @aws_subscribe(mutations: ["updatePrivilege"]) @aws_api_key @aws_cognito_user_pools
+  onDeletePrivilege: Privilege @aws_subscribe(mutations: ["deletePrivilege"]) @aws_api_key @aws_cognito_user_pools
+  onCreateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["createUserLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["updateUserLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["deleteUserLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
+  onCreateUser: User @aws_subscribe(mutations: ["createUser"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateUser: User @aws_subscribe(mutations: ["updateUser"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteUser: User @aws_subscribe(mutations: ["deleteUser"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["updateLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPracticeSessionCommand: LabPracticeSessionCommand @aws_subscribe(mutations: ["deleteLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["createLabPracticeOutput"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["updateLabPracticeOutput"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPracticeOutput: LabPracticeOutput @aws_subscribe(mutations: ["deleteLabPracticeOutput"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["createLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["updateLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["deleteLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["createLabPracticeDevice"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["updateLabPracticeDevice"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["deleteLabPracticeDevice"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["createLabPracticeParameter"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["updateLabPracticeParameter"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["deleteLabPracticeParameter"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["createLabPracticeCommand"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["updateLabPracticeCommand"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPracticeCommand: LabPracticeCommand @aws_subscribe(mutations: ["deleteLabPracticeCommand"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPractice: LabPractice @aws_subscribe(mutations: ["createLabPractice"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPractice: LabPractice @aws_subscribe(mutations: ["updateLabPractice"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabPractice: LabPractice @aws_subscribe(mutations: ["deleteLabPractice"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabSemester: LabSemester @aws_subscribe(mutations: ["createLabSemester"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabSemester: LabSemester @aws_subscribe(mutations: ["updateLabSemester"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLabSemester: LabSemester @aws_subscribe(mutations: ["deleteLabSemester"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLaboratory: Laboratory @aws_subscribe(mutations: ["createLaboratory"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLaboratory: Laboratory @aws_subscribe(mutations: ["updateLaboratory"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteLaboratory: Laboratory @aws_subscribe(mutations: ["deleteLaboratory"]) @aws_api_key @aws_cognito_user_pools
+  onCreatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["createPrivilegeRole"]) @aws_api_key @aws_cognito_user_pools
+  onUpdatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["updatePrivilegeRole"]) @aws_api_key @aws_cognito_user_pools
+  onDeletePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["deletePrivilegeRole"]) @aws_api_key @aws_cognito_user_pools
+  onCreateRoleUser: RoleUser @aws_subscribe(mutations: ["createRoleUser"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateRoleUser: RoleUser @aws_subscribe(mutations: ["updateRoleUser"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteRoleUser: RoleUser @aws_subscribe(mutations: ["deleteRoleUser"]) @aws_api_key @aws_cognito_user_pools
+  onCreateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["createUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["updateUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
+  onDeleteUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["deleteUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
+  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @aws_api_key @aws_cognito_user_pools
+  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
 }
 
 enum ModelSortDirection {
@@ -474,7 +429,7 @@ enum ModelSortDirection {
   DESC
 }
 
-type ModelOrganizationConnection {
+type ModelOrganizationConnection @aws_api_key @aws_cognito_user_pools {
   items: [Organization!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -583,6 +538,54 @@ enum ModelAttributeTypes {
   _null
 }
 
+type Query {
+  getOrganization(id: ID!): Organization @aws_api_key @aws_cognito_user_pools
+  listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection @aws_api_key @aws_cognito_user_pools
+  syncOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelOrganizationConnection @aws_api_key @aws_cognito_user_pools
+  getRole(id: ID!): Role @aws_api_key @aws_cognito_user_pools
+  listRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String): ModelRoleConnection @aws_api_key @aws_cognito_user_pools
+  syncRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleConnection @aws_api_key @aws_cognito_user_pools
+  getPrivilege(id: ID!): Privilege @aws_api_key @aws_cognito_user_pools
+  listPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String): ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools
+  syncPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools
+  getUserLabPracticeSession(id: ID!): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
+  listUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  getUser(id: ID!): User @aws_api_key @aws_cognito_user_pools
+  listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_api_key @aws_cognito_user_pools
+  syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection @aws_api_key @aws_cognito_user_pools
+  getLabPracticeSessionCommand(id: ID!): LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools
+  listLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
+  getLabPracticeOutput(id: ID!): LabPracticeOutput @aws_api_key @aws_cognito_user_pools
+  listLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String): ModelLabPracticeOutputConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeOutputConnection @aws_api_key @aws_cognito_user_pools
+  getLabPracticeSession(id: ID!): LabPracticeSession @aws_api_key @aws_cognito_user_pools
+  listLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
+  getLabPracticeDevice(id: ID!): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
+  listLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String): ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools
+  getLabPracticeParameter(id: ID!): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
+  listLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
+  getLabPracticeCommand(id: ID!): LabPracticeCommand @aws_api_key @aws_cognito_user_pools
+  listLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeCommandConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeCommandConnection @aws_api_key @aws_cognito_user_pools
+  getLabPractice(id: ID!): LabPractice @aws_api_key @aws_cognito_user_pools
+  listLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String): ModelLabPracticeConnection @aws_api_key @aws_cognito_user_pools
+  syncLabPractices(filter: ModelLabPracticeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeConnection @aws_api_key @aws_cognito_user_pools
+  getLabSemester(id: ID!): LabSemester @aws_api_key @aws_cognito_user_pools
+  listLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String): ModelLabSemesterConnection @aws_api_key @aws_cognito_user_pools
+  syncLabSemesters(filter: ModelLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabSemesterConnection @aws_api_key @aws_cognito_user_pools
+  getLaboratory(id: ID!): Laboratory @aws_api_key @aws_cognito_user_pools
+  listLaboratorys(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String): ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools
+  syncLaboratories(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools
+  syncPrivilegeRoles(filter: ModelPrivilegeRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools
+  syncRoleUsers(filter: ModelRoleUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools
+  syncUserLabSemesters(filter: ModelUserLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools
+}
+
 input CreateOrganizationInput {
   id: ID
   country: String!
@@ -634,7 +637,7 @@ input ModelOrganizationConditionInput {
   not: ModelOrganizationConditionInput
 }
 
-type ModelRoleConnection {
+type ModelRoleConnection @aws_api_key @aws_cognito_user_pools {
   items: [Role!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -684,7 +687,7 @@ input ModelRoleConditionInput {
   not: ModelRoleConditionInput
 }
 
-type ModelPrivilegeConnection {
+type ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools {
   items: [Privilege!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -726,7 +729,7 @@ input ModelPrivilegeConditionInput {
   not: ModelPrivilegeConditionInput
 }
 
-type ModelUserLabPracticeSessionConnection {
+type ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools {
   items: [UserLabPracticeSession!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -752,8 +755,6 @@ input CreateUserLabPracticeSessionInput {
   labpracticesessionID: ID!
   roleID: ID
   _version: Int
-  userLabPracticeSessionUserId: ID
-  userLabPracticeSessionLabPracticeSessionId: ID
 }
 
 input UpdateUserLabPracticeSessionInput {
@@ -764,8 +765,6 @@ input UpdateUserLabPracticeSessionInput {
   labpracticesessionID: ID
   roleID: ID
   _version: Int
-  userLabPracticeSessionUserId: ID
-  userLabPracticeSessionLabPracticeSessionId: ID
 }
 
 input DeleteUserLabPracticeSessionInput {
@@ -784,7 +783,7 @@ input ModelUserLabPracticeSessionConditionInput {
   not: ModelUserLabPracticeSessionConditionInput
 }
 
-type ModelUserConnection {
+type ModelUserConnection @aws_api_key @aws_cognito_user_pools {
   items: [User!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -858,7 +857,7 @@ input ModelUserConditionInput {
   not: ModelUserConditionInput
 }
 
-type ModelLabPracticeSessionCommandConnection {
+type ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeSessionCommand!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -886,8 +885,6 @@ input CreateLabPracticeSessionCommandInput {
   labpracticesessionID: ID!
   labpracticecommandID: ID!
   _version: Int
-  labPracticeSessionCommandLabPracticeSessionId: ID
-  labPracticeSessionCommandLabPracticeCommandId: ID
 }
 
 input UpdateLabPracticeSessionCommandInput {
@@ -899,8 +896,6 @@ input UpdateLabPracticeSessionCommandInput {
   labpracticesessionID: ID
   labpracticecommandID: ID
   _version: Int
-  labPracticeSessionCommandLabPracticeSessionId: ID
-  labPracticeSessionCommandLabPracticeCommandId: ID
 }
 
 input DeleteLabPracticeSessionCommandInput {
@@ -920,7 +915,7 @@ input ModelLabPracticeSessionCommandConditionInput {
   not: ModelLabPracticeSessionCommandConditionInput
 }
 
-type ModelLabPracticeOutputConnection {
+type ModelLabPracticeOutputConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeOutput!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -933,10 +928,10 @@ input ModelLabPracticeOutputFilterInput {
   order: ModelIntInput
   description: ModelStringInput
   units: ModelStringInput
-  updatedBy: ModelStringInput
-  createdBy: ModelStringInput
   labpracticeID: ModelIDInput
   outputType: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
   and: [ModelLabPracticeOutputFilterInput]
   or: [ModelLabPracticeOutputFilterInput]
   not: ModelLabPracticeOutputFilterInput
@@ -949,10 +944,10 @@ input CreateLabPracticeOutputInput {
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String!
   labpracticeID: ID!
   outputType: String!
+  updatedBy: String
+  createdBy: String!
   _version: Int
 }
 
@@ -963,10 +958,10 @@ input UpdateLabPracticeOutputInput {
   order: Int
   description: String
   units: AWSJSON
-  updatedBy: String
-  createdBy: String
   labpracticeID: ID
   outputType: String
+  updatedBy: String
+  createdBy: String
   _version: Int
 }
 
@@ -981,16 +976,16 @@ input ModelLabPracticeOutputConditionInput {
   order: ModelIntInput
   description: ModelStringInput
   units: ModelStringInput
-  updatedBy: ModelStringInput
-  createdBy: ModelStringInput
   labpracticeID: ModelIDInput
   outputType: ModelStringInput
+  updatedBy: ModelStringInput
+  createdBy: ModelStringInput
   and: [ModelLabPracticeOutputConditionInput]
   or: [ModelLabPracticeOutputConditionInput]
   not: ModelLabPracticeOutputConditionInput
 }
 
-type ModelLabPracticeSessionConnection {
+type ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeSession!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1018,7 +1013,6 @@ input CreateLabPracticeSessionInput {
   createdBy: String!
   labpracticeID: ID!
   _version: Int
-  labPracticeSessionLabPracticeId: ID
 }
 
 input UpdateLabPracticeSessionInput {
@@ -1030,7 +1024,6 @@ input UpdateLabPracticeSessionInput {
   createdBy: String
   labpracticeID: ID
   _version: Int
-  labPracticeSessionLabPracticeId: ID
 }
 
 input DeleteLabPracticeSessionInput {
@@ -1050,7 +1043,7 @@ input ModelLabPracticeSessionConditionInput {
   not: ModelLabPracticeSessionConditionInput
 }
 
-type ModelLabPracticeDeviceConnection {
+type ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeDevice!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1106,7 +1099,7 @@ input ModelLabPracticeDeviceConditionInput {
   not: ModelLabPracticeDeviceConditionInput
 }
 
-type ModelLabPracticeParameterConnection {
+type ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeParameter!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1146,7 +1139,6 @@ input CreateLabPracticeParameterInput {
   labpracticecommandID: ID
   labpracticeID: ID
   _version: Int
-  labPracticeParameterLabPracticeCommandId: ID
   labPracticeParameterLabPracticeId: ID
 }
 
@@ -1165,7 +1157,6 @@ input UpdateLabPracticeParameterInput {
   labpracticecommandID: ID
   labpracticeID: ID
   _version: Int
-  labPracticeParameterLabPracticeCommandId: ID
   labPracticeParameterLabPracticeId: ID
 }
 
@@ -1192,7 +1183,7 @@ input ModelLabPracticeParameterConditionInput {
   not: ModelLabPracticeParameterConditionInput
 }
 
-type ModelLabPracticeCommandConnection {
+type ModelLabPracticeCommandConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeCommand!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1222,7 +1213,6 @@ input CreateLabPracticeCommandInput {
   createdBy: String!
   labpracticeID: ID!
   _version: Int
-  labPracticeCommandLabPracticeId: ID
 }
 
 input UpdateLabPracticeCommandInput {
@@ -1235,7 +1225,6 @@ input UpdateLabPracticeCommandInput {
   createdBy: String
   labpracticeID: ID
   _version: Int
-  labPracticeCommandLabPracticeId: ID
 }
 
 input DeleteLabPracticeCommandInput {
@@ -1256,7 +1245,7 @@ input ModelLabPracticeCommandConditionInput {
   not: ModelLabPracticeCommandConditionInput
 }
 
-type ModelLabPracticeConnection {
+type ModelLabPracticeConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPractice!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1284,7 +1273,6 @@ input CreateLabPracticeInput {
   createdBy: String!
   laboratoryID: ID!
   _version: Int
-  labPracticeLaboratoryId: ID
   labPracticeLabPracticeDeviceId: ID
 }
 
@@ -1297,7 +1285,6 @@ input UpdateLabPracticeInput {
   createdBy: String
   laboratoryID: ID
   _version: Int
-  labPracticeLaboratoryId: ID
   labPracticeLabPracticeDeviceId: ID
 }
 
@@ -1318,7 +1305,7 @@ input ModelLabPracticeConditionInput {
   not: ModelLabPracticeConditionInput
 }
 
-type ModelLabSemesterConnection {
+type ModelLabSemesterConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabSemester!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1328,7 +1315,9 @@ input ModelLabSemesterFilterInput {
   id: ModelIDInput
   semesterName: ModelStringInput
   description: ModelStringInput
-  emailUserList: ModelStringInput
+  professorEmailList: ModelStringInput
+  monitorEmailList: ModelStringInput
+  studentEmailList: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   laboratoryID: ModelIDInput
@@ -1341,24 +1330,26 @@ input CreateLabSemesterInput {
   id: ID
   semesterName: String!
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String!
   laboratoryID: ID!
   _version: Int
-  labSemesterLaboratoryId: ID
 }
 
 input UpdateLabSemesterInput {
   id: ID!
   semesterName: String
   description: String
-  emailUserList: AWSJSON
+  professorEmailList: AWSJSON
+  monitorEmailList: AWSJSON
+  studentEmailList: AWSJSON
   updatedBy: String
   createdBy: String
   laboratoryID: ID
   _version: Int
-  labSemesterLaboratoryId: ID
 }
 
 input DeleteLabSemesterInput {
@@ -1369,7 +1360,9 @@ input DeleteLabSemesterInput {
 input ModelLabSemesterConditionInput {
   semesterName: ModelStringInput
   description: ModelStringInput
-  emailUserList: ModelStringInput
+  professorEmailList: ModelStringInput
+  monitorEmailList: ModelStringInput
+  studentEmailList: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   laboratoryID: ModelIDInput
@@ -1378,7 +1371,7 @@ input ModelLabSemesterConditionInput {
   not: ModelLabSemesterConditionInput
 }
 
-type ModelLaboratoryConnection {
+type ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools {
   items: [Laboratory!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1404,7 +1397,6 @@ input CreateLaboratoryInput {
   createdBy: String!
   organizationID: ID!
   _version: Int
-  laboratoryOrganizationId: ID
 }
 
 input UpdateLaboratoryInput {
@@ -1415,7 +1407,6 @@ input UpdateLaboratoryInput {
   createdBy: String
   organizationID: ID
   _version: Int
-  laboratoryOrganizationId: ID
 }
 
 input DeleteLaboratoryInput {
@@ -1434,7 +1425,7 @@ input ModelLaboratoryConditionInput {
   not: ModelLaboratoryConditionInput
 }
 
-type ModelPrivilegeRoleConnection {
+type ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools {
   items: [PrivilegeRole!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1476,7 +1467,7 @@ input ModelPrivilegeRoleConditionInput {
   not: ModelPrivilegeRoleConditionInput
 }
 
-type ModelRoleUserConnection {
+type ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools {
   items: [RoleUser!]!
   nextToken: String
   startedAt: AWSTimestamp
@@ -1518,7 +1509,7 @@ input ModelRoleUserConditionInput {
   not: ModelRoleUserConditionInput
 }
 
-type ModelUserLabSemesterConnection {
+type ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools {
   items: [UserLabSemester!]!
   nextToken: String
   startedAt: AWSTimestamp

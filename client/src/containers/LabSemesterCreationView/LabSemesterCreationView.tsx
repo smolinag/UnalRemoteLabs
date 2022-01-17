@@ -176,7 +176,7 @@ const LabSemesterCreationView: React.FC<unknown> = () => {
 						input: {
 							laboratoryID: laboratoryId,
 							semesterName: labSemesterInfo.semesterName,
-							//emailUserList: JSON.stringify(emails),
+							studentEmailList: JSON.stringify(emails),
 							description: labSemesterInfo.semesterDescription,
 							createdBy: '1'
 						}
@@ -240,7 +240,7 @@ const LabSemesterCreationView: React.FC<unknown> = () => {
 				</Row>
 				<Row className="section">
 					<h3 className="title" />
-					<Col className={classes.justifyEnd}>
+					<Col className="justifyEnd">
 						<Button loading={loading} onClick={createLaboratorySemester}>
 							Guardar
 						</Button>

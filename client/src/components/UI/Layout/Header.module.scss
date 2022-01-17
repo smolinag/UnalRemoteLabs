@@ -1,34 +1,37 @@
 @import '../../../styles/mixins/colors';
 
 .navbar {
-   height: 90px;
-   margin: 0px 20px;
-   padding: 0px 20px;
-   border-bottom: 2px solid $green;
-   height: inherit;
+	height: 90px;
+	margin: 0px 20px;
+	padding: 0px 20px;
+	border-bottom: 2px solid $green;
+	height: inherit;
 
-   & .title {
-      margin: auto;
-      text-align: center;
-      justify-content: center;
-   }
+	& .title {
+		margin: auto;
+		text-align: center;
+		justify-content: center;
+	}
 
-   & .navbar-brand {
-      width: 200px;
-   }
-   
-   & .optionNavbar {
-      justify-items: center;
-      align-items: center;
+	& .navbar-brand {
+		width: 200px;
+	}
 
-      & .option {
-         padding: 0 10px;
+	& .optionNavbar {
+		justify-items: center;
+		align-items: center;
 
-         & .icon {
-            width: 30px;
-            height: 30px;
-            padding: 0 5px
-         }
-      }
-   }
+		& .option {
+			padding: 0 10px;
+			:hover {
+				cursor: pointer;
+			}
+
+			& .icon {
+				width: 30px;
+				height: 30px;
+				padding: 0 5px;
+			}
+		}
+	}
 }

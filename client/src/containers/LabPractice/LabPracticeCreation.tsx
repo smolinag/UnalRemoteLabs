@@ -9,7 +9,7 @@ import {
 	LabPracticeParametersTable,
 	LabPracticeOutput,
 	LabPracticeOutputTable
-} from '../../components/LabCreation';
+} from '../../components/LabPracticeCreation';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
@@ -62,7 +62,7 @@ const initialPracticeValue: LabPracticeInfo = {
 
 let rowIndex = -1;
 
-const LabCreationView: React.FC<unknown> = () => {
+const LabPracticeCreation: React.FC<unknown> = () => {
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
 	const [parametersList, setParametersList] = React.useState<LabPracticeParameterInfo[]>([]);
@@ -728,4 +728,4 @@ const LabCreationView: React.FC<unknown> = () => {
 	);
 };
 
-export default LabCreationView;
+export default LabPracticeCreation;

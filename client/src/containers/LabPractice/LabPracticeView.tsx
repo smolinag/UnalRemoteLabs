@@ -42,7 +42,7 @@ const COMMAND_EXECUTION_TIMEOUT = 5000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
-const LabView: React.FC<unknown> = () => {
+const LabPracticeView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
@@ -192,4 +192,4 @@ const LabView: React.FC<unknown> = () => {
 	);
 };
 
-export default LabView;
+export default LabPracticeView;

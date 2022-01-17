@@ -7,3 +7,5 @@ export {default as Input} from './Input/Input';
 export {default as DropdownComponent} from './DropdownComponent/DropdownComponent';
 export {default as NotificationBanner} from './NotificationBanner/NotificationBanner';
 export {default as ModalComponent} from './ModalComponent/ModalComponent';
+export {default as DateTimePickerComponent} from './DateTimePicker/DateTimePickerComponent';
+export {default as TextLabel} from './TextLabel/TextLabel';

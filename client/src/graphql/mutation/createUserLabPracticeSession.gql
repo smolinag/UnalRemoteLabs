@@ -1,0 +1,5 @@
+mutation createUserLabPracticeSession($input: CreateUserLabPracticeSessionInput!) {
+  createUserLabPracticeSession(input: $input) {
+    id
+  }
+}

@@ -85,7 +85,6 @@ export type CreateLabPracticeParameterInput = {
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeParameterLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabPracticeSessionCommandInput = {
@@ -452,8 +451,8 @@ export type LabPracticeParameter = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
-	LabPractice?: Maybe<LabPracticeDevice>;
 	LabPracticeCommand?: Maybe<LabPracticeCommand>;
+	LabPractice?: Maybe<LabPractice>;
 };
 
 export type LabPracticeSession = {
@@ -2085,7 +2084,6 @@ export type UpdateLabPracticeParameterInput = {
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeParameterLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabPracticeSessionCommandInput = {
@@ -2269,6 +2267,7 @@ export type UserLabPracticeSession = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	role?: Maybe<Role>;
 	User?: Maybe<User>;
 	LabPracticeSession?: Maybe<LabPracticeSession>;
 };
@@ -2349,6 +2348,19 @@ export type CreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 	>;
 };
 
+export type CreateLabPracticeSessionMutationVariables = Exact<{
+	input: CreateLabPracticeSessionInput;
+}>;
+
+export type CreateLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
+	createLabPracticeSession?: Maybe<
+		{__typename?: 'LabPracticeSession'} & Pick<
+			LabPracticeSession,
+			'id' | 'labpracticeID' | 'description' | 'startDate' | 'endDate' | 'updatedBy' | 'createdBy'
+		>
+	>;
+};
+
 export type CreateLabPracticeSessionCommandMutationVariables = Exact<{
 	input: CreateLabPracticeSessionCommandInput;
 }>;
@@ -2389,6 +2401,14 @@ export type CreateLaboratoryMutation = {__typename?: 'Mutation'} & {
 			| '_version'
 		>
 	>;
+};
+
+export type CreateUserLabPracticeSessionMutationVariables = Exact<{
+	input: CreateUserLabPracticeSessionInput;
+}>;
+
+export type CreateUserLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
+	createUserLabPracticeSession?: Maybe<{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'id'>>;
 };
 
 export type PublishMqttMessageMutationVariables = Exact<{
@@ -2564,6 +2584,24 @@ export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 								}
 						>;
 					}
+			>;
+		}
+	>;
+};
+
+export type ListUsersBySemesterQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type ListUsersBySemesterQuery = {__typename?: 'Query'} & {
+	getLabSemester?: Maybe<
+		{__typename?: 'LabSemester'} & {
+			users?: Maybe<
+				{__typename?: 'ModelUserLabSemesterConnection'} & {
+					items: Array<
+						{__typename?: 'UserLabSemester'} & {user: {__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email'>}
+					>;
+				}
 			>;
 		}
 	>;
@@ -2791,6 +2829,56 @@ export type CreateLabPracticeParameterMutationOptions = Apollo.BaseMutationOptio
 	CreateLabPracticeParameterMutation,
 	CreateLabPracticeParameterMutationVariables
 >;
+export const CreateLabPracticeSessionDocument = gql`
+	mutation createLabPracticeSession($input: CreateLabPracticeSessionInput!) {
+		createLabPracticeSession(input: $input) {
+			id
+			labpracticeID
+			description
+			startDate
+			endDate
+			updatedBy
+			createdBy
+		}
+	}
+`;
+export type CreateLabPracticeSessionMutationFn = Apollo.MutationFunction<
+	CreateLabPracticeSessionMutation,
+	CreateLabPracticeSessionMutationVariables
+>;
+
+/**
+ * __useCreateLabPracticeSessionMutation__
+ *
+ * To run a mutation, you first call `useCreateLabPracticeSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLabPracticeSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLabPracticeSessionMutation, { data, loading, error }] = useCreateLabPracticeSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateLabPracticeSessionMutation(
+	baseOptions?: Apollo.MutationHookOptions<CreateLabPracticeSessionMutation, CreateLabPracticeSessionMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateLabPracticeSessionMutation, CreateLabPracticeSessionMutationVariables>(
+		CreateLabPracticeSessionDocument,
+		options
+	);
+}
+export type CreateLabPracticeSessionMutationHookResult = ReturnType<typeof useCreateLabPracticeSessionMutation>;
+export type CreateLabPracticeSessionMutationResult = Apollo.MutationResult<CreateLabPracticeSessionMutation>;
+export type CreateLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
+	CreateLabPracticeSessionMutation,
+	CreateLabPracticeSessionMutationVariables
+>;
 export const CreateLabPracticeSessionCommandDocument = gql`
 	mutation createLabPracticeSessionCommand($input: CreateLabPracticeSessionCommandInput!) {
 		createLabPracticeSessionCommand(input: $input) {
@@ -2940,6 +3028,53 @@ export type CreateLaboratoryMutationResult = Apollo.MutationResult<CreateLaborat
 export type CreateLaboratoryMutationOptions = Apollo.BaseMutationOptions<
 	CreateLaboratoryMutation,
 	CreateLaboratoryMutationVariables
+>;
+export const CreateUserLabPracticeSessionDocument = gql`
+	mutation createUserLabPracticeSession($input: CreateUserLabPracticeSessionInput!) {
+		createUserLabPracticeSession(input: $input) {
+			id
+		}
+	}
+`;
+export type CreateUserLabPracticeSessionMutationFn = Apollo.MutationFunction<
+	CreateUserLabPracticeSessionMutation,
+	CreateUserLabPracticeSessionMutationVariables
+>;
+
+/**
+ * __useCreateUserLabPracticeSessionMutation__
+ *
+ * To run a mutation, you first call `useCreateUserLabPracticeSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserLabPracticeSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserLabPracticeSessionMutation, { data, loading, error }] = useCreateUserLabPracticeSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserLabPracticeSessionMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		CreateUserLabPracticeSessionMutation,
+		CreateUserLabPracticeSessionMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateUserLabPracticeSessionMutation, CreateUserLabPracticeSessionMutationVariables>(
+		CreateUserLabPracticeSessionDocument,
+		options
+	);
+}
+export type CreateUserLabPracticeSessionMutationHookResult = ReturnType<typeof useCreateUserLabPracticeSessionMutation>;
+export type CreateUserLabPracticeSessionMutationResult = Apollo.MutationResult<CreateUserLabPracticeSessionMutation>;
+export type CreateUserLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
+	CreateUserLabPracticeSessionMutation,
+	CreateUserLabPracticeSessionMutationVariables
 >;
 export const PublishMqttMessageDocument = gql`
 	mutation publishMqttMessage($input: LambdaInput!) {
@@ -3505,6 +3640,62 @@ export type ListUserLabPracticeSessionsLazyQueryHookResult = ReturnType<typeof u
 export type ListUserLabPracticeSessionsQueryResult = Apollo.QueryResult<
 	ListUserLabPracticeSessionsQuery,
 	ListUserLabPracticeSessionsQueryVariables
+>;
+export const ListUsersBySemesterDocument = gql`
+	query listUsersBySemester($id: ID!) {
+		getLabSemester(id: $id) {
+			users {
+				items {
+					user {
+						id
+						name
+						email
+					}
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useListUsersBySemesterQuery__
+ *
+ * To run a query within a React component, call `useListUsersBySemesterQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUsersBySemesterQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUsersBySemesterQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useListUsersBySemesterQuery(
+	baseOptions: Apollo.QueryHookOptions<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>(
+		ListUsersBySemesterDocument,
+		options
+	);
+}
+export function useListUsersBySemesterLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListUsersBySemesterQuery, ListUsersBySemesterQueryVariables>(
+		ListUsersBySemesterDocument,
+		options
+	);
+}
+export type ListUsersBySemesterQueryHookResult = ReturnType<typeof useListUsersBySemesterQuery>;
+export type ListUsersBySemesterLazyQueryHookResult = ReturnType<typeof useListUsersBySemesterLazyQuery>;
+export type ListUsersBySemesterQueryResult = Apollo.QueryResult<
+	ListUsersBySemesterQuery,
+	ListUsersBySemesterQueryVariables
 >;
 export const OnCreateLabPracticeSessionCommandBySessionIdDocument = gql`
 	subscription onCreateLabPracticeSessionCommandBySessionID($id: ID!) {

@@ -58,3 +58,8 @@ body {
 	border-color: gray;
 	color: black;
 }
+
+
+.react-datetime-picker__calendar {
+	z-index: 999 !important;
+}

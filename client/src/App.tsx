@@ -8,7 +8,17 @@ import {Route, Routes} from 'react-router-dom';
 import classes from './App.module.scss';
 import awsExports from './aws-exports';
 import {Footer, Header, NotificationBanner} from './components/UI';
-import {LabPracticeView, LabPracticeCreation, LabSemesterCreationView, LabTemp, UserLabPracticeSessionsList, LaboratoriesList, LaboratoryEdition, LaboratoryCreation} from './containers';
+import {
+	LabPracticeView,
+	LabPracticeCreation,
+	LabSemesterCreationView,
+	LabTemp,
+	UserLabPracticeSessionsList,
+	LaboratoriesList,
+	LaboratoryEdition,
+	LaboratoryCreation,
+	LabSessionProgrammingView
+} from './containers';
 import authComponents from './login/authComponents';
 
 Amplify.configure(awsExports);
@@ -26,6 +36,7 @@ const App = (): JSX.Element => {
 							<Route path="/create-lab" element={<LabPracticeCreation />} />
 							<Route path="/user-labs" element={<UserLabPracticeSessionsList />} />
 							<Route path="/create-lab-semester" element={<LabSemesterCreationView />} />
+							<Route path="/create-lab-session" element={<LabSessionProgrammingView />} />
 							<Route path="/temp" element={<LabTemp />} />
 							<Route path="/labs" element={<LaboratoriesList />} />
 							<Route path="/lab-creation" element={<LaboratoryCreation />} />

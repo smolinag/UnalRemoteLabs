@@ -14,6 +14,7 @@ const auth: AuthOptions = {
 	jwtToken: async () => {
 		try {
 			const token = (await Auth.currentSession()).getAccessToken().getJwtToken();
+			console.warn(token)
 			return token;
 		} catch (e) {
 			console.error(e);

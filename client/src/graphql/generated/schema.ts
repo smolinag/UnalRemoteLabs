@@ -295,7 +295,6 @@ export type DeleteUserLabSemesterInput = {
 };
 
 export type LabOutputIn = {
-	id: Scalars['ID'];
 	captureDate?: Maybe<Scalars['AWSDateTime']>;
 	value?: Maybe<Scalars['String']>;
 	labpracticeoutputID: Scalars['ID'];
@@ -304,11 +303,10 @@ export type LabOutputIn = {
 
 export type LabOutputOut = {
 	__typename?: 'LabOutputOut';
-	id: Scalars['ID'];
 	captureDate?: Maybe<Scalars['AWSDateTime']>;
 	value?: Maybe<Scalars['String']>;
-	labpracticeoutputID: Scalars['ID'];
-	labpracticesessionID: Scalars['ID'];
+	labpracticeoutputID?: Maybe<Scalars['ID']>;
+	labpracticesessionID?: Maybe<Scalars['ID']>;
 };
 
 export type LabPractice = {
@@ -2411,6 +2409,14 @@ export type CreateUserLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
 	createUserLabPracticeSession?: Maybe<{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'id'>>;
 };
 
+export type DeleteLaboratoryMutationVariables = Exact<{
+	input: DeleteLaboratoryInput;
+}>;
+
+export type DeleteLaboratoryMutation = {__typename?: 'Mutation'} & {
+	deleteLaboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | '_version' | '_deleted'>>;
+};
+
 export type PublishMqttMessageMutationVariables = Exact<{
 	input: LambdaInput;
 }>;
@@ -2545,7 +2551,7 @@ export type ListLaboratoriesQuery = {__typename?: 'Query'} & {
 			items: Array<
 				{__typename?: 'Laboratory'} & Pick<
 					Laboratory,
-					'id' | 'name' | 'description' | 'createdAt' | 'updatedAt' | 'organizationID' | '_version'
+					'id' | 'name' | 'description' | 'createdAt' | 'updatedAt' | 'organizationID' | '_version' | '_deleted'
 				>
 			>;
 		}
@@ -3076,6 +3082,53 @@ export type CreateUserLabPracticeSessionMutationOptions = Apollo.BaseMutationOpt
 	CreateUserLabPracticeSessionMutation,
 	CreateUserLabPracticeSessionMutationVariables
 >;
+export const DeleteLaboratoryDocument = gql`
+	mutation deleteLaboratory($input: DeleteLaboratoryInput!) {
+		deleteLaboratory(input: $input) {
+			id
+			name
+			_version
+			_deleted
+		}
+	}
+`;
+export type DeleteLaboratoryMutationFn = Apollo.MutationFunction<
+	DeleteLaboratoryMutation,
+	DeleteLaboratoryMutationVariables
+>;
+
+/**
+ * __useDeleteLaboratoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteLaboratoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLaboratoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLaboratoryMutation, { data, loading, error }] = useDeleteLaboratoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteLaboratoryMutation(
+	baseOptions?: Apollo.MutationHookOptions<DeleteLaboratoryMutation, DeleteLaboratoryMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<DeleteLaboratoryMutation, DeleteLaboratoryMutationVariables>(
+		DeleteLaboratoryDocument,
+		options
+	);
+}
+export type DeleteLaboratoryMutationHookResult = ReturnType<typeof useDeleteLaboratoryMutation>;
+export type DeleteLaboratoryMutationResult = Apollo.MutationResult<DeleteLaboratoryMutation>;
+export type DeleteLaboratoryMutationOptions = Apollo.BaseMutationOptions<
+	DeleteLaboratoryMutation,
+	DeleteLaboratoryMutationVariables
+>;
 export const PublishMqttMessageDocument = gql`
 	mutation publishMqttMessage($input: LambdaInput!) {
 		publishMqttMessage(input: $input)
@@ -3494,6 +3547,7 @@ export const ListLaboratoriesDocument = gql`
 				updatedAt
 				organizationID
 				_version
+				_deleted
 			}
 		}
 	}

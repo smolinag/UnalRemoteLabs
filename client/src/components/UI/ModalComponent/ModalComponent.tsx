@@ -5,10 +5,10 @@ import Button from '../Button/Button';
 
 interface Props {
 	display: boolean;
-  title: string;
+	title: string;
 	// loading: boolean;
 	onDisplay: (display: boolean) => void;
-  onSave: () => void;
+	onSave: () => void;
 }
 
 const ModalComponent: React.FC<Props> = ({children, display, title, onDisplay, onSave}) => {
@@ -25,10 +25,10 @@ const ModalComponent: React.FC<Props> = ({children, display, title, onDisplay, o
 				<Modal.Body>{children}</Modal.Body>
 				<Modal.Footer>
 					<Button loading={false} variant="red" onClick={handleClose}>
-						Cerrar
+						Cancelar
 					</Button>
 					<Button loading={false} variant="green" onClick={onSave}>
-						Guardar
+						Aceptar
 					</Button>
 				</Modal.Footer>
 			</Modal>

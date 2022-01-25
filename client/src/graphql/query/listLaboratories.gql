@@ -8,6 +8,7 @@ query listLaboratories {
        updatedAt
        organizationID
        _version
+       _deleted
      }
    }
 }

@@ -1,0 +1,8 @@
+mutation deleteLaboratory($input: DeleteLaboratoryInput!) {
+  deleteLaboratory(input: $input) {
+    id
+    name
+    _version
+    _deleted
+  }
+}

@@ -1,5 +1,5 @@
-query listUserLabPracticeSessions {
-	listUserLabPracticeSessions {
+query listUserLabPracticeSessions($id: ID!) {
+	listUserLabPracticeSessions(filter: {userID : {eq:$id}}) {
 		items {
 			id
 			sessionEndDate

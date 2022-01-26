@@ -2568,7 +2568,9 @@ export type ListOrganizationsQuery = {__typename?: 'Query'} & {
 	>;
 };
 
-export type ListUserLabPracticeSessionsQueryVariables = Exact<{[key: string]: never}>;
+export type ListUserLabPracticeSessionsQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
 
 export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 	listUserLabPracticeSessions?: Maybe<
@@ -3629,8 +3631,8 @@ export type ListOrganizationsQueryHookResult = ReturnType<typeof useListOrganiza
 export type ListOrganizationsLazyQueryHookResult = ReturnType<typeof useListOrganizationsLazyQuery>;
 export type ListOrganizationsQueryResult = Apollo.QueryResult<ListOrganizationsQuery, ListOrganizationsQueryVariables>;
 export const ListUserLabPracticeSessionsDocument = gql`
-	query listUserLabPracticeSessions {
-		listUserLabPracticeSessions {
+	query listUserLabPracticeSessions($id: ID!) {
+		listUserLabPracticeSessions(filter: {userID: {eq: $id}}) {
 			items {
 				id
 				sessionEndDate
@@ -3668,11 +3670,12 @@ export const ListUserLabPracticeSessionsDocument = gql`
  * @example
  * const { data, loading, error } = useListUserLabPracticeSessionsQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
 export function useListUserLabPracticeSessionsQuery(
-	baseOptions?: Apollo.QueryHookOptions<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>
+	baseOptions: Apollo.QueryHookOptions<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>
 ) {
 	const options = {...defaultOptions, ...baseOptions};
 	return Apollo.useQuery<ListUserLabPracticeSessionsQuery, ListUserLabPracticeSessionsQueryVariables>(

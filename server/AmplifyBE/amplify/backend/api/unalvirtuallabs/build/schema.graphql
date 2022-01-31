@@ -429,7 +429,7 @@ enum ModelSortDirection {
 }
 
 type ModelOrganizationConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Organization!]!
+  items: [Organization]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -637,7 +637,7 @@ input ModelOrganizationConditionInput {
 }
 
 type ModelRoleConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Role!]!
+  items: [Role]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -687,7 +687,7 @@ input ModelRoleConditionInput {
 }
 
 type ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Privilege!]!
+  items: [Privilege]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -729,7 +729,7 @@ input ModelPrivilegeConditionInput {
 }
 
 type ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools {
-  items: [UserLabPracticeSession!]!
+  items: [UserLabPracticeSession]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -783,7 +783,7 @@ input ModelUserLabPracticeSessionConditionInput {
 }
 
 type ModelUserConnection @aws_api_key @aws_cognito_user_pools {
-  items: [User!]!
+  items: [User]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -857,7 +857,7 @@ input ModelUserConditionInput {
 }
 
 type ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeSessionCommand!]!
+  items: [LabPracticeSessionCommand]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -915,7 +915,7 @@ input ModelLabPracticeSessionCommandConditionInput {
 }
 
 type ModelLabPracticeOutputConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeOutput!]!
+  items: [LabPracticeOutput]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -985,7 +985,7 @@ input ModelLabPracticeOutputConditionInput {
 }
 
 type ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeSession!]!
+  items: [LabPracticeSession]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1043,7 +1043,7 @@ input ModelLabPracticeSessionConditionInput {
 }
 
 type ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeDevice!]!
+  items: [LabPracticeDevice]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1099,7 +1099,7 @@ input ModelLabPracticeDeviceConditionInput {
 }
 
 type ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeParameter!]!
+  items: [LabPracticeParameter]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1181,7 +1181,7 @@ input ModelLabPracticeParameterConditionInput {
 }
 
 type ModelLabPracticeCommandConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeCommand!]!
+  items: [LabPracticeCommand]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1243,7 +1243,7 @@ input ModelLabPracticeCommandConditionInput {
 }
 
 type ModelLabPracticeConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPractice!]!
+  items: [LabPractice]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1303,7 +1303,7 @@ input ModelLabPracticeConditionInput {
 }
 
 type ModelLabSemesterConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabSemester!]!
+  items: [LabSemester]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1369,7 +1369,7 @@ input ModelLabSemesterConditionInput {
 }
 
 type ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Laboratory!]!
+  items: [Laboratory]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1423,7 +1423,7 @@ input ModelLaboratoryConditionInput {
 }
 
 type ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools {
-  items: [PrivilegeRole!]!
+  items: [PrivilegeRole]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1465,7 +1465,7 @@ input ModelPrivilegeRoleConditionInput {
 }
 
 type ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools {
-  items: [RoleUser!]!
+  items: [RoleUser]!
   nextToken: String
   startedAt: AWSTimestamp
 }
@@ -1507,7 +1507,7 @@ input ModelRoleUserConditionInput {
 }
 
 type ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools {
-  items: [UserLabSemester!]!
+  items: [UserLabSemester]!
   nextToken: String
   startedAt: AWSTimestamp
 }

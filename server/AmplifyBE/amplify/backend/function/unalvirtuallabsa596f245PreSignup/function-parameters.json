@@ -1,0 +1,17 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "unalvirtuallabsa596f245",
+  "functionName": "unalvirtuallabsa596f245PreSignup",
+  "resourceName": "unalvirtuallabsa596f245PreSignup",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "C:\\Users\\AFS-2140\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\@aws-amplify\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PreSignup",
+  "triggerTemplate": "PreSignup.json.ejs",
+  "triggerEventPath": "PreSignup.event.json",
+  "roleName": "unalvirtuallabsa596f245PreSignup",
+  "skipEdit": true,
+  "enableCors": false
+}

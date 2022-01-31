@@ -24,6 +24,7 @@ import authComponents from './login/authComponents';
 Amplify.configure(awsExports);
 
 const App = (): JSX.Element => {
+	// eslint-disable-next-line no-console
 	return (
 		<Authenticator components={authComponents} socialProviders={['google']}>
 			{() => (

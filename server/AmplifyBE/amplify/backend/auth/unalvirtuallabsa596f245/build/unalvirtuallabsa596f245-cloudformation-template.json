@@ -5,6 +5,22 @@
     "env": {
       "Type": "String"
     },
+    "functionunalvirtuallabsa596f245PostConfirmationArn": {
+      "Type": "String",
+      "Default": "functionunalvirtuallabsa596f245PostConfirmationArn"
+    },
+    "functionunalvirtuallabsa596f245PostConfirmationName": {
+      "Type": "String",
+      "Default": "functionunalvirtuallabsa596f245PostConfirmationName"
+    },
+    "functionunalvirtuallabsa596f245PreSignupArn": {
+      "Type": "String",
+      "Default": "functionunalvirtuallabsa596f245PreSignupArn"
+    },
+    "functionunalvirtuallabsa596f245PreSignupName": {
+      "Type": "String",
+      "Default": "functionunalvirtuallabsa596f245PreSignupName"
+    },
     "identityPoolName": {
       "Type": "String"
     },
@@ -122,6 +138,21 @@
     "permissions": {
       "Type": "CommaDelimitedList"
     },
+    "userPoolGroups": {
+      "Type": "String"
+    },
+    "adminQueries": {
+      "Type": "String"
+    },
+    "authTriggerConnections": {
+      "Type": "CommaDelimitedList"
+    },
+    "authProviders": {
+      "Type": "CommaDelimitedList"
+    },
+    "thirdPartyAuth": {
+      "Type": "String"
+    },
     "hostedUIDomainName": {
       "Type": "String"
     },
@@ -134,10 +165,10 @@
     "oAuthMetadata": {
       "Type": "String"
     },
-    "authProviders": {
-      "Type": "CommaDelimitedList"
-    },
     "hostedUIProviderCreds": {
+      "Type": "String"
+    },
+    "googleClientId": {
       "Type": "String"
     }
   },
@@ -1032,6 +1063,11 @@
               ]
             }
           ]
+        },
+        "SupportedLoginProviders": {
+          "accounts.google.com": {
+            "Ref": "googleClientId"
+          }
         }
       },
       "DependsOn": [
@@ -1149,6 +1185,11 @@
           "SNSRole",
           "Arn"
         ]
+      }
+    },
+    "GoogleWebClient": {
+      "Value": {
+        "Ref": "googleClientId"
       }
     }
   }

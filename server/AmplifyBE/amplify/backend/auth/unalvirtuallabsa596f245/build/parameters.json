@@ -22,7 +22,7 @@
   ],
   "aliasAttributes": [],
   "userpoolClientGenerateSecret": false,
-  "userpoolClientRefreshTokenValidity": 30,
+  "userpoolClientRefreshTokenValidity": "1",
   "userpoolClientWriteAttributes": [
     "email"
   ],
@@ -34,14 +34,19 @@
   "authSelections": "identityPoolAndUserPool",
   "resourceName": "unalvirtuallabsa596f245",
   "serviceName": "Cognito",
-  "useDefault": "defaultSocial",
+  "useDefault": "manual",
   "sharedId": "a596f245",
-  "userPoolGroupList": [],
+  "userPoolGroupList": [
+    "Admins",
+    "Professors",
+    "Monitors",
+    "Students"
+  ],
   "usernameAttributes": [
     "email"
   ],
   "usernameCaseSensitive": false,
-  "triggers": "{}",
+  "triggers": "{\"PostConfirmation\":[\"custom\"],\"PreSignup\":[\"custom\"]}",
   "authRoleArn": {
     "Fn::GetAtt": [
       "AuthRole",
@@ -56,17 +61,45 @@
   },
   "breakCircularDependency": true,
   "useEnabledMfas": false,
-  "dependsOn": [],
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "unalvirtuallabsa596f245PostConfirmation",
+      "triggerProvider": "Cognito",
+      "attributes": [
+        "Arn",
+        "Name"
+      ]
+    },
+    {
+      "category": "function",
+      "resourceName": "unalvirtuallabsa596f245PreSignup",
+      "triggerProvider": "Cognito",
+      "attributes": [
+        "Arn",
+        "Name"
+      ]
+    }
+  ],
   "hostedUI": true,
   "parentStack": {
     "Ref": "AWS::StackId"
   },
   "permissions": [],
-  "hostedUIDomainName": "unalvirtuallabsfab5cbf4-fab5cbf4",
+  "userPoolGroups": true,
+  "adminQueries": false,
+  "authTriggerConnections": [
+    "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"unalvirtuallabsa596f245PostConfirmation\"}",
+    "{\"triggerType\":\"PreSignUp\",\"lambdaFunctionName\":\"unalvirtuallabsa596f245PreSignup\"}"
+  ],
+  "authProviders": [
+    "accounts.google.com"
+  ],
+  "thirdPartyAuth": true,
+  "hostedUIDomainName": "unalvirtuallabsd9e2ffd9-d9e2ffd9",
   "authProvidersUserPool": [
     "Google"
   ],
   "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-  "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}",
-  "authProviders": []
+  "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}"
 }

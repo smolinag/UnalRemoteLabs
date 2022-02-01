@@ -223,7 +223,7 @@ type LabSemester @aws_api_key @aws_cognito_user_pools {
   description: String
   professorEmailList: AWSJSON
   monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON
+  studentEmailList: AWSJSON!
   updatedBy: String
   createdBy: String!
   laboratoryID: ID!
@@ -293,17 +293,17 @@ type UserLabSemester @aws_api_key @aws_cognito_user_pools {
 }
 
 input LabOutputIn {
-  captureDate: AWSDateTime
-  value: String
-  labpracticeoutputID: ID!
-  labpracticesessionID: ID!
+  labPracticeOutputID: ID!
+  value: String!
+  rpiID: ID!
+  captureDate: AWSDateTime!
 }
 
-type LabOutputOut {
-  captureDate: AWSDateTime
-  value: String
-  labpracticeoutputID: ID
-  labpracticesessionID: ID
+type LabOutputOut @aws_api_key @aws_cognito_user_pools {
+  labPracticeOutputID: ID!
+  value: String!
+  rpiID: ID!
+  captureDate: AWSDateTime!
 }
 
 input LambdaInput {
@@ -419,7 +419,7 @@ type Subscription {
   onCreateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["createUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
   onUpdateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["updateUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
   onDeleteUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["deleteUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
-  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @aws_api_key @aws_cognito_user_pools
+  onLabOutputListen(rpiID: ID!): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @aws_api_key @aws_cognito_user_pools
   onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
 }
 
@@ -1329,7 +1329,7 @@ input CreateLabSemesterInput {
   description: String
   professorEmailList: AWSJSON
   monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON
+  studentEmailList: AWSJSON!
   updatedBy: String
   createdBy: String!
   laboratoryID: ID!

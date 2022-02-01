@@ -163,7 +163,7 @@ type LabSemester @model @auth(rules: [{ allow: public },  { allow: private}]) @k
   description: String
   professorEmailList: AWSJSON
   monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON
+  studentEmailList: AWSJSON!
   updatedBy: String
   createdBy: String!
   Laboratory: Laboratory @connection(fields: ["laboratoryID"])
@@ -208,17 +208,17 @@ type UserLabSemester @model(queries: null) @auth(rules: [{ allow: public },  { a
 }
 
 input LabOutputIn{
-  captureDate: AWSDateTime
-  value: String
-  labpracticeoutputID: ID!
-  labpracticesessionID: ID!
+  labPracticeOutputID: ID!
+  value: String!
+  rpiID: ID!
+  captureDate: AWSDateTime!
 }
 
-type LabOutputOut{
-  captureDate: AWSDateTime
-  value: String
-  labpracticeoutputID: ID
-  labpracticesessionID: ID
+type LabOutputOut @aws_api_key @aws_cognito_user_pools {  
+  labPracticeOutputID: ID! 
+  value: String!
+  rpiID: ID!
+  captureDate: AWSDateTime!
 }
 
 input LambdaInput {
@@ -232,7 +232,7 @@ type Mutation {
 }
 
 type Subscription {
-  onLabOutputListen: LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @auth(rules: [{ allow: public },  { allow: private}])
+  onLabOutputListen(rpiID: ID! ): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @auth(rules: [{ allow: public },  { allow: private}])
   onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @auth(rules: [{ allow: public },  { allow: private}])
 }
  

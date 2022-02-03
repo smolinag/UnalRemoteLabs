@@ -29,11 +29,15 @@ const LaboratoryCreation: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		if (organizationsInfo?.listOrganizations != null) {
-			const organizationsList = organizationsInfo.listOrganizations.items.map((obj) => {
-				return {
-					id: obj.id,
-					name: obj.name
-				};
+			const organizationsList: Organization[] = [];
+
+			organizationsInfo.listOrganizations.items.forEach((obj) => {
+				if (obj) {
+					organizationsList.push({
+						id: obj.id,
+						name: obj.name
+					});
+				}
 			});
 
 			setOrganizations(organizationsList);

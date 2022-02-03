@@ -1,5 +1,5 @@
-query listLabPracticeOutputs {
-	listLabPracticeOutputs {
+query listLabPracticeOutputs($id: ID!) {
+	listLabPracticeOutputs(filter: {labpracticeID : {eq:$id}}) {
 		items {
 			id
 			name

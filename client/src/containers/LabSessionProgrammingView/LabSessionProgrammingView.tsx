@@ -25,7 +25,7 @@ const initialLabSessionInfo: LabSessionInfo = {
 const LabSessionProgrammingView: React.FC<unknown> = () => {
 	const [labSessionInfo, setSessionInfo] = useState<LabSessionInfo>(initialLabSessionInfo);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [studentList, setStudentList] = useState<Array<SessionUser>>([]);
+	const [studentList, setStudentList] = useState<SessionUser[]>([]);
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
@@ -35,11 +35,13 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
-		console.warn(semesterUsers)
 		if (semesterUserList) {
-			const data = semesterUserList.map((item) => {
-				return {name: item.user.name, id: item.user.id, email: item.user.email};
-			});
+			const data: SessionUser[] = []
+
+			semesterUserList.forEach(obj => {
+				if(obj) data.push({name: obj.user.name, id: obj.user.id, email: obj.user.email})
+			})
+			
 			setStudentList(data);
 		}
 	}, [semesterUsers]);

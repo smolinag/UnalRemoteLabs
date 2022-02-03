@@ -1,6 +1,6 @@
-subscription onUpdateLabOutputListen {
-	onLabOutputListen {
+subscription onUpdateLabOutputListen($id: ID!) {
+	onLabOutputListen(rpiID: $id) {
 		value
-		labpracticeoutputID
+		labPracticeOutputID
 	}
 }

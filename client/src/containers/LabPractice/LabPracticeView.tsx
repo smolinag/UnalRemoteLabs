@@ -36,6 +36,7 @@ enum CommandExecutionState {
 
 export interface LocationState {
 	labPracticeId: string;
+	deviceId: string;
 }
 
 const COMMAND_EXECUTION_TIMEOUT = 5000;
@@ -52,16 +53,17 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const location = useLocation();
-	const laboratoryId = (location.state as LocationState)?.labPracticeId;
+	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	const deviceId = (location.state as LocationState)?.deviceId;
 
-	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: laboratoryId}});
-	const {data: practiceOutputs} = useListLabPracticeOutputsQuery();
-	const {data: labCommandsData} = useListLabPracticeCommandsQuery();
+	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
+	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: deviceId}});
+	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
 	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({variables: {id: SESSION_ID}});
-	const {data: updatedSessionOutput} = useOnUpdateLabOutputListenSubscription();
+	const {data: updatedSessionOutput} = useOnUpdateLabOutputListenSubscription({variables: {id: deviceId}});
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
@@ -111,7 +113,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 		}
 
 		const outputToUpdateIndex = outputs.findIndex(
-			(output: OutputListDto) => output.id === updatedSessionOutputData.labpracticeoutputID
+			(output: OutputListDto) => output.id === updatedSessionOutputData.labPracticeOutputID
 		);
 
 		if (outputToUpdateIndex < 0) {

@@ -6,8 +6,7 @@ import {UserLabPracticeSessionsTable} from '../../components/UsersLabsView';
 import {useListUserLabPracticeSessionsQuery} from '../../graphql/generated/schema';
 import {UserLabPracticeSession} from './types';
 
-
-const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac'
+const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
 
 const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
@@ -19,33 +18,33 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 		const receivedList = data?.listUserLabPracticeSessions?.items;
 		if (receivedList && receivedList.length > 0) {
 			const list: UserLabPracticeSession[] = receivedList.map((session) => ({
-				id: session.id,
-				sessionStartDate: session.sessionStartDate ? session.sessionStartDate : '',
-				sessionEndDate: session.sessionEndDate ? session.sessionEndDate : '',
+				id: session ? session.id : '',
+				sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
+				sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
 				labPracticeSession: {
-					id: session.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
-					startDate: session.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
-					endDate: session.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
+					id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
+					startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
+					endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
 					labPracticeInfo: {
-						id: session.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
-						practiceInfoName: session.LabPracticeSession?.LabPractice?.name
-							? session.LabPracticeSession?.LabPractice?.name
+						id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
+						practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
+							? session?.LabPracticeSession?.LabPractice?.name
 							: '',
-						practiceInfoDescription: session.LabPracticeSession?.LabPractice?.description
-							? session.LabPracticeSession?.LabPractice?.description
+						practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
+							? session?.LabPracticeSession?.LabPractice?.description
 							: '',
-						practiceInfoDuration: session.LabPracticeSession?.LabPractice?.duration
-							? session.LabPracticeSession?.LabPractice?.duration
+						practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
+							? session?.LabPracticeSession?.LabPractice?.duration
 							: 0,
 						laboratory: {
-							id: session.LabPracticeSession?.LabPractice?.Laboratory?.id
-								? session.LabPracticeSession?.LabPractice?.Laboratory?.id
+							id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+								? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
 								: '',
-							name: session.LabPracticeSession?.LabPractice?.Laboratory?.name
-								? session.LabPracticeSession?.LabPractice?.Laboratory?.name
+							name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+								? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
 								: '',
-							description: session.LabPracticeSession?.LabPractice?.Laboratory?.description
-								? session.LabPracticeSession?.LabPractice?.Laboratory?.description
+							description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+								? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
 								: ''
 						}
 					}
@@ -57,7 +56,7 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 
 		return () => {
 			setUserLabPracticeSessionsList(undefined);
-		}
+		};
 	}, [data]);
 
 	return (

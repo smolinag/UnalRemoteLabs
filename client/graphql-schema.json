@@ -1113,9 +1113,13 @@
             "name": "studentEmailList",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "AWSJSON",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "AWSJSON",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -2767,31 +2771,7 @@
         "fields": null,
         "inputFields": [
           {
-            "name": "captureDate",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "AWSDateTime",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "value",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "labpracticeoutputID",
+            "name": "labPracticeOutputID",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -2807,7 +2787,23 @@
             "deprecationReason": null
           },
           {
-            "name": "labpracticesessionID",
+            "name": "value",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "rpiID",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -2815,6 +2811,22 @@
               "ofType": {
                 "kind": "SCALAR",
                 "name": "ID",
+                "ofType": null
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "captureDate",
+            "description": null,
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "AWSDateTime",
                 "ofType": null
               }
             },
@@ -2833,13 +2845,17 @@
         "description": null,
         "fields": [
           {
-            "name": "captureDate",
+            "name": "labPracticeOutputID",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "AWSDateTime",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -2849,33 +2865,45 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "labpracticeoutputID",
+            "name": "rpiID",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "labpracticesessionID",
+            "name": "captureDate",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "ID",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "AWSDateTime",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -5003,9 +5031,13 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "AWSJSON",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "AWSJSON",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -6384,13 +6416,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPracticeCommand",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPracticeCommand",
+                  "ofType": null
                 }
               }
             },
@@ -6721,13 +6749,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPractice",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPractice",
+                  "ofType": null
                 }
               }
             },
@@ -6895,13 +6919,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPracticeDevice",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPracticeDevice",
+                  "ofType": null
                 }
               }
             },
@@ -7383,13 +7403,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPracticeOutput",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPracticeOutput",
+                  "ofType": null
                 }
               }
             },
@@ -7816,13 +7832,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPracticeParameter",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPracticeParameter",
+                  "ofType": null
                 }
               }
             },
@@ -8213,13 +8225,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPracticeSessionCommand",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPracticeSessionCommand",
+                  "ofType": null
                 }
               }
             },
@@ -8538,13 +8546,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabPracticeSession",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabPracticeSession",
+                  "ofType": null
                 }
               }
             },
@@ -8887,13 +8891,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "LabSemester",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "LabSemester",
+                  "ofType": null
                 }
               }
             },
@@ -9224,13 +9224,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Laboratory",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Laboratory",
+                  "ofType": null
                 }
               }
             },
@@ -9585,13 +9581,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Organization",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Organization",
+                  "ofType": null
                 }
               }
             },
@@ -9910,13 +9902,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Privilege",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Privilege",
+                  "ofType": null
                 }
               }
             },
@@ -10139,13 +10127,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "PrivilegeRole",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "PrivilegeRole",
+                  "ofType": null
                 }
               }
             },
@@ -10392,13 +10376,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Role",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Role",
+                  "ofType": null
                 }
               }
             },
@@ -10645,13 +10625,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "RoleUser",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "RoleUser",
+                  "ofType": null
                 }
               }
             },
@@ -11263,13 +11239,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "User",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
                 }
               }
             },
@@ -11624,13 +11596,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "UserLabPracticeSession",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "UserLabPracticeSession",
+                  "ofType": null
                 }
               }
             },
@@ -11889,13 +11857,9 @@
                 "kind": "LIST",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "UserLabSemester",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "UserLabSemester",
+                  "ofType": null
                 }
               }
             },
@@ -18155,7 +18119,24 @@
           {
             "name": "onLabOutputListen",
             "description": null,
-            "args": [],
+            "args": [
+              {
+                "name": "rpiID",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
             "type": {
               "kind": "OBJECT",
               "name": "LabOutputOut",

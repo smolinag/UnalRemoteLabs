@@ -94,7 +94,7 @@ type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: privat
   updatedBy: String
   createdBy: String!
   LabPractice: LabPractice @connection(fields: ["labpracticeID"])
-  labpracticeID: ID!
+  labpracticeID: ID
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeSession", fields: ["id"])
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byLabPracticeSession", fields: ["id"])
 }

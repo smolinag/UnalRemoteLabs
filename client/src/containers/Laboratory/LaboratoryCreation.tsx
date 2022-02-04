@@ -31,8 +31,8 @@ const LaboratoryCreation: React.FC<unknown> = () => {
 		if (organizationsInfo?.listOrganizations != null) {
 			const organizationsList = organizationsInfo.listOrganizations.items.map((obj) => {
 				return {
-					id: obj.id,
-					name: obj.name
+					id: obj ? obj.id : '',
+					name: obj ? obj.name : ''
 				};
 			});
 

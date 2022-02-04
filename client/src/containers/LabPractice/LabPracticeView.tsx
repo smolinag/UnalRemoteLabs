@@ -8,10 +8,10 @@ import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
 	useListLabPracticeOutputsQuery,
-	useCreateLabPracticeSessionCommandMutation,	
-	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,	
+	useCreateLabPracticeSessionCommandMutation,
+	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
-	useOnUpdateLabOutputListenSubscription,
+	useOnLabOutputListenSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -60,8 +60,10 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
-	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({variables: {id: SESSION_ID}});
-	const {data: updatedSessionOutput} = useOnUpdateLabOutputListenSubscription();
+	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({
+		variables: {id: SESSION_ID}
+	});
+	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: '123'}});
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
@@ -83,7 +85,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 			setLabCommands(commands);
 		}
 	}, [labCommandsData]);
-
 
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
@@ -111,7 +112,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 		}
 
 		const outputToUpdateIndex = outputs.findIndex(
-			(output: OutputListDto) => output.id === updatedSessionOutputData.labpracticeoutputID
+			(output: OutputListDto) => output.id === updatedSessionOutputData.labPracticeOutputID
 		);
 
 		if (outputToUpdateIndex < 0) {

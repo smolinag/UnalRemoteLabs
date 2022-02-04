@@ -3,7 +3,7 @@ import {Container, Row, Col} from 'react-bootstrap';
 
 import LabSessionData from '../../components/LabSessionProgramming/LabSessionData';
 import {LoadingContainer, Button, Table} from '../../components/UI';
-import { Action } from '../../components/UI/Table/Table';
+import {Action} from '../../components/UI/Table/Table';
 import {
 	useCreateLabPracticeSessionMutation,
 	useListUsersBySemesterQuery,
@@ -35,10 +35,10 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
-		console.warn(semesterUsers)
+		console.warn(semesterUsers);
 		if (semesterUserList) {
 			const data = semesterUserList.map((item) => {
-				return {name: item.user.name, id: item.user.id, email: item.user.email};
+				return {name: item ? item.user.name : '', id: item ? item.user.id : '', email: item ? item.user.email : ''};
 			});
 			setStudentList(data);
 		}
@@ -73,19 +73,19 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 			if (!labPracticeSessionData?.createLabPracticeSession?.id) {
 				throw Error('');
 			} else {
-				for(const student of studentList){
+				for (const student of studentList) {
 					const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
-						variables:{
-							input:{
+						variables: {
+							input: {
 								userID: student.id,
 								labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
 							}
 						}
-					})
-					if(!userLabPracticeSessionData?.createUserLabPracticeSession?.id){
+					});
+					if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
 						throw Error('');
 					}
-				} 				
+				}
 			}
 
 			showSuccessBanner(`La sesión del laboratorio ${labSessionInfo.labPracticeName} fue creada exitosamente`);
@@ -142,7 +142,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 							onAction={handleTableAction}
 						/>
 					</Col>
-				</Row>				
+				</Row>
 				<Row className="section">
 					<h3 className="title" />
 					<Col className={classes.justifyEnd}>

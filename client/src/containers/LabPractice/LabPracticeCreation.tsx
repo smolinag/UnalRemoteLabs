@@ -92,7 +92,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 		if (labs) {
 			setLaboratories(
 				labs.map((obj) => {
-					return {id: obj.id, name: obj.name};
+					return {id: obj !== null ? obj.id : '', name: obj !== null ? obj.name : ''};
 				})
 			);
 		}

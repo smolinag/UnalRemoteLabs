@@ -128,7 +128,7 @@ type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   description: String
   updatedBy: String
   createdBy: String!
-  labpracticeID: ID!
+  labpracticeID: ID
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
@@ -1010,7 +1010,7 @@ input CreateLabPracticeSessionInput {
   description: String
   updatedBy: String
   createdBy: String!
-  labpracticeID: ID!
+  labpracticeID: ID
   _version: Int
 }
 

@@ -10,5 +10,5 @@
         ]
     },
     "S3DeploymentBucket": "amplify-unalvirtuallabs-dev-95908-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/94bab1c3b964c5cb80241e83d6b1dcc547e3c990"
+    "S3DeploymentRootKey": "amplify-appsync-files/e96a75c489ec7d17fc4855c933a667dd377df026"
 }

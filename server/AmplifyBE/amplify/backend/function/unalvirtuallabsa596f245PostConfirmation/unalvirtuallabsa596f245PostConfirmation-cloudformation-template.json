@@ -208,10 +208,28 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:PutItem"
+                "dynamodb:*"
               ],
               "Resource": [
                 "arn:aws:dynamodb:us-east-2:119135969665:table/User-bd36mmgvjjcjzfrtzph2g44mqq-dev"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:*"
+              ],
+              "Resource": [
+                "arn:aws:dynamodb:us-east-2:119135969665:table/User-bd36mmgvjjcjzfrtzph2g44mqq-dev/*"
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "cognito-idp:*"
+              ],
+              "Resource": [
+                "arn:aws:cognito-idp:us-east-2:119135969665:userpool/us-east-2_zsUbsMO4I"
               ]
             }
           ]

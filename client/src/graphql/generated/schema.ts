@@ -105,7 +105,7 @@ export type CreateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	labpracticeID: Scalars['ID'];
+	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -461,7 +461,7 @@ export type LabPracticeSession = {
 	description?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	labpracticeID: Scalars['ID'];
+	labpracticeID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -2511,7 +2511,9 @@ export type GetLaboratoryQuery = {__typename?: 'Query'} & {
 	>;
 };
 
-export type ListLabPracticeCommandsQueryVariables = Exact<{[key: string]: never}>;
+export type ListLabPracticeCommandsQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
 
 export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 	listLabPracticeCommands?: Maybe<
@@ -2541,7 +2543,9 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 	>;
 };
 
-export type ListLabPracticeOutputsQueryVariables = Exact<{[key: string]: never}>;
+export type ListLabPracticeOutputsQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
 
 export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	listLabPracticeOutputs?: Maybe<
@@ -2598,6 +2602,8 @@ export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 													Laboratory?: Maybe<
 														{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>
 													>;
+													LabPracticeDevice?: Maybe<{__typename?: 'LabPracticeDevice'} & Pick<LabPracticeDevice, 'id'>>;
+
 												}
 										>;
 									}
@@ -3447,8 +3453,8 @@ export type GetLaboratoryQueryHookResult = ReturnType<typeof useGetLaboratoryQue
 export type GetLaboratoryLazyQueryHookResult = ReturnType<typeof useGetLaboratoryLazyQuery>;
 export type GetLaboratoryQueryResult = Apollo.QueryResult<GetLaboratoryQuery, GetLaboratoryQueryVariables>;
 export const ListLabPracticeCommandsDocument = gql`
-	query listLabPracticeCommands {
-		listLabPracticeCommands {
+	query listLabPracticeCommands($id: ID!) {
+		listLabPracticeCommands(filter: {labpracticeID: {eq: $id}}) {
 			items {
 				id
 				name
@@ -3479,11 +3485,12 @@ export const ListLabPracticeCommandsDocument = gql`
  * @example
  * const { data, loading, error } = useListLabPracticeCommandsQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
 export function useListLabPracticeCommandsQuery(
-	baseOptions?: Apollo.QueryHookOptions<ListLabPracticeCommandsQuery, ListLabPracticeCommandsQueryVariables>
+	baseOptions: Apollo.QueryHookOptions<ListLabPracticeCommandsQuery, ListLabPracticeCommandsQueryVariables>
 ) {
 	const options = {...defaultOptions, ...baseOptions};
 	return Apollo.useQuery<ListLabPracticeCommandsQuery, ListLabPracticeCommandsQueryVariables>(
@@ -3507,8 +3514,8 @@ export type ListLabPracticeCommandsQueryResult = Apollo.QueryResult<
 	ListLabPracticeCommandsQueryVariables
 >;
 export const ListLabPracticeOutputsDocument = gql`
-	query listLabPracticeOutputs {
-		listLabPracticeOutputs {
+	query listLabPracticeOutputs($id: ID!) {
+		listLabPracticeOutputs(filter: {labpracticeID: {eq: $id}}) {
 			items {
 				id
 				name
@@ -3529,11 +3536,12 @@ export const ListLabPracticeOutputsDocument = gql`
  * @example
  * const { data, loading, error } = useListLabPracticeOutputsQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
 export function useListLabPracticeOutputsQuery(
-	baseOptions?: Apollo.QueryHookOptions<ListLabPracticeOutputsQuery, ListLabPracticeOutputsQueryVariables>
+	baseOptions: Apollo.QueryHookOptions<ListLabPracticeOutputsQuery, ListLabPracticeOutputsQueryVariables>
 ) {
 	const options = {...defaultOptions, ...baseOptions};
 	return Apollo.useQuery<ListLabPracticeOutputsQuery, ListLabPracticeOutputsQueryVariables>(
@@ -3668,6 +3676,9 @@ export const ListUserLabPracticeSessionsDocument = gql`
 							id
 							name
 							description
+						}
+						LabPracticeDevice {
+							id
 						}
 					}
 				}

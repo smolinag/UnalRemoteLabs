@@ -11,7 +11,8 @@ export interface LabPracticeInfo {
 	practiceInfoDescription: string;
 	practiceInfoDuration: number;
    labPracticeSession?: LabPracticeSession;
-   laboratory: Laboratory
+   labPracticeDeviceId?: string;
+   laboratory: Laboratory;
 }
 
 export interface LabPracticeSession {

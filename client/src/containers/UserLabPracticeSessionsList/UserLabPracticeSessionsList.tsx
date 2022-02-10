@@ -46,7 +46,8 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 							description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
 								? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
 								: ''
-						}
+						},
+						labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDevice?.id
 					}
 				}
 			}));

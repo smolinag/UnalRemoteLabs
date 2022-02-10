@@ -7,7 +7,7 @@ export interface Laboratory {
 }
 
 export interface Organization {
-   id: string,
+   id: string ,
    name: string
 }
 

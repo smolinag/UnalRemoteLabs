@@ -2603,6 +2603,7 @@ export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 														{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>
 													>;
 													LabPracticeDevice?: Maybe<{__typename?: 'LabPracticeDevice'} & Pick<LabPracticeDevice, 'id'>>;
+
 												}
 										>;
 									}

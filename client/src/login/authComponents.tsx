@@ -48,20 +48,6 @@ const authComponents = {
 				</View>
 			);
 		}
-	},
-
-	SignUp: {
-		Footer(): JSX.Element {
-			const {toResetPassword} = useAuthenticator();
-
-			return (
-				<View textAlign="center">
-					<Button fontWeight="normal" onClick={toResetPassword} size="small" variation="link">
-						Olvidé mi contraseña
-					</Button>
-				</View>
-			);
-		}
 	}
 };
 export default authComponents;

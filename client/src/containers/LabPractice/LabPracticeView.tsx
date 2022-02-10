@@ -8,10 +8,10 @@ import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
 	useListLabPracticeOutputsQuery,
-	useCreateLabPracticeSessionCommandMutation,	
-	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,	
+	useCreateLabPracticeSessionCommandMutation,
+	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
-	useOnUpdateLabOutputListenSubscription,
+	useOnLabOutputListenSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -85,7 +85,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 			setLabCommands(commands);
 		}
 	}, [labCommandsData]);
-
 
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;

@@ -42,15 +42,15 @@ const LIST_OUTPUTS = gql`
   }
 `;
 
-const CREATE_SESSIONOUTPUT = gql`
-  mutation createLabPracticeSessionOutput($labpracticesessionID: ID!, $labpracticeoutputID: ID!, $value: String!, $captureDate: AWSDateTime!) {
+
+const LAB_OUTPUT_LISTEN = gql`
+  mutation labOutputListen($labPracticeOutputID: ID!, $value: String!, $rpiID:ID!, $captureDate: AWSDateTime!) {
     labOutputListen(
-      input: { labpracticesessionID: $labpracticesessionID, labpracticeoutputID: $labpracticeoutputID, value: $value, captureDate: $captureDate }
+      input: { labPracticeOutputID: $labPracticeOutputID,  value: $value, rpiID:$rpiID, captureDate: $captureDate }
     ) {
-      id
+      labPracticeOutputID
       value
-      labpracticeoutputID
-      labpracticesessionID
+      rpiID
       captureDate  
     }
   }
@@ -133,19 +133,20 @@ async function updateLabPracticeSessionCommand(uuid, status, executionDate) {
   }
 }
 
-async function createLabPracticeSessionOutput(sessionId, outputId, value, captureDate) {
+
+async function labOutputListen(rpiId, outputId, value, captureDate) {
   //Update labPracticeSessionOutput
   try {
     const mutationAns = await client.mutate({
-      mutation: CREATE_SESSIONOUTPUT,
+      mutation: LAB_OUTPUT_LISTEN,
       variables: {
-        labpracticesessionID: sessionId,
-        labpracticeoutputID: outputId,
+        labPracticeOutputID: outputId,
         value: value,
+        rpiID:rpiId,
         captureDate: captureDate,
       },
     });
-    console.log(mutationAns.data.createLabPracticeSessionOutput);
+    console.log(mutationAns.data.labOutputListen);
   } catch (error) {
     console.log(error);
   }
@@ -159,7 +160,7 @@ exports.handler = async (event) => {
         let item = event.data[i];
         console.log(item);
         let outputId = await listLabPracticeOutputs({ name: { eq: item.name } });
-        await createLabPracticeSessionOutput(event.sessionId, outputId, item.value, event.captureDate);
+        await labOutputListen(event.rpiId, outputId, item.value, event.captureDate);
       }
       break;
     case "command":
@@ -198,7 +199,7 @@ exports.handler = async (event) => {
 //     case "output":
 //       event.data.forEach(async (item) => {
 //         let outputId = await listLabPracticeOutputs({ name: { eq: item.name } });
-//         createLabPracticeSessionOutput(event.sessionId, outputId, item.value, event.captureDate);
+//         labOutputListen(event.sessionId, outputId, item.value, event.captureDate);
 //       });
 //       break;
 //     case "command":

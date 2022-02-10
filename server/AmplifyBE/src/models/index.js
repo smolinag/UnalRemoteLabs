@@ -4,25 +4,25 @@ import { schema } from './schema';
 
 
 
-const { UserLabPracticeSession, User, RoleUser, Role, PrivilegeRole, Privilege, UserLabSemester, LabSemester, Laboratory, Organization, LabPracticeSession, LabPracticeOutput, LabPracticeSessionCommand, LabPracticeCommand, LabPracticeParameter, LabPracticeDevice, LabPractice, LabOutputOut } = initSchema(schema);
+const { LabPracticeSessionCommand, LabPracticeSession, LabPractice, Laboratory, LabSemester, UserLabSemester, User, UserLabPracticeSession, Role, PrivilegeRole, Privilege, RoleUser, Organization, LabPracticeCommand, LabPracticeParameter, LabPracticeDevice, LabPracticeOutput, LabOutputOut } = initSchema(schema);
 
 export {
-  UserLabPracticeSession,
+  LabPracticeSessionCommand,
+  LabPracticeSession,
+  LabPractice,
+  Laboratory,
+  LabSemester,
+  UserLabSemester,
   User,
-  RoleUser,
+  UserLabPracticeSession,
   Role,
   PrivilegeRole,
   Privilege,
-  UserLabSemester,
-  LabSemester,
-  Laboratory,
+  RoleUser,
   Organization,
-  LabPracticeSession,
-  LabPracticeOutput,
-  LabPracticeSessionCommand,
   LabPracticeCommand,
   LabPracticeParameter,
   LabPracticeDevice,
-  LabPractice,
+  LabPracticeOutput,
   LabOutputOut
 };

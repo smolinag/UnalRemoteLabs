@@ -9,21 +9,33 @@
       "UnauthRoleName": "amplify-unalvirtuallabs-dev-95908-unauthRole",
       "StackName": "amplify-unalvirtuallabs-dev-95908",
       "StackId": "arn:aws:cloudformation:us-east-2:119135969665:stack/amplify-unalvirtuallabs-dev-95908/4a0986f0-31b6-11ec-90ad-0ada6e370bfe",
-      "AmplifyAppId": "d2p6avitml4xyd"
+      "AmplifyAppId": "d2p6avitml4xyd",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-unalvirtuallabs-dev-95908-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     },
     "categories": {
       "function": {
         "iotpub": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-95908-deployment",
-          "s3Key": "amplify-builds/iotpub-7465346a506162356937-build.zip"
+          "s3Key": "amplify-builds/iotpub-375442697577314a7439-build.zip"
         },
         "laboutputlogger": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-95908-deployment",
-          "s3Key": "amplify-builds/laboutputlogger-666131544c6b53466e30-build.zip"
+          "s3Key": "amplify-builds/laboutputlogger-5161352f3678716f4a37-build.zip"
+        },
+        "unalvirtuallabsa596f245PreSignup": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-dev-95908-deployment",
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PreSignup-4d5a7975335a42354f56-build.zip"
+        },
+        "unalvirtuallabsa596f245PostConfirmation": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-dev-95908-deployment",
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-6845503439696f783643-build.zip"
         }
       },
       "auth": {
-        "unalvirtuallabsa596f245": {}
+        "unalvirtuallabsa596f245": {
+          "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com"
+        },
+        "userPoolGroups": {}
       }
     }
   }

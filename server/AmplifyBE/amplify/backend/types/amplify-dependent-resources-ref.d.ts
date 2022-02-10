@@ -11,6 +11,18 @@ export type AmplifyDependentResourcesAttributes = {
             "Arn": "string",
             "Region": "string",
             "LambdaExecutionRole": "string"
+        },
+        "unalvirtuallabsa596f245PreSignup": {
+            "Name": "string",
+            "Arn": "string",
+            "LambdaExecutionRole": "string",
+            "Region": "string"
+        },
+        "unalvirtuallabsa596f245PostConfirmation": {
+            "Name": "string",
+            "Arn": "string",
+            "LambdaExecutionRole": "string",
+            "Region": "string"
         }
     },
     "api": {
@@ -30,7 +42,14 @@ export type AmplifyDependentResourcesAttributes = {
             "UserPoolName": "string",
             "AppClientIDWeb": "string",
             "AppClientID": "string",
-            "CreatedSNSRole": "string"
+            "CreatedSNSRole": "string",
+            "GoogleWebClient": "string"
+        },
+        "userPoolGroups": {
+            "AdminsGroupRole": "string",
+            "ProfessorsGroupRole": "string",
+            "MonitorsGroupRole": "string",
+            "StudentsGroupRole": "string"
         }
     }
 }

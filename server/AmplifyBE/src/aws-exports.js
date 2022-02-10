@@ -12,7 +12,7 @@ const awsmobile = {
     "aws_user_pools_id": "us-east-2_zsUbsMO4I",
     "aws_user_pools_web_client_id": "456sd4us2915jjlpfest04v9jl",
     "oauth": {
-        "domain": "unalvirtuallabsfab5cbf4-fab5cbf4-dev.auth.us-east-2.amazoncognito.com",
+        "domain": "unalvirtuallabsd9e2ffd9-d9e2ffd9-dev.auth.us-east-2.amazoncognito.com",
         "scope": [
             "phone",
             "email",
@@ -24,7 +24,7 @@ const awsmobile = {
         "redirectSignOut": "http://localhost:3000/",
         "responseType": "code"
     },
-    "federationTarget": "COGNITO_USER_POOLS",
+    "federationTarget": "COGNITO_USER_AND_IDENTITY_POOLS",
     "aws_cognito_username_attributes": [
         "EMAIL"
     ],

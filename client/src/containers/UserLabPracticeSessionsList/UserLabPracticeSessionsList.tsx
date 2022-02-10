@@ -17,45 +17,40 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 	React.useEffect(() => {
 		const receivedList = data?.listUserLabPracticeSessions?.items;
 		if (receivedList && receivedList.length > 0) {
-			const list: UserLabPracticeSession[] = [];
-			receivedList.forEach((session) => {
-				if (session) {
-					list.push({
-						id: session?.id,
-						sessionStartDate: session?.sessionStartDate ? session.sessionStartDate : '',
-						sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
-						labPracticeSession: {
-							id: session?.LabPracticeSession?.id ? session?.LabPracticeSession?.id : '',
-							startDate: session?.LabPracticeSession?.startDate ? session?.LabPracticeSession?.startDate : '',
-							endDate: session?.LabPracticeSession?.endDate ? session?.LabPracticeSession?.endDate : '',
-							labPracticeInfo: {
-								id: session?.LabPracticeSession?.LabPractice?.id ? session?.LabPracticeSession?.LabPractice?.id : '',
-								practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
-									? session?.LabPracticeSession?.LabPractice?.name
-									: '',
-								practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
-									? session?.LabPracticeSession?.LabPractice?.description
-									: '',
-								practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
-									? session?.LabPracticeSession?.LabPractice?.duration
-									: 0,
-								laboratory: {
-									id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
-										? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
-										: '',
-									name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
-										? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
-										: '',
-									description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
-										? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
-										: ''
-								},
-								labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDevice?.id
-							}
-						}
-					});
+			const list: UserLabPracticeSession[] = receivedList.map((session) => ({
+				id: session ? session.id : '',
+				sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
+				sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
+				labPracticeSession: {
+					id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
+					startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
+					endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
+					labPracticeInfo: {
+						id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
+						practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
+							? session?.LabPracticeSession?.LabPractice?.name
+							: '',
+						practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
+							? session?.LabPracticeSession?.LabPractice?.description
+							: '',
+						practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
+							? session?.LabPracticeSession?.LabPractice?.duration
+							: 0,
+						laboratory: {
+							id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+								? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+								: '',
+							name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+								? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+								: '',
+							description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+								? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+								: ''
+						},
+						labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDevice?.id
+					}
 				}
-			});
+			}));
 			setUserLabPracticeSessionsList(list);
 		}
 		setLoading(retrievingInfo);

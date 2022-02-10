@@ -27,7 +27,7 @@ const LaboratoriesList: React.FC<unknown> = () => {
 		if (data && data.listLaboratorys?.items) {
 			const labsList: Laboratory[]  = []
 			data?.listLaboratorys?.items.forEach((obj) => {
-				if (obj && !obj?._deleted) {
+				if (obj && !obj._deleted) {
 					labsList.push({
 						id: obj.id,
 						name: obj.name,

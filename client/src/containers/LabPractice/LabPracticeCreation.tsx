@@ -90,14 +90,11 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	React.useEffect(() => {
 		const labs = laboratoriesList?.listLaboratorys?.items;
 		if (labs) {
-			const labsList: LaboratoryInfo[] = [];
-
-			labs.forEach((obj) => {
-				if (obj) {
-					labsList.push({id: obj.id, name: obj.name});
-				}
-			});
-			setLaboratories(labsList);
+			setLaboratories(
+				labs.map((obj) => {
+					return {id: obj !== null ? obj.id : '', name: obj !== null ? obj.name : ''};
+				})
+			);
 		}
 	}, [laboratoriesList]);
 

@@ -11,7 +11,7 @@ import {
 	useCreateLabPracticeSessionCommandMutation,
 	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
-	useOnLabOutputListenSubscription,
+	useOnUpdateLabOutputListenSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';

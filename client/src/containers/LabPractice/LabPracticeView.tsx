@@ -11,7 +11,7 @@ import {
 	useCreateLabPracticeSessionCommandMutation,
 	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
-	useOnUpdateLabOutputListenSubscription,
+	useOnLabOutputListenSubscription,
 	Maybe
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -63,7 +63,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
 	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({variables: {id: SESSION_ID}});
-	const {data: updatedSessionOutput} = useOnUpdateLabOutputListenSubscription({variables: {id: deviceId}});
+	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {

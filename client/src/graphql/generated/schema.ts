@@ -2644,12 +2644,14 @@ export type OnCreateLabPracticeSessionCommandBySessionIdSubscription = {__typena
 	>;
 };
 
-export type OnUpdateLabOutputListenSubscriptionVariables = Exact<{
+export type OnLabOutputListenSubscriptionVariables = Exact<{
 	id: Scalars['ID'];
 }>;
 
-export type OnUpdateLabOutputListenSubscription = {__typename?: 'Subscription'} & {
-	onLabOutputListen?: Maybe<{__typename?: 'LabOutputOut'} & Pick<LabOutputOut, 'value' | 'labPracticeOutputID'>>;
+export type OnLabOutputListenSubscription = {__typename?: 'Subscription'} & {
+	onLabOutputListen?: Maybe<
+		{__typename?: 'LabOutputOut'} & Pick<LabOutputOut, 'labPracticeOutputID' | 'value' | 'rpiID' | 'captureDate'>
+	>;
 };
 
 export const CreateLabPracticeDocument = gql`
@@ -3822,42 +3824,41 @@ export type OnCreateLabPracticeSessionCommandBySessionIdSubscriptionHookResult =
 >;
 export type OnCreateLabPracticeSessionCommandBySessionIdSubscriptionResult =
 	Apollo.SubscriptionResult<OnCreateLabPracticeSessionCommandBySessionIdSubscription>;
-export const OnUpdateLabOutputListenDocument = gql`
-	subscription onUpdateLabOutputListen($id: ID!) {
+export const OnLabOutputListenDocument = gql`
+	subscription onLabOutputListen($id: ID!) {
 		onLabOutputListen(rpiID: $id) {
-			value
 			labPracticeOutputID
+			value
+			rpiID
+			captureDate
 		}
 	}
 `;
 
 /**
- * __useOnUpdateLabOutputListenSubscription__
+ * __useOnLabOutputListenSubscription__
  *
- * To run a query within a React component, call `useOnUpdateLabOutputListenSubscription` and pass it any options that fit your needs.
- * When your component renders, `useOnUpdateLabOutputListenSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useOnLabOutputListenSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnLabOutputListenSubscription` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useOnUpdateLabOutputListenSubscription({
+ * const { data, loading, error } = useOnLabOutputListenSubscription({
  *   variables: {
  *      id: // value for 'id'
  *   },
  * });
  */
-export function useOnUpdateLabOutputListenSubscription(
-	baseOptions: Apollo.SubscriptionHookOptions<
-		OnUpdateLabOutputListenSubscription,
-		OnUpdateLabOutputListenSubscriptionVariables
-	>
+export function useOnLabOutputListenSubscription(
+	baseOptions: Apollo.SubscriptionHookOptions<OnLabOutputListenSubscription, OnLabOutputListenSubscriptionVariables>
 ) {
 	const options = {...defaultOptions, ...baseOptions};
-	return Apollo.useSubscription<OnUpdateLabOutputListenSubscription, OnUpdateLabOutputListenSubscriptionVariables>(
-		OnUpdateLabOutputListenDocument,
+	return Apollo.useSubscription<OnLabOutputListenSubscription, OnLabOutputListenSubscriptionVariables>(
+		OnLabOutputListenDocument,
 		options
 	);
 }
-export type OnUpdateLabOutputListenSubscriptionHookResult = ReturnType<typeof useOnUpdateLabOutputListenSubscription>;
-export type OnUpdateLabOutputListenSubscriptionResult = Apollo.SubscriptionResult<OnUpdateLabOutputListenSubscription>;
+export type OnLabOutputListenSubscriptionHookResult = ReturnType<typeof useOnLabOutputListenSubscription>;
+export type OnLabOutputListenSubscriptionResult = Apollo.SubscriptionResult<OnLabOutputListenSubscription>;

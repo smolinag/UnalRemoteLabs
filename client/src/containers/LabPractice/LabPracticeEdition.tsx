@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
+// import { useLocation } from 'react-router-dom';
 
 import {
 	LabPractice,
@@ -14,6 +15,12 @@ import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
 	useListLaboratoriesQuery,
+	useGetLabPracticeQuery,
+	useListLabPracticeCommandsQuery,
+	useListLabPracticeOutputsQuery,
+	useDeleteLabPracticeCommandMutation,
+	useDeleteLabPracticeParameterMutation,
+	useDeleteLabPracticeOutputMutation,
 	useCreateLabPracticeMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
@@ -31,14 +38,21 @@ import {
 	LaboratoryInfo
 } from './types';
 
-// const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+const DEVICE_ID = '850bbd31-eab1-4eb6-aa16-51886d706fb9';
+const COMMAND_NAME_PREFIX = 'cmd';
+
+export interface LocationState {
+	labPracticeId: string;
+	deviceId: string;
+}
 
 const initialPracticeValue: LabPracticeInfo = {
 	laboratoryId: '',
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
-	version: '0',
+	version: '',
 	command: {
 		commandName: '',
 		commandDescription: '',
@@ -63,11 +77,19 @@ const initialPracticeValue: LabPracticeInfo = {
 
 let rowIndex = -1;
 
-const LabPracticeCreation: React.FC<unknown> = () => {
+const LabPracticeEdition: React.FC<unknown> = () => {
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
 	const [parametersList, setParametersList] = React.useState<LabPracticeParameterInfo[]>([]);
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
+
+	const [commandToRemove, setCommandToRemove] = React.useState<LabPracticeCommandInfo>(initialPracticeValue.command);
+	const [parameterToRemove, setParameterToRemove] = React.useState<LabPracticeParameterInfo>(
+		initialPracticeValue.parameter
+	);
+	const [outputToRemove, setOutputToRemove] = React.useState<OutputInfo>(initialPracticeValue.output);
+	const [loadingRemove, setLoadingRemove] = React.useState<boolean>(false);
+
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
 	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
@@ -81,12 +103,44 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
+	// const location = useLocation();
+	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	// const deviceId = (location.state as LocationState)?.deviceId;
+
 	const {data: laboratoriesList} = useListLaboratoriesQuery();
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
+	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
+	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
+		variables: {id: DEVICE_ID}
+	});
+
+	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
+	const [deleteLabPracticeParameter] = useDeleteLabPracticeParameterMutation({});
+	const [deleteLabPracticeOutput] = useDeleteLabPracticeOutputMutation({});
+
 	const [createLabPractice] = useCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+
+	React.useEffect(() => {
+		if (practiceInfoDb?.getLabPractice) {
+			const practice: LabPracticeInfo = {
+				...initialPracticeValue,
+				laboratoryId: practiceInfoDb?.getLabPractice.Laboratory ? practiceInfoDb?.getLabPractice.Laboratory?.id : '',
+				practiceInfoName: practiceInfoDb?.getLabPractice.name,
+				practiceInfoDescription: practiceInfoDb?.getLabPractice.description
+					? practiceInfoDb?.getLabPractice.description
+					: '',
+				practiceInfoDuration: practiceInfoDb?.getLabPractice.duration
+					? practiceInfoDb?.getLabPractice.duration.toString()
+					: '0',
+				version: practiceInfo.version
+			};
+			setPracticeInfo(practice);
+		}
+	}, [practiceInfoDb]);
 
 	React.useEffect(() => {
 		const labs = laboratoriesList?.listLaboratorys?.items;
@@ -98,6 +152,71 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 			);
 		}
 	}, [laboratoriesList]);
+
+	React.useEffect(() => {
+		if (labCommandsDataDb?.listLabPracticeCommands?.items != null) {
+			const commands: LabPracticeCommandInfo[] = labCommandsDataDb?.listLabPracticeCommands?.items
+				.filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
+				.map((command) => {
+					return {
+						id: command?.id as string,
+						commandName: command?.name as string,
+						commandDescription: command?.description ? command?.description : '',
+						parameters: command?.LabPracticeParameters?.items?.map((parameter) => ({
+							label: (parameter?.labelName ?? parameter?.name) as string,
+							id: parameter?.id as string,
+							value: Number((parameter?.defaultValue as string) ?? 0)
+						})),
+						label: (command?.labelName ?? command?.name) as string,
+						version: command?._version
+					};
+				});
+
+			const parameters: LabPracticeParameterInfo[] = [];
+
+			labCommandsDataDb?.listLabPracticeCommands?.items
+				.filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
+				.map((command) => {
+					if (command?.LabPracticeParameters) {
+						command?.LabPracticeParameters.items.forEach((parameter) => {
+							if (parameter) {
+								parameters.push({
+									commandId: command?.id,
+									selectedCommandName: command?.name,
+									id: parameter?.id,
+									parameterName: parameter?.name ? parameter?.name : '',
+									parameterDescription: parameter?.description ? parameter?.description : '',
+									parameterDefaultValue: parameter?.defaultValue ? parameter?.defaultValue : '',
+									parameterMaxValue: parameter?.maxValue ? parameter?.maxValue.toString() : '',
+									parameterMinValue: parameter?.minValue ? parameter?.minValue.toString() : '',
+									parameterRegex: parameter?.regex ? parameter?.regex : ''
+								});
+							}
+						});
+					}
+				});
+
+			setCommandsList(commands);
+			setParametersList(parameters);
+		}
+	}, [labCommandsDataDb]);
+
+	React.useEffect(() => {
+		if (practiceOutputsDb?.listLabPracticeOutputs?.items != null) {
+			const outputs: OutputInfo[] = practiceOutputsDb?.listLabPracticeOutputs?.items.map((output) => {
+				return {
+					id: output?.id,
+					outputName: output?.name ? output?.name : '',
+					outputDescription: output?.description ? output?.description : '',
+					outputUnit: output?.units ? output?.units : '',
+					outputType: output?.outputType ? output?.outputType : '',
+					version: output?._version
+				};
+			});
+
+			setOutputsList(outputs);
+		}
+	}, [practiceOutputsDb]);
 
 	const practiceChange = (value: string, id: string) => {
 		const practice: LabPracticeInfo = {
@@ -198,8 +317,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 			setCommandsList((previousState) => {
 				const newCommand: LabPracticeCommandInfo = {
 					commandName: command.commandName,
-					commandDescription: command.commandDescription,
-					version: 0
+					commandDescription: command.commandDescription
 				};
 
 				return previousState.concat(newCommand);
@@ -215,23 +333,20 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const handleCommandAction = (index: number, action: Action) => {
 		switch (action) {
 			case Action.Delete:
-				setCommandsList((previousState) => {
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
-				});
+				setDisplayModal(true);
+				setModalType(Section.CommandModalRemove);
+				setModalTitle(`Borrar commando: ${commandsList[index].commandName}`);
+				setCommandToRemove(commandsList[index]);
+				rowIndex = index;
 				break;
 			case Action.Edit:
 				setDisplayModal(true);
-				setModalType(Section.CommandInfo);
+				setModalType(Section.ModalCommandInfo);
 				setModalTitle(`Commando: ${commandsList[index].commandName}`);
 				setCommandToEdit(commandsList[index]);
 				rowIndex = index;
 				break;
 		}
-	};
-
-	const handleDisplayModal = (display: boolean) => {
-		setDisplayModal(display);
-		setCommandToEdit(initialPracticeValue.command);
 	};
 
 	const addParameter = (parameter: LabPracticeParameterInfo): void => {
@@ -266,9 +381,11 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const handleParameterAction = (index: number, action: Action) => {
 		switch (action) {
 			case Action.Delete:
-				setParametersList((previousState) => {
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, commandsList.length + 1));
-				});
+				setDisplayModal(true);
+				setModalType(Section.ParameterModalRemove);
+				setModalTitle(`Borrar parametro: ${parametersList[index].parameterName}`);
+				setParameterToRemove(parametersList[index]);
+				rowIndex = index;
 				break;
 			case Action.Edit:
 				setModalType(Section.ParameterInfo);
@@ -304,9 +421,11 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const handleOutputAction = (index: number, action: Action) => {
 		switch (action) {
 			case Action.Delete:
-				setOutputsList((previousState) => {
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, outputsList.length + 1));
-				});
+				setDisplayModal(true);
+				setModalType(Section.OutputModalRemove);
+				setModalTitle(`Borrar parámetro de salida: ${outputsList[index].outputName}`);
+				setOutputToRemove(outputsList[index]);
+				rowIndex = index;
 				break;
 			case Action.Edit:
 				setModalType(Section.OutputInfo);
@@ -434,6 +553,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 			const notParameterDefaultValue =
 				errors.filter((error) => error.identifier === Params.ParameterDefaultValue).length === 1;
 			const notOutputName = errors.filter((error) => error.identifier === Params.OutputName).length === 1;
+			const notModalCommandName = errors.filter((error) => error.identifier === Params.ModalCommandName).length >= 1;
 
 			if (section === Section.PracticeInfo) {
 				if (!notAddedLab && practiceInfo.laboratoryId.length === 0) {
@@ -470,6 +590,16 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					});
 				} else if (notCommandName && practiceInfo.command.commandName.length > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.CommandName);
+					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
+				}
+			}
+			if (section === Section.ModalCommandInfo) {
+				if (!notModalCommandName && commandToEdit.commandName.length === 0) {
+					previousState.push({
+						identifier: Params.ModalCommandName
+					});
+				} else if (notModalCommandName && commandToEdit.commandName.length > 0) {
+					const index = errors.findIndex((error) => error.identifier === Params.ModalCommandName);
 					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
 			}
@@ -515,6 +645,11 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 
 			return [...previousState];
 		});
+	};
+
+	const handleDisplayModal = (display: boolean) => {
+		setDisplayModal(display);
+		setCommandToEdit(initialPracticeValue.command);
 	};
 
 	const editInformation = (
@@ -573,15 +708,17 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	};
 
 	const handleSaveEdit = () => {
-		if (modalType === Section.CommandInfo) {
+		if (modalType === Section.ModalCommandInfo) {
+			checkErrorMessage(Section.ModalCommandInfo);
+
 			if (commandToEdit.commandName !== '') {
 				setCommandsList((previousState) => {
 					const command = previousState[rowIndex];
 
 					previousState.map((obj) => {
-						if (obj.commandName === command.commandName) {
-							(obj.commandName = commandToEdit.commandName),
-								(obj.commandDescription = commandToEdit.commandDescription);
+						if (obj.id === command.id) {
+							obj.commandName = commandToEdit.commandName;
+							obj.commandDescription = commandToEdit.commandDescription;
 						}
 					});
 					return previousState;
@@ -636,12 +773,117 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				setDisplayModal(false);
 			}
 		}
+
+		if (modalType === Section.CommandModalRemove) {
+			if (commandToRemove.id) {
+				setLoadingRemove(true);
+				deleteLabPracticeCommand({
+					variables: {
+						input: {
+							id: commandToRemove?.id,
+							_version: commandToRemove.version
+						}
+					}
+				})
+					.then((response) => {
+						if (response.data?.deleteLabPracticeCommand?._deleted) {
+							setCommandsList((previousState) => {
+								return previousState
+									.slice(0, rowIndex)
+									.concat(previousState.slice(rowIndex + 1, commandsList.length + 1));
+							});
+							setDisplayModal(false);
+							showSuccessBanner(`El Comando ${commandToRemove.commandName} fue eliminado exitosamente`);
+							setLoadingRemove(false);
+						}
+					})
+					.catch((error) => {
+						setDisplayModal(false);
+						showErrorBanner(`No se pudo eliminar el comando ${commandToRemove.commandName}`);
+						setLoadingRemove(false);
+					});
+			} else {
+				setCommandsList((previousState) => {
+					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, commandsList.length + 1));
+				});
+			}
+		}
+
+		if (modalType === Section.ParameterModalRemove) {
+			if (parameterToRemove.id) {
+				setLoadingRemove(true);
+				deleteLabPracticeParameter({
+					variables: {
+						input: {
+							id: parameterToRemove?.id,
+							_version: parameterToRemove.version
+						}
+					}
+				})
+					.then((response) => {
+						if (response.data?.deleteLabPracticeParameter?._deleted) {
+							setParametersList((previousState) => {
+								return previousState
+									.slice(0, rowIndex)
+									.concat(previousState.slice(rowIndex + 1, parametersList.length + 1));
+							});
+							setDisplayModal(false);
+							showSuccessBanner(`El parámetro ${parameterToRemove.parameterName} fue eliminado exitosamente`);
+							setLoadingRemove(false);
+						}
+					})
+					.catch((error) => {
+						setDisplayModal(false);
+						showErrorBanner(`No se pudo eliminar el parámetro ${parameterToRemove.parameterName}`);
+						setLoadingRemove(false);
+					});
+			} else {
+				setParametersList((previousState) => {
+					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, parametersList.length + 1));
+				});
+			}
+		}
+
+		if (modalType === Section.OutputModalRemove) {
+			if (outputToRemove.id) {
+				setLoadingRemove(true);
+				deleteLabPracticeOutput({
+					variables: {
+						input: {
+							id: outputToRemove?.id,
+							_version: outputToRemove.version
+						}
+					}
+				})
+					.then((response) => {
+						if (response.data?.deleteLabPracticeOutput?._deleted) {
+							setOutputsList((previousState) => {
+								return previousState
+									.slice(0, rowIndex)
+									.concat(previousState.slice(rowIndex + 1, outputsList.length + 1));
+							});
+							setDisplayModal(false);
+							showSuccessBanner(`El parámetro de salida ${outputToRemove.outputName} fue eliminado exitosamente`);
+							setLoadingRemove(false);
+						}
+					})
+					.catch((error) => {
+						setDisplayModal(false);
+						showErrorBanner(`No se pudo eliminar el parámetro de salida ${outputToRemove.outputName}`);
+						setLoadingRemove(false);
+					});
+			} else {
+				setOutputsList((previousState) => {
+					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, outputsList.length + 1));
+				});
+			}
+		}
 	};
 
 	const modalSection = () => {
 		switch (modalType) {
-			case Section.CommandInfo:
-				return <LabPracticeCommand command={commandToEdit} onValueEdit={editInformation} errors={errors} />;
+			case Section.ModalCommandInfo:
+				return <LabPracticeCommand command={commandToEdit} onValueEdit={editInformation} errors={errors} modal />;
 			case Section.ParameterInfo:
 				return (
 					<LabPracticeParameters
@@ -653,6 +895,12 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				);
 			case Section.OutputInfo:
 				return <LabPracticeOutput output={outputToEdit} onValueEdit={editInformation} errors={errors} />;
+			case Section.CommandModalRemove:
+				return <div>{`Está seguro que desea borrar el comando: ${commandToRemove.commandName}`}</div>;
+			case Section.ParameterModalRemove:
+				return <div>{`Está seguro que desea borrar el parámetro: ${parameterToRemove.parameterName}`}</div>;
+			case Section.OutputModalRemove:
+				return <div>{`Está seguro que desea borrar el parámetro de salida : ${outputToRemove.outputName}`}</div>;
 			default:
 				break;
 		}
@@ -665,7 +913,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					display={displayModal}
 					onDisplay={handleDisplayModal}
 					onSave={handleSaveEdit}
-					title={modalTitle}>
+					title={modalTitle}
+					loadingAccept={loadingRemove}>
 					{modalSection()}
 				</ModalComponent>
 			}
@@ -720,4 +969,4 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	);
 };
 
-export default LabPracticeCreation;
+export default LabPracticeEdition;

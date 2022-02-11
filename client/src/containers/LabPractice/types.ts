@@ -5,35 +5,43 @@ export interface LaboratoryInfo {
 
 export interface LabPracticeInfo {
 	laboratoryId: string;
+	id?: string;
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
+	version: string;
 	command: LabPracticeCommandInfo;
 	parameter: LabPracticeParameterInfo;
 	output: OutputInfo
 }
 
 export interface LabPracticeCommandInfo {
+	id?: string;
 	commandName: string;
 	commandDescription: string;
+	version?: number;
 }
 
 export interface LabPracticeParameterInfo {
+	commandId?: string;
 	selectedCommandName: string;
+	id?:string;
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
-	parameterUnit: string;
 	parameterMaxValue: string;
 	parameterMinValue: string;
 	parameterRegex: string;
+	version?: number;
 }
 
 export interface OutputInfo {
+	id?: string;
 	outputName: string;
 	outputDescription: string;
 	outputUnit: string;
 	outputType: string;
+	version?: number;
 }
 
 export enum Params {
@@ -46,7 +54,6 @@ export enum Params {
 	ParameterName = 'parameterName',
 	ParameterDescription = 'parameterDescription',
 	ParameterDefaultValue = 'parameterDefaultValue',
-	ParameterUnit = 'parameterUnit',
 	ParameterMaxValue = 'parameterMaxValue',
 	ParameterMinValue = 'parameterMinValue',
 	ParameterRegex = 'parameterRegex',
@@ -55,7 +62,8 @@ export enum Params {
 	OutputDescription = 'outputDescription',
 	OutputUnit = 'outputUnit',
 	AddCommand = 'addCommand',
-	Laboratory = 'laboratoryId'
+	Laboratory = 'laboratoryId',
+	ModalCommandName = 'modalCommandName'
 }
 
 export interface ErrorIdentifier {
@@ -65,6 +73,10 @@ export interface ErrorIdentifier {
 export enum Section {
 	PracticeInfo = 'PracticeInfo',
 	CommandInfo = 'CommandInfo',
+	ModalCommandInfo = 'ModalCommandInfo',
 	ParameterInfo = 'ParameterInfo',
 	OutputInfo = 'OutputInfo',
+	CommandModalRemove = 'commandModalRemove',
+	ParameterModalRemove = 'parameterModalRemove',
+	OutputModalRemove = 'outputModalRemove',
 }

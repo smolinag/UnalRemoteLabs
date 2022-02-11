@@ -1,5 +1,5 @@
 import React from 'react';
-import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import {OverlayTrigger} from 'react-bootstrap';
 import Tooltip from 'react-bootstrap/Tooltip';
 import {BsQuestionCircle} from 'react-icons/bs';
 
@@ -17,7 +17,6 @@ interface Props {
 }
 
 const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, onValueChange, error}) => {
-	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
 	let unitString = '';
 
 	const valueChange = (value: string): void => {
@@ -52,7 +51,7 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 					{unit && <span className={classes.input}>{unitString}</span>}
 
 					{tooltip ? (
-						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
+						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={<Tooltip>{tooltip}</Tooltip>}>
 							<BsQuestionCircle />
 						</OverlayTrigger>
 					) : (

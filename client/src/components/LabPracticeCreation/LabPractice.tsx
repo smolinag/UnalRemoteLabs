@@ -16,10 +16,21 @@ interface Props {
 const initialLaboratory: Option = {id: '', value: 'Laboratorio'};
 
 const LabPractice: React.FC<Props> = ({onValueChange, practice, laboratories, errors}) => {
-	const [laboratory, setCommand] = React.useState<Option>(initialLaboratory);
+	const [laboratory, setLaboratory] = React.useState<Option>(initialLaboratory);
+
+	React.useEffect(() => {
+		const lab = laboratories.filter((lab) => lab.id === practice.laboratoryId)[0];
+
+		if (lab) {
+			setLaboratory({
+				id: lab.id,
+				value: lab.name
+			});
+		}
+	}, [laboratories]);
 
 	const handleSelectCommand = (value: string, id: string) => {
-		setCommand({value, id});
+		setLaboratory({value, id});
 		onValueChange(id, Params.Laboratory);
 	};
 

@@ -3,6 +3,10 @@ query listLabPracticeOutputs($id: ID!) {
 		items {
 			id
 			name
+			description
+			units
+			outputType
+			_version
 		}
 	}
 }

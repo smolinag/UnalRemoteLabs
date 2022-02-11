@@ -108,17 +108,6 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 				/>
 
 				<Input
-					type="text"
-					placeholder="Unidad"
-					value={parameter.parameterUnit}
-					onValueChange={(value) =>
-						onValueChange
-							? onValueChange(value, Params.ParameterUnit)
-							: onValueEdit && onValueEdit(Params.ParameterUnit, value, undefined, parameter)
-					}
-				/>
-
-				<Input
 					type="number"
 					placeholder="Valor mínimo"
 					value={parameter.parameterMinValue}

@@ -3,14 +3,22 @@ query listLabPracticeCommands ($id: ID!) {
 		items {
 			id
 			name
+			description
 			labelName
 			labpracticeID
+			_version
+			_deleted
 			LabPracticeParameters {
 				items {
 					id
 					name
+					description
 					labelName
 					defaultValue
+					maxValue
+					minValue
+					regex
+					_version
 				}
 			}
 		}

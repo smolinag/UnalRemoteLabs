@@ -34,7 +34,7 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, onValueEdit, output,
 		<Row className="section">
 			<h3 className="title">Parámetros de salida de la práctica</h3>
 
-			<h5>Información de los comandos</h5>
+			<h5>Información de los parámetros de salida</h5>
 			<div className={classes.options}>
 				<Input
 					type="text"

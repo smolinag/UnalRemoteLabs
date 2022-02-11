@@ -12,20 +12,19 @@ import {
 	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription,
-	Maybe
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
-// const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
 
 interface OutputListDto {
-	id: Maybe<string> | undefined;
-	name: Maybe<string> | undefined;
-	value: Maybe<string> | undefined;
+	id: string;
+	name: string;
+	value: string;
 }
 
 enum CommandExecutionState {
@@ -53,16 +52,18 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const location = useLocation();
-	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const deviceId = (location.state as LocationState)?.deviceId;
 
-	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
+	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: deviceId}});
-	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
+	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
-	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({variables: {id: SESSION_ID}});
+	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({
+		variables: {id: SESSION_ID}
+	});
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
 
 	useEffect(() => {

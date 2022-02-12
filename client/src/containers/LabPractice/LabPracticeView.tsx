@@ -17,7 +17,7 @@ import {notificationBannerContext} from '../../state/NotificationBannerProvider'
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
-const COMMAND_NAME_PREFIX = 'cmd';
+// const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
 
@@ -69,7 +69,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
 			const commands: Command[] = labCommandsData.listLabPracticeCommands.items
-				.filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
+				// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
 				.map((command) => {
 					return {
 						name: command?.name as string,

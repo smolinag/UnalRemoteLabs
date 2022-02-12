@@ -2470,6 +2470,19 @@ export type UpdateLabPracticeMutation = {__typename?: 'Mutation'} & {
 	>;
 };
 
+export type UpdateLabPracticeCommandMutationVariables = Exact<{
+	input: UpdateLabPracticeCommandInput;
+}>;
+
+export type UpdateLabPracticeCommandMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeCommand?: Maybe<
+		{__typename?: 'LabPracticeCommand'} & Pick<
+			LabPracticeCommand,
+			'id' | 'name' | 'description' | 'labelName' | 'updatedAt' | 'updatedBy' | '_version'
+		>
+	>;
+};
+
 export type UpdateLaboratoryMutationVariables = Exact<{
 	input: UpdateLaboratoryInput;
 }>;
@@ -3448,6 +3461,56 @@ export type UpdateLabPracticeMutationResult = Apollo.MutationResult<UpdateLabPra
 export type UpdateLabPracticeMutationOptions = Apollo.BaseMutationOptions<
 	UpdateLabPracticeMutation,
 	UpdateLabPracticeMutationVariables
+>;
+export const UpdateLabPracticeCommandDocument = gql`
+	mutation updateLabPracticeCommand($input: UpdateLabPracticeCommandInput!) {
+		updateLabPracticeCommand(input: $input) {
+			id
+			name
+			description
+			labelName
+			updatedAt
+			updatedBy
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeCommandMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeCommandMutation,
+	UpdateLabPracticeCommandMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeCommandMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeCommandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeCommandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeCommandMutation, { data, loading, error }] = useUpdateLabPracticeCommandMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeCommandMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLabPracticeCommandMutation, UpdateLabPracticeCommandMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeCommandMutation, UpdateLabPracticeCommandMutationVariables>(
+		UpdateLabPracticeCommandDocument,
+		options
+	);
+}
+export type UpdateLabPracticeCommandMutationHookResult = ReturnType<typeof useUpdateLabPracticeCommandMutation>;
+export type UpdateLabPracticeCommandMutationResult = Apollo.MutationResult<UpdateLabPracticeCommandMutation>;
+export type UpdateLabPracticeCommandMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeCommandMutation,
+	UpdateLabPracticeCommandMutationVariables
 >;
 export const UpdateLaboratoryDocument = gql`
 	mutation updateLaboratory($input: UpdateLaboratoryInput!) {

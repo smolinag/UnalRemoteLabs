@@ -18,8 +18,13 @@ export interface LabPracticeInfo {
 export interface LabPracticeCommandInfo {
 	id?: string;
 	commandName: string;
+	label?: string;
 	commandDescription: string;
 	version?: number;
+	updatedBy?: string;
+	updatedAt?: string;
+	createdBy?: string;
+	createdAt?: string;
 }
 
 export interface LabPracticeParameterInfo {

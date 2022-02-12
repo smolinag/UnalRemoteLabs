@@ -22,6 +22,8 @@ import {
 	useDeleteLabPracticeParameterMutation,
 	useDeleteLabPracticeOutputMutation,
 	useUpdateLabPracticeMutation,
+	useUpdateLabPracticeCommandMutation,
+
 	// useCreateLabPracticeMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
@@ -120,6 +122,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [deleteLabPracticeOutput] = useDeleteLabPracticeOutputMutation({});
 
 	const [updateLabPractice] = useUpdateLabPracticeMutation({});
+	const [updateLabPracticeCommand] = useUpdateLabPracticeCommandMutation({});
 
 	// const [createLabPractice] = useCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
@@ -737,24 +740,79 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		}
 	};
 
-	const handleSaveEdit = () => {
+	const handleSaveEdit = async () => {
+
+		// Edición de comando
 		if (modalType === Section.ModalCommandInfo) {
 			checkErrorMessage(Section.ModalCommandInfo);
 
 			if (commandToEdit.commandName !== '') {
-				setCommandsList((previousState) => {
-					const command = previousState[rowIndex];
+				setLoadingButton(true);
 
-					previousState.map((obj) => {
-						if (obj.id === command.id) {
-							obj.commandName = commandToEdit.commandName;
-							obj.commandDescription = commandToEdit.commandDescription;
+				// Actualizar comando
+				if (commandToEdit.id) {
+					await updateLabPracticeCommand({
+						variables: {
+							input: {
+								id: commandToEdit.id,
+								name: commandToEdit.commandName,
+								description: commandToEdit.commandDescription,
+								labelName: commandToEdit.label,
+								updatedBy: '1',
+								_version: commandToEdit.version
+							}
 						}
+					})
+						.then((response) => {
+							if (response.data?.updateLabPracticeCommand?.id) {
+								setCommandsList((previousState) => {
+									const updatedCommand = previousState.filter(
+										(command) => command.id === response.data?.updateLabPracticeCommand?.id
+									)[0];
+
+									previousState.map((obj) => {
+										if (obj.id === updatedCommand.id) {
+											obj.commandName = updatedCommand.commandName;
+											obj.label = updatedCommand.label;
+											obj.commandDescription = updatedCommand.commandDescription;
+											obj.label = updatedCommand.label;
+											obj.updatedBy = updatedCommand.updatedBy;
+											obj.updatedAt = updatedCommand.updatedAt;
+										}
+									});
+									return previousState;
+								});
+								setCommandToEdit(initialPracticeValue.command);
+								setDisplayModal(false);
+								showSuccessBanner(`El Comando ${commandToEdit.commandName} fue actualizado exitosamente`);
+								setLoadingButton(false);
+							}
+						})
+						.catch((error) => {
+							showErrorBanner(`Error actualizando el comando ${commandToEdit.commandName}`);
+							setLoadingButton(false);
+						});
+				} else {
+					// Añadir nuevo comando
+					setLoadingButton(true);
+					setCommandsList((previousState) => {
+						const updatedCommand = previousState[rowIndex];
+						previousState.map((obj) => {
+							if (obj.commandName === updatedCommand.commandName) {
+								obj.commandName = commandToEdit.commandName;
+								obj.label = commandToEdit.label;
+								obj.commandDescription = commandToEdit.commandDescription;
+								obj.label = commandToEdit.label;
+								obj.updatedBy = commandToEdit.updatedBy;
+								obj.updatedAt = commandToEdit.updatedAt;
+							}
+						});
+						return previousState;
 					});
-					return previousState;
-				});
-				setCommandToEdit(initialPracticeValue.command);
-				setDisplayModal(false);
+					setCommandToEdit(initialPracticeValue.command);
+					setDisplayModal(false);
+					setLoadingButton(false);
+				}
 			}
 		}
 
@@ -837,7 +895,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, commandsList.length + 1));
 				});
 				setDisplayModal(false);
-
 			}
 		}
 
@@ -874,7 +931,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, parametersList.length + 1));
 				});
 				setDisplayModal(false);
-
 			}
 		}
 
@@ -911,7 +967,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, outputsList.length + 1));
 				});
 				setDisplayModal(false);
-
 			}
 		}
 	};

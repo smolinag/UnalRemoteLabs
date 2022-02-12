@@ -21,10 +21,11 @@ import {
 	useDeleteLabPracticeCommandMutation,
 	useDeleteLabPracticeParameterMutation,
 	useDeleteLabPracticeOutputMutation,
-	useCreateLabPracticeMutation,
-	useCreateLabPracticeCommandMutation,
-	useCreateLabPracticeParameterMutation,
-	useCreateLabPracticeOutputMutation
+	useUpdateLabPracticeMutation
+	// useCreateLabPracticeMutation,
+	// useCreateLabPracticeCommandMutation,
+	// useCreateLabPracticeParameterMutation,
+	// useCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {
@@ -52,7 +53,7 @@ const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
-	version: '',
+	version: 0,
 	command: {
 		commandName: '',
 		commandDescription: '',
@@ -118,16 +119,19 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [deleteLabPracticeParameter] = useDeleteLabPracticeParameterMutation({});
 	const [deleteLabPracticeOutput] = useDeleteLabPracticeOutputMutation({});
 
-	const [createLabPractice] = useCreateLabPracticeMutation({});
-	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
-	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
-	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
+	const [updateLabPractice] = useUpdateLabPracticeMutation({});
+
+	// const [createLabPractice] = useCreateLabPracticeMutation({});
+	// const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
+	// const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
+	// const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	React.useEffect(() => {
 		if (practiceInfoDb?.getLabPractice) {
 			const practice: LabPracticeInfo = {
 				...initialPracticeValue,
+				id: practiceInfoDb.getLabPractice.id,
 				laboratoryId: practiceInfoDb?.getLabPractice.Laboratory ? practiceInfoDb?.getLabPractice.Laboratory?.id : '',
 				practiceInfoName: practiceInfoDb?.getLabPractice.name,
 				practiceInfoDescription: practiceInfoDb?.getLabPractice.description
@@ -136,7 +140,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				practiceInfoDuration: practiceInfoDb?.getLabPractice.duration
 					? practiceInfoDb?.getLabPractice.duration.toString()
 					: '0',
-				version: practiceInfo.version
+				version: practiceInfoDb.getLabPractice._version
 			};
 			setPracticeInfo(practice);
 		}
@@ -333,11 +337,25 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const handleCommandAction = (index: number, action: Action) => {
 		switch (action) {
 			case Action.Delete:
-				setDisplayModal(true);
-				setModalType(Section.CommandModalRemove);
-				setModalTitle(`Borrar commando: ${commandsList[index].commandName}`);
-				setCommandToRemove(commandsList[index]);
-				rowIndex = index;
+				if (parametersList.length > 0) {
+					const parameters = parametersList.filter((parameter) => parameter.selectedCommandName === commandsList[index].commandName);
+					if (parameters.length > 0) {
+						showErrorBanner(`No se pude eliminar el comando, elimine primero los parámetros asociados a este.`);
+					} else {
+						setDisplayModal(true);
+						setModalType(Section.CommandModalRemove);
+						setModalTitle(`Borrar commando: ${commandsList[index].commandName}`);
+						setCommandToRemove(commandsList[index]);
+						rowIndex = index;
+					}
+				} else {
+					setDisplayModal(true);
+					setModalType(Section.CommandModalRemove);
+					setModalTitle(`Borrar commando: ${commandsList[index].commandName}`);
+					setCommandToRemove(commandsList[index]);
+					rowIndex = index;
+				}
+
 				break;
 			case Action.Edit:
 				setDisplayModal(true);
@@ -437,105 +455,107 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		}
 	};
 
-	const createPractice = async () => {
+	const updatePractice = async () => {
 		checkErrorMessage(Section.PracticeInfo);
 
 		if (errors.length === 0) {
 			setLoading(true);
 
 			try {
-				const {data: labPracticeData} = await createLabPractice({
+				const {data: labPracticeData} = await updateLabPractice({
 					variables: {
 						input: {
+							id: practiceInfo.id ? practiceInfo.id : '',
 							laboratoryID: practiceInfo.laboratoryId,
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
-							createdBy: '1'
+							createdBy: '1',
+							_version: practiceInfo.version
 						}
 					}
 				});
 
-				if (!labPracticeData?.createLabPractice?.id) {
+				if (!labPracticeData?.updateLabPractice?.id) {
 					throw Error('');
 				}
 
-				const practiceId = labPracticeData.createLabPractice?.id;
+				const practiceId = labPracticeData.updateLabPractice?.id;
 
 				if (!practiceId) {
 					return;
 				}
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				const creationPromises: Promise<any>[] = [];
-				if (commandsList.length > 0) {
-					creationPromises.concat(
-						commandsList.map((command) =>
-							createLabPracticeCommand({
-								variables: {
-									input: {
-										labpracticeID: practiceId,
-										name: command.commandName,
-										description: command.commandDescription,
-										createdBy: '1'
-									}
-								}
-							}).then((commandData) => {
-								const commandId = commandData?.data?.createLabPracticeCommand?.id;
-								const commandName = commandData?.data?.createLabPracticeCommand?.name;
+				// const creationPromises: Promise<any>[] = [];
+				// if (commandsList.length > 0) {
+				// 	creationPromises.concat(
+				// 		commandsList.map((command) =>
+				// 			createLabPracticeCommand({
+				// 				variables: {
+				// 					input: {
+				// 						labpracticeID: practiceId,
+				// 						name: command.commandName,
+				// 						description: command.commandDescription,
+				// 						createdBy: '1'
+				// 					}
+				// 				}
+				// 			}).then((commandData) => {
+				// 				const commandId = commandData?.data?.createLabPracticeCommand?.id;
+				// 				const commandName = commandData?.data?.createLabPracticeCommand?.name;
 
-								if (!commandName) {
-									return;
-								}
+				// 				if (!commandName) {
+				// 					return;
+				// 				}
 
-								if (parametersList.length > 0) {
-									return Promise.all(
-										parametersList.map((parameter) => {
-											if (parameter.selectedCommandName === commandName) {
-												createLabPracticeParameter({
-													variables: {
-														input: {
-															labpracticecommandID: commandId,
-															labpracticeID: labPracticeData.createLabPractice?.id,
-															name: parameter.parameterName,
-															description: parameter.parameterDescription,
-															defaultValue: parameter.parameterDefaultValue,
-															minValue: parseInt(parameter.parameterMinValue),
-															maxValue: parseInt(parameter.parameterMaxValue),
-															regex: parameter.parameterRegex
-														}
-													}
-												});
-											}
-										})
-									);
-								}
-							})
-						)
-					);
-				}
-				if (outputsList.length > 0) {
-					creationPromises.concat(
-						outputsList.map(async (obj) =>
-							createLabPracticeOutput({
-								variables: {
-									input: {
-										labpracticeID: practiceId,
-										outputType: 'string',
-										name: obj.outputName,
-										description: obj.outputDescription,
-										units: JSON.stringify(obj.outputUnit),
-										createdBy: '1'
-									}
-								}
-							})
-						)
-					);
-				}
+				// 				if (parametersList.length > 0) {
+				// 					return Promise.all(
+				// 						parametersList.map((parameter) => {
+				// 							if (parameter.selectedCommandName === commandName) {
+				// 								createLabPracticeParameter({
+				// 									variables: {
+				// 										input: {
+				// 											labpracticecommandID: commandId,
+				// 											labpracticeID: labPracticeData.createLabPractice?.id,
+				// 											name: parameter.parameterName,
+				// 											description: parameter.parameterDescription,
+				// 											defaultValue: parameter.parameterDefaultValue,
+				// 											minValue: parseInt(parameter.parameterMinValue),
+				// 											maxValue: parseInt(parameter.parameterMaxValue),
+				// 											regex: parameter.parameterRegex
+				// 										}
+				// 									}
+				// 								});
+				// 							}
+				// 						})
+				// 					);
+				// 				}
+				// 			})
+				// 		)
+				// 	);
+				// }
+				// if (outputsList.length > 0) {
+				// 	creationPromises.concat(
+				// 		outputsList.map(async (obj) =>
+				// 			createLabPracticeOutput({
+				// 				variables: {
+				// 					input: {
+				// 						labpracticeID: practiceId,
+				// 						outputType: 'string',
+				// 						name: obj.outputName,
+				// 						description: obj.outputDescription,
+				// 						units: JSON.stringify(obj.outputUnit),
+				// 						createdBy: '1'
+				// 					}
+				// 				}
+				// 			})
+				// 		)
+				// 	);
+				// }
 
-				await Promise.all(creationPromises);
-				showSuccessBanner(`La práctica ${labPracticeData.createLabPractice.name} fue creada exitosamente`);
+				// await Promise.all(creationPromises);
+				showSuccessBanner(`La práctica ${labPracticeData.updateLabPractice.name} fue actualizada exitosamente`);
 			} catch (error) {
-				showErrorBanner(`Error en la creación de la práctica ${practiceInfo.practiceInfoName}`);
+				showErrorBanner(`Error en la actualización de la práctica ${practiceInfo.practiceInfoName}`);
 			} finally {
 				setLoading(false);
 			}
@@ -959,7 +979,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 				<Row className="section">
 					<div className="justifyEnd">
-						<Button loading={loading} onClick={createPractice}>
+						<Button loading={loading} onClick={updatePractice}>
 							Guardar
 						</Button>
 					</div>

@@ -20,7 +20,6 @@ const LabPractice: React.FC<Props> = ({onValueChange, practice, laboratories, er
 
 	React.useEffect(() => {
 		const lab = laboratories.filter((lab) => lab.id === practice.laboratoryId)[0];
-
 		if (lab) {
 			setLaboratory({
 				id: lab.id,

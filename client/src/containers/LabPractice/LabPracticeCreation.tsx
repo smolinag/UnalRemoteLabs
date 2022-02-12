@@ -38,7 +38,7 @@ const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
-	version: '0',
+	version: 0,
 	command: {
 		commandName: '',
 		commandDescription: '',

@@ -9,7 +9,7 @@ export interface LabPracticeInfo {
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
-	version: string;
+	version?: number;
 	command: LabPracticeCommandInfo;
 	parameter: LabPracticeParameterInfo;
 	output: OutputInfo

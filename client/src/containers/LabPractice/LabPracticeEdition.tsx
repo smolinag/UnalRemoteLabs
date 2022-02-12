@@ -25,7 +25,7 @@ import {
 	// useCreateLabPracticeMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
-	// useCreateLabPracticeOutputMutation
+	useCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {
@@ -81,6 +81,7 @@ let rowIndex = -1;
 const LabPracticeEdition: React.FC<unknown> = () => {
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
+	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
 	const [parametersList, setParametersList] = React.useState<LabPracticeParameterInfo[]>([]);
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
 
@@ -89,11 +90,10 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		initialPracticeValue.parameter
 	);
 	const [outputToRemove, setOutputToRemove] = React.useState<OutputInfo>(initialPracticeValue.output);
-	const [loadingRemove, setLoadingRemove] = React.useState<boolean>(false);
+	const [loadingButton, setLoadingButton] = React.useState<boolean>(false);
 
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
-	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
 
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
 	const [modalType, setModalType] = React.useState<Section>(Section.CommandInfo);
@@ -124,7 +124,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	// const [createLabPractice] = useCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
-	// const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
+	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	React.useEffect(() => {
@@ -159,7 +159,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	React.useEffect(() => {
 		if (labCommandsDataDb?.listLabPracticeCommands?.items != null) {
-			console.warn(labCommandsDataDb?.listLabPracticeCommands?.items)
 			const commands: LabPracticeCommandInfo[] = labCommandsDataDb?.listLabPracticeCommands?.items
 				// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
 				.map((command) => {
@@ -497,7 +496,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							// Actualizar comando
 							console.warn(command.id);
 						} else {
-							// Crear nuevo comando 
+							// Crear nuevo comando
 							createLabPracticeCommand({
 								variables: {
 									input: {
@@ -542,24 +541,26 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						}
 					});
 				}
-				// if (outputsList.length > 0) {
-				// 	creationPromises.concat(
-				// 		outputsList.map(async (obj) =>
-				// 			createLabPracticeOutput({
-				// 				variables: {
-				// 					input: {
-				// 						labpracticeID: practiceId,
-				// 						outputType: 'string',
-				// 						name: obj.outputName,
-				// 						description: obj.outputDescription,
-				// 						units: JSON.stringify(obj.outputUnit),
-				// 						createdBy: '1'
-				// 					}
-				// 				}
-				// 			})
-				// 		)
-				// 	);
-				// }
+				if (outputsList.length > 0) {
+					// creationPromises.concat(
+					outputsList.map(async (obj) => {
+						if (!obj.id) {
+							createLabPracticeOutput({
+								variables: {
+									input: {
+										labpracticeID: practiceId,
+										outputType: 'string',
+										name: obj.outputName,
+										description: obj.outputDescription,
+										units: JSON.stringify(obj.outputUnit),
+										createdBy: '1'
+									}
+								}
+							});
+						}
+					});
+					// );
+				}
 
 				// await Promise.all(creationPromises);
 				showSuccessBanner(`La práctica ${labPracticeData.updateLabPractice.name} fue actualizada exitosamente`);
@@ -805,7 +806,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 		if (modalType === Section.CommandModalRemove) {
 			if (commandToRemove.id) {
-				setLoadingRemove(true);
+				setLoadingButton(true);
 				deleteLabPracticeCommand({
 					variables: {
 						input: {
@@ -823,24 +824,26 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							});
 							setDisplayModal(false);
 							showSuccessBanner(`El Comando ${commandToRemove.commandName} fue eliminado exitosamente`);
-							setLoadingRemove(false);
+							setLoadingButton(false);
 						}
 					})
 					.catch((error) => {
 						setDisplayModal(false);
 						showErrorBanner(`No se pudo eliminar el comando ${commandToRemove.commandName}`);
-						setLoadingRemove(false);
+						setLoadingButton(false);
 					});
 			} else {
 				setCommandsList((previousState) => {
 					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, commandsList.length + 1));
 				});
+				setDisplayModal(false);
+
 			}
 		}
 
 		if (modalType === Section.ParameterModalRemove) {
 			if (parameterToRemove.id) {
-				setLoadingRemove(true);
+				setLoadingButton(true);
 				deleteLabPracticeParameter({
 					variables: {
 						input: {
@@ -858,24 +861,26 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							});
 							setDisplayModal(false);
 							showSuccessBanner(`El parámetro ${parameterToRemove.parameterName} fue eliminado exitosamente`);
-							setLoadingRemove(false);
+							setLoadingButton(false);
 						}
 					})
 					.catch((error) => {
 						setDisplayModal(false);
 						showErrorBanner(`No se pudo eliminar el parámetro ${parameterToRemove.parameterName}`);
-						setLoadingRemove(false);
+						setLoadingButton(false);
 					});
 			} else {
 				setParametersList((previousState) => {
 					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, parametersList.length + 1));
 				});
+				setDisplayModal(false);
+
 			}
 		}
 
 		if (modalType === Section.OutputModalRemove) {
 			if (outputToRemove.id) {
-				setLoadingRemove(true);
+				setLoadingButton(true);
 				deleteLabPracticeOutput({
 					variables: {
 						input: {
@@ -893,18 +898,20 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							});
 							setDisplayModal(false);
 							showSuccessBanner(`El parámetro de salida ${outputToRemove.outputName} fue eliminado exitosamente`);
-							setLoadingRemove(false);
+							setLoadingButton(false);
 						}
 					})
 					.catch((error) => {
 						setDisplayModal(false);
 						showErrorBanner(`No se pudo eliminar el parámetro de salida ${outputToRemove.outputName}`);
-						setLoadingRemove(false);
+						setLoadingButton(false);
 					});
 			} else {
 				setOutputsList((previousState) => {
 					return previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, outputsList.length + 1));
 				});
+				setDisplayModal(false);
+
 			}
 		}
 	};
@@ -943,7 +950,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					onDisplay={handleDisplayModal}
 					onSave={handleSaveEdit}
 					title={modalTitle}
-					loadingAccept={loadingRemove}>
+					loadingAccept={loadingButton}>
 					{modalSection()}
 				</ModalComponent>
 			}

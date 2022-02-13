@@ -15,26 +15,26 @@ const COLUMNS = [
 	'Nombre del parámetro',
 	'Descripción del parámetro',
 	'Valor por defecto',
-	'Valor máximo',
 	'Valor mínimo',
+	'Valor máximo',
 	'Expresión regular'
 ];
 
 const mapOutput = ({
-	selectedCommandName,
+	commandName,
 	parameterName,
 	parameterDescription,
 	parameterDefaultValue,
-	parameterMaxValue,
 	parameterMinValue,
+	parameterMaxValue,
 	parameterRegex
 }: LabPracticeParameterInfo): string[] => [
-	selectedCommandName,
+	commandName,
 	parameterName,
 	parameterDescription,
 	parameterDefaultValue,
-	parameterMaxValue,
-	parameterMinValue,
+	parameterMinValue ? parameterMinValue.toString() : '',
+	parameterMaxValue ? parameterMaxValue.toString() : '',
 	parameterRegex
 ];
 

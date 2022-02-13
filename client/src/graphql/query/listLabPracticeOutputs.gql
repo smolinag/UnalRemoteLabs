@@ -7,6 +7,7 @@ query listLabPracticeOutputs($id: ID!) {
 			units
 			outputType
 			_version
+			_deleted
 		}
 	}
 }

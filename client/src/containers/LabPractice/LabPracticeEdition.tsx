@@ -23,8 +23,7 @@ import {
 	useDeleteLabPracticeOutputMutation,
 	useUpdateLabPracticeMutation,
 	useUpdateLabPracticeCommandMutation,
-
-	// useCreateLabPracticeMutation,
+	useUpdateLabPracticeParameterMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
 	useCreateLabPracticeOutputMutation
@@ -43,7 +42,6 @@ import {
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
 const DEVICE_ID = '850bbd31-eab1-4eb6-aa16-51886d706fb9';
-// const COMMAND_NAME_PREFIX = 'cmd';
 
 export interface LocationState {
 	labPracticeId: string;
@@ -62,12 +60,12 @@ const initialPracticeValue: LabPracticeInfo = {
 		version: 0
 	},
 	parameter: {
-		selectedCommandName: '',
+		commandName: '',
 		parameterName: '',
 		parameterDescription: '',
 		parameterDefaultValue: '',
-		parameterMaxValue: '',
-		parameterMinValue: '',
+		parameterMaxValue: undefined,
+		parameterMinValue: undefined,
 		parameterRegex: ''
 	},
 	output: {
@@ -94,7 +92,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [outputToRemove, setOutputToRemove] = React.useState<OutputInfo>(initialPracticeValue.output);
 	const [loadingButton, setLoadingButton] = React.useState<boolean>(false);
 
-	const [loading, setLoading] = React.useState<boolean>(false);
+	const [loading, setLoading] = React.useState<boolean>(true);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
 
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
@@ -123,15 +121,18 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	const [updateLabPractice] = useUpdateLabPracticeMutation({});
 	const [updateLabPracticeCommand] = useUpdateLabPracticeCommandMutation({});
+	const [updateLabPracticeParameter] = useUpdateLabPracticeParameterMutation({});
 
-	// const [createLabPractice] = useCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
+
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
+	// Load practice info
 	React.useEffect(() => {
 		if (practiceInfoDb?.getLabPractice) {
+			setLoading(true);
 			const practice: LabPracticeInfo = {
 				...initialPracticeValue,
 				id: practiceInfoDb.getLabPractice.id,
@@ -145,6 +146,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					: '0',
 				version: practiceInfoDb.getLabPractice._version
 			};
+			setLoading(false);
 			setPracticeInfo(practice);
 		}
 	}, [practiceInfoDb]);
@@ -152,76 +154,87 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	React.useEffect(() => {
 		const labs = laboratoriesList?.listLaboratorys?.items;
 		if (labs) {
-			setLaboratories(
-				labs.map((obj) => {
-					return {id: obj !== null ? obj.id : '', name: obj !== null ? obj.name : ''};
-				})
-			);
+			setLaboratories((previousState) => {
+				labs.forEach((obj) => {
+					if (!obj?._deleted) {
+						previousState.push({id: obj !== null ? obj.id : '', name: obj !== null ? obj.name : ''});
+					}
+				});
+
+				return previousState;
+			});
 		}
 	}, [laboratoriesList]);
 
+	// Load commands and parameters info
 	React.useEffect(() => {
 		if (labCommandsDataDb?.listLabPracticeCommands?.items != null) {
-			const commands: LabPracticeCommandInfo[] = labCommandsDataDb?.listLabPracticeCommands?.items
-				// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
-				.map((command) => {
-					return {
-						id: command?.id as string,
-						commandName: command?.name as string,
-						commandDescription: command?.description ? command?.description : '',
-						parameters: command?.LabPracticeParameters?.items?.map((parameter) => ({
-							label: (parameter?.labelName ?? parameter?.name) as string,
-							id: parameter?.id as string,
-							value: Number((parameter?.defaultValue as string) ?? 0)
-						})),
-						label: (command?.labelName ?? command?.name) as string,
-						version: command?._version
-					};
+			setLoading(true);
+
+			setCommandsList(() => {
+				const tempCommands: LabPracticeCommandInfo[] = [];
+				labCommandsDataDb?.listLabPracticeCommands?.items.forEach((command) => {
+					if (!command?._deleted) {
+						tempCommands.push({
+							id: command?.id as string,
+							commandName: command?.name as string,
+							commandDescription: command?.description ? command?.description : '',
+							label: (command?.labelName ?? command?.name) as string,
+							version: command?._version
+						});
+					}
 				});
+				return tempCommands;
+			});
 
-			const parameters: LabPracticeParameterInfo[] = [];
-
-			labCommandsDataDb?.listLabPracticeCommands?.items
-				// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
-				.map((command) => {
-					if (command?.LabPracticeParameters) {
+			setParametersList(() => {
+				const parametersList: LabPracticeParameterInfo[] = [];
+				labCommandsDataDb?.listLabPracticeCommands?.items.map((command) => {
+					if (!command?._deleted && command?.LabPracticeParameters) {
 						command?.LabPracticeParameters.items.forEach((parameter) => {
-							if (parameter) {
-								parameters.push({
+							if (parameter && !parameter._deleted) {
+								parametersList.push({
 									commandId: command?.id,
-									selectedCommandName: command?.name,
+									commandName: command?.name,
 									id: parameter?.id,
 									parameterName: parameter?.name ? parameter?.name : '',
 									parameterDescription: parameter?.description ? parameter?.description : '',
 									parameterDefaultValue: parameter?.defaultValue ? parameter?.defaultValue : '',
-									parameterMaxValue: parameter?.maxValue ? parameter?.maxValue.toString() : '',
-									parameterMinValue: parameter?.minValue ? parameter?.minValue.toString() : '',
-									parameterRegex: parameter?.regex ? parameter?.regex : ''
+									parameterMaxValue: parameter?.maxValue,
+									parameterMinValue: parameter?.minValue,
+									parameterRegex: parameter?.regex ? parameter?.regex : '',
+									version: parameter._version
 								});
 							}
 						});
 					}
 				});
+				return parametersList;
+			});
 
-			setCommandsList(commands);
-			setParametersList(parameters);
+			setLoading(false);
 		}
 	}, [labCommandsDataDb]);
 
+	// Load outputs info
 	React.useEffect(() => {
 		if (practiceOutputsDb?.listLabPracticeOutputs?.items != null) {
-			const outputs: OutputInfo[] = practiceOutputsDb?.listLabPracticeOutputs?.items.map((output) => {
-				return {
-					id: output?.id,
-					outputName: output?.name ? output?.name : '',
-					outputDescription: output?.description ? output?.description : '',
-					outputUnit: output?.units ? output?.units : '',
-					outputType: output?.outputType ? output?.outputType : '',
-					version: output?._version
-				};
+			setOutputsList(() => {
+				const outputs: OutputInfo[] = [];
+				practiceOutputsDb?.listLabPracticeOutputs?.items.forEach((output) => {
+					if (!output?._deleted) {
+						outputs.push({
+							id: output?.id,
+							outputName: output?.name ? output?.name : '',
+							outputDescription: output?.description ? output?.description : '',
+							outputUnit: output?.units ? output?.units : '',
+							outputType: output?.outputType ? output?.outputType : '',
+							version: output?._version
+						});
+					}
+				});
+				return outputs;
 			});
-
-			setOutputsList(outputs);
 		}
 	}, [practiceOutputsDb]);
 
@@ -254,7 +267,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				case Params.SelectedCommand:
 					practice.parameter = {
 						...practiceInfo.parameter,
-						selectedCommandName: value
+						commandName: value
 					};
 					return {...previousState, parameter: practice.parameter};
 				case Params.ParameterName:
@@ -278,13 +291,13 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				case Params.ParameterMaxValue:
 					practice.parameter = {
 						...practiceInfo.parameter,
-						parameterMaxValue: value
+						parameterMaxValue: parseInt(value)
 					};
 					return {...previousState, parameter: practice.parameter};
 				case Params.ParameterMinValue:
 					practice.parameter = {
 						...practiceInfo.parameter,
-						parameterMinValue: value
+						parameterMinValue: parseInt(value)
 					};
 					return {...previousState, parameter: practice.parameter};
 				case Params.ParameterRegex:
@@ -342,7 +355,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			case Action.Delete:
 				if (parametersList.length > 0) {
 					const parameters = parametersList.filter(
-						(parameter) => parameter.selectedCommandName === commandsList[index].commandName
+						(parameter) => parameter.commandName === commandsList[index].commandName
 					);
 					if (parameters.length > 0) {
 						showErrorBanner(`No se pude eliminar el comando, elimine primero los parámetros asociados a este.`);
@@ -376,13 +389,13 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		checkErrorMessage(Section.ParameterInfo);
 
 		if (
-			parameter.selectedCommandName.length > 0 &&
+			parameter.commandName.length > 0 &&
 			parameter.parameterName.length > 0 &&
 			parameter.parameterDefaultValue.length > 0
 		) {
 			setParametersList((previousState) => {
 				const newParameter: LabPracticeParameterInfo = {
-					selectedCommandName: parameter.selectedCommandName,
+					commandName: parameter.commandName,
 					parameterName: parameter.parameterName,
 					parameterDescription: parameter.parameterDescription,
 					parameterDefaultValue: parameter.parameterDefaultValue,
@@ -494,31 +507,28 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				// const creationPromises: Promise<any>[] = [];
 				if (commandsList.length > 0) {
-					commandsList.map((command) => {
+					commandsList.map(async (command) => {
 						if (command.id) {
 							// Actualizar comando
-							console.warn(command.id);
-						} else {
-							// Crear nuevo comando
-							createLabPracticeCommand({
+							await updateLabPracticeCommand({
 								variables: {
 									input: {
-										labpracticeID: practiceId,
-										name: command.commandName,
-										description: command.commandDescription,
-										createdBy: '1'
+										id: commandToEdit.id ? commandToEdit.id : '',
+										name: commandToEdit.commandName,
+										description: commandToEdit.commandDescription,
+										labelName: commandToEdit.label,
+										updatedBy: '1',
+										_version: commandToEdit.version
 									}
 								}
-							}).then((commandData) => {
-								const commandId = commandData?.data?.createLabPracticeCommand?.id;
-								const commandName = commandData?.data?.createLabPracticeCommand?.name;
-								if (!commandName) {
-									return;
-								}
+							}).then((responseCommandData) => {
+								const commandId = responseCommandData?.data?.updateLabPracticeCommand?.id;
+								const commandName = responseCommandData?.data?.updateLabPracticeCommand?.name;
+
 								if (parametersList.length > 0) {
 									return Promise.all(
-										parametersList.map((parameter) => {
-											if (parameter.selectedCommandName === commandName && !parameter.id) {
+										parametersList.map(async (parameter) => {
+											if (!parameter.id && parameter.commandName === commandName) {
 												// Crear nuevo parámetro
 												createLabPracticeParameter({
 													variables: {
@@ -528,14 +538,87 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 															name: parameter.parameterName,
 															description: parameter.parameterDescription,
 															defaultValue: parameter.parameterDefaultValue,
-															minValue: parseInt(parameter.parameterMinValue),
-															maxValue: parseInt(parameter.parameterMaxValue),
+															minValue: parameter.parameterMinValue,
+															maxValue: parameter.parameterMaxValue,
 															regex: parameter.parameterRegex
 														}
 													}
 												});
-											} else {
+											} else if (parameter.id && parameter.commandName === commandName) {
 												// Actualizar parámetro
+												await updateLabPracticeParameter({
+													variables: {
+														input: {
+															id: parameterToEdit.id ? parameterToEdit.id : '',
+															labpracticecommandID: parameterToEdit.id,
+															name: parameterToEdit.parameterName,
+															description: parameterToEdit.parameterDescription,
+															defaultValue: parameterToEdit.parameterDefaultValue,
+															minValue: parameterToEdit.parameterMinValue,
+															maxValue: parameterToEdit.parameterMaxValue,
+															regex: parameterToEdit.parameterRegex,
+															updatedBy: '1',
+															_version: parameterToEdit.version
+														}
+													}
+												});
+											}
+										})
+									);
+								}
+							});
+						} else {
+							// Crear nuevo comando
+							await createLabPracticeCommand({
+								variables: {
+									input: {
+										labpracticeID: practiceId,
+										name: command.commandName,
+										description: command.commandDescription,
+										createdBy: '1'
+									}
+								}
+							}).then((responseCommandData) => {
+								const commandId = responseCommandData?.data?.createLabPracticeCommand?.id;
+								const commandName = responseCommandData?.data?.createLabPracticeCommand?.name;
+
+								if (parametersList.length > 0) {
+									return Promise.all(
+										parametersList.map(async (parameter) => {
+											if (!parameter.id && parameter.commandName === commandName) {
+												// Crear nuevo parámetro
+												createLabPracticeParameter({
+													variables: {
+														input: {
+															labpracticecommandID: commandId,
+															labpracticeID: labPracticeData.updateLabPractice?.id,
+															name: parameter.parameterName,
+															description: parameter.parameterDescription,
+															defaultValue: parameter.parameterDefaultValue,
+															minValue: parameter.parameterMinValue,
+															maxValue: parameter.parameterMaxValue,
+															regex: parameter.parameterRegex
+														}
+													}
+												});
+											} else if (parameter.id && parameter.commandName === commandName) {
+												// Actualizar parámetro
+												await updateLabPracticeParameter({
+													variables: {
+														input: {
+															id: parameterToEdit.id ? parameterToEdit.id : '',
+															labpracticecommandID: parameterToEdit.id,
+															name: parameterToEdit.parameterName,
+															description: parameterToEdit.parameterDescription,
+															defaultValue: parameterToEdit.parameterDefaultValue,
+															minValue: parameterToEdit.parameterMinValue,
+															maxValue: parameterToEdit.parameterMaxValue,
+															regex: parameterToEdit.parameterRegex,
+															updatedBy: '1',
+															_version: parameterToEdit.version
+														}
+													}
+												});
 											}
 										})
 									);
@@ -637,11 +720,11 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 			}
 			if (section === Section.ParameterInfo) {
-				if (!notCommandSelected && practiceInfo.parameter.selectedCommandName.length === 0) {
+				if (!notCommandSelected && practiceInfo.parameter.commandName.length === 0) {
 					previousState.push({
 						identifier: Params.SelectedCommand
 					});
-				} else if (notCommandSelected && practiceInfo.parameter.selectedCommandName.length > 0) {
+				} else if (notCommandSelected && practiceInfo.parameter.commandName.length > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.SelectedCommand);
 					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
@@ -707,7 +790,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			setParameterToEdit((previousState) => {
 				switch (param) {
 					case Params.SelectedCommand:
-						return {...previousState, selectedCommandName: value};
+						return {...previousState, commandName: value};
 					case Params.ParameterName:
 						return {...previousState, parameterName: value};
 					case Params.ParameterDescription:
@@ -715,9 +798,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					case Params.ParameterDefaultValue:
 						return {...previousState, parameterDefaultValue: value};
 					case Params.ParameterMinValue:
-						return {...previousState, parameterMinValue: value};
+						return {...previousState, parameterMinValue: parseInt(value)};
 					case Params.ParameterMaxValue:
-						return {...previousState, parameterMaxValue: value};
+						return {...previousState, parameterMaxValue: parseInt(value)};
 					case Params.ParameterRegex:
 						return {...previousState, parameterRegex: value};
 					default:
@@ -741,93 +824,46 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	};
 
 	const handleSaveEdit = async () => {
-
 		// Edición de comando
 		if (modalType === Section.ModalCommandInfo) {
 			checkErrorMessage(Section.ModalCommandInfo);
 
 			if (commandToEdit.commandName !== '') {
 				setLoadingButton(true);
-
-				// Actualizar comando
-				if (commandToEdit.id) {
-					await updateLabPracticeCommand({
-						variables: {
-							input: {
-								id: commandToEdit.id,
-								name: commandToEdit.commandName,
-								description: commandToEdit.commandDescription,
-								labelName: commandToEdit.label,
-								updatedBy: '1',
-								_version: commandToEdit.version
-							}
+				setCommandsList((previousState) => {
+					const updatedCommand = previousState[rowIndex];
+					previousState.map((obj) => {
+						if (obj.commandName === updatedCommand.commandName) {
+							obj.commandName = commandToEdit.commandName;
+							obj.label = commandToEdit.label;
+							obj.commandDescription = commandToEdit.commandDescription;
+							obj.label = commandToEdit.label;
+							obj.updatedBy = commandToEdit.updatedBy;
+							obj.updatedAt = commandToEdit.updatedAt;
 						}
-					})
-						.then((response) => {
-							if (response.data?.updateLabPracticeCommand?.id) {
-								setCommandsList((previousState) => {
-									const updatedCommand = previousState.filter(
-										(command) => command.id === response.data?.updateLabPracticeCommand?.id
-									)[0];
-
-									previousState.map((obj) => {
-										if (obj.id === updatedCommand.id) {
-											obj.commandName = updatedCommand.commandName;
-											obj.label = updatedCommand.label;
-											obj.commandDescription = updatedCommand.commandDescription;
-											obj.label = updatedCommand.label;
-											obj.updatedBy = updatedCommand.updatedBy;
-											obj.updatedAt = updatedCommand.updatedAt;
-										}
-									});
-									return previousState;
-								});
-								setCommandToEdit(initialPracticeValue.command);
-								setDisplayModal(false);
-								showSuccessBanner(`El Comando ${commandToEdit.commandName} fue actualizado exitosamente`);
-								setLoadingButton(false);
-							}
-						})
-						.catch((error) => {
-							showErrorBanner(`Error actualizando el comando ${commandToEdit.commandName}`);
-							setLoadingButton(false);
-						});
-				} else {
-					// Añadir nuevo comando
-					setLoadingButton(true);
-					setCommandsList((previousState) => {
-						const updatedCommand = previousState[rowIndex];
-						previousState.map((obj) => {
-							if (obj.commandName === updatedCommand.commandName) {
-								obj.commandName = commandToEdit.commandName;
-								obj.label = commandToEdit.label;
-								obj.commandDescription = commandToEdit.commandDescription;
-								obj.label = commandToEdit.label;
-								obj.updatedBy = commandToEdit.updatedBy;
-								obj.updatedAt = commandToEdit.updatedAt;
-							}
-						});
-						return previousState;
 					});
-					setCommandToEdit(initialPracticeValue.command);
-					setDisplayModal(false);
-					setLoadingButton(false);
-				}
+					return previousState;
+				});
+				setCommandToEdit(initialPracticeValue.command);
+				setDisplayModal(false);
+				setLoadingButton(false);
 			}
 		}
 
+		// Edición de parámetro
 		if (modalType === Section.ParameterInfo) {
+			checkErrorMessage(Section.ModalParameterInfo);
 			if (
 				parameterToEdit.parameterName !== '' &&
-				parameterToEdit.selectedCommandName.length > 0 &&
+				parameterToEdit.commandName.length > 0 &&
 				parameterToEdit.parameterDefaultValue.length > 0
 			) {
+				setLoadingButton(true);
 				setParametersList((previousState) => {
-					const parameter = previousState[rowIndex];
-
+					const updatedParameter = previousState[rowIndex];
 					previousState.map((obj) => {
-						if (obj.parameterName === parameter.parameterName) {
-							obj.selectedCommandName = parameterToEdit.selectedCommandName;
+						if (obj.parameterName === updatedParameter.parameterName) {
+							obj.commandName = parameterToEdit.commandName;
 							obj.parameterName = parameterToEdit.parameterName;
 							obj.parameterDescription = parameterToEdit.parameterDescription;
 							obj.parameterDefaultValue = parameterToEdit.parameterDefaultValue;
@@ -838,11 +874,14 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					});
 					return previousState;
 				});
+
 				setParameterToEdit(initialPracticeValue.parameter);
 				setDisplayModal(false);
+				setLoadingButton(false);
 			}
 		}
 
+		// Edición de parámetro de salida
 		if (modalType === Section.OutputInfo) {
 			if (outputToEdit.outputName.length > 0 && outputToEdit.outputUnit.length > 0) {
 				setOutputsList((previousState) => {
@@ -862,6 +901,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			}
 		}
 
+		// Borrar comando
 		if (modalType === Section.CommandModalRemove) {
 			if (commandToRemove.id) {
 				setLoadingButton(true);
@@ -898,6 +938,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			}
 		}
 
+		// Borrar parámetro
 		if (modalType === Section.ParameterModalRemove) {
 			if (parameterToRemove.id) {
 				setLoadingButton(true);
@@ -934,6 +975,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			}
 		}
 
+		// Borrar parámetro de salida
 		if (modalType === Section.OutputModalRemove) {
 			if (outputToRemove.id) {
 				setLoadingButton(true);

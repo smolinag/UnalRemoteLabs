@@ -45,12 +45,12 @@ const initialPracticeValue: LabPracticeInfo = {
 		version: 0
 	},
 	parameter: {
-		selectedCommandName: '',
+		commandName: '',
 		parameterName: '',
 		parameterDescription: '',
 		parameterDefaultValue: '',
-		parameterMaxValue: '',
-		parameterMinValue: '',
+		parameterMaxValue: undefined,
+		parameterMinValue: undefined,
 		parameterRegex: ''
 	},
 	output: {
@@ -128,7 +128,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				case Params.SelectedCommand:
 					practice.parameter = {
 						...practiceInfo.parameter,
-						selectedCommandName: value
+						commandName: value
 					};
 					return {...previousState, parameter: practice.parameter};
 				case Params.ParameterName:
@@ -152,13 +152,13 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				case Params.ParameterMaxValue:
 					practice.parameter = {
 						...practiceInfo.parameter,
-						parameterMaxValue: value
+						parameterMaxValue: parseInt(value)
 					};
 					return {...previousState, parameter: practice.parameter};
 				case Params.ParameterMinValue:
 					practice.parameter = {
 						...practiceInfo.parameter,
-						parameterMinValue: value
+						parameterMinValue: parseInt(value)
 					};
 					return {...previousState, parameter: practice.parameter};
 				case Params.ParameterRegex:
@@ -238,13 +238,13 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 		checkErrorMessage(Section.ParameterInfo);
 
 		if (
-			parameter.selectedCommandName.length > 0 &&
+			parameter.commandName.length > 0 &&
 			parameter.parameterName.length > 0 &&
 			parameter.parameterDefaultValue.length > 0
 		) {
 			setParametersList((previousState) => {
 				const newParameter: LabPracticeParameterInfo = {
-					selectedCommandName: parameter.selectedCommandName,
+					commandName: parameter.commandName,
 					parameterName: parameter.parameterName,
 					parameterDescription: parameter.parameterDescription,
 					parameterDefaultValue: parameter.parameterDefaultValue,
@@ -346,6 +346,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				if (!practiceId) {
 					return;
 				}
+
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const creationPromises: Promise<any>[] = [];
 				if (commandsList.length > 0) {
@@ -371,7 +372,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 								if (parametersList.length > 0) {
 									return Promise.all(
 										parametersList.map((parameter) => {
-											if (parameter.selectedCommandName === commandName) {
+											if (parameter.commandName === commandName) {
 												createLabPracticeParameter({
 													variables: {
 														input: {
@@ -380,8 +381,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 															name: parameter.parameterName,
 															description: parameter.parameterDescription,
 															defaultValue: parameter.parameterDefaultValue,
-															minValue: parseInt(parameter.parameterMinValue),
-															maxValue: parseInt(parameter.parameterMaxValue),
+															minValue: parameter.parameterMinValue,
+															maxValue: parameter.parameterMaxValue,
 															regex: parameter.parameterRegex
 														}
 													}
@@ -474,11 +475,11 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				}
 			}
 			if (section === Section.ParameterInfo) {
-				if (!notCommandSelected && practiceInfo.parameter.selectedCommandName.length === 0) {
+				if (!notCommandSelected && practiceInfo.parameter.commandName.length === 0) {
 					previousState.push({
 						identifier: Params.SelectedCommand
 					});
-				} else if (notCommandSelected && practiceInfo.parameter.selectedCommandName.length > 0) {
+				} else if (notCommandSelected && practiceInfo.parameter.commandName.length > 0) {
 					const index = errors.findIndex((error) => error.identifier === Params.SelectedCommand);
 					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
 				}
@@ -539,7 +540,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 			setParameterToEdit((previousState) => {
 				switch (param) {
 					case Params.SelectedCommand:
-						return {...previousState, selectedCommandName: value};
+						return {...previousState, commandName: value};
 					case Params.ParameterName:
 						return {...previousState, parameterName: value};
 					case Params.ParameterDescription:
@@ -547,9 +548,9 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					case Params.ParameterDefaultValue:
 						return {...previousState, parameterDefaultValue: value};
 					case Params.ParameterMinValue:
-						return {...previousState, parameterMinValue: value};
+						return {...previousState, parameterMinValue: parseInt(value)};
 					case Params.ParameterMaxValue:
-						return {...previousState, parameterMaxValue: value};
+						return {...previousState, parameterMaxValue: parseInt(value)};
 					case Params.ParameterRegex:
 						return {...previousState, parameterRegex: value};
 					default:
@@ -594,7 +595,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 		if (modalType === Section.ParameterInfo) {
 			if (
 				parameterToEdit.parameterName !== '' &&
-				parameterToEdit.selectedCommandName.length > 0 &&
+				parameterToEdit.commandName.length > 0 &&
 				parameterToEdit.parameterDefaultValue.length > 0
 			) {
 				setParametersList((previousState) => {
@@ -602,7 +603,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 
 					previousState.map((obj) => {
 						if (obj.parameterName === parameter.parameterName) {
-							obj.selectedCommandName = parameterToEdit.selectedCommandName;
+							obj.commandName = parameterToEdit.commandName;
 							obj.parameterName = parameterToEdit.parameterName;
 							obj.parameterDescription = parameterToEdit.parameterDescription;
 							obj.parameterDefaultValue = parameterToEdit.parameterDefaultValue;

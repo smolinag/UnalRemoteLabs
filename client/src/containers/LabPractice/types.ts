@@ -1,3 +1,5 @@
+import { Maybe } from "graphql/jsutils/Maybe";
+
 export interface LaboratoryInfo {
 	id: string;
 	name: string;
@@ -29,15 +31,19 @@ export interface LabPracticeCommandInfo {
 
 export interface LabPracticeParameterInfo {
 	commandId?: string;
-	selectedCommandName: string;
+	commandName: string;
 	id?:string;
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
-	parameterMaxValue: string;
-	parameterMinValue: string;
+	parameterMaxValue: Maybe<number> | undefined;
+	parameterMinValue: Maybe<number> | undefined;
 	parameterRegex: string;
 	version?: number;
+	updatedBy?: string;
+	updatedAt?: string;
+	createdBy?: string;
+	createdAt?: string;
 }
 
 export interface OutputInfo {
@@ -80,8 +86,9 @@ export enum Section {
 	CommandInfo = 'CommandInfo',
 	ModalCommandInfo = 'ModalCommandInfo',
 	ParameterInfo = 'ParameterInfo',
+	ModalParameterInfo = 'ModalParameterInfo',
 	OutputInfo = 'OutputInfo',
-	CommandModalRemove = 'commandModalRemove',
-	ParameterModalRemove = 'parameterModalRemove',
-	OutputModalRemove = 'outputModalRemove',
+	CommandModalRemove = 'CommandModalRemove',
+	ParameterModalRemove = 'ParameterModalRemove',
+	OutputModalRemove = 'OutputModalRemove',
 }

@@ -32,13 +32,15 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 	const [command, setCommand] = React.useState<Option>(initialCommand);
 
 	React.useEffect(() => {
-		if (parameter.selectedCommandName === '') {
+		if (parameter.commandName === '') {
 			setCommand(initialCommand);
+		} else {
+			setCommand({id: parameter.commandId ? parameter.commandId : '', value: parameter.commandName});
 		}
-	}, [parameter.selectedCommandName]);
+	}, [parameter.commandName]);
 
-	const handleSelectCommand = (value: string) => {
-		setCommand({value, id: value});
+	const handleSelectCommand = (value: string, id: string) => {
+		setCommand({value, id: id});
 		onValueChange
 			? onValueChange(value, Params.SelectedCommand)
 			: onValueEdit && onValueEdit(Params.SelectedCommand, value, undefined, parameter);
@@ -62,10 +64,10 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 				<DropdownComponent
 					text="Comando"
 					options={commands.map((command) => {
-						return {value: command.commandName, id: command.commandDescription};
+						return {value: command.commandName, id: command.id ? command.id : ''};
 					})}
-					onValueChange={(value) => {
-						handleSelectCommand(value);
+					onValueChange={(value, id) => {
+						handleSelectCommand(value, id);
 					}}
 					value={command.value}
 					error={checkErrorMessage(Params.SelectedCommand)}
@@ -110,7 +112,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 				<Input
 					type="number"
 					placeholder="Valor mínimo"
-					value={parameter.parameterMinValue}
+					value={parameter.parameterMinValue ? parameter.parameterMinValue : ''}
 					onValueChange={(value) =>
 						onValueChange
 							? onValueChange(value, Params.ParameterMinValue)
@@ -121,7 +123,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 				<Input
 					type="number"
 					placeholder="Valor máximo"
-					value={parameter.parameterMaxValue}
+					value={parameter.parameterMaxValue ? parameter.parameterMaxValue : ''}
 					onValueChange={(value) =>
 						onValueChange
 							? onValueChange(value, Params.ParameterMaxValue)

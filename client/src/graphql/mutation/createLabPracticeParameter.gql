@@ -11,5 +11,6 @@ mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 		regex
 		updatedBy
 		createdBy
+		_version
 	}
 }

@@ -1,0 +1,16 @@
+mutation updateLabPracticeParameter($input: UpdateLabPracticeParameterInput!) {
+	updateLabPracticeParameter(input: $input) {
+		id
+		labpracticecommandID
+		labpracticeID
+		name
+		description
+		defaultValue
+		minValue
+		maxValue
+		regex
+		updatedAt
+		updatedBy
+		_version
+	}
+}

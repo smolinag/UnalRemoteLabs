@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {
@@ -31,7 +31,7 @@ const initialCommand: Option = {id: '', value: 'Comando'};
 const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueChange, onValueEdit, errors}) => {
 	const [command, setCommand] = React.useState<Option>(initialCommand);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (parameter.commandName === '') {
 			setCommand(initialCommand);
 		} else {

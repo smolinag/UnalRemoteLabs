@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {LoadingContainer} from '../../components/UI';
@@ -14,7 +14,7 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 
 	const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: USER_ID}});
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const receivedList = data?.listUserLabPracticeSessions?.items.filter(
 			(session) =>
 				!session?._deleted &&

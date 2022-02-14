@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useNavigate} from 'react-router-dom';
 
@@ -23,9 +23,9 @@ const LaboratoriesList: React.FC<unknown> = () => {
 
 	let selectedIndex = 0;
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (data && data.listLaboratorys?.items) {
-			const labsList: Laboratory[]  = []
+			const labsList: Laboratory[] = [];
 			data?.listLaboratorys?.items.forEach((obj) => {
 				if (obj && !obj._deleted) {
 					labsList.push({
@@ -34,7 +34,7 @@ const LaboratoriesList: React.FC<unknown> = () => {
 						description: obj.description ? obj.description : '',
 						organizationId: obj.organizationID,
 						version: obj._version
-					})
+					});
 				}
 			});
 			setLabs(labsList);

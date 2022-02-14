@@ -2,7 +2,7 @@ import React from 'react';
 import {Container, Row} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
 
-import {Button} from '../../components/UI';
+import {Button} from '../components/UI';
 
 const LabTemp: React.FC<unknown> = () => {
 	const navigate = useNavigate();
@@ -18,8 +18,8 @@ const LabTemp: React.FC<unknown> = () => {
 					Laboratorios
 				</Button>
 
-				<Button loading={false} onClick={() => createPractice('/create-lab-practice-semester')}>
-					Crear Semestre
+				<Button loading={false} onClick={() => createPractice('/lab-semesters')}>
+					Listar Semestres
 				</Button>
 
 				<Button loading={false} onClick={() => createPractice('/create-lab-practice')}>
@@ -29,7 +29,11 @@ const LabTemp: React.FC<unknown> = () => {
 				<Button loading={false} onClick={() => createPractice('/create-lab-practice-session')}>
 					Crear Sesión de Práctica de Laboratorio
 				</Button>
-				
+
+				<Button loading={false} onClick={() => createPractice('/user-labs-sessions')}>
+					Sesiones de prácticas de laboratorios
+				</Button>
+
 				<Button loading={false} onClick={() => createPractice('/user-labs-sessions')}>
 					Sesiones de prácticas de laboratorios
 				</Button>

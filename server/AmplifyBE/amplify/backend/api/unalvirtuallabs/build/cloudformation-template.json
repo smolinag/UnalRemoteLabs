@@ -201,7 +201,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1675878127
+                        1676476608
                     ]
                 }
             },
@@ -1801,11 +1801,11 @@
                 "UserLabSemester",
                 "LabPracticeCommand",
                 "LabPractice",
+                "LabSemester",
                 "LabPracticeSessionCommand",
                 "LabPracticeParameter",
                 "LabPracticeDevice",
                 "LabPracticeOutput",
-                "LabSemester",
                 "Organization",
                 "Privilege"
             ]

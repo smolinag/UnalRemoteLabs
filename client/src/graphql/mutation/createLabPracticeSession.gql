@@ -2,6 +2,7 @@ mutation createLabPracticeSession($input: CreateLabPracticeSessionInput!) {
 	createLabPracticeSession(input: $input) {
 		id
 		labpracticeID
+		labSemesterID
 		description
 		startDate
 		endDate

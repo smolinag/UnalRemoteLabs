@@ -16,14 +16,24 @@ export interface LabPracticeInfo {
 
 export interface LabPracticeSession {
    id: string;
+   description: string;
    startDate: string;
    endDate: string;
-   labPracticeInfo: LabPracticeInfo
+   labPracticeInfo: LabPracticeInfo;
+   labSemesterInfo: LabSemesterInfo;
+   version: number | null;
+}
+
+export interface LabSemesterInfo {
+   id: string;
+   name: string;
+   description: string;
 }
 
 export interface UserLabPracticeSession {
    id: string;
    sessionStartDate: string;
    sessionEndDate: string;
-   labPracticeSession: LabPracticeSession
+   labPracticeSession: LabPracticeSession;
+   version: number | null;
 }

@@ -22,7 +22,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 
 	const [labSessionInfo, setSessionInfo] = useState<LabSessionInfo>(labSession);
 	const [loading, setLoading] = useState<boolean>(false);
-	const [studentList, setStudentList] = useState<Array<SessionUser>>([]);
+	const [studentList, setStudentList] = useState<SessionUser[]>([]);
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
@@ -36,6 +36,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 			const data = semesterUserList.map((item) => {
 				return {name: item ? item.user.name : '', id: item ? item.user.id : '', email: item ? item.user.email : ''};
 			});
+
 			setStudentList(data);
 		}
 	}, [semesterUsers]);

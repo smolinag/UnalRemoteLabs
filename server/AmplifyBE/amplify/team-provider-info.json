@@ -24,11 +24,11 @@
         },
         "unalvirtuallabsa596f245PreSignup": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-95908-deployment",
-          "s3Key": "amplify-builds/unalvirtuallabsa596f245PreSignup-34594b65724a4b446f66-build.zip"
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PreSignup-4d5a7975335a42354f56-build.zip"
         },
         "unalvirtuallabsa596f245PostConfirmation": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-95908-deployment",
-          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-5a75324335336756572f-build.zip"
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-6845503439696f783643-build.zip"
         }
       },
       "auth": {

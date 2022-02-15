@@ -94,7 +94,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 				<IoEnter
 					key={labPracticeSession.labPracticeInfo.laboratory.name}
 					className={classes.actionIcon}
-					onClick={() => navigate('/lab-practice', {state: {labPracticeId: labPracticeSession.labPracticeInfo.id}})}
+					onClick={() => navigate('/lab-practice', {state: {labPracticeId: labPracticeSession.labPracticeInfo.id, deviceId: labPracticeSession.labPracticeInfo.labPracticeDeviceId}})}
 				/>
 			);
 		} else {

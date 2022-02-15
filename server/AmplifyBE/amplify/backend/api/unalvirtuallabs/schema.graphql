@@ -43,7 +43,7 @@ type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: pr
   roleID: ID
 }
 
-type User @model @auth(rules: [{ allow: public },  { allow: private}]) {
+type User @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byEmail", fields: ["email"]) {
   id: ID!
   name: String!
   lastNames: String!

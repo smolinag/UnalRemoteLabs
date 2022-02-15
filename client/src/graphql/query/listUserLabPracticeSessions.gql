@@ -29,6 +29,9 @@ query listUserLabPracticeSessions($id: ID!) {
 					  name
 					  description
 				  }
+				  LabPracticeDevice {
+					 id
+				  }
 				}
 			}
 		}

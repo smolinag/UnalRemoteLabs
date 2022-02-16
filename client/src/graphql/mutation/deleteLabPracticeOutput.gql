@@ -1,0 +1,8 @@
+mutation deleteLabPracticeOutput($input: DeleteLabPracticeOutputInput!) {
+	deleteLabPracticeOutput(input: $input) {
+		id
+		name
+		_version
+		_deleted
+	}
+}

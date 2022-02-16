@@ -13,7 +13,6 @@ interface Props {
 }
 
 const TextLabel: React.FC<Props> = ({placeholder, value, tooltip, unit}) => {
-	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.textLabelWrapper}>
@@ -22,7 +21,7 @@ const TextLabel: React.FC<Props> = ({placeholder, value, tooltip, unit}) => {
 					<span className={classes.textLabel}>{value}</span>
 					{unit && <span className={classes.input}>{unit}</span>}
 					{tooltip ? (
-						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
+						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={<Tooltip>{tooltip}</Tooltip>}>
 							<BsQuestionCircle />
 						</OverlayTrigger>
 					) : (

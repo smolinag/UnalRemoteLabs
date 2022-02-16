@@ -1,0 +1,8 @@
+mutation deleteLabPracticeParameter($input: DeleteLabPracticeParameterInput!) {
+	deleteLabPracticeParameter(input: $input) {
+		id
+		name
+		_version
+		_deleted
+	}
+}

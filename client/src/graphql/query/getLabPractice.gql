@@ -1,12 +1,17 @@
 query getLabPractice($id: ID!) {
 	getLabPractice(id: $id) {
+		id
 		name
 		description
 		duration
+		_version
 		LabPracticeSessions {
 			items {
 				id
 			}
+		}
+		Laboratory {
+		  id
 		}
 	}
 }

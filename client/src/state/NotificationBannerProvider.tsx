@@ -27,7 +27,9 @@ type Props = {
 	children?: React.ReactNode;
 };
 
-const MESSAGE_CLOSE_DELAY = 3000;
+const SUCCES_MESSAGE_CLOSE_DELAY = 3000;
+const ERROR_MESSAGE_CLOSE_DELAY = 4000;
+
 
 let closeTimer: NodeJS.Timeout | undefined;
 
@@ -39,6 +41,7 @@ const NotificationBannerProvider: React.FC = ({children}: Props) => {
 			clearTimeout(closeTimer);
 		}
 		setState({visible: true, type: 'error', message});
+		closeTimer = setTimeout(clearBanner, ERROR_MESSAGE_CLOSE_DELAY);
 	};
 
 	const showSuccessBanner = (message: string) => {
@@ -46,7 +49,7 @@ const NotificationBannerProvider: React.FC = ({children}: Props) => {
 			clearTimeout(closeTimer);
 		}
 		setState({visible: true, type: 'success', message});
-		closeTimer = setTimeout(clearBanner, MESSAGE_CLOSE_DELAY);
+		closeTimer = setTimeout(clearBanner, SUCCES_MESSAGE_CLOSE_DELAY);
 	};
 
 	const clearBanner = () => {

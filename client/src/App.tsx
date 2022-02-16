@@ -17,7 +17,8 @@ import {
 	LaboratoriesList,
 	LaboratoryEdition,
 	LaboratoryCreation,
-	LabSessionProgrammingView
+	LabSessionProgrammingView,
+	LabPracticeEdition
 } from './containers';
 import authComponents from './login/authComponents';
 
@@ -46,6 +47,7 @@ const App = (): JSX.Element => {
 							<Route path="/lab-edition" element={<LaboratoryEdition />} />
 
 							<Route path="/create-lab-practice" element={<LabPracticeCreation />} />
+							<Route path="/edit-lab-practice" element={<LabPracticeEdition />} />
 
 							{/* Crear componente para rutas no existentes */}
 							<Route path="*" element={<div> Pagina no existe </div>} />

@@ -1,0 +1,12 @@
+mutation updateLabPracticeOutput($input: UpdateLabPracticeOutputInput!) {
+	updateLabPracticeOutput(input: $input) {
+		id
+		labpracticeID
+		name
+		description
+		units
+		updatedAt
+		updatedBy
+		_version
+	}
+}

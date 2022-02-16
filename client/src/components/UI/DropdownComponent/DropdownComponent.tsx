@@ -23,8 +23,6 @@ interface Props {
 }
 
 const DropdownComponent: React.FC<Props> = ({text, options, required, tooltip, value, onValueChange, error}) => {
-	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
-
 	const renderItem = (option: Option): JSX.Element => {
 		return (
 			<div key={option.id} className={classes.command}>
@@ -47,7 +45,7 @@ const DropdownComponent: React.FC<Props> = ({text, options, required, tooltip, v
 					</DropdownButton>
 
 					{tooltip && (
-						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
+						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={<Tooltip>{tooltip}</Tooltip>}>
 							<BsQuestionCircle />
 						</OverlayTrigger>
 					)}

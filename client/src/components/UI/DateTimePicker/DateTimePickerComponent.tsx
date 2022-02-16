@@ -25,8 +25,6 @@ const DateTimePickerComponent: React.FC<Props> = ({
 	minDate,
 	maxDate
 }) => {
-	const renderTooltip = () => <Tooltip>{tooltip}</Tooltip>;
-
 	return (
 		<div className={classes.wrapper}>
 			<div className={classes.datetimepickerWrapper}>
@@ -44,7 +42,7 @@ const DateTimePickerComponent: React.FC<Props> = ({
 						maxDate={maxDate}
 					/>
 					{tooltip ? (
-						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={renderTooltip}>
+						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={<Tooltip>{tooltip}</Tooltip>}>
 							<BsQuestionCircle />
 						</OverlayTrigger>
 					) : (

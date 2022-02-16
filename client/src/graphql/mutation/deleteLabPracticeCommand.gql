@@ -1,0 +1,8 @@
+mutation deleteLabPracticeCommand($input: DeleteLabPracticeCommandInput!) {
+	deleteLabPracticeCommand(input: $input) {
+		id
+		name
+		_version
+		_deleted
+	}
+}

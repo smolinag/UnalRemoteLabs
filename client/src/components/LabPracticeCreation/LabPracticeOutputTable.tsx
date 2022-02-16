@@ -18,7 +18,7 @@ const COLUMNS = [
 
 const LabPracticeOutputTable: React.FC<Props> = ({data, onAction}) => {
 	const mapOutput = ({
-      outputName: outputName,
+      outputName,
       outputDescription,
       outputUnit
 	}: OutputInfo): string[] => [
@@ -29,7 +29,7 @@ const LabPracticeOutputTable: React.FC<Props> = ({data, onAction}) => {
 
 	return (
 		<Row className="section">
-			<h5>Comandos añadidos</h5>
+			<h5>Parámetros de salida añadidos</h5>
 			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} editable removable onAction={onAction}/>
 		</Row>
 	);

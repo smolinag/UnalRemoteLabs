@@ -1,9 +1,10 @@
 .banner {
-	position: absolute;
+	position: sticky;
 	left: 50%;
 	transform: translateX(-50%);
 	top: 20px;
-	z-index: 999;
+	z-index: 999999999;
 	width: 400px;
-	min-height: 60px;
+
 }
+

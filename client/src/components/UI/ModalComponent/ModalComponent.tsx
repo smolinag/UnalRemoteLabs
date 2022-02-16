@@ -6,19 +6,19 @@ import Button from '../Button/Button';
 interface Props {
 	display: boolean;
 	title: string;
-	// loading: boolean;
 	onDisplay: (display: boolean) => void;
 	onSave: () => void;
+	loadingAccept?: boolean;
 }
 
-const ModalComponent: React.FC<Props> = ({children, display, title, onDisplay, onSave}) => {
+const ModalComponent: React.FC<Props> = ({children, display, title, onDisplay, onSave, loadingAccept=false}) => {
 	const handleClose = () => {
 		onDisplay(!display);
 	};
 
 	return (
 		<>
-			<Modal show={display} onHide={handleClose}>
+			<Modal show={display} onHide={handleClose} centered >
 				<Modal.Header closeButton>
 					<Modal.Title>{title}</Modal.Title>
 				</Modal.Header>
@@ -27,7 +27,7 @@ const ModalComponent: React.FC<Props> = ({children, display, title, onDisplay, o
 					<Button loading={false} variant="red" onClick={handleClose}>
 						Cancelar
 					</Button>
-					<Button loading={false} variant="green" onClick={onSave}>
+					<Button loading={loadingAccept} variant="green" onClick={onSave}>
 						Aceptar
 					</Button>
 				</Modal.Footer>

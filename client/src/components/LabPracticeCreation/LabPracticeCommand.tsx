@@ -22,9 +22,10 @@ interface Props {
 		parameter?: LabPracticeParameterInfo,
 		output?: OutputInfo
 	) => void;
+	modal?: boolean;
 }
 
-const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdit, errors}) => {
+const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdit, errors, modal = false}) => {
 	const checkErrorMessage = (parameter: string): boolean => {
 		let message = false;
 		errors.map((error) => {
@@ -38,9 +39,10 @@ const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdi
 
 	return (
 		<Row className="section">
-			<h3 className="title">Commandos de la práctica de laboratorio</h3>
+			{!modal ? <h3 className="title">Commandos de la práctica de laboratorio</h3> : null}
 
-			<h5>Información de los comandos</h5>
+			{!modal ? <h5>Información de los comandos</h5> : <h5>Información del comando</h5>}
+
 			<div className={classes.options}>
 				<Input
 					type="text"
@@ -53,7 +55,7 @@ const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdi
 							? onValueChange(value, Params.CommandName)
 							: onValueEdit && onValueEdit(Params.CommandName, value, command)
 					}
-					error={checkErrorMessage(Params.CommandName)}
+					error={checkErrorMessage(!modal ? Params.CommandName : Params.ModalCommandName)}
 				/>
 				<Input
 					type="text"

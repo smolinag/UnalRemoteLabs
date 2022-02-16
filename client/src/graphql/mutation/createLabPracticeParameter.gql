@@ -1,7 +1,6 @@
 mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 	createLabPracticeParameter(input: $input) {
 		id
-		labpracticecommandID
 		labpracticeID
 		name
 		description
@@ -11,5 +10,10 @@ mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 		regex
 		updatedBy
 		createdBy
+		_version
+		LabPracticeCommand {
+		  id
+		  name
+		}
 	}
 }

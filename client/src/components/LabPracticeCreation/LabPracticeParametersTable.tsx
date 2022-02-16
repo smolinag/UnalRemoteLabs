@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 
 import {LabPracticeParameterInfo} from '../../containers/LabPractice/types';
 import {Table} from '../UI/index';
-import { Action } from '../UI/Table/Table';
+import {Action} from '../UI/Table/Table';
 
 interface Props {
 	data: LabPracticeParameterInfo[];
@@ -15,29 +15,26 @@ const COLUMNS = [
 	'Nombre del parámetro',
 	'Descripción del parámetro',
 	'Valor por defecto',
-	'Unidad',
-	'Valor máximo',
 	'Valor mínimo',
+	'Valor máximo',
 	'Expresión regular'
 ];
 
 const mapOutput = ({
-	selectedCommandName,
+	commandName,
 	parameterName,
 	parameterDescription,
 	parameterDefaultValue,
-	parameterUnit,
-	parameterMaxValue,
 	parameterMinValue,
+	parameterMaxValue,
 	parameterRegex
 }: LabPracticeParameterInfo): string[] => [
-	selectedCommandName,
+	commandName,
 	parameterName,
 	parameterDescription,
 	parameterDefaultValue,
-	parameterUnit,
-	parameterMaxValue,
-	parameterMinValue,
+	parameterMinValue ? parameterMinValue.toString() : '',
+	parameterMaxValue ? parameterMaxValue.toString() : '',
 	parameterRegex
 ];
 
@@ -46,7 +43,16 @@ const LabPracticeParametersTable: React.FC<Props> = ({data, onAction}) => {
 	return (
 		<Row className="section">
 			<h5>Comandos añadidos</h5>
-			<Table headers={COLUMNS} data={data.map(mapOutput)} overflow stickyHeader maxHeight={'400px'} editable removable onAction={onAction}/>
+			<Table
+				headers={COLUMNS}
+				data={data.map((obj) => (obj !== undefined ? mapOutput(obj) : []))}
+				overflow
+				stickyHeader
+				maxHeight={'400px'}
+				editable
+				removable
+				onAction={onAction}
+			/>
 		</Row>
 	);
 };

@@ -1,3 +1,5 @@
+import { Maybe } from "graphql/jsutils/Maybe";
+
 export interface LaboratoryInfo {
 	id: string;
 	name: string;
@@ -5,35 +7,54 @@ export interface LaboratoryInfo {
 
 export interface LabPracticeInfo {
 	laboratoryId: string;
+	id?: string;
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
+	version?: number;
 	command: LabPracticeCommandInfo;
 	parameter: LabPracticeParameterInfo;
 	output: OutputInfo
 }
 
 export interface LabPracticeCommandInfo {
+	id?: string;
 	commandName: string;
+	label?: string;
 	commandDescription: string;
+	version?: number;
+	updatedBy?: string;
+	updatedAt?: string;
+	createdBy?: string;
+	createdAt?: string;
+	action?: ActionType
 }
 
 export interface LabPracticeParameterInfo {
-	selectedCommandName: string;
+	commandId?: string;
+	commandName: string;
+	id?:string;
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
-	parameterUnit: string;
-	parameterMaxValue: string;
-	parameterMinValue: string;
+	parameterMinValue: Maybe<number> | undefined;
+	parameterMaxValue: Maybe<number> | undefined;
 	parameterRegex: string;
+	version?: number;
+	updatedBy?: string;
+	updatedAt?: string;
+	createdBy?: string;
+	createdAt?: string;
+	action?: ActionType
 }
 
 export interface OutputInfo {
+	id?: string;
 	outputName: string;
 	outputDescription: string;
 	outputUnit: string;
 	outputType: string;
+	version?: number;
 }
 
 export enum Params {
@@ -46,7 +67,6 @@ export enum Params {
 	ParameterName = 'parameterName',
 	ParameterDescription = 'parameterDescription',
 	ParameterDefaultValue = 'parameterDefaultValue',
-	ParameterUnit = 'parameterUnit',
 	ParameterMaxValue = 'parameterMaxValue',
 	ParameterMinValue = 'parameterMinValue',
 	ParameterRegex = 'parameterRegex',
@@ -55,7 +75,8 @@ export enum Params {
 	OutputDescription = 'outputDescription',
 	OutputUnit = 'outputUnit',
 	AddCommand = 'addCommand',
-	Laboratory = 'laboratoryId'
+	Laboratory = 'laboratoryId',
+	ModalCommandName = 'modalCommandName'
 }
 
 export interface ErrorIdentifier {
@@ -65,6 +86,18 @@ export interface ErrorIdentifier {
 export enum Section {
 	PracticeInfo = 'PracticeInfo',
 	CommandInfo = 'CommandInfo',
+	ModalCommandInfo = 'ModalCommandInfo',
 	ParameterInfo = 'ParameterInfo',
+	ModalParameterInfo = 'ModalParameterInfo',
 	OutputInfo = 'OutputInfo',
+	CommandModalRemove = 'CommandModalRemove',
+	ParameterModalRemove = 'ParameterModalRemove',
+	OutputModalRemove = 'OutputModalRemove',
+}
+
+export enum ActionType {
+	Nothing = 0,
+	Edit = 1,
+	Add = 2,
+	Remove = 3,
 }

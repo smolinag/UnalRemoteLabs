@@ -2350,7 +2350,6 @@ export type CreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 		{__typename?: 'LabPracticeParameter'} & Pick<
 			LabPracticeParameter,
 			| 'id'
-			| 'labpracticecommandID'
 			| 'labpracticeID'
 			| 'name'
 			| 'description'
@@ -2360,7 +2359,8 @@ export type CreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 			| 'regex'
 			| 'updatedBy'
 			| 'createdBy'
-		>
+			| '_version'
+		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>}
 	>;
 };
 
@@ -2427,6 +2427,36 @@ export type CreateUserLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
 	createUserLabPracticeSession?: Maybe<{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'id'>>;
 };
 
+export type DeleteLabPracticeCommandMutationVariables = Exact<{
+	input: DeleteLabPracticeCommandInput;
+}>;
+
+export type DeleteLabPracticeCommandMutation = {__typename?: 'Mutation'} & {
+	deleteLabPracticeCommand?: Maybe<
+		{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name' | '_version' | '_deleted'>
+	>;
+};
+
+export type DeleteLabPracticeOutputMutationVariables = Exact<{
+	input: DeleteLabPracticeOutputInput;
+}>;
+
+export type DeleteLabPracticeOutputMutation = {__typename?: 'Mutation'} & {
+	deleteLabPracticeOutput?: Maybe<
+		{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'name' | '_version' | '_deleted'>
+	>;
+};
+
+export type DeleteLabPracticeParameterMutationVariables = Exact<{
+	input: DeleteLabPracticeParameterInput;
+}>;
+
+export type DeleteLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
+	deleteLabPracticeParameter?: Maybe<
+		{__typename?: 'LabPracticeParameter'} & Pick<LabPracticeParameter, 'id' | 'name' | '_version' | '_deleted'>
+	>;
+};
+
 export type DeleteLabPracticeSessionMutationVariables = Exact<{
 	input: DeleteLabPracticeSessionInput;
 }>;
@@ -2453,6 +2483,68 @@ export type PublishMqttMessageMutationVariables = Exact<{
 }>;
 
 export type PublishMqttMessageMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'publishMqttMessage'>;
+
+export type UpdateLabPracticeMutationVariables = Exact<{
+	input: UpdateLabPracticeInput;
+}>;
+
+export type UpdateLabPracticeMutation = {__typename?: 'Mutation'} & {
+	updateLabPractice?: Maybe<
+		{__typename?: 'LabPractice'} & Pick<
+			LabPractice,
+			'id' | 'name' | 'description' | 'duration' | 'updatedAt' | 'updatedBy' | '_version'
+		>
+	>;
+};
+
+export type UpdateLabPracticeCommandMutationVariables = Exact<{
+	input: UpdateLabPracticeCommandInput;
+}>;
+
+export type UpdateLabPracticeCommandMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeCommand?: Maybe<
+		{__typename?: 'LabPracticeCommand'} & Pick<
+			LabPracticeCommand,
+			'id' | 'name' | 'description' | 'labelName' | 'updatedAt' | 'updatedBy' | '_version'
+		>
+	>;
+};
+
+export type UpdateLabPracticeOutputMutationVariables = Exact<{
+	input: UpdateLabPracticeOutputInput;
+}>;
+
+export type UpdateLabPracticeOutputMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeOutput?: Maybe<
+		{__typename?: 'LabPracticeOutput'} & Pick<
+			LabPracticeOutput,
+			'id' | 'labpracticeID' | 'name' | 'description' | 'units' | 'updatedAt' | 'updatedBy' | '_version'
+		>
+	>;
+};
+
+export type UpdateLabPracticeParameterMutationVariables = Exact<{
+	input: UpdateLabPracticeParameterInput;
+}>;
+
+export type UpdateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeParameter?: Maybe<
+		{__typename?: 'LabPracticeParameter'} & Pick<
+			LabPracticeParameter,
+			| 'id'
+			| 'labpracticeID'
+			| 'name'
+			| 'description'
+			| 'defaultValue'
+			| 'minValue'
+			| 'maxValue'
+			| 'regex'
+			| 'updatedAt'
+			| 'updatedBy'
+			| '_version'
+		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>}
+	>;
+};
 
 export type UpdateLabPracticeSessionMutationVariables = Exact<{
 	input: UpdateLabPracticeSessionInput;
@@ -2510,12 +2602,13 @@ export type GetLabPracticeQueryVariables = Exact<{
 
 export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 	getLabPractice?: Maybe<
-		{__typename?: 'LabPractice'} & Pick<LabPractice, 'name' | 'description' | 'duration'> & {
+		{__typename?: 'LabPractice'} & Pick<LabPractice, 'id' | 'name' | 'description' | 'duration' | '_version'> & {
 				LabPracticeSessions?: Maybe<
 					{__typename?: 'ModelLabPracticeSessionConnection'} & {
 						items: Array<Maybe<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>>;
 					}
 				>;
+				Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id'>>;
 			}
 	>;
 };
@@ -2562,7 +2655,7 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'LabPracticeCommand'} & Pick<
 						LabPracticeCommand,
-						'id' | 'name' | 'labelName' | 'labpracticeID'
+						'id' | 'name' | 'description' | 'labelName' | 'labpracticeID' | '_version' | '_deleted'
 					> & {
 							LabPracticeParameters?: Maybe<
 								{__typename?: 'ModelLabPracticeParameterConnection'} & {
@@ -2570,7 +2663,16 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 										Maybe<
 											{__typename?: 'LabPracticeParameter'} & Pick<
 												LabPracticeParameter,
-												'id' | 'name' | 'labelName' | 'defaultValue'
+												| 'id'
+												| 'name'
+												| 'description'
+												| 'labelName'
+												| 'defaultValue'
+												| 'maxValue'
+												| 'minValue'
+												| 'regex'
+												| '_version'
+												| '_deleted'
 											>
 										>
 									>;
@@ -2590,7 +2692,14 @@ export type ListLabPracticeOutputsQueryVariables = Exact<{
 export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	listLabPracticeOutputs?: Maybe<
 		{__typename?: 'ModelLabPracticeOutputConnection'} & {
-			items: Array<Maybe<{__typename?: 'LabPracticeOutput'} & Pick<LabPracticeOutput, 'id' | 'name'>>>;
+			items: Array<
+				Maybe<
+					{__typename?: 'LabPracticeOutput'} & Pick<
+						LabPracticeOutput,
+						'id' | 'name' | 'description' | 'units' | 'outputType' | '_version' | '_deleted'
+					>
+				>
+			>;
 		}
 	>;
 };
@@ -2856,7 +2965,6 @@ export const CreateLabPracticeParameterDocument = gql`
 	mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 		createLabPracticeParameter(input: $input) {
 			id
-			labpracticecommandID
 			labpracticeID
 			name
 			description
@@ -2866,6 +2974,11 @@ export const CreateLabPracticeParameterDocument = gql`
 			regex
 			updatedBy
 			createdBy
+			_version
+			LabPracticeCommand {
+				id
+				name
+			}
 		}
 	}
 `;
@@ -3157,6 +3270,150 @@ export type CreateUserLabPracticeSessionMutationOptions = Apollo.BaseMutationOpt
 	CreateUserLabPracticeSessionMutation,
 	CreateUserLabPracticeSessionMutationVariables
 >;
+export const DeleteLabPracticeCommandDocument = gql`
+	mutation deleteLabPracticeCommand($input: DeleteLabPracticeCommandInput!) {
+		deleteLabPracticeCommand(input: $input) {
+			id
+			name
+			_version
+			_deleted
+		}
+	}
+`;
+export type DeleteLabPracticeCommandMutationFn = Apollo.MutationFunction<
+	DeleteLabPracticeCommandMutation,
+	DeleteLabPracticeCommandMutationVariables
+>;
+
+/**
+ * __useDeleteLabPracticeCommandMutation__
+ *
+ * To run a mutation, you first call `useDeleteLabPracticeCommandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLabPracticeCommandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLabPracticeCommandMutation, { data, loading, error }] = useDeleteLabPracticeCommandMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteLabPracticeCommandMutation(
+	baseOptions?: Apollo.MutationHookOptions<DeleteLabPracticeCommandMutation, DeleteLabPracticeCommandMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<DeleteLabPracticeCommandMutation, DeleteLabPracticeCommandMutationVariables>(
+		DeleteLabPracticeCommandDocument,
+		options
+	);
+}
+export type DeleteLabPracticeCommandMutationHookResult = ReturnType<typeof useDeleteLabPracticeCommandMutation>;
+export type DeleteLabPracticeCommandMutationResult = Apollo.MutationResult<DeleteLabPracticeCommandMutation>;
+export type DeleteLabPracticeCommandMutationOptions = Apollo.BaseMutationOptions<
+	DeleteLabPracticeCommandMutation,
+	DeleteLabPracticeCommandMutationVariables
+>;
+export const DeleteLabPracticeOutputDocument = gql`
+	mutation deleteLabPracticeOutput($input: DeleteLabPracticeOutputInput!) {
+		deleteLabPracticeOutput(input: $input) {
+			id
+			name
+			_version
+			_deleted
+		}
+	}
+`;
+export type DeleteLabPracticeOutputMutationFn = Apollo.MutationFunction<
+	DeleteLabPracticeOutputMutation,
+	DeleteLabPracticeOutputMutationVariables
+>;
+
+/**
+ * __useDeleteLabPracticeOutputMutation__
+ *
+ * To run a mutation, you first call `useDeleteLabPracticeOutputMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLabPracticeOutputMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLabPracticeOutputMutation, { data, loading, error }] = useDeleteLabPracticeOutputMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteLabPracticeOutputMutation(
+	baseOptions?: Apollo.MutationHookOptions<DeleteLabPracticeOutputMutation, DeleteLabPracticeOutputMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<DeleteLabPracticeOutputMutation, DeleteLabPracticeOutputMutationVariables>(
+		DeleteLabPracticeOutputDocument,
+		options
+	);
+}
+export type DeleteLabPracticeOutputMutationHookResult = ReturnType<typeof useDeleteLabPracticeOutputMutation>;
+export type DeleteLabPracticeOutputMutationResult = Apollo.MutationResult<DeleteLabPracticeOutputMutation>;
+export type DeleteLabPracticeOutputMutationOptions = Apollo.BaseMutationOptions<
+	DeleteLabPracticeOutputMutation,
+	DeleteLabPracticeOutputMutationVariables
+>;
+export const DeleteLabPracticeParameterDocument = gql`
+	mutation deleteLabPracticeParameter($input: DeleteLabPracticeParameterInput!) {
+		deleteLabPracticeParameter(input: $input) {
+			id
+			name
+			_version
+			_deleted
+		}
+	}
+`;
+export type DeleteLabPracticeParameterMutationFn = Apollo.MutationFunction<
+	DeleteLabPracticeParameterMutation,
+	DeleteLabPracticeParameterMutationVariables
+>;
+
+/**
+ * __useDeleteLabPracticeParameterMutation__
+ *
+ * To run a mutation, you first call `useDeleteLabPracticeParameterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLabPracticeParameterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLabPracticeParameterMutation, { data, loading, error }] = useDeleteLabPracticeParameterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteLabPracticeParameterMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		DeleteLabPracticeParameterMutation,
+		DeleteLabPracticeParameterMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<DeleteLabPracticeParameterMutation, DeleteLabPracticeParameterMutationVariables>(
+		DeleteLabPracticeParameterDocument,
+		options
+	);
+}
+export type DeleteLabPracticeParameterMutationHookResult = ReturnType<typeof useDeleteLabPracticeParameterMutation>;
+export type DeleteLabPracticeParameterMutationResult = Apollo.MutationResult<DeleteLabPracticeParameterMutation>;
+export type DeleteLabPracticeParameterMutationOptions = Apollo.BaseMutationOptions<
+	DeleteLabPracticeParameterMutation,
+	DeleteLabPracticeParameterMutationVariables
+>;
 export const DeleteLabPracticeSessionDocument = gql`
 	mutation deleteLabPracticeSession($input: DeleteLabPracticeSessionInput!) {
 		deleteLabPracticeSession(input: $input) {
@@ -3293,6 +3550,218 @@ export type PublishMqttMessageMutationResult = Apollo.MutationResult<PublishMqtt
 export type PublishMqttMessageMutationOptions = Apollo.BaseMutationOptions<
 	PublishMqttMessageMutation,
 	PublishMqttMessageMutationVariables
+>;
+export const UpdateLabPracticeDocument = gql`
+	mutation updateLabPractice($input: UpdateLabPracticeInput!) {
+		updateLabPractice(input: $input) {
+			id
+			name
+			description
+			duration
+			updatedAt
+			updatedBy
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeMutation,
+	UpdateLabPracticeMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeMutation, { data, loading, error }] = useUpdateLabPracticeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLabPracticeMutation, UpdateLabPracticeMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeMutation, UpdateLabPracticeMutationVariables>(
+		UpdateLabPracticeDocument,
+		options
+	);
+}
+export type UpdateLabPracticeMutationHookResult = ReturnType<typeof useUpdateLabPracticeMutation>;
+export type UpdateLabPracticeMutationResult = Apollo.MutationResult<UpdateLabPracticeMutation>;
+export type UpdateLabPracticeMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeMutation,
+	UpdateLabPracticeMutationVariables
+>;
+export const UpdateLabPracticeCommandDocument = gql`
+	mutation updateLabPracticeCommand($input: UpdateLabPracticeCommandInput!) {
+		updateLabPracticeCommand(input: $input) {
+			id
+			name
+			description
+			labelName
+			updatedAt
+			updatedBy
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeCommandMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeCommandMutation,
+	UpdateLabPracticeCommandMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeCommandMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeCommandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeCommandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeCommandMutation, { data, loading, error }] = useUpdateLabPracticeCommandMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeCommandMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLabPracticeCommandMutation, UpdateLabPracticeCommandMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeCommandMutation, UpdateLabPracticeCommandMutationVariables>(
+		UpdateLabPracticeCommandDocument,
+		options
+	);
+}
+export type UpdateLabPracticeCommandMutationHookResult = ReturnType<typeof useUpdateLabPracticeCommandMutation>;
+export type UpdateLabPracticeCommandMutationResult = Apollo.MutationResult<UpdateLabPracticeCommandMutation>;
+export type UpdateLabPracticeCommandMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeCommandMutation,
+	UpdateLabPracticeCommandMutationVariables
+>;
+export const UpdateLabPracticeOutputDocument = gql`
+	mutation updateLabPracticeOutput($input: UpdateLabPracticeOutputInput!) {
+		updateLabPracticeOutput(input: $input) {
+			id
+			labpracticeID
+			name
+			description
+			units
+			updatedAt
+			updatedBy
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeOutputMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeOutputMutation,
+	UpdateLabPracticeOutputMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeOutputMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeOutputMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeOutputMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeOutputMutation, { data, loading, error }] = useUpdateLabPracticeOutputMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeOutputMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLabPracticeOutputMutation, UpdateLabPracticeOutputMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeOutputMutation, UpdateLabPracticeOutputMutationVariables>(
+		UpdateLabPracticeOutputDocument,
+		options
+	);
+}
+export type UpdateLabPracticeOutputMutationHookResult = ReturnType<typeof useUpdateLabPracticeOutputMutation>;
+export type UpdateLabPracticeOutputMutationResult = Apollo.MutationResult<UpdateLabPracticeOutputMutation>;
+export type UpdateLabPracticeOutputMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeOutputMutation,
+	UpdateLabPracticeOutputMutationVariables
+>;
+export const UpdateLabPracticeParameterDocument = gql`
+	mutation updateLabPracticeParameter($input: UpdateLabPracticeParameterInput!) {
+		updateLabPracticeParameter(input: $input) {
+			id
+			LabPracticeCommand {
+				id
+				name
+			}
+			labpracticeID
+			name
+			description
+			defaultValue
+			minValue
+			maxValue
+			regex
+			updatedAt
+			updatedBy
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeParameterMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeParameterMutation,
+	UpdateLabPracticeParameterMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeParameterMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeParameterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeParameterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeParameterMutation, { data, loading, error }] = useUpdateLabPracticeParameterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeParameterMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		UpdateLabPracticeParameterMutation,
+		UpdateLabPracticeParameterMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeParameterMutation, UpdateLabPracticeParameterMutationVariables>(
+		UpdateLabPracticeParameterDocument,
+		options
+	);
+}
+export type UpdateLabPracticeParameterMutationHookResult = ReturnType<typeof useUpdateLabPracticeParameterMutation>;
+export type UpdateLabPracticeParameterMutationResult = Apollo.MutationResult<UpdateLabPracticeParameterMutation>;
+export type UpdateLabPracticeParameterMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeParameterMutation,
+	UpdateLabPracticeParameterMutationVariables
 >;
 export const UpdateLabPracticeSessionDocument = gql`
 	mutation updateLabPracticeSession($input: UpdateLabPracticeSessionInput!) {
@@ -3457,13 +3926,18 @@ export type GetUserLabPracticeSessionQueryResult = Apollo.QueryResult<
 export const GetLabPracticeDocument = gql`
 	query getLabPractice($id: ID!) {
 		getLabPractice(id: $id) {
+			id
 			name
 			description
 			duration
+			_version
 			LabPracticeSessions {
 				items {
 					id
 				}
+			}
+			Laboratory {
+				id
 			}
 		}
 	}
@@ -3606,14 +4080,23 @@ export const ListLabPracticeCommandsDocument = gql`
 			items {
 				id
 				name
+				description
 				labelName
 				labpracticeID
+				_version
+				_deleted
 				LabPracticeParameters {
 					items {
 						id
 						name
+						description
 						labelName
 						defaultValue
+						maxValue
+						minValue
+						regex
+						_version
+						_deleted
 					}
 				}
 			}
@@ -3667,6 +4150,11 @@ export const ListLabPracticeOutputsDocument = gql`
 			items {
 				id
 				name
+				description
+				units
+				outputType
+				_version
+				_deleted
 			}
 		}
 	}

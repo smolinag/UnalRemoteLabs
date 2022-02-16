@@ -1094,12 +1094,16 @@
             "deprecationReason": null
           },
           {
-            "name": "professorEmailList",
+            "name": "professor",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "AWSJSON",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -5031,13 +5035,17 @@
             "deprecationReason": null
           },
           {
-            "name": "professorEmailList",
+            "name": "professor",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "AWSJSON",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -8868,7 +8876,7 @@
             "deprecationReason": null
           },
           {
-            "name": "professorEmailList",
+            "name": "professor",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -9086,7 +9094,7 @@
             "deprecationReason": null
           },
           {
-            "name": "professorEmailList",
+            "name": "professor",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",
@@ -19261,11 +19269,11 @@
             "deprecationReason": null
           },
           {
-            "name": "professorEmailList",
+            "name": "professor",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "AWSJSON",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,

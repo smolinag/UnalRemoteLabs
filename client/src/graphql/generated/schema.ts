@@ -114,7 +114,7 @@ export type CreateLabSemesterInput = {
 	id?: Maybe<Scalars['ID']>;
 	semesterName: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
-	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	professor: Scalars['String'];
 	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
 	studentEmailList: Scalars['AWSJSON'];
 	updatedBy?: Maybe<Scalars['String']>;
@@ -512,7 +512,7 @@ export type LabSemester = {
 	id: Scalars['ID'];
 	semesterName: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
-	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	professor: Scalars['String'];
 	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
 	studentEmailList: Scalars['AWSJSON'];
 	updatedBy?: Maybe<Scalars['String']>;
@@ -897,7 +897,7 @@ export type ModelLabPracticeSessionFilterInput = {
 export type ModelLabSemesterConditionInput = {
 	semesterName?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	professorEmailList?: Maybe<ModelStringInput>;
+	professor?: Maybe<ModelStringInput>;
 	monitorEmailList?: Maybe<ModelStringInput>;
 	studentEmailList?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
@@ -919,7 +919,7 @@ export type ModelLabSemesterFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	semesterName?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	professorEmailList?: Maybe<ModelStringInput>;
+	professor?: Maybe<ModelStringInput>;
 	monitorEmailList?: Maybe<ModelStringInput>;
 	studentEmailList?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
@@ -2128,7 +2128,7 @@ export type UpdateLabSemesterInput = {
 	id: Scalars['ID'];
 	semesterName?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
-	professorEmailList?: Maybe<Scalars['AWSJSON']>;
+	professor?: Maybe<Scalars['String']>;
 	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
 	studentEmailList?: Maybe<Scalars['AWSJSON']>;
 	updatedBy?: Maybe<Scalars['String']>;

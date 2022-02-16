@@ -163,7 +163,7 @@ type LabSemester @model @auth(rules: [{ allow: public },  { allow: private}]) @k
   id: ID!
   semesterName: String!
   description: String
-  professorEmailList: AWSJSON
+  professor: String!
   monitorEmailList: AWSJSON
   studentEmailList: AWSJSON!
   updatedBy: String

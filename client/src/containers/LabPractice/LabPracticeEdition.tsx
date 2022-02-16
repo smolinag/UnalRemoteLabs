@@ -1,5 +1,6 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
+import { useLocation } from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
 
 import {
@@ -24,6 +25,7 @@ import {
 	useUpdateLabPracticeMutation,
 	useUpdateLabPracticeCommandMutation,
 	useUpdateLabPracticeParameterMutation,
+	useUpdateLabPracticeOutputMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
 	useCreateLabPracticeOutputMutation
@@ -37,11 +39,12 @@ import {
 	LabPracticeInfo,
 	ErrorIdentifier,
 	Section,
-	LaboratoryInfo
+	LaboratoryInfo,
+	ActionType
 } from './types';
 
-const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
-const DEVICE_ID = '850bbd31-eab1-4eb6-aa16-51886d706fb9';
+// const PRACTICE_ID = 'd1ae909c-b068-4e5c-ab46-6b0ca7fb1567';
+// const DEVICE_ID = '850bbd31-eab1-4eb6-aa16-51886d706fb9';
 
 export interface LocationState {
 	labPracticeId: string;
@@ -79,6 +82,9 @@ const initialPracticeValue: LabPracticeInfo = {
 let rowIndex = -1;
 
 const LabPracticeEdition: React.FC<unknown> = () => {
+	const [paramsAlreadyIn, setParamsAlreadyIn] = React.useState<boolean>(false);
+	const [outputsAlreadyIn, setOutputsAlreadyIn] = React.useState<boolean>(false);
+
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
 	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
@@ -104,15 +110,15 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
-	// const location = useLocation();
-	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
-	// const deviceId = (location.state as LocationState)?.deviceId;
+	const location = useLocation();
+	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	const deviceId = (location.state as LocationState)?.deviceId;
 
 	const {data: laboratoriesList} = useListLaboratoriesQuery();
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
-	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
+	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: DEVICE_ID}
+		variables: {id: deviceId}
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
@@ -122,6 +128,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [updateLabPractice] = useUpdateLabPracticeMutation({});
 	const [updateLabPracticeCommand] = useUpdateLabPracticeCommandMutation({});
 	const [updateLabPracticeParameter] = useUpdateLabPracticeParameterMutation({});
+	const [updateLabPracticeOutput] = useUpdateLabPracticeOutputMutation({});
 
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
@@ -168,8 +175,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	// Load commands and parameters info
 	React.useEffect(() => {
-		if (labCommandsDataDb?.listLabPracticeCommands?.items != null) {
+		if (labCommandsDataDb?.listLabPracticeCommands?.items != null && !paramsAlreadyIn) {
 			setLoading(true);
+			setParamsAlreadyIn(true);
 
 			setCommandsList(() => {
 				const tempCommands: LabPracticeCommandInfo[] = [];
@@ -180,7 +188,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							commandName: command?.name as string,
 							commandDescription: command?.description ? command?.description : '',
 							label: (command?.labelName ?? command?.name) as string,
-							version: command?._version
+							version: command?._version,
+							action: ActionType.Nothing
 						});
 					}
 				});
@@ -203,7 +212,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 									parameterMaxValue: parameter?.maxValue,
 									parameterMinValue: parameter?.minValue,
 									parameterRegex: parameter?.regex ? parameter?.regex : '',
-									version: parameter._version
+									version: parameter._version,
+									action: ActionType.Nothing
 								});
 							}
 						});
@@ -218,7 +228,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	// Load outputs info
 	React.useEffect(() => {
-		if (practiceOutputsDb?.listLabPracticeOutputs?.items != null) {
+		if (practiceOutputsDb?.listLabPracticeOutputs?.items != null && !outputsAlreadyIn) {
+			setOutputsAlreadyIn(true);
+
 			setOutputsList(() => {
 				const outputs: OutputInfo[] = [];
 				practiceOutputsDb?.listLabPracticeOutputs?.items.forEach((output) => {
@@ -337,7 +349,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			setCommandsList((previousState) => {
 				const newCommand: LabPracticeCommandInfo = {
 					commandName: command.commandName,
-					commandDescription: command.commandDescription
+					commandDescription: command.commandDescription,
+					action: ActionType.Add
 				};
 
 				return previousState.concat(newCommand);
@@ -401,7 +414,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					parameterDefaultValue: parameter.parameterDefaultValue,
 					parameterMaxValue: parameter.parameterMaxValue,
 					parameterMinValue: parameter.parameterMinValue,
-					parameterRegex: parameter.parameterRegex
+					parameterRegex: parameter.parameterRegex,
+					action: ActionType.Add
 				};
 
 				return previousState.concat(newParameter);
@@ -505,7 +519,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return;
 				}
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				// const creationPromises: Promise<any>[] = [];
 				if (commandsList.length > 0) {
 					commandsList.map(async (command) => {
 						if (command.id) {
@@ -513,12 +526,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							await updateLabPracticeCommand({
 								variables: {
 									input: {
-										id: commandToEdit.id ? commandToEdit.id : '',
-										name: commandToEdit.commandName,
-										description: commandToEdit.commandDescription,
-										labelName: commandToEdit.label,
+										id: command.id ? command.id : '',
+										name: command.commandName,
+										description: command.commandDescription,
+										labelName: command.label,
 										updatedBy: '1',
-										_version: commandToEdit.version
+										_version: command.version
 									}
 								}
 							}).then((responseCommandData) => {
@@ -526,45 +539,48 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 								const commandName = responseCommandData?.data?.updateLabPracticeCommand?.name;
 
 								if (parametersList.length > 0) {
-									return Promise.all(
-										parametersList.map(async (parameter) => {
-											if (!parameter.id && parameter.commandName === commandName) {
-												// Crear nuevo parámetro
-												createLabPracticeParameter({
-													variables: {
-														input: {
-															labpracticecommandID: commandId,
-															labpracticeID: labPracticeData.updateLabPractice?.id,
-															name: parameter.parameterName,
-															description: parameter.parameterDescription,
-															defaultValue: parameter.parameterDefaultValue,
-															minValue: parameter.parameterMinValue,
-															maxValue: parameter.parameterMaxValue,
-															regex: parameter.parameterRegex
-														}
+									parametersList.map(async (parameter) => {
+										if (!parameter.id && parameter.commandName === commandName) {
+											// Crear nuevo parámetro
+											await createLabPracticeParameter({
+												variables: {
+													input: {
+														id: parameter.id,
+														labpracticecommandID: commandId,
+														labpracticeID: practiceId,
+														name: parameter.parameterName,
+														labelName: parameter.parameterName,
+														description: parameter.parameterDescription,
+														defaultValue: parameter.parameterDefaultValue,
+														minValue: parameter.parameterMinValue,
+														maxValue: parameter.parameterMaxValue,
+														regex: parameter.parameterRegex,
+														createdBy: '1'
 													}
-												});
-											} else if (parameter.id && parameter.commandName === commandName) {
-												// Actualizar parámetro
-												await updateLabPracticeParameter({
-													variables: {
-														input: {
-															id: parameterToEdit.id ? parameterToEdit.id : '',
-															labpracticecommandID: parameterToEdit.id,
-															name: parameterToEdit.parameterName,
-															description: parameterToEdit.parameterDescription,
-															defaultValue: parameterToEdit.parameterDefaultValue,
-															minValue: parameterToEdit.parameterMinValue,
-															maxValue: parameterToEdit.parameterMaxValue,
-															regex: parameterToEdit.parameterRegex,
-															updatedBy: '1',
-															_version: parameterToEdit.version
-														}
+												}
+											});
+										} else if (parameter.id && parameter.commandName === commandName) {
+											// Actualizar parámetro
+											await updateLabPracticeParameter({
+												variables: {
+													input: {
+														id: parameter.id ? parameter.id : '',
+														labpracticecommandID: commandId,
+														labpracticeID: practiceInfo.id,
+														name: parameter.parameterName,
+														labelName: parameter.parameterName,
+														description: parameter.parameterDescription,
+														defaultValue: parameter.parameterDefaultValue,
+														minValue: parameter.parameterMinValue,
+														maxValue: parameter.parameterMaxValue,
+														regex: parameter.parameterRegex,
+														updatedBy: '1',
+														_version: parameter.version
 													}
-												});
-											}
-										})
-									);
+												}
+											});
+										}
+									});
 								}
 							});
 						} else {
@@ -583,73 +599,85 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 								const commandName = responseCommandData?.data?.createLabPracticeCommand?.name;
 
 								if (parametersList.length > 0) {
-									return Promise.all(
-										parametersList.map(async (parameter) => {
-											if (!parameter.id && parameter.commandName === commandName) {
-												// Crear nuevo parámetro
-												createLabPracticeParameter({
-													variables: {
-														input: {
-															labpracticecommandID: commandId,
-															labpracticeID: labPracticeData.updateLabPractice?.id,
-															name: parameter.parameterName,
-															description: parameter.parameterDescription,
-															defaultValue: parameter.parameterDefaultValue,
-															minValue: parameter.parameterMinValue,
-															maxValue: parameter.parameterMaxValue,
-															regex: parameter.parameterRegex
-														}
+									parametersList.map(async (parameter) => {
+										if (!parameter.id && parameter.commandName === commandName) {
+											// Crear nuevo parámetro
+											createLabPracticeParameter({
+												variables: {
+													input: {
+														labpracticecommandID: commandId,
+														labpracticeID: labPracticeData.updateLabPractice?.id,
+														name: parameter.parameterName,
+														description: parameter.parameterDescription,
+														defaultValue: parameter.parameterDefaultValue,
+														minValue: parameter.parameterMinValue,
+														maxValue: parameter.parameterMaxValue,
+														regex: parameter.parameterRegex,
+														createdBy: '1'
 													}
-												});
-											} else if (parameter.id && parameter.commandName === commandName) {
-												// Actualizar parámetro
-												await updateLabPracticeParameter({
-													variables: {
-														input: {
-															id: parameterToEdit.id ? parameterToEdit.id : '',
-															labpracticecommandID: parameterToEdit.id,
-															name: parameterToEdit.parameterName,
-															description: parameterToEdit.parameterDescription,
-															defaultValue: parameterToEdit.parameterDefaultValue,
-															minValue: parameterToEdit.parameterMinValue,
-															maxValue: parameterToEdit.parameterMaxValue,
-															regex: parameterToEdit.parameterRegex,
-															updatedBy: '1',
-															_version: parameterToEdit.version
-														}
+												}
+											});
+										} else if (parameter.id && parameter.commandName === commandName) {
+											// Actualizar parámetro
+											await updateLabPracticeParameter({
+												variables: {
+													input: {
+														id: parameter.id,
+														labpracticecommandID: commandId,
+														labpracticeID: labPracticeData.updateLabPractice?.id,
+														name: parameter.parameterName,
+														description: parameter.parameterDescription,
+														defaultValue: parameter.parameterDefaultValue,
+														minValue: parameter.parameterMinValue,
+														maxValue: parameter.parameterMaxValue,
+														regex: parameter.parameterRegex,
+														updatedBy: '1',
+														_version: parameter.version
 													}
-												});
-											}
-										})
-									);
+												}
+											});
+										}
+									});
 								}
 							});
 						}
 					});
 				}
 				if (outputsList.length > 0) {
-					// creationPromises.concat(
-					outputsList.map(async (obj) => {
-						if (!obj.id) {
-							createLabPracticeOutput({
+					outputsList.map(async (output) => {
+						if (!output.id) {
+							await createLabPracticeOutput({
 								variables: {
 									input: {
 										labpracticeID: practiceId,
 										outputType: 'string',
-										name: obj.outputName,
-										description: obj.outputDescription,
-										units: JSON.stringify(obj.outputUnit),
+										name: output.outputName,
+										description: output.outputDescription,
+										units: JSON.stringify(output.outputUnit),
 										createdBy: '1'
+									}
+								}
+							});
+						} else {
+							await updateLabPracticeOutput({
+								variables: {
+									input: {
+										id: output.id,
+										labpracticeID: practiceId,
+										outputType: 'string',
+										name: output.outputName,
+										description: output.outputDescription,
+										units: JSON.stringify(output.outputUnit),
+										updatedBy: '1',
+										_version: output.version
 									}
 								}
 							});
 						}
 					});
-					// );
 				}
 
-				// await Promise.all(creationPromises);
-				showSuccessBanner(`La práctica ${labPracticeData.updateLabPractice.name} fue actualizada exitosamente`);
+				showSuccessBanner(`La práctica ${practiceInfo.practiceInfoName} fue actualizada exitosamente`);
 			} catch (error) {
 				showErrorBanner(`Error en la actualización de la práctica ${practiceInfo.practiceInfoName}`);
 			} finally {
@@ -840,8 +868,18 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							obj.label = commandToEdit.label;
 							obj.updatedBy = commandToEdit.updatedBy;
 							obj.updatedAt = commandToEdit.updatedAt;
+							obj.action = ActionType.Edit;
 						}
 					});
+					return previousState;
+				});
+				setParametersList((previousState) => {
+					previousState.map((obj) => {
+						if (obj.commandId === commandToEdit.id) {
+							obj.commandName = commandToEdit.commandName;
+						}
+					});
+
 					return previousState;
 				});
 				setCommandToEdit(initialPracticeValue.command);
@@ -863,6 +901,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					const updatedParameter = previousState[rowIndex];
 					previousState.map((obj) => {
 						if (obj.parameterName === updatedParameter.parameterName) {
+							obj.id = parameterToEdit.id;
 							obj.commandName = parameterToEdit.commandName;
 							obj.parameterName = parameterToEdit.parameterName;
 							obj.parameterDescription = parameterToEdit.parameterDescription;
@@ -870,6 +909,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							obj.parameterMinValue = parameterToEdit.parameterMinValue;
 							obj.parameterMaxValue = parameterToEdit.parameterMaxValue;
 							obj.parameterRegex = parameterToEdit.parameterRegex;
+							obj.version = parameterToEdit.version;
+							obj.action = ActionType.Edit;
 						}
 					});
 					return previousState;
@@ -905,7 +946,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (modalType === Section.CommandModalRemove) {
 			if (commandToRemove.id) {
 				setLoadingButton(true);
-				deleteLabPracticeCommand({
+				await deleteLabPracticeCommand({
 					variables: {
 						input: {
 							id: commandToRemove?.id,
@@ -942,7 +983,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (modalType === Section.ParameterModalRemove) {
 			if (parameterToRemove.id) {
 				setLoadingButton(true);
-				deleteLabPracticeParameter({
+				await deleteLabPracticeParameter({
 					variables: {
 						input: {
 							id: parameterToRemove?.id,
@@ -979,7 +1020,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (modalType === Section.OutputModalRemove) {
 			if (outputToRemove.id) {
 				setLoadingButton(true);
-				deleteLabPracticeOutput({
+				await deleteLabPracticeOutput({
 					variables: {
 						input: {
 							id: outputToRemove?.id,

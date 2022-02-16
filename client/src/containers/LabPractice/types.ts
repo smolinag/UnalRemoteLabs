@@ -27,6 +27,7 @@ export interface LabPracticeCommandInfo {
 	updatedAt?: string;
 	createdBy?: string;
 	createdAt?: string;
+	action?: ActionType
 }
 
 export interface LabPracticeParameterInfo {
@@ -36,14 +37,15 @@ export interface LabPracticeParameterInfo {
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
-	parameterMaxValue: Maybe<number> | undefined;
 	parameterMinValue: Maybe<number> | undefined;
+	parameterMaxValue: Maybe<number> | undefined;
 	parameterRegex: string;
 	version?: number;
 	updatedBy?: string;
 	updatedAt?: string;
 	createdBy?: string;
 	createdAt?: string;
+	action?: ActionType
 }
 
 export interface OutputInfo {
@@ -91,4 +93,11 @@ export enum Section {
 	CommandModalRemove = 'CommandModalRemove',
 	ParameterModalRemove = 'ParameterModalRemove',
 	OutputModalRemove = 'OutputModalRemove',
+}
+
+export enum ActionType {
+	Nothing = 0,
+	Edit = 1,
+	Add = 2,
+	Remove = 3,
 }

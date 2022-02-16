@@ -18,7 +18,7 @@ const COLUMNS = [
 
 const LabPracticeOutputTable: React.FC<Props> = ({data, onAction}) => {
 	const mapOutput = ({
-      outputName: outputName,
+      outputName,
       outputDescription,
       outputUnit
 	}: OutputInfo): string[] => [

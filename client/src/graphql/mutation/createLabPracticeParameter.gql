@@ -1,7 +1,6 @@
 mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 	createLabPracticeParameter(input: $input) {
 		id
-		labpracticecommandID
 		labpracticeID
 		name
 		description
@@ -12,5 +11,9 @@ mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 		updatedBy
 		createdBy
 		_version
+		LabPracticeCommand {
+		  id
+		  name
+		}
 	}
 }

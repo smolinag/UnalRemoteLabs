@@ -106,6 +106,7 @@ export type CreateLabPracticeSessionInput = {
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	labpracticeID?: Maybe<Scalars['ID']>;
+	labSemesterID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -462,6 +463,7 @@ export type LabPracticeSession = {
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	labpracticeID?: Maybe<Scalars['ID']>;
+	labSemesterID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -470,6 +472,7 @@ export type LabPracticeSession = {
 	UserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
 	LabPracticeSessionCommands?: Maybe<ModelLabPracticeSessionCommandConnection>;
 	LabPractice?: Maybe<LabPractice>;
+	LabSemester?: Maybe<LabSemester>;
 };
 
 export type LabPracticeSessionUserLabPracticeSessionsArgs = {
@@ -520,8 +523,16 @@ export type LabSemester = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	LabPracticeSessions?: Maybe<ModelLabPracticeSessionConnection>;
 	Laboratory?: Maybe<Laboratory>;
 	users?: Maybe<ModelUserLabSemesterConnection>;
+};
+
+export type LabSemesterLabPracticeSessionsArgs = {
+	filter?: Maybe<ModelLabPracticeSessionFilterInput>;
+	sortDirection?: Maybe<ModelSortDirection>;
+	limit?: Maybe<Scalars['Int']>;
+	nextToken?: Maybe<Scalars['String']>;
 };
 
 export type LabSemesterUsersArgs = {
@@ -856,6 +867,7 @@ export type ModelLabPracticeSessionConditionInput = {
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
+	labSemesterID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeSessionConditionInput>>>;
 	not?: Maybe<ModelLabPracticeSessionConditionInput>;
@@ -876,6 +888,7 @@ export type ModelLabPracticeSessionFilterInput = {
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
+	labSemesterID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeSessionFilterInput>>>;
 	not?: Maybe<ModelLabPracticeSessionFilterInput>;
@@ -2107,6 +2120,7 @@ export type UpdateLabPracticeSessionInput = {
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
+	labSemesterID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -2336,7 +2350,6 @@ export type CreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 		{__typename?: 'LabPracticeParameter'} & Pick<
 			LabPracticeParameter,
 			| 'id'
-			| 'labpracticecommandID'
 			| 'labpracticeID'
 			| 'name'
 			| 'description'
@@ -2347,7 +2360,7 @@ export type CreateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 			| 'updatedBy'
 			| 'createdBy'
 			| '_version'
-		>
+		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>}
 	>;
 };
 
@@ -2484,6 +2497,19 @@ export type UpdateLabPracticeCommandMutation = {__typename?: 'Mutation'} & {
 	>;
 };
 
+export type UpdateLabPracticeOutputMutationVariables = Exact<{
+	input: UpdateLabPracticeOutputInput;
+}>;
+
+export type UpdateLabPracticeOutputMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeOutput?: Maybe<
+		{__typename?: 'LabPracticeOutput'} & Pick<
+			LabPracticeOutput,
+			'id' | 'labpracticeID' | 'name' | 'description' | 'units' | 'updatedAt' | 'updatedBy' | '_version'
+		>
+	>;
+};
+
 export type UpdateLabPracticeParameterMutationVariables = Exact<{
 	input: UpdateLabPracticeParameterInput;
 }>;
@@ -2493,7 +2519,6 @@ export type UpdateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 		{__typename?: 'LabPracticeParameter'} & Pick<
 			LabPracticeParameter,
 			| 'id'
-			| 'labpracticecommandID'
 			| 'labpracticeID'
 			| 'name'
 			| 'description'
@@ -2504,7 +2529,7 @@ export type UpdateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 			| 'updatedAt'
 			| 'updatedBy'
 			| '_version'
-		>
+		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>}
 	>;
 };
 
@@ -2905,7 +2930,6 @@ export const CreateLabPracticeParameterDocument = gql`
 	mutation createLabPracticeParameter($input: CreateLabPracticeParameterInput!) {
 		createLabPracticeParameter(input: $input) {
 			id
-			labpracticecommandID
 			labpracticeID
 			name
 			description
@@ -2916,6 +2940,10 @@ export const CreateLabPracticeParameterDocument = gql`
 			updatedBy
 			createdBy
 			_version
+			LabPracticeCommand {
+				id
+				name
+			}
 		}
 	}
 `;
@@ -3539,11 +3567,65 @@ export type UpdateLabPracticeCommandMutationOptions = Apollo.BaseMutationOptions
 	UpdateLabPracticeCommandMutation,
 	UpdateLabPracticeCommandMutationVariables
 >;
+export const UpdateLabPracticeOutputDocument = gql`
+	mutation updateLabPracticeOutput($input: UpdateLabPracticeOutputInput!) {
+		updateLabPracticeOutput(input: $input) {
+			id
+			labpracticeID
+			name
+			description
+			units
+			updatedAt
+			updatedBy
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeOutputMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeOutputMutation,
+	UpdateLabPracticeOutputMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeOutputMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeOutputMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeOutputMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeOutputMutation, { data, loading, error }] = useUpdateLabPracticeOutputMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeOutputMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLabPracticeOutputMutation, UpdateLabPracticeOutputMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeOutputMutation, UpdateLabPracticeOutputMutationVariables>(
+		UpdateLabPracticeOutputDocument,
+		options
+	);
+}
+export type UpdateLabPracticeOutputMutationHookResult = ReturnType<typeof useUpdateLabPracticeOutputMutation>;
+export type UpdateLabPracticeOutputMutationResult = Apollo.MutationResult<UpdateLabPracticeOutputMutation>;
+export type UpdateLabPracticeOutputMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeOutputMutation,
+	UpdateLabPracticeOutputMutationVariables
+>;
 export const UpdateLabPracticeParameterDocument = gql`
 	mutation updateLabPracticeParameter($input: UpdateLabPracticeParameterInput!) {
 		updateLabPracticeParameter(input: $input) {
 			id
-			labpracticecommandID
+			LabPracticeCommand {
+				id
+				name
+			}
 			labpracticeID
 			name
 			description

@@ -1,7 +1,10 @@
 mutation updateLabPracticeParameter($input: UpdateLabPracticeParameterInput!) {
 	updateLabPracticeParameter(input: $input) {
 		id
-		labpracticecommandID
+		LabPracticeCommand {
+		  id
+		  name
+		}
 		labpracticeID
 		name
 		description

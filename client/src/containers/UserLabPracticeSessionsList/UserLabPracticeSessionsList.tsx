@@ -15,16 +15,29 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 	const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: USER_ID}});
 
 	React.useEffect(() => {
-		const receivedList = data?.listUserLabPracticeSessions?.items;
+		const receivedList = data?.listUserLabPracticeSessions?.items.filter(
+			(session) =>
+				!session?._deleted &&
+				!session?.LabPracticeSession?._deleted &&
+				!session?.LabPracticeSession?.LabPractice?._deleted
+		);
 		if (receivedList && receivedList.length > 0) {
 			const list: UserLabPracticeSession[] = receivedList.map((session) => ({
 				id: session ? session.id : '',
 				sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
 				sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
+				version: session?._version ? session._version : null,
 				labPracticeSession: {
 					id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
 					startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
 					endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
+					version: session?.LabPracticeSession?._version ? session.LabPracticeSession._version : null,
+					description: session?.LabPracticeSession?.description ? session.LabPracticeSession?.description : '',
+					labSemesterInfo: {
+						id: session?.LabPracticeSession?.LabSemester?.id ? session.LabPracticeSession.LabSemester.id : '',
+						name: session?.LabPracticeSession?.LabSemester?.semesterName ? session.LabPracticeSession.LabSemester.semesterName : '',
+						description: session?.LabPracticeSession?.LabSemester?.description ? session.LabPracticeSession.LabSemester.description : '',
+					},
 					labPracticeInfo: {
 						id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
 						practiceInfoName: session?.LabPracticeSession?.LabPractice?.name

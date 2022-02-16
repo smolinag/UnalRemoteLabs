@@ -1,0 +1,9 @@
+mutation deleteLabPracticeSession($input: DeleteLabPracticeSessionInput!) {
+  deleteLabPracticeSession(input: $input) {
+    id
+    startDate
+    description
+    _version
+    _deleted
+  }
+}

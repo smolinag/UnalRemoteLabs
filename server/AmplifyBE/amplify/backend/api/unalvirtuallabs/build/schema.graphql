@@ -129,6 +129,7 @@ type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   updatedBy: String
   createdBy: String!
   labpracticeID: ID
+  labSemesterID: ID
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
@@ -137,6 +138,7 @@ type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
   LabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
   LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
+  LabSemester: LabSemester @aws_api_key @aws_cognito_user_pools
 }
 
 type LabPracticeDevice @aws_api_key @aws_cognito_user_pools {
@@ -232,6 +234,7 @@ type LabSemester @aws_api_key @aws_cognito_user_pools {
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  LabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
   Laboratory: Laboratory @aws_api_key @aws_cognito_user_pools
   users(userID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
@@ -998,6 +1001,7 @@ input ModelLabPracticeSessionFilterInput {
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   labpracticeID: ModelIDInput
+  labSemesterID: ModelIDInput
   and: [ModelLabPracticeSessionFilterInput]
   or: [ModelLabPracticeSessionFilterInput]
   not: ModelLabPracticeSessionFilterInput
@@ -1011,6 +1015,7 @@ input CreateLabPracticeSessionInput {
   updatedBy: String
   createdBy: String!
   labpracticeID: ID
+  labSemesterID: ID
   _version: Int
 }
 
@@ -1022,6 +1027,7 @@ input UpdateLabPracticeSessionInput {
   updatedBy: String
   createdBy: String
   labpracticeID: ID
+  labSemesterID: ID
   _version: Int
 }
 
@@ -1037,6 +1043,7 @@ input ModelLabPracticeSessionConditionInput {
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   labpracticeID: ModelIDInput
+  labSemesterID: ModelIDInput
   and: [ModelLabPracticeSessionConditionInput]
   or: [ModelLabPracticeSessionConditionInput]
   not: ModelLabPracticeSessionConditionInput

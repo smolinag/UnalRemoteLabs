@@ -1,0 +1,12 @@
+mutation updateLabPracticeSession($input: UpdateLabPracticeSessionInput!) {
+	updateLabPracticeSession (input: $input) {
+		id		
+		description
+    startDate
+		createdBy
+		updatedAt
+		updatedBy
+		createdAt
+		_version
+	}
+}

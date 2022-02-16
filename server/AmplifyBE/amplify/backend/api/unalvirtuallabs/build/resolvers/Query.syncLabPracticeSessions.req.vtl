@@ -11,6 +11,10 @@ $util.qr($QueryMap.put('labpracticeID+null' , 'byLabPractice'))
 $util.qr($PkMap.put('labpracticeID' , 'byLabPractice'))
 ## [End] Set query expression for @key **
 ## [Start] Set query expression for @key **
+$util.qr($QueryMap.put('labSemesterID+null' , 'byLabSemester'))
+$util.qr($PkMap.put('labSemesterID' , 'byLabSemester'))
+## [End] Set query expression for @key **
+## [Start] Set query expression for @key **
 #set( $filterArgsMap = $ctx.args.filter.get("and") )
 #if( !$util.isNullOrEmpty($filterArgsMap) && ($util.isNull($ctx.args.lastSync) || $ctx.args.lastSync == 0) )
   #set( $json = $filterArgsMap )

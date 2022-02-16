@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
+import {useLocation} from 'react-router-dom';
 
 import LabSessionData from '../../components/LabSessionProgramming/LabSessionData';
 import {LoadingContainer, Button, Table} from '../../components/UI';
@@ -13,17 +14,13 @@ import {notificationBannerContext} from '../../state/NotificationBannerProvider'
 import classes from './LabSessionProgrammingView.module.scss';
 import {LabSessionInfo, SessionUser} from './types';
 
-const initialLabSessionInfo: LabSessionInfo = {
-	startDate: new Date(),
-	endDate: new Date(),
-	description: '',
-	labPracticeName: '',
-	duration: '15',
-	semesterId: '57f929c3-aa5a-4092-a128-659f14b06900'
-};
 
 const LabSessionProgrammingView: React.FC<unknown> = () => {
-	const [labSessionInfo, setSessionInfo] = useState<LabSessionInfo>(initialLabSessionInfo);
+
+	const location = useLocation();
+	const labSession = (location.state as LabSessionInfo);
+
+	const [labSessionInfo, setSessionInfo] = useState<LabSessionInfo>(labSession);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [studentList, setStudentList] = useState<SessionUser[]>([]);
 
@@ -63,6 +60,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 				variables: {
 					input: {
 						labpracticeID: '1',
+						labSemesterID: labSessionInfo.semesterId,
 						description: labSessionInfo.description,
 						startDate: labSessionInfo.startDate,
 						endDate: new Date(labSessionInfo.startDate.getTime() + parseInt(labSessionInfo.duration) * 60000),

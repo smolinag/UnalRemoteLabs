@@ -133,6 +133,10 @@
                     {
                         "AttributeName": "labpracticeID",
                         "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "labSemesterID",
+                        "AttributeType": "S"
                     }
                 ],
                 "StreamSpecification": {
@@ -193,6 +197,34 @@
                         "KeySchema": [
                             {
                                 "AttributeName": "labpracticeID",
+                                "KeyType": "HASH"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        },
+                        "ProvisionedThroughput": {
+                            "Fn::If": [
+                                "ShouldUsePayPerRequestBilling",
+                                {
+                                    "Ref": "AWS::NoValue"
+                                },
+                                {
+                                    "ReadCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableReadIOPS"
+                                    },
+                                    "WriteCapacityUnits": {
+                                        "Ref": "DynamoDBModelTableWriteIOPS"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "IndexName": "byLabSemester",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "labSemesterID",
                                 "KeyType": "HASH"
                             }
                         ],

@@ -4,15 +4,26 @@ query listUserLabPracticeSessions($id: ID!) {
 			id
 			sessionEndDate
 			sessionStartDate
+			_version
+			_deleted
 			LabPracticeSession {
 				id
 				startDate
 				endDate
+				description
+				_version
+				_deleted
+				LabSemester {
+					id
+					semesterName
+					description
+				}
 				LabPractice {
 				  id
 				  name
 				  description
 				  duration
+					_deleted
 				  Laboratory {
 					  id
 					  name

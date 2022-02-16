@@ -86,7 +86,7 @@ type LabPracticeOutput @model @auth(rules: [{ allow: public },  { allow: private
   createdBy: String!
 }
 
-type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {
+type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]) @key(name: "byLabSemester", fields: ["labSemesterID"]) {
   id: ID!
   startDate: AWSDateTime!
   endDate: AWSDateTime!
@@ -95,6 +95,8 @@ type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: privat
   createdBy: String!
   LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID
+  LabSemester: LabSemester @connection(fields: ["labSemesterID"])
+  labSemesterID: ID
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeSession", fields: ["id"])
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byLabPracticeSession", fields: ["id"])
 }
@@ -169,6 +171,7 @@ type LabSemester @model @auth(rules: [{ allow: public },  { allow: private}]) @k
   Laboratory: Laboratory @connection(fields: ["laboratoryID"])
   laboratoryID: ID!
   users: [UserLabSemester] @connection(keyName: "byLabSemester", fields: ["id"])
+  LabPracticeSessions: [LabPracticeSession] @connection(keyName: "byLabPractice", fields: ["id"])
 }
 
 type Laboratory @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byOrganization", fields: ["organizationID"]) {

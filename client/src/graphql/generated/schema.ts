@@ -2372,7 +2372,7 @@ export type CreateLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
 	createLabPracticeSession?: Maybe<
 		{__typename?: 'LabPracticeSession'} & Pick<
 			LabPracticeSession,
-			'id' | 'labpracticeID' | 'description' | 'startDate' | 'endDate' | 'updatedBy' | 'createdBy'
+			'id' | 'labpracticeID' | 'labSemesterID' | 'description' | 'startDate' | 'endDate' | 'updatedBy' | 'createdBy'
 		>
 	>;
 };
@@ -2457,6 +2457,19 @@ export type DeleteLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 	>;
 };
 
+export type DeleteLabPracticeSessionMutationVariables = Exact<{
+	input: DeleteLabPracticeSessionInput;
+}>;
+
+export type DeleteLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
+	deleteLabPracticeSession?: Maybe<
+		{__typename?: 'LabPracticeSession'} & Pick<
+			LabPracticeSession,
+			'id' | 'startDate' | 'description' | '_version' | '_deleted'
+		>
+	>;
+};
+
 export type DeleteLaboratoryMutationVariables = Exact<{
 	input: DeleteLaboratoryInput;
 }>;
@@ -2530,6 +2543,19 @@ export type UpdateLabPracticeParameterMutation = {__typename?: 'Mutation'} & {
 			| 'updatedBy'
 			| '_version'
 		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>}
+	>;
+};
+
+export type UpdateLabPracticeSessionMutationVariables = Exact<{
+	input: UpdateLabPracticeSessionInput;
+}>;
+
+export type UpdateLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeSession?: Maybe<
+		{__typename?: 'LabPracticeSession'} & Pick<
+			LabPracticeSession,
+			'id' | 'description' | 'startDate' | 'createdBy' | 'updatedAt' | 'updatedBy' | 'createdAt' | '_version'
+		>
 	>;
 };
 
@@ -2716,12 +2742,21 @@ export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'UserLabPracticeSession'} & Pick<
 						UserLabPracticeSession,
-						'id' | 'sessionEndDate' | 'sessionStartDate'
+						'id' | 'sessionEndDate' | 'sessionStartDate' | '_version' | '_deleted'
 					> & {
 							LabPracticeSession?: Maybe<
-								{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id' | 'startDate' | 'endDate'> & {
+								{__typename?: 'LabPracticeSession'} & Pick<
+									LabPracticeSession,
+									'id' | 'startDate' | 'endDate' | 'description' | '_version' | '_deleted'
+								> & {
+										LabSemester?: Maybe<
+											{__typename?: 'LabSemester'} & Pick<LabSemester, 'id' | 'semesterName' | 'description'>
+										>;
 										LabPractice?: Maybe<
-											{__typename?: 'LabPractice'} & Pick<LabPractice, 'id' | 'name' | 'description' | 'duration'> & {
+											{__typename?: 'LabPractice'} & Pick<
+												LabPractice,
+												'id' | 'name' | 'description' | 'duration' | '_deleted'
+											> & {
 													Laboratory?: Maybe<
 														{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>
 													>;
@@ -2992,6 +3027,7 @@ export const CreateLabPracticeSessionDocument = gql`
 		createLabPracticeSession(input: $input) {
 			id
 			labpracticeID
+			labSemesterID
 			description
 			startDate
 			endDate
@@ -3378,6 +3414,54 @@ export type DeleteLabPracticeParameterMutationOptions = Apollo.BaseMutationOptio
 	DeleteLabPracticeParameterMutation,
 	DeleteLabPracticeParameterMutationVariables
 >;
+export const DeleteLabPracticeSessionDocument = gql`
+	mutation deleteLabPracticeSession($input: DeleteLabPracticeSessionInput!) {
+		deleteLabPracticeSession(input: $input) {
+			id
+			startDate
+			description
+			_version
+			_deleted
+		}
+	}
+`;
+export type DeleteLabPracticeSessionMutationFn = Apollo.MutationFunction<
+	DeleteLabPracticeSessionMutation,
+	DeleteLabPracticeSessionMutationVariables
+>;
+
+/**
+ * __useDeleteLabPracticeSessionMutation__
+ *
+ * To run a mutation, you first call `useDeleteLabPracticeSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLabPracticeSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLabPracticeSessionMutation, { data, loading, error }] = useDeleteLabPracticeSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteLabPracticeSessionMutation(
+	baseOptions?: Apollo.MutationHookOptions<DeleteLabPracticeSessionMutation, DeleteLabPracticeSessionMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<DeleteLabPracticeSessionMutation, DeleteLabPracticeSessionMutationVariables>(
+		DeleteLabPracticeSessionDocument,
+		options
+	);
+}
+export type DeleteLabPracticeSessionMutationHookResult = ReturnType<typeof useDeleteLabPracticeSessionMutation>;
+export type DeleteLabPracticeSessionMutationResult = Apollo.MutationResult<DeleteLabPracticeSessionMutation>;
+export type DeleteLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
+	DeleteLabPracticeSessionMutation,
+	DeleteLabPracticeSessionMutationVariables
+>;
 export const DeleteLaboratoryDocument = gql`
 	mutation deleteLaboratory($input: DeleteLaboratoryInput!) {
 		deleteLaboratory(input: $input) {
@@ -3678,6 +3762,57 @@ export type UpdateLabPracticeParameterMutationResult = Apollo.MutationResult<Upd
 export type UpdateLabPracticeParameterMutationOptions = Apollo.BaseMutationOptions<
 	UpdateLabPracticeParameterMutation,
 	UpdateLabPracticeParameterMutationVariables
+>;
+export const UpdateLabPracticeSessionDocument = gql`
+	mutation updateLabPracticeSession($input: UpdateLabPracticeSessionInput!) {
+		updateLabPracticeSession(input: $input) {
+			id
+			description
+			startDate
+			createdBy
+			updatedAt
+			updatedBy
+			createdAt
+			_version
+		}
+	}
+`;
+export type UpdateLabPracticeSessionMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeSessionMutation,
+	UpdateLabPracticeSessionMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeSessionMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeSessionMutation, { data, loading, error }] = useUpdateLabPracticeSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeSessionMutation(
+	baseOptions?: Apollo.MutationHookOptions<UpdateLabPracticeSessionMutation, UpdateLabPracticeSessionMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeSessionMutation, UpdateLabPracticeSessionMutationVariables>(
+		UpdateLabPracticeSessionDocument,
+		options
+	);
+}
+export type UpdateLabPracticeSessionMutationHookResult = ReturnType<typeof useUpdateLabPracticeSessionMutation>;
+export type UpdateLabPracticeSessionMutationResult = Apollo.MutationResult<UpdateLabPracticeSessionMutation>;
+export type UpdateLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeSessionMutation,
+	UpdateLabPracticeSessionMutationVariables
 >;
 export const UpdateLaboratoryDocument = gql`
 	mutation updateLaboratory($input: UpdateLaboratoryInput!) {
@@ -4164,15 +4299,26 @@ export const ListUserLabPracticeSessionsDocument = gql`
 				id
 				sessionEndDate
 				sessionStartDate
+				_version
+				_deleted
 				LabPracticeSession {
 					id
 					startDate
 					endDate
+					description
+					_version
+					_deleted
+					LabSemester {
+						id
+						semesterName
+						description
+					}
 					LabPractice {
 						id
 						name
 						description
 						duration
+						_deleted
 						Laboratory {
 							id
 							name

@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
 
 import {
@@ -43,8 +43,8 @@ import {
 	ActionType
 } from './types';
 
-// const PRACTICE_ID = 'd1ae909c-b068-4e5c-ab46-6b0ca7fb1567';
-// const DEVICE_ID = '850bbd31-eab1-4eb6-aa16-51886d706fb9';
+const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+// const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77';
 
 export interface LocationState {
 	labPracticeId: string;
@@ -110,15 +110,15 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
-	const location = useLocation();
-	const labPracticeId = (location.state as LocationState)?.labPracticeId;
-	const deviceId = (location.state as LocationState)?.deviceId;
+	// const location = useLocation();
+	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	// const deviceId = (location.state as LocationState)?.deviceId;
 
 	const {data: laboratoriesList} = useListLaboratoriesQuery();
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
-	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
+	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: deviceId}
+		variables: {id: PRACTICE_ID}
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});

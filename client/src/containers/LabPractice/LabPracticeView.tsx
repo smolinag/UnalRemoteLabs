@@ -56,7 +56,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const deviceId = (location.state as LocationState)?.deviceId;
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
-	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: deviceId}});
+	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});

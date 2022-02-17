@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command} from '../../components/Lab/Commands/Commands';
+import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
 import {LoadingContainer} from '../../components/UI';
 import {
 	useGetLabPracticeQuery,
@@ -11,12 +12,12 @@ import {
 	useCreateLabPracticeSessionCommandMutation,
 	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
-	useOnLabOutputListenSubscription,
+	useOnLabOutputListenSubscription
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
-const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
+const SESSION_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 // const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
@@ -68,22 +69,49 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
-			const commands: Command[] = labCommandsData.listLabPracticeCommands.items
-				// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
-				.map((command) => {
-					return {
-						name: command?.name as string,
-						id: command?.id as string,
-						parameters: command?.LabPracticeParameters?.items?.map((parameter) => ({
-							label: (parameter?.labelName ?? parameter?.name) as string,
-							id: parameter?.id as string,
-							value: Number((parameter?.defaultValue as string) ?? 0)
-						})),
-						label: (command?.labelName ?? command?.name) as string
-					};
-				});
+			setLabCommands(() => {
+				const tempCommands: Command[] = [];
+				const parametersList: Parameter[] = [];
 
-			setLabCommands(commands);
+				labCommandsData?.listLabPracticeCommands?.items.forEach((command) => {
+					if (!command?._deleted) {
+						command?.LabPracticeParameters?.items?.forEach((parameter) => {
+							if (parameter && !parameter._deleted) {
+								parametersList.push({
+									label: (parameter?.labelName ?? parameter?.name) as string,
+									id: parameter?.id as string,
+									value: Number((parameter?.defaultValue as string) ?? 0)
+								});
+							}
+						});
+
+						tempCommands.push({
+							name: command?.name as string,
+							id: command?.id as string,
+							parameters: parametersList,
+							label: (command?.labelName ?? command?.name) as string
+						});
+					}
+				});
+				return tempCommands;
+			});
+
+			// const commands: Command[] = labCommandsData.listLabPracticeCommands.items
+			// 	// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
+			// 	.map((command) => {
+			// 		return {
+			// 			name: command?.name as string,
+			// 			id: command?.id as string,
+			// 			parameters: command?.LabPracticeParameters?.items?.map((parameter) => ({
+			// 				label: (parameter?.labelName ?? parameter?.name) as string,
+			// 				id: parameter?.id as string,
+			// 				value: Number((parameter?.defaultValue as string) ?? 0)
+			// 			})),
+			// 			label: (command?.labelName ?? command?.name) as string
+			// 		};
+			// 	});
+
+			// setLabCommands(commands);
 		}
 	}, [labCommandsData]);
 

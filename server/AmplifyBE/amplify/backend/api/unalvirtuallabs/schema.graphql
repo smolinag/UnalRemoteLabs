@@ -101,14 +101,15 @@ type LabPracticeSession @model @auth(rules: [{ allow: public },  { allow: privat
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byLabPracticeSession", fields: ["id"])
 }
 
-type LabPracticeDevice @model @auth(rules: [{ allow: public },  { allow: private}]) {
+type LabPracticeDevice @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPractice", fields: ["labpracticeID"]){
   id: ID!
   name: String!
   description: String
   type: String
   updatedBy: String
   createdBy: String
-  LabPractice: LabPractice @connection
+  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
+  labpracticeID: ID
 }
 
 type LabPracticeParameter @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) @key(name: "byLabPractice", fields: ["labpracticeID"]) {

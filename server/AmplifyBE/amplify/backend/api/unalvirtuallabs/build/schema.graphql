@@ -148,6 +148,7 @@ type LabPracticeDevice @aws_api_key @aws_cognito_user_pools {
   type: String
   updatedBy: String
   createdBy: String
+  labpracticeID: ID
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
@@ -1062,6 +1063,7 @@ input ModelLabPracticeDeviceFilterInput {
   type: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
   and: [ModelLabPracticeDeviceFilterInput]
   or: [ModelLabPracticeDeviceFilterInput]
   not: ModelLabPracticeDeviceFilterInput
@@ -1074,8 +1076,8 @@ input CreateLabPracticeDeviceInput {
   type: String
   updatedBy: String
   createdBy: String
+  labpracticeID: ID
   _version: Int
-  labPracticeDeviceLabPracticeId: ID
 }
 
 input UpdateLabPracticeDeviceInput {
@@ -1085,8 +1087,8 @@ input UpdateLabPracticeDeviceInput {
   type: String
   updatedBy: String
   createdBy: String
+  labpracticeID: ID
   _version: Int
-  labPracticeDeviceLabPracticeId: ID
 }
 
 input DeleteLabPracticeDeviceInput {
@@ -1100,6 +1102,7 @@ input ModelLabPracticeDeviceConditionInput {
   type: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
+  labpracticeID: ModelIDInput
   and: [ModelLabPracticeDeviceConditionInput]
   or: [ModelLabPracticeDeviceConditionInput]
   not: ModelLabPracticeDeviceConditionInput

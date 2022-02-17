@@ -40,8 +40,8 @@ export type CreateLabPracticeDeviceInput = {
 	type?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeDeviceLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabPracticeInput = {
@@ -402,6 +402,7 @@ export type LabPracticeDevice = {
 	type?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -709,6 +710,7 @@ export type ModelLabPracticeDeviceConditionInput = {
 	type?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
+	labpracticeID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeDeviceConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeDeviceConditionInput>>>;
 	not?: Maybe<ModelLabPracticeDeviceConditionInput>;
@@ -728,6 +730,7 @@ export type ModelLabPracticeDeviceFilterInput = {
 	type?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
+	labpracticeID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeDeviceFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeDeviceFilterInput>>>;
 	not?: Maybe<ModelLabPracticeDeviceFilterInput>;
@@ -2054,8 +2057,8 @@ export type UpdateLabPracticeDeviceInput = {
 	type?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeDeviceLabPracticeId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabPracticeInput = {

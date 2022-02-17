@@ -284,11 +284,11 @@
             "deprecationReason": null
           },
           {
-            "name": "_version",
+            "name": "labpracticeID",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "ID",
               "ofType": null
             },
             "defaultValue": null,
@@ -296,11 +296,11 @@
             "deprecationReason": null
           },
           {
-            "name": "labPracticeDeviceLabPracticeId",
+            "name": "_version",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "ID",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -3814,6 +3814,18 @@
             "deprecationReason": null
           },
           {
+            "name": "labpracticeID",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "_version",
             "description": null,
             "args": [],
@@ -6952,6 +6964,18 @@
             "deprecationReason": null
           },
           {
+            "name": "labpracticeID",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelIDInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "and",
             "description": null,
             "type": {
@@ -7127,6 +7151,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "labpracticeID",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelIDInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -18507,11 +18543,11 @@
             "deprecationReason": null
           },
           {
-            "name": "_version",
+            "name": "labpracticeID",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "ID",
               "ofType": null
             },
             "defaultValue": null,
@@ -18519,11 +18555,11 @@
             "deprecationReason": null
           },
           {
-            "name": "labPracticeDeviceLabPracticeId",
+            "name": "_version",
             "description": null,
             "type": {
               "kind": "SCALAR",
-              "name": "ID",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,

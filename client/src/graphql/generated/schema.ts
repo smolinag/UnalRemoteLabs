@@ -2707,6 +2707,29 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	>;
 };
 
+export type ListLabPracticesQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type ListLabPracticesQuery = {__typename?: 'Query'} & {
+	listLabPractices?: Maybe<
+		{__typename?: 'ModelLabPracticeConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'LabPractice'} & Pick<
+						LabPractice,
+						'description' | 'id' | 'duration' | 'name' | '_deleted' | '_version'
+					> & {
+							LabPracticeDevice?: Maybe<
+								{__typename?: 'LabPracticeDevice'} & Pick<LabPracticeDevice, 'id' | 'name' | 'type' | '_deleted'>
+							>;
+						}
+				>
+			>;
+		}
+	>;
+};
+
 export type ListLaboratoriesQueryVariables = Exact<{[key: string]: never}>;
 
 export type ListLaboratoriesQuery = {__typename?: 'Query'} & {
@@ -4206,6 +4229,58 @@ export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 	ListLabPracticeOutputsQuery,
 	ListLabPracticeOutputsQueryVariables
 >;
+export const ListLabPracticesDocument = gql`
+	query listLabPractices($id: ID!) {
+		listLabPractices(filter: {laboratoryID: {eq: $id}}) {
+			items {
+				description
+				id
+				duration
+				name
+				_deleted
+				_version
+				LabPracticeDevice {
+					id
+					name
+					type
+					_deleted
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useListLabPracticesQuery__
+ *
+ * To run a query within a React component, call `useListLabPracticesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListLabPracticesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListLabPracticesQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useListLabPracticesQuery(
+	baseOptions: Apollo.QueryHookOptions<ListLabPracticesQuery, ListLabPracticesQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListLabPracticesQuery, ListLabPracticesQueryVariables>(ListLabPracticesDocument, options);
+}
+export function useListLabPracticesLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListLabPracticesQuery, ListLabPracticesQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListLabPracticesQuery, ListLabPracticesQueryVariables>(ListLabPracticesDocument, options);
+}
+export type ListLabPracticesQueryHookResult = ReturnType<typeof useListLabPracticesQuery>;
+export type ListLabPracticesLazyQueryHookResult = ReturnType<typeof useListLabPracticesLazyQuery>;
+export type ListLabPracticesQueryResult = Apollo.QueryResult<ListLabPracticesQuery, ListLabPracticesQueryVariables>;
 export const ListLaboratoriesDocument = gql`
 	query listLaboratories {
 		listLaboratorys {

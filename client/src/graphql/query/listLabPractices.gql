@@ -1,0 +1,18 @@
+query listLabPractices($id: ID!) {
+	listLabPractices(filter: {laboratoryID: {eq: $id}}) {
+		items {
+			description
+			id
+			duration
+			name
+			_deleted
+			_version
+			LabPracticeDevice {
+				id
+				name
+				type
+        _deleted
+			}
+		}
+	}
+}

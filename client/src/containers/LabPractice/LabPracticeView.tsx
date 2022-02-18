@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import {useLocation} from 'react-router-dom';
+// import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command} from '../../components/Lab/Commands/Commands';
@@ -17,7 +17,8 @@ import {
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
 const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
-const SESSION_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
+const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
+const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77';
 // const COMMAND_NAME_PREFIX = 'cmd';
 
 // REVISAR LOS TIPOS DE LOS PARÁMETROS
@@ -39,7 +40,7 @@ export interface LocationState {
 	deviceId: string;
 }
 
-const COMMAND_EXECUTION_TIMEOUT = 5000;
+const COMMAND_EXECUTION_TIMEOUT = 50000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
@@ -52,9 +53,9 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>('');
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	const location = useLocation();
+	// const location = useLocation();
 	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
-	const deviceId = (location.state as LocationState)?.deviceId;
+	// const deviceId = (location.state as LocationState)?.deviceId;
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
@@ -65,7 +66,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: SESSION_ID}
 	});
-	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
+	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: DEVICE_ID}});
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
@@ -95,23 +96,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 				});
 				return tempCommands;
 			});
-
-			// const commands: Command[] = labCommandsData.listLabPracticeCommands.items
-			// 	// .filter((command) => command?.name && command.name.startsWith(COMMAND_NAME_PREFIX))
-			// 	.map((command) => {
-			// 		return {
-			// 			name: command?.name as string,
-			// 			id: command?.id as string,
-			// 			parameters: command?.LabPracticeParameters?.items?.map((parameter) => ({
-			// 				label: (parameter?.labelName ?? parameter?.name) as string,
-			// 				id: parameter?.id as string,
-			// 				value: Number((parameter?.defaultValue as string) ?? 0)
-			// 			})),
-			// 			label: (command?.labelName ?? command?.name) as string
-			// 		};
-			// 	});
-
-			// setLabCommands(commands);
 		}
 	}, [labCommandsData]);
 
@@ -160,6 +144,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onCreateLabPracticeSessionCommandBySessionID;
+		console.warn(updatedCommand)
 		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
 			return;
 		}
@@ -194,7 +179,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 			};
 
 			await publishMqttMessageMutation({
-				variables: {input: {message: JSON.stringify(mqttMessage), topic: 'topic_in'}}
+				variables: {input: {message: JSON.stringify(mqttMessage), topic: `${DEVICE_ID}/topic_in`}}
 			});
 
 			commandExecutionTimeout.current = setTimeout(() => {

@@ -51,7 +51,7 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters}) => {
 					</InputGroup>
 				))}
 				<Button variant="green" className={classes.button} onClick={() => onExecute(formParametersValues)}>
-					ejecutar
+					Ejecutar
 				</Button>
 			</div>
 		</div>

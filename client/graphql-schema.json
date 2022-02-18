@@ -18303,7 +18303,7 @@
             "deprecationReason": null
           },
           {
-            "name": "onCreateLabPracticeSessionCommandBySessionID",
+            "name": "onUpdateLabPracticeSessionCommandBySessionID",
             "description": null,
             "args": [
               {

@@ -201,7 +201,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1676672103
+                        1676742095
                     ]
                 }
             },
@@ -282,7 +282,7 @@
                 }
             }
         },
-        "SubscriptiononCreateLabPracticeSessionCommandBySessionIDResolver": {
+        "SubscriptiononUpdateLabPracticeSessionCommandBySessionIDResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -292,7 +292,7 @@
                     ]
                 },
                 "DataSourceName": "NONE",
-                "FieldName": "onCreateLabPracticeSessionCommandBySessionID",
+                "FieldName": "onUpdateLabPracticeSessionCommandBySessionID",
                 "TypeName": "Subscription",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -309,7 +309,7 @@
                                     ".",
                                     [
                                         "Subscription",
-                                        "onCreateLabPracticeSessionCommandBySessionID",
+                                        "onUpdateLabPracticeSessionCommandBySessionID",
                                         "req",
                                         "vtl"
                                     ]
@@ -333,7 +333,7 @@
                                     ".",
                                     [
                                         "Subscription",
-                                        "onCreateLabPracticeSessionCommandBySessionID",
+                                        "onUpdateLabPracticeSessionCommandBySessionID",
                                         "res",
                                         "vtl"
                                     ]

@@ -1,6 +1,0 @@
-subscription onCreateLabPracticeSessionCommandBySessionID($id: ID!) {
-	onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
-		status
-		labpracticecommandID
-	}
-}

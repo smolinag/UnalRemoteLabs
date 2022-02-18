@@ -237,6 +237,6 @@ type Mutation {
 
 type Subscription {
   onLabOutputListen(rpiID: ID! ): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @auth(rules: [{ allow: public },  { allow: private}])
-  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @auth(rules: [{ allow: public },  { allow: private}])
+  onUpdateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["updateLabPracticeSessionCommand"]) @auth(rules: [{ allow: public },  { allow: private}])
 }
  

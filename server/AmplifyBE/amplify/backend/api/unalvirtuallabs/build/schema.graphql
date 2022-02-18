@@ -424,7 +424,7 @@ type Subscription {
   onUpdateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["updateUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
   onDeleteUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["deleteUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
   onLabOutputListen(rpiID: ID!): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @aws_api_key @aws_cognito_user_pools
-  onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["createLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
+  onUpdateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["updateLabPracticeSessionCommand"]) @aws_api_key @aws_cognito_user_pools
 }
 
 enum ModelSortDirection {

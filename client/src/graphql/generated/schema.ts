@@ -2027,14 +2027,14 @@ export type Subscription = {
 	onUpdateUserLabSemester?: Maybe<UserLabSemester>;
 	onDeleteUserLabSemester?: Maybe<UserLabSemester>;
 	onLabOutputListen?: Maybe<LabOutputOut>;
-	onCreateLabPracticeSessionCommandBySessionID?: Maybe<LabPracticeSessionCommand>;
+	onUpdateLabPracticeSessionCommandBySessionID?: Maybe<LabPracticeSessionCommand>;
 };
 
 export type SubscriptionOnLabOutputListenArgs = {
 	rpiID: Scalars['ID'];
 };
 
-export type SubscriptionOnCreateLabPracticeSessionCommandBySessionIdArgs = {
+export type SubscriptionOnUpdateLabPracticeSessionCommandBySessionIdArgs = {
 	labpracticesessionID: Scalars['ID'];
 };
 
@@ -2795,16 +2795,6 @@ export type ListUsersBySemesterQuery = {__typename?: 'Query'} & {
 	>;
 };
 
-export type OnCreateLabPracticeSessionCommandBySessionIdSubscriptionVariables = Exact<{
-	id: Scalars['ID'];
-}>;
-
-export type OnCreateLabPracticeSessionCommandBySessionIdSubscription = {__typename?: 'Subscription'} & {
-	onCreateLabPracticeSessionCommandBySessionID?: Maybe<
-		{__typename?: 'LabPracticeSessionCommand'} & Pick<LabPracticeSessionCommand, 'status' | 'labpracticecommandID'>
-	>;
-};
-
 export type OnLabOutputListenSubscriptionVariables = Exact<{
 	id: Scalars['ID'];
 }>;
@@ -2812,6 +2802,19 @@ export type OnLabOutputListenSubscriptionVariables = Exact<{
 export type OnLabOutputListenSubscription = {__typename?: 'Subscription'} & {
 	onLabOutputListen?: Maybe<
 		{__typename?: 'LabOutputOut'} & Pick<LabOutputOut, 'labPracticeOutputID' | 'value' | 'rpiID' | 'captureDate'>
+	>;
+};
+
+export type OnUpdateLabPracticeSessionCommandBySessionIdSubscriptionVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type OnUpdateLabPracticeSessionCommandBySessionIdSubscription = {__typename?: 'Subscription'} & {
+	onUpdateLabPracticeSessionCommandBySessionID?: Maybe<
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<
+			LabPracticeSessionCommand,
+			'id' | 'labpracticecommandID' | 'labpracticesessionID' | 'status'
+		>
 	>;
 };
 
@@ -4433,48 +4436,6 @@ export type ListUsersBySemesterQueryResult = Apollo.QueryResult<
 	ListUsersBySemesterQuery,
 	ListUsersBySemesterQueryVariables
 >;
-export const OnCreateLabPracticeSessionCommandBySessionIdDocument = gql`
-	subscription onCreateLabPracticeSessionCommandBySessionID($id: ID!) {
-		onCreateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
-			status
-			labpracticecommandID
-		}
-	}
-`;
-
-/**
- * __useOnCreateLabPracticeSessionCommandBySessionIdSubscription__
- *
- * To run a query within a React component, call `useOnCreateLabPracticeSessionCommandBySessionIdSubscription` and pass it any options that fit your needs.
- * When your component renders, `useOnCreateLabPracticeSessionCommandBySessionIdSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useOnCreateLabPracticeSessionCommandBySessionIdSubscription(
-	baseOptions: Apollo.SubscriptionHookOptions<
-		OnCreateLabPracticeSessionCommandBySessionIdSubscription,
-		OnCreateLabPracticeSessionCommandBySessionIdSubscriptionVariables
-	>
-) {
-	const options = {...defaultOptions, ...baseOptions};
-	return Apollo.useSubscription<
-		OnCreateLabPracticeSessionCommandBySessionIdSubscription,
-		OnCreateLabPracticeSessionCommandBySessionIdSubscriptionVariables
-	>(OnCreateLabPracticeSessionCommandBySessionIdDocument, options);
-}
-export type OnCreateLabPracticeSessionCommandBySessionIdSubscriptionHookResult = ReturnType<
-	typeof useOnCreateLabPracticeSessionCommandBySessionIdSubscription
->;
-export type OnCreateLabPracticeSessionCommandBySessionIdSubscriptionResult =
-	Apollo.SubscriptionResult<OnCreateLabPracticeSessionCommandBySessionIdSubscription>;
 export const OnLabOutputListenDocument = gql`
 	subscription onLabOutputListen($id: ID!) {
 		onLabOutputListen(rpiID: $id) {
@@ -4513,3 +4474,47 @@ export function useOnLabOutputListenSubscription(
 }
 export type OnLabOutputListenSubscriptionHookResult = ReturnType<typeof useOnLabOutputListenSubscription>;
 export type OnLabOutputListenSubscriptionResult = Apollo.SubscriptionResult<OnLabOutputListenSubscription>;
+export const OnUpdateLabPracticeSessionCommandBySessionIdDocument = gql`
+	subscription onUpdateLabPracticeSessionCommandBySessionID($id: ID!) {
+		onUpdateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
+			id
+			labpracticecommandID
+			labpracticesessionID
+			status
+		}
+	}
+`;
+
+/**
+ * __useOnUpdateLabPracticeSessionCommandBySessionIdSubscription__
+ *
+ * To run a query within a React component, call `useOnUpdateLabPracticeSessionCommandBySessionIdSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useOnUpdateLabPracticeSessionCommandBySessionIdSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOnUpdateLabPracticeSessionCommandBySessionIdSubscription(
+	baseOptions: Apollo.SubscriptionHookOptions<
+		OnUpdateLabPracticeSessionCommandBySessionIdSubscription,
+		OnUpdateLabPracticeSessionCommandBySessionIdSubscriptionVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useSubscription<
+		OnUpdateLabPracticeSessionCommandBySessionIdSubscription,
+		OnUpdateLabPracticeSessionCommandBySessionIdSubscriptionVariables
+	>(OnUpdateLabPracticeSessionCommandBySessionIdDocument, options);
+}
+export type OnUpdateLabPracticeSessionCommandBySessionIdSubscriptionHookResult = ReturnType<
+	typeof useOnUpdateLabPracticeSessionCommandBySessionIdSubscription
+>;
+export type OnUpdateLabPracticeSessionCommandBySessionIdSubscriptionResult =
+	Apollo.SubscriptionResult<OnUpdateLabPracticeSessionCommandBySessionIdSubscription>;

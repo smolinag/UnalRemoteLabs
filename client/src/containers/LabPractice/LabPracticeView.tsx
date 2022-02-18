@@ -10,7 +10,7 @@ import {
 	useListLabPracticeCommandsQuery,
 	useListLabPracticeOutputsQuery,
 	useCreateLabPracticeSessionCommandMutation,
-	useOnCreateLabPracticeSessionCommandBySessionIdSubscription,
+	useOnUpdateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription
 } from '../../graphql/generated/schema';
@@ -63,7 +63,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
-	const {data: updatedSessionCommand} = useOnCreateLabPracticeSessionCommandBySessionIdSubscription({
+	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: SESSION_ID}
 	});
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: DEVICE_ID}});
@@ -143,7 +143,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	}, [updatedSessionOutput]);
 
 	useEffect(() => {
-		const updatedCommand = updatedSessionCommand?.onCreateLabPracticeSessionCommandBySessionID;
+		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
 		console.warn(updatedCommand)
 		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
 			return;

@@ -40,7 +40,7 @@ export interface LocationState {
 	deviceId: string;
 }
 
-const COMMAND_EXECUTION_TIMEOUT = 50000;
+const COMMAND_EXECUTION_TIMEOUT = 10000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
@@ -144,7 +144,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
-		console.warn(updatedCommand)
 		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
 			return;
 		}
@@ -167,7 +166,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 						labpracticecommandID: id,
 						parameters: JSON.stringify([parameters][0]),
 						status: 'pending',
-						requestDate: new Date().toDateString
+						requestDate: new Date()
 					}
 				}
 			});

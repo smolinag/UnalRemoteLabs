@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {Laboratory, Organization, Params} from '../../containers/Laboratory/types';
@@ -29,7 +29,7 @@ const LaboratoryInfo: React.FC<Props> = ({onValueChange, laboratory, organizatio
 		return message;
 	};
 
-	React.useEffect(() => {
+	useEffect(() => {
 		if (laboratory.organizationId) {
 			if (organizations.length > 0) {
 				const org = organizations.filter((obj) => obj.id === laboratory.organizationId)[0];

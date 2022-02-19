@@ -5,7 +5,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "codegen": "graphql-codegen --config codegen.yml"
+    "codegen": "graphql-codegen --config codegen.yml",
+    "deploy-test": "aws s3 rm s3://unal-frontend-app --recursive && aws s3 sync ./build s3://unal-frontend-app"
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",

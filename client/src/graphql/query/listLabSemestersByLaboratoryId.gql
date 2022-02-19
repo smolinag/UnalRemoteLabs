@@ -1,0 +1,20 @@
+query listLabSemestersByLaboratoryId($laboratoryID: ID!) {
+	listLabSemesters(filter: {laboratoryID: {eq: $laboratoryID}}) {
+		items {
+			id
+			semesterName
+			description
+			laboratoryID
+			professor
+			monitorEmailList
+			studentEmailList
+			updatedAt
+			updatedBy
+			createdBy
+			createdAt
+			_lastChangedAt
+			_deleted
+			_version
+		}
+	}
+}

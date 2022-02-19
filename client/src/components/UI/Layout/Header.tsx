@@ -18,7 +18,7 @@ const Header: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		(async () => {
-			let response = (await Auth.currentUserInfo()).attributes.email;
+			let response = (await Auth.currentUserInfo())?.attributes?.email;
 			response = await response;
 			setLoggedUser(response);
 		})();
@@ -28,7 +28,7 @@ const Header: React.FC<unknown> = () => {
 		<header>
 			<Navbar expand="lg" className={classes.navbar}>
 				<Navbar.Brand href="#home" onClick={() => navigate('/')}>
-					<Image src={logosimbolo} className={classes['navbar-brand']}/>
+					<Image src={logosimbolo} className={classes['navbar-brand']} />
 				</Navbar.Brand>
 				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
 				<Navbar.Collapse id="responsive-navbar-nav">

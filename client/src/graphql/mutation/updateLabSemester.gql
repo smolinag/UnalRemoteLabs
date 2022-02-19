@@ -1,0 +1,18 @@
+mutation updateLabSemester($input: UpdateLabSemesterInput!) {
+	updateLabSemester(input: $input) {
+		id
+		semesterName
+		description
+		professor
+		monitorEmailList
+		studentEmailList
+		laboratoryID
+		createdBy
+		createdAt
+		updatedBy
+		updatedAt
+		_lastChangedAt
+		_deleted
+		_version
+	}
+}

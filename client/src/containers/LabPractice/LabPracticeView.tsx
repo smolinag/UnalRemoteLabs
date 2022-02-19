@@ -144,7 +144,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
-		console.warn(updatedCommand)
 		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
 			return;
 		}

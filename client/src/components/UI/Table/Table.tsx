@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, {ReactNode} from 'react';
 import BootstrapTable from 'react-bootstrap/Table';
 import {BsPencilFill, BsXCircleFill} from 'react-icons/bs';
 
@@ -19,7 +19,7 @@ interface Props {
 	removable?: boolean;
 	hasRemoveAll?: boolean;
 	editable?: boolean;
-	onAction?: (rowIndex: number, action: Action, row?: React.ReactNode[]) => void;
+	onAction?: (rowIndex: number, action: Action) => void;
 }
 
 const Table: React.FC<Props> = ({
@@ -33,7 +33,6 @@ const Table: React.FC<Props> = ({
 	hasRemoveAll = false,
 	onAction
 }) => {
-
 	const renderRows = () => {
 		if (data.length > 0) {
 			return data.map((row, i) => (

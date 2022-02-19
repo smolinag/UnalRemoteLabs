@@ -11,7 +11,9 @@ import {Footer, Header, NotificationBanner} from './components/UI';
 import {
 	LabPracticeView,
 	LabPracticeCreation,
-	LabSemesterCreationView,
+	LabSemesterList,
+	LabSemesterCreation,
+	LabSemesterEdition,
 	LabTemp,
 	UserLabPracticeSessionsList,
 	LaboratoriesList,
@@ -36,8 +38,10 @@ const App = (): JSX.Element => {
 					<div className={classes.content}>
 						<Routes>
 							<Route path="/" element={<LabTemp />} />
+							<Route path="/lab-semesters" element={<LabSemesterList />} />
+							<Route path="/lab-semester-creation" element={<LabSemesterCreation />} />
+							<Route path="/lab-semester-edition" element={<LabSemesterEdition />} />
 
-							<Route path="/create-lab-practice-semester" element={<LabSemesterCreationView />} />
 							<Route path="/create-lab-practice-session" element={<LabSessionProgrammingView />} />
 
 							<Route path="/user-labs-sessions" element={<UserLabPracticeSessionsList />} />

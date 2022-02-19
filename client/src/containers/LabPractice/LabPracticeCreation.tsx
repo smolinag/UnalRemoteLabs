@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useEffect, useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 
 import {
@@ -88,7 +88,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		const labs = laboratoriesList?.listLaboratorys?.items;
 		if (labs) {
 			setLaboratories(

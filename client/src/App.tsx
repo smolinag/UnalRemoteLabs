@@ -18,7 +18,8 @@ import {
 	LaboratoryEdition,
 	LaboratoryCreation,
 	LabSessionProgrammingView,
-	LabPracticeEdition
+	LabPracticeEdition,
+	LabPracticeListView
 } from './containers';
 import authComponents from './login/authComponents';
 
@@ -43,6 +44,7 @@ const App = (): JSX.Element => {
 							<Route path="/labs" element={<LaboratoriesList />} />
 
 							<Route path="/lab-practice" element={<LabPracticeView />} />
+							<Route path="/lab-practice-list" element={<LabPracticeListView />} />
 							<Route path="/lab-creation" element={<LaboratoryCreation />} />
 							<Route path="/lab-edition" element={<LaboratoryEdition />} />
 

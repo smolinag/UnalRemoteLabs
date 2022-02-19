@@ -40,7 +40,7 @@ export interface LocationState {
 	deviceId: string;
 }
 
-const COMMAND_EXECUTION_TIMEOUT = 50000;
+const COMMAND_EXECUTION_TIMEOUT = 10000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
@@ -165,16 +165,16 @@ const LabPracticeView: React.FC<unknown> = () => {
 					input: {
 						labpracticesessionID: labPracticeSessionId,
 						labpracticecommandID: id,
-						parameters: JSON.stringify([parameters][0]),
+						parameters: "[]",
 						status: 'pending',
-						requestDate: new Date().toDateString
+						requestDate: new Date()
 					}
 				}
 			});
 
 			const mqttMessage = {
 				name,
-				params: [parameters],
+				params: [{value: true}],
 				uuid: data?.createLabPracticeSessionCommand?.id
 			};
 

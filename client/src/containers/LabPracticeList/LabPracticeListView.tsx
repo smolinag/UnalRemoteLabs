@@ -9,13 +9,15 @@ import {LabPracticeData} from './types';
 
 export interface LocationState {
 	labId: string;
+	labName: string;
 }
 
-const LabPracticeViewList: React.FC<unknown> = () => {
+const LabPracticeListView: React.FC<unknown> = () => {
 	const [labPractices, setLabPractices] = useState<LabPracticeData[]>([]);
 
 	const location = useLocation();
 	const labId = (location.state as LocationState)?.labId;
+	const labName = (location.state as LocationState)?.labName;
 
 	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}});
 
@@ -63,7 +65,7 @@ const LabPracticeViewList: React.FC<unknown> = () => {
 	return (
 		<LoadingContainer loading={false}>
 			<Row className="section">
-				<h3 className="title">Prácticas de laboratorio de </h3>
+				<h3 className="title">{"Prácticas de laboratorio de " + labName}</h3>
 			</Row>
 			<Row className="section">
 				<Col sm={8} className={classes.table}>
@@ -72,6 +74,7 @@ const LabPracticeViewList: React.FC<unknown> = () => {
 						data={mapLabpracticesForTable(labPractices)}
 						removable
 						hasRemoveAll
+						editable
 						overflow
 						stickyHeader
 						maxHeight={'400px'}
@@ -81,4 +84,4 @@ const LabPracticeViewList: React.FC<unknown> = () => {
 		</LoadingContainer>
 	);
 };
-export default LabPracticeViewList;
+export default LabPracticeListView;

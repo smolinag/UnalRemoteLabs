@@ -8,4 +8,5 @@ export {default as LaboratoriesList} from './Laboratory/LaboratoriesList';
 export {default as LaboratoryCreation} from './Laboratory/LaboratoryCreation';
 export {default as LaboratoryEdition} from './Laboratory/LaboratoryEdition';
 export {default as LabPracticeEdition} from './LabPractice/LabPracticeEdition';
+export {default as LabPracticeListView} from './LabPracticeList/LabPracticeListView';
 

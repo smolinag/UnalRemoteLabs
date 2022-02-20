@@ -6,20 +6,27 @@ import LabSessionData from '../../components/LabSessionProgramming/LabSessionDat
 import {LoadingContainer, Button, Table} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
+	useGetLabPracticeQuery,
 	useCreateLabPracticeSessionMutation,
 	useListUsersBySemesterQuery,
 	useCreateUserLabPracticeSessionMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import classes from './LabSessionProgrammingView.module.scss';
-import {LabSessionInfo, SessionUser} from './types';
+import {LabSessionInfo, LabPracticeInfo, SessionUser} from './types';
 
+export interface LocationState {
+	labPracticeId: string;
+	labSemesterId: string;
+}
 
 const LabSessionProgrammingView: React.FC<unknown> = () => {
-
 	const location = useLocation();
-	const labSession = (location.state as LabSessionInfo);
+	const labSession = location.state as LabSessionInfo;
+	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 
+	const [labPracticeInfo, setLabPracticeInfo] = useState<LabPracticeInfo>({id: '', name: '', duration: 0});
 	const [labSessionInfo, setSessionInfo] = useState<LabSessionInfo>(labSession);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [studentList, setStudentList] = useState<SessionUser[]>([]);
@@ -28,9 +35,23 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 
 	const [createLabPracticeSession] = useCreateLabPracticeSessionMutation({});
 	const [createUserLabPracticeSession] = useCreateUserLabPracticeSessionMutation({});
-	const {data: semesterUsers} = useListUsersBySemesterQuery({variables: {id: labSessionInfo.semesterId}});
+	const {data: labPracticeData} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
+	const {data: semesterUsers} = useListUsersBySemesterQuery({variables: {id: labSemesterId}});
 
 	useEffect(() => {
+		if (labPracticeData?.getLabPractice) {
+			setLabPracticeInfo({
+				id: labPracticeData.getLabPractice.id,
+				name: labPracticeData.getLabPractice.name,
+				description: labPracticeData.getLabPractice.description ? labPracticeData.getLabPractice.description : '',
+				duration: labPracticeData.getLabPractice.duration
+			});
+		}
+	}, [labPracticeData]);
+
+	useEffect(() => {
+		console.warn(labSemesterId)
+		console.warn(semesterUsers)
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
 		if (semesterUserList) {
 			const data = semesterUserList.map((item) => {
@@ -59,11 +80,11 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 			const {data: labPracticeSessionData} = await createLabPracticeSession({
 				variables: {
 					input: {
-						labpracticeID: '1',
-						labSemesterID: labSessionInfo.semesterId,
+						labpracticeID: labPracticeId,
+						labSemesterID: labSemesterId,
 						description: labSessionInfo.description,
 						startDate: labSessionInfo.startDate,
-						endDate: new Date(labSessionInfo.startDate.getTime() + parseInt(labSessionInfo.duration) * 60000),
+						endDate: new Date(labSessionInfo.startDate.getTime() + labPracticeInfo.duration * 60000),
 						createdBy: '1'
 					}
 				}
@@ -86,10 +107,10 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 				}
 			}
 
-			showSuccessBanner(`La sesión del laboratorio ${labSessionInfo.labPracticeName} fue creada exitosamente`);
+			showSuccessBanner(`La sesión del laboratorio ${labPracticeInfo.name} fue creada exitosamente`);
 		} catch (ex) {
 			console.error(ex);
-			showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSessionInfo.labPracticeName}`);
+			showErrorBanner(`Error en la creación de la sesión del laboratorio ${labPracticeInfo.name}`);
 		} finally {
 			setLoading(false);
 		}
@@ -119,6 +140,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 			<LoadingContainer loading={loading}>
 				<Row className="section">
 					<LabSessionData
+						practiceInfo={labPracticeInfo}
 						sessionInfo={labSessionInfo}
 						onDescriptionChange={onSessionDescriptionChange}
 						onStartDateChange={onSessionStartDateChange}

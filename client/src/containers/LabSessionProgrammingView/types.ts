@@ -4,9 +4,14 @@ export interface LabSessionInfo {
   startDate: Date,
   endDate: Date,
   description: string,
-  labPracticeName: string,
-  duration: string,
   semesterId: string
+}
+
+export interface LabPracticeInfo {
+  id: String, 
+  name: String,
+  description?: string,
+  duration: number,
 }
 
 export interface SessionUser {

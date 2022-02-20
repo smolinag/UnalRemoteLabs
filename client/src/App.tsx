@@ -42,13 +42,13 @@ const App = (): JSX.Element => {
 							<Route path="/lab-semester-creation" element={<LabSemesterCreation />} />
 							<Route path="/lab-semester-edition" element={<LabSemesterEdition />} />
 
-							<Route path="/create-lab-practice-session" element={<LabSessionProgrammingView />} />
+							<Route path="/lab-practice-session-creation" element={<LabSessionProgrammingView />} />
 
 							<Route path="/user-labs-sessions" element={<UserLabPracticeSessionsList />} />
 							<Route path="/labs" element={<LaboratoriesList />} />
 
 							<Route path="/lab-practice" element={<LabPracticeView />} />
-							<Route path="/lab-practice-list" element={<LabPracticeListView />} />
+							<Route path="/lab-practices" element={<LabPracticeListView />} />
 							<Route path="/lab-creation" element={<LaboratoryCreation />} />
 							<Route path="/lab-edition" element={<LaboratoryEdition />} />
 

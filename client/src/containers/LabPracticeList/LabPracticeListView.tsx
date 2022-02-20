@@ -1,27 +1,36 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Col} from 'react-bootstrap';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LoadingContainer, Table} from '../../components/UI';
-import {useListLabPracticesQuery} from '../../graphql/generated/schema';
+import {useListLabPracticesQuery, useGetLaboratoryQuery} from '../../graphql/generated/schema';
 import classes from './LabPracticeListView.module.scss';
 import {LabPracticeData} from './types';
 
 export interface LocationState {
 	labId: string;
-	labName: string;
+	labSemesterId?: string;
 }
 
 const LabPracticeListView: React.FC<unknown> = () => {
 	const [labPractices, setLabPractices] = useState<LabPracticeData[]>([]);
+	const [laboratoryName, setLaboratoryName] = useState<string>("");
+
+	const navigate = useNavigate();
 
 	const location = useLocation();
 	const labId = (location.state as LocationState)?.labId;
-	const labName = (location.state as LocationState)?.labName;
+	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 
+	const {data: labData} = useGetLaboratoryQuery({variables: {id: labId}});
 	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}});
 
 	useEffect(() => {
+		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : "")
+	}, [labData]);
+
+	useEffect(() => {
+		console.warn(labPracticesData)
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
 				.filter((item) => !item?._deleted)
@@ -44,12 +53,26 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	}, [labPracticesData]);
 
 	const mapLabpracticesForTable = (labpractices: Array<LabPracticeData>) => {
-		const data: string[][] = [];
+		const data: string | React.ReactNode[][] = [];
 		labpractices.forEach((item) => {
-			data.push([item.name, item.description, item.duration.toString()]);
+			data.push([item.name, item.description, item.duration.toString(), redirectToLabPracticeSessionProgram(item.id)]);
 		});
 		return data;
 	}
+
+	const redirectToLabPracticeSessionProgram = (labPracticeId: string) => {
+		return (
+			<a
+				href=""
+				onClick={() =>
+					navigate('/lab-practice-session-creation', {
+						state: {labPracticeId, labSemesterId}
+					})
+				}>
+				Programar
+			</a>
+		);
+	};
 
 	// const handleTableAction = (index: number, action: Action, row: React.ReactNode[] = []) => {
 	// 	switch (action) {
@@ -65,12 +88,12 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	return (
 		<LoadingContainer loading={false}>
 			<Row className="section">
-				<h3 className="title">{"Prácticas de laboratorio de " + labName}</h3>
+				<h3 className="title">{"Prácticas de laboratorio de " + laboratoryName}</h3>
 			</Row>
 			<Row className="section">
 				<Col sm={8} className={classes.table}>
 					<Table
-						headers={['Nombre', 'Descripción', 'Duración']}
+						headers={['Nombre', 'Descripción', 'Duración', 'Programar']}
 						data={mapLabpracticesForTable(labPractices)}
 						removable
 						hasRemoveAll

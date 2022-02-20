@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 
 import {LabSemesterTable} from '../../components/LabSemester';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
@@ -22,15 +22,19 @@ const initialLabSemester: LabSemester = {
 	studentEmailList: []
 };
 
+export interface LocationState {
+	labId: string;
+	labName: string;
+}
+
 const LabSemesterList: React.FC<unknown> = () => {
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = useState<boolean>(true);
 	const [displayModal, setDisplayModal] = useState<boolean>(false);
 
-	// const location = useLocation();
-	// const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
-	const laboratoryID = 'f3094551-bdd7-411b-b2e7-721bb993e138';
+	const location = useLocation();
+	const laboratoryID = (location.state as LocationState)?.labId;
 	const {data: LabSemesterData, loading: loadingLabSemesterData} = useListLabSemestersByLaboratoryIdQuery({
 		variables: {laboratoryID}
 	});
@@ -48,6 +52,14 @@ const LabSemesterList: React.FC<unknown> = () => {
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	useEffect(() => {
+		if (laboratoryData?.getLaboratory != null) {
+			const lab = laboratoryData.getLaboratory;
+			setLaboratory({id: lab.id, name: lab.name});
+		}
+		setLoading(loadingLaboratoryData);
+	}, [laboratoryData]);
+
+	useEffect(() => {
 		// eslint-disable-next-line no-console
 		console.log(LabSemesterData);
 		if (LabSemesterData && LabSemesterData.listLabSemesters?.items) {
@@ -62,7 +74,8 @@ const LabSemesterList: React.FC<unknown> = () => {
 						monitorEmailList: obj?.monitorEmailList ? obj.monitorEmailList : [],
 						studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
 						version: obj?._version ? obj._version : null,
-						deleted: obj?._deleted ? obj._deleted : null
+						deleted: obj?._deleted ? obj._deleted : null,
+						laboratoryID: laboratory?.id ? laboratory.id : ""
 					};
 				});
 
@@ -71,14 +84,6 @@ const LabSemesterList: React.FC<unknown> = () => {
 
 		setLoading(loadingLabSemesterData);
 	}, [LabSemesterData]);
-
-	useEffect(() => {
-		if (laboratoryData?.getLaboratory != null) {
-			const lab = laboratoryData.getLaboratory;
-			setLaboratory({id: lab.id, name: lab.name});
-		}
-		setLoading(loadingLaboratoryData);
-	}, [laboratoryData]);
 
 	const handleLabSemesterAction = (index: number, action: Action) => {
 		switch (action) {

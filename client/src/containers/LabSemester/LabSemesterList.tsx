@@ -23,8 +23,7 @@ const initialLabSemester: LabSemester = {
 };
 
 export interface LocationState {
-	labId: string;
-	labName: string;
+	laboratoryID: string;
 }
 
 const LabSemesterList: React.FC<unknown> = () => {
@@ -34,13 +33,10 @@ const LabSemesterList: React.FC<unknown> = () => {
 	const [displayModal, setDisplayModal] = useState<boolean>(false);
 
 	const location = useLocation();
-	const laboratoryID = (location.state as LocationState)?.labId;
+	const laboratoryID = (location.state as LocationState)?.laboratoryID;
 	const {data: LabSemesterData, loading: loadingLabSemesterData} = useListLabSemestersByLaboratoryIdQuery({
 		variables: {laboratoryID}
 	});
-
-	// eslint-disable-next-line no-console
-	console.log(LabSemesterData);
 
 	const [labSemesters, setLabSemesters] = useState<Array<LabSemester>>([]);
 
@@ -60,8 +56,6 @@ const LabSemesterList: React.FC<unknown> = () => {
 	}, [laboratoryData]);
 
 	useEffect(() => {
-		// eslint-disable-next-line no-console
-		console.log(LabSemesterData);
 		if (LabSemesterData && LabSemesterData.listLabSemesters?.items) {
 			const labsList: Array<LabSemester> = LabSemesterData.listLabSemesters?.items
 				.filter((obj) => obj && !obj._deleted)
@@ -75,7 +69,7 @@ const LabSemesterList: React.FC<unknown> = () => {
 						studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
 						version: obj?._version ? obj._version : null,
 						deleted: obj?._deleted ? obj._deleted : null,
-						laboratoryID: laboratory?.id ? laboratory.id : ""
+						laboratoryID: laboratory?.id ? laboratory.id : ''
 					};
 				});
 

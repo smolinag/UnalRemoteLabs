@@ -43,7 +43,7 @@ const LaboratoriesTable: React.FC<Props> = ({data, onAction}) => {
 				href=""
 				onClick={() =>
 					navigate('/lab-semesters', {
-						state: {labId}
+						state: {laboratoryID: labId}
 					})
 				}>
 				Semestres

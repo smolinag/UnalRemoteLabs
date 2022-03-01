@@ -14,7 +14,7 @@ export interface LocationState {
 
 const LabPracticeListView: React.FC<unknown> = () => {
 	const [labPractices, setLabPractices] = useState<LabPracticeData[]>([]);
-	const [laboratoryName, setLaboratoryName] = useState<string>("");
+	const [laboratoryName, setLaboratoryName] = useState<string>('');
 
 	const navigate = useNavigate();
 
@@ -26,11 +26,11 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}});
 
 	useEffect(() => {
-		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : "")
+		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : '');
 	}, [labData]);
 
 	useEffect(() => {
-		console.warn(labPracticesData)
+		console.warn(labPracticesData);
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
 				.filter((item) => !item?._deleted)
@@ -54,11 +54,30 @@ const LabPracticeListView: React.FC<unknown> = () => {
 
 	const mapLabpracticesForTable = (labpractices: Array<LabPracticeData>) => {
 		const data: string | React.ReactNode[][] = [];
+		console.log(labSemesterId);
 		labpractices.forEach((item) => {
-			data.push([item.name, item.description, item.duration.toString(), redirectToLabPracticeSessionProgram(item.id)]);
+			//If there is a semester selected show program button
+			if (labSemesterId) {
+				data.push([
+					item.name,
+					item.description,
+					item.duration.toString(),
+					redirectToLabPracticeSessionProgram(item.id)
+				]);
+			} else {
+				data.push([item.name, item.description, item.duration.toString()]);
+			}
 		});
 		return data;
-	}
+	};
+
+	const getTableHeaders = () => {
+		const headers = ['Nombre', 'Descripción', 'Duración'];
+		if(labSemesterId){
+			headers.push('Programar');
+		}
+		return headers;
+	};
 
 	const redirectToLabPracticeSessionProgram = (labPracticeId: string) => {
 		return (
@@ -88,12 +107,12 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	return (
 		<LoadingContainer loading={false}>
 			<Row className="section">
-				<h3 className="title">{"Prácticas de laboratorio de " + laboratoryName}</h3>
+				<h3 className="title">{'Prácticas de laboratorio de ' + laboratoryName}</h3>
 			</Row>
 			<Row className="section">
 				<Col sm={8} className={classes.table}>
 					<Table
-						headers={['Nombre', 'Descripción', 'Duración', 'Programar']}
+						headers={getTableHeaders()}
 						data={mapLabpracticesForTable(labPractices)}
 						removable
 						hasRemoveAll

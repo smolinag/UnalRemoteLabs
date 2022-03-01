@@ -11,18 +11,17 @@ interface Props {
 	onAction?: (rowIndex: number, action: Action) => void;
 }
 
-const COLUMNS = ['Semestre', 'Descripción', 'Profesor', 'Prácticas'];
+const COLUMNS = ['Semestre', 'Descripción', 'Profesor', 'Prácticas', 'Sesiones'];
 
 const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 	const navigate = useNavigate();
-
-	console.warn(data)
 
 	const mapOutput = ({semesterName, description, professor, laboratoryID, id}: LabSemester): (string | React.ReactNode)[] => [
 		semesterName,
 		description,
 		professor,
-		redirectToLabPractice(laboratoryID ? laboratoryID : "", id ? id : "")
+		redirectToLabPractice(laboratoryID ? laboratoryID : "", id ? id : ""),
+		redirectToLabPracticeSession(id ? id : "")
 	];
 
 	const redirectToLabPractice = (labId: string, labSemesterId: string) => {
@@ -35,6 +34,22 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 					})
 				}>
 				Prácticas
+			</a>
+		);
+	};
+
+	const redirectToLabPracticeSession = (labSemesterId: string) => {
+		console.log(labSemesterId)
+		return (
+			<a
+				href=""
+				// onClick={() =>
+				// 	navigate('/lab-practices', {
+				// 		state: {labId, labSemesterId}
+				// 	})
+				// }
+				>
+				Sesiones
 			</a>
 		);
 	};

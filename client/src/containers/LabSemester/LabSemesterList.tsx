@@ -11,7 +11,7 @@ import {
 	useGetLaboratoryQuery
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
-import {LabSemester, Laboratory} from './types';
+import {LabSemester, Laboratory, LocationStateList} from './types';
 
 const initialLabSemester: LabSemester = {
 	id: '',
@@ -22,10 +22,6 @@ const initialLabSemester: LabSemester = {
 	studentEmailList: []
 };
 
-export interface LocationState {
-	laboratoryID: string;
-}
-
 const LabSemesterList: React.FC<unknown> = () => {
 	const navigate = useNavigate();
 
@@ -33,10 +29,14 @@ const LabSemesterList: React.FC<unknown> = () => {
 	const [displayModal, setDisplayModal] = useState<boolean>(false);
 
 	const location = useLocation();
-	const laboratoryID = (location.state as LocationState)?.laboratoryID;
+	const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
 	const {data: LabSemesterData, loading: loadingLabSemesterData} = useListLabSemestersByLaboratoryIdQuery({
 		variables: {laboratoryID}
 	});
+	// eslint-disable-next-line no-console
+	console.log(LabSemesterData);
+	// eslint-disable-next-line no-console
+	console.log(loadingLabSemesterData);
 
 	const [labSemesters, setLabSemesters] = useState<Array<LabSemester>>([]);
 

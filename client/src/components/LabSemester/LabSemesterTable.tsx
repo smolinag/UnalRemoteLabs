@@ -39,7 +39,6 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 	};
 
 	const redirectToLabPracticeSession = (labSemesterId: string) => {
-		console.log(labSemesterId)
 		return (
 			<a
 				href=""

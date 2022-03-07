@@ -54,7 +54,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 
 	const mapLabpracticesForTable = (labpractices: Array<LabPracticeData>) => {
 		const data: string | React.ReactNode[][] = [];
-		console.log(labSemesterId);
 		labpractices.forEach((item) => {
 			//If there is a semester selected show program button
 			if (labSemesterId) {

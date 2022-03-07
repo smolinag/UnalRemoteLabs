@@ -16,7 +16,8 @@ import {
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
-const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+// const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
+const PRACTICE_ID = 'f4ed1552-4719-4652-9f94-b516337fd578';
 const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77';
 // const COMMAND_NAME_PREFIX = 'cmd';
@@ -50,7 +51,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
-	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>('');
+	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(SESSION_ID);
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	// const location = useLocation();
@@ -70,32 +71,27 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
-			setLabCommands(() => {
-				const tempCommands: Command[] = [];
-				const parametersList: Parameter[] = [];
-
-				labCommandsData?.listLabPracticeCommands?.items.forEach((command) => {
-					if (!command?._deleted) {
-						command?.LabPracticeParameters?.items?.forEach((parameter) => {
-							if (parameter && !parameter._deleted) {
-								parametersList.push({
-									label: (parameter?.labelName ?? parameter?.name) as string,
-									id: parameter?.id as string,
-									value: Number((parameter?.defaultValue as string) ?? 0)
-								});
-							}
+			const labCommands: Command[] = labCommandsData?.listLabPracticeCommands?.items
+				.filter((command) => !command?._deleted)
+				.map((command): Command => {
+					const parameters = command?.LabPracticeParameters?.items
+						?.filter((parameter) => !parameter?._deleted)
+						.map((parameter): Parameter => {
+							return {
+								id: parameter?.id as string,
+								label: (parameter?.labelName ?? parameter?.name) as string,
+								value: Number((parameter?.defaultValue as string) ?? 0)
+							};
 						});
 
-						tempCommands.push({
-							name: command?.name as string,
-							id: command?.id as string,
-							parameters: parametersList,
-							label: (command?.labelName ?? command?.name) as string
-						});
-					}
+					return {
+						id: command?.id as string,
+						name: command?.name as string,
+						label: (command?.labelName ?? command?.name) as string,
+						parameters
+					};
 				});
-				return tempCommands;
-			});
+			setLabCommands(labCommands);
 		}
 	}, [labCommandsData]);
 
@@ -156,7 +152,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 		}
 	}, [updatedSessionCommand]);
 
-	const handleCommandChange = async ({parameters, name, label}: Command, id: string) => {
+	const handleCommandChange = async ({parameters = [], name, label}: Command, id: string) => {
 		try {
 			setIsExecutingCommand(true);
 			const {data} = await createLabPracticeSessionCommand({
@@ -164,7 +160,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 					input: {
 						labpracticesessionID: labPracticeSessionId,
 						labpracticecommandID: id,
-						parameters: "[]",
+						parameters: JSON.stringify(parameters[0]),
 						status: 'pending',
 						requestDate: new Date()
 					}
@@ -173,7 +169,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 			const mqttMessage = {
 				name,
-				params: [{value: true}],
+				params: parameters,
 				uuid: data?.createLabPracticeSessionCommand?.id
 			};
 

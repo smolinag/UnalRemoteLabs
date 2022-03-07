@@ -29,15 +29,16 @@ const Commands: React.FC<Props> = ({commands, onCommandChange}) => {
 		<Row className="section">
 			<h4 className="title">Comandos de entrada</h4>
 			<div className={classes.commands}>
-				{commands.map(({label, id, parameters}) =>
+				{commands.map(({label, id, parameters}, index) =>
 					parameters ? (
 						<ComplexCommand
 							label={label}
 							parameters={parameters}
 							onExecute={() => handleCommandChange(id, parameters)}
+							key={index}
 						/>
 					) : (
-						<SimpleCommand label={label} onExecute={() => handleCommandChange(id)} />
+						<SimpleCommand label={label} onExecute={() => handleCommandChange(id)} key={index} />
 					)
 				)}
 			</div>

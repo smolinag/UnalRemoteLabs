@@ -13,12 +13,13 @@ export interface Parameter {
 }
 
 interface Props {
-	onExecute: (parameters: Parameter[]) => void;
+	onExecute: (id: string, parameters: Parameter[]) => void;
 	label: string;
 	parameters: Parameter[];
+	commandId: string;
 }
 
-const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters}) => {
+const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandId}) => {
 	const [formParametersValues, setFormParametersValues] = useState<Parameter[]>(parameters);
 
 	const handleParameterValueChange = (newValue: number, id: string) => {
@@ -50,7 +51,7 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters}) => {
 						/>
 					</InputGroup>
 				))}
-				<Button variant="green" className={classes.button} onClick={() => onExecute(formParametersValues)}>
+				<Button variant="green" className={classes.button} onClick={() => onExecute(commandId, formParametersValues)}>
 					Ejecutar
 				</Button>
 			</div>

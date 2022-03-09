@@ -18,12 +18,21 @@ interface Props {
 }
 
 const Commands: React.FC<Props> = ({commands, onCommandChange}) => {
-	const handleCommandChange = (commandId: string, parameters?: Parameter[]) => {
+	const handleCommandChange = (commandId: string) => {
 		const command = commands.find(({id}) => id === commandId);
+
+		if (command) {
+			onCommandChange({...command}, command.id);
+		}
+	};
+
+	const handleParameterChange = (commandId: string, parameters: Parameter[]) => {
+		const command = commands.find(({id}) => id === commandId);
+
 		if (command) {
 			onCommandChange({...command, parameters}, command.id);
 		}
-	};
+	}
 
 	return (
 		<Row className="section">
@@ -34,8 +43,9 @@ const Commands: React.FC<Props> = ({commands, onCommandChange}) => {
 						<ComplexCommand
 							label={label}
 							parameters={parameters}
-							onExecute={() => handleCommandChange(id, parameters)}
+							onExecute={handleParameterChange}
 							key={index}
+							commandId={id}
 						/>
 					) : (
 						<SimpleCommand label={label} onExecute={() => handleCommandChange(id)} key={index} />

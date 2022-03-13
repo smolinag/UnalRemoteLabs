@@ -95,8 +95,8 @@
         },
         "unalvirtuallabsa596f245PostConfirmation": {
           "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
-          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-6c46577853622f536d68-build.zip",
-          "usersTable": "dev"
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-6c4e445431595a444a69-build.zip",
+          "userTable": "User-glgsgvfuj5c3rgtir6lz5gpqdi-develop"
         },
         "emaildelivery": {
           "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",

@@ -4,7 +4,7 @@ const cognito = new aws.CognitoIdentityServiceProvider({
   apiVersion: "2016-04-18",
 });
 
-const TABLE_NAME = process.env.USERS_TABLE;
+const TABLE_NAME = process.env.USER_TABLE;
 
 readItem = async (email) => {
   const params = {

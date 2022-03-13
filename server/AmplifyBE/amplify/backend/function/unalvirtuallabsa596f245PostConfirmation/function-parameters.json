@@ -16,8 +16,8 @@
   "enableCors": false,
   "environmentVariableList": [
     {
-      "cloudFormationParameterName": "usersTable",
-      "environmentVariableName": "USERS_TABLE"
+      "cloudFormationParameterName": "userTable",
+      "environmentVariableName": "USER_TABLE"
     }
   ]
 }

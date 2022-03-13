@@ -44,7 +44,7 @@
     "s3Key": {
       "Type": "String"
     },
-    "usersTable": {
+    "userTable": {
       "Type": "String"
     }
   },
@@ -99,8 +99,8 @@
             "GROUP": {
               "Ref": "GROUP"
             },
-            "USERS_TABLE": {
-              "Ref": "usersTable"
+            "USER_TABLE": {
+              "Ref": "userTable"
             }
           }
         },

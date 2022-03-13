@@ -6,7 +6,7 @@ import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 
 import classes from './App.module.scss';
-import awsExports from './aws-exports';
+import awsmobile from './aws-exports';
 import {Footer, Header, NotificationBanner} from './components/UI';
 import {
 	LabPracticeView,
@@ -25,7 +25,7 @@ import {
 } from './containers';
 import authComponents from './login/authComponents';
 
-Amplify.configure(awsExports);
+Amplify.configure(awsmobile);
 
 const App = (): JSX.Element => {
 

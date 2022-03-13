@@ -3,14 +3,14 @@ import {Auth} from '@aws-amplify/auth';
 import {createAuthLink, AuthOptions} from 'aws-appsync-auth-link';
 import {createSubscriptionHandshakeLink} from 'aws-appsync-subscription-link';
 
-import appSyncConfig from './aws-exports';
+import awsmobile from './aws-exports';
 
-const url = appSyncConfig.aws_appsync_graphqlEndpoint;
-const region = appSyncConfig.aws_appsync_region;
+const url = awsmobile.aws_appsync_graphqlEndpoint;
+const region = awsmobile.aws_appsync_region;
 const auth: AuthOptions = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	type: appSyncConfig.aws_appsync_authenticationType as any,
-	// apiKey: appSyncConfig.aws_appsync_apiKey,
+	type: awsmobile.aws_appsync_authenticationType as any,
+	// apiKey: awsmobile.aws_appsync_apiKey,
 	jwtToken: async () => {
 		try {
 			const token = (await Auth.currentSession()).getAccessToken().getJwtToken();

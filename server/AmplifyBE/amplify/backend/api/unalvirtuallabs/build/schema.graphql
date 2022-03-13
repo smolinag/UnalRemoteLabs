@@ -18,47 +18,17 @@ type Organization @aws_api_key @aws_cognito_user_pools {
   Laboratories(filter: ModelLaboratoryFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type Role @aws_api_key @aws_cognito_user_pools {
-  id: ID!
-  name: String!
-  description: String
-  createdBy: String!
-  updatedBy: String
-  _version: Int!
-  _deleted: Boolean
-  _lastChangedAt: AWSTimestamp!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
-  Privileges(privilegeID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools
-  Users(userID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools
-}
-
-type Privilege @aws_api_key @aws_cognito_user_pools {
-  id: ID!
-  name: String!
-  description: String
-  _version: Int!
-  _deleted: Boolean
-  _lastChangedAt: AWSTimestamp!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  Roles(roleID: ModelIDKeyConditionInput, filter: ModelPrivilegeRoleFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools
-}
-
 type UserLabPracticeSession @aws_api_key @aws_cognito_user_pools {
   id: ID!
   sessionStartDate: AWSDateTime
   sessionEndDate: AWSDateTime
   userID: ID!
   labpracticesessionID: ID!
-  roleID: ID
   _version: Int!
   _deleted: Boolean
   _lastChangedAt: AWSTimestamp!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  role: Role @aws_api_key @aws_cognito_user_pools
   User: User @aws_api_key @aws_cognito_user_pools
   LabPracticeSession: LabPracticeSession @aws_api_key @aws_cognito_user_pools
 }
@@ -81,7 +51,6 @@ type User @aws_api_key @aws_cognito_user_pools {
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
   UserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
-  Roles(roleID: ModelIDKeyConditionInput, filter: ModelRoleUserFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools
   UserLabSemesters(labsemesterID: ModelIDKeyConditionInput, filter: ModelUserLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
 
@@ -257,32 +226,6 @@ type Laboratory @aws_api_key @aws_cognito_user_pools {
   LabSemesters(filter: ModelLabSemesterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
 
-type PrivilegeRole @aws_api_key @aws_cognito_user_pools {
-  id: ID!
-  privilegeID: ID!
-  roleID: ID!
-  _version: Int!
-  _deleted: Boolean
-  _lastChangedAt: AWSTimestamp!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  role: Role! @aws_api_key @aws_cognito_user_pools
-  privilege: Privilege! @aws_api_key @aws_cognito_user_pools
-}
-
-type RoleUser @aws_api_key @aws_cognito_user_pools {
-  id: ID!
-  userID: ID!
-  roleID: ID!
-  _version: Int!
-  _deleted: Boolean
-  _lastChangedAt: AWSTimestamp!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  role: Role! @aws_api_key @aws_cognito_user_pools
-  user: User! @aws_api_key @aws_cognito_user_pools
-}
-
 type UserLabSemester @aws_api_key @aws_cognito_user_pools {
   id: ID!
   userID: ID!
@@ -319,12 +262,6 @@ type Mutation {
   createOrganization(input: CreateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
   updateOrganization(input: UpdateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
   deleteOrganization(input: DeleteOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
-  createRole(input: CreateRoleInput!, condition: ModelRoleConditionInput): Role @aws_api_key @aws_cognito_user_pools
-  updateRole(input: UpdateRoleInput!, condition: ModelRoleConditionInput): Role @aws_api_key @aws_cognito_user_pools
-  deleteRole(input: DeleteRoleInput!, condition: ModelRoleConditionInput): Role @aws_api_key @aws_cognito_user_pools
-  createPrivilege(input: CreatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege @aws_api_key @aws_cognito_user_pools
-  updatePrivilege(input: UpdatePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege @aws_api_key @aws_cognito_user_pools
-  deletePrivilege(input: DeletePrivilegeInput!, condition: ModelPrivilegeConditionInput): Privilege @aws_api_key @aws_cognito_user_pools
   createUserLabPracticeSession(input: CreateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
   updateUserLabPracticeSession(input: UpdateUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
   deleteUserLabPracticeSession(input: DeleteUserLabPracticeSessionInput!, condition: ModelUserLabPracticeSessionConditionInput): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
@@ -358,12 +295,6 @@ type Mutation {
   createLaboratory(input: CreateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory @aws_api_key @aws_cognito_user_pools
   updateLaboratory(input: UpdateLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory @aws_api_key @aws_cognito_user_pools
   deleteLaboratory(input: DeleteLaboratoryInput!, condition: ModelLaboratoryConditionInput): Laboratory @aws_api_key @aws_cognito_user_pools
-  createPrivilegeRole(input: CreatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole @aws_api_key @aws_cognito_user_pools
-  updatePrivilegeRole(input: UpdatePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole @aws_api_key @aws_cognito_user_pools
-  deletePrivilegeRole(input: DeletePrivilegeRoleInput!, condition: ModelPrivilegeRoleConditionInput): PrivilegeRole @aws_api_key @aws_cognito_user_pools
-  createRoleUser(input: CreateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser @aws_api_key @aws_cognito_user_pools
-  updateRoleUser(input: UpdateRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser @aws_api_key @aws_cognito_user_pools
-  deleteRoleUser(input: DeleteRoleUserInput!, condition: ModelRoleUserConditionInput): RoleUser @aws_api_key @aws_cognito_user_pools
   createUserLabSemester(input: CreateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
   updateUserLabSemester(input: UpdateUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
   deleteUserLabSemester(input: DeleteUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
@@ -375,12 +306,6 @@ type Subscription {
   onCreateOrganization: Organization @aws_subscribe(mutations: ["createOrganization"]) @aws_api_key @aws_cognito_user_pools
   onUpdateOrganization: Organization @aws_subscribe(mutations: ["updateOrganization"]) @aws_api_key @aws_cognito_user_pools
   onDeleteOrganization: Organization @aws_subscribe(mutations: ["deleteOrganization"]) @aws_api_key @aws_cognito_user_pools
-  onCreateRole: Role @aws_subscribe(mutations: ["createRole"]) @aws_api_key @aws_cognito_user_pools
-  onUpdateRole: Role @aws_subscribe(mutations: ["updateRole"]) @aws_api_key @aws_cognito_user_pools
-  onDeleteRole: Role @aws_subscribe(mutations: ["deleteRole"]) @aws_api_key @aws_cognito_user_pools
-  onCreatePrivilege: Privilege @aws_subscribe(mutations: ["createPrivilege"]) @aws_api_key @aws_cognito_user_pools
-  onUpdatePrivilege: Privilege @aws_subscribe(mutations: ["updatePrivilege"]) @aws_api_key @aws_cognito_user_pools
-  onDeletePrivilege: Privilege @aws_subscribe(mutations: ["deletePrivilege"]) @aws_api_key @aws_cognito_user_pools
   onCreateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["createUserLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
   onUpdateUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["updateUserLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
   onDeleteUserLabPracticeSession: UserLabPracticeSession @aws_subscribe(mutations: ["deleteUserLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
@@ -414,12 +339,6 @@ type Subscription {
   onCreateLaboratory: Laboratory @aws_subscribe(mutations: ["createLaboratory"]) @aws_api_key @aws_cognito_user_pools
   onUpdateLaboratory: Laboratory @aws_subscribe(mutations: ["updateLaboratory"]) @aws_api_key @aws_cognito_user_pools
   onDeleteLaboratory: Laboratory @aws_subscribe(mutations: ["deleteLaboratory"]) @aws_api_key @aws_cognito_user_pools
-  onCreatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["createPrivilegeRole"]) @aws_api_key @aws_cognito_user_pools
-  onUpdatePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["updatePrivilegeRole"]) @aws_api_key @aws_cognito_user_pools
-  onDeletePrivilegeRole: PrivilegeRole @aws_subscribe(mutations: ["deletePrivilegeRole"]) @aws_api_key @aws_cognito_user_pools
-  onCreateRoleUser: RoleUser @aws_subscribe(mutations: ["createRoleUser"]) @aws_api_key @aws_cognito_user_pools
-  onUpdateRoleUser: RoleUser @aws_subscribe(mutations: ["updateRoleUser"]) @aws_api_key @aws_cognito_user_pools
-  onDeleteRoleUser: RoleUser @aws_subscribe(mutations: ["deleteRoleUser"]) @aws_api_key @aws_cognito_user_pools
   onCreateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["createUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
   onUpdateUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["updateUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
   onDeleteUserLabSemester: UserLabSemester @aws_subscribe(mutations: ["deleteUserLabSemester"]) @aws_api_key @aws_cognito_user_pools
@@ -545,12 +464,6 @@ type Query {
   getOrganization(id: ID!): Organization @aws_api_key @aws_cognito_user_pools
   listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection @aws_api_key @aws_cognito_user_pools
   syncOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelOrganizationConnection @aws_api_key @aws_cognito_user_pools
-  getRole(id: ID!): Role @aws_api_key @aws_cognito_user_pools
-  listRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String): ModelRoleConnection @aws_api_key @aws_cognito_user_pools
-  syncRoles(filter: ModelRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleConnection @aws_api_key @aws_cognito_user_pools
-  getPrivilege(id: ID!): Privilege @aws_api_key @aws_cognito_user_pools
-  listPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String): ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools
-  syncPrivileges(filter: ModelPrivilegeFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools
   getUserLabPracticeSession(id: ID!): UserLabPracticeSession @aws_api_key @aws_cognito_user_pools
   listUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
   syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
@@ -584,8 +497,6 @@ type Query {
   getLaboratory(id: ID!): Laboratory @aws_api_key @aws_cognito_user_pools
   listLaboratorys(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String): ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools
   syncLaboratories(filter: ModelLaboratoryFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLaboratoryConnection @aws_api_key @aws_cognito_user_pools
-  syncPrivilegeRoles(filter: ModelPrivilegeRoleFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools
-  syncRoleUsers(filter: ModelRoleUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools
   syncUserLabSemesters(filter: ModelUserLabSemesterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools
 }
 
@@ -640,98 +551,6 @@ input ModelOrganizationConditionInput {
   not: ModelOrganizationConditionInput
 }
 
-type ModelRoleConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Role]!
-  nextToken: String
-  startedAt: AWSTimestamp
-}
-
-input ModelRoleFilterInput {
-  id: ModelIDInput
-  name: ModelStringInput
-  description: ModelStringInput
-  createdBy: ModelStringInput
-  updatedBy: ModelStringInput
-  and: [ModelRoleFilterInput]
-  or: [ModelRoleFilterInput]
-  not: ModelRoleFilterInput
-}
-
-input CreateRoleInput {
-  id: ID
-  name: String!
-  description: String
-  createdBy: String!
-  updatedBy: String
-  _version: Int
-}
-
-input UpdateRoleInput {
-  id: ID!
-  name: String
-  description: String
-  createdBy: String
-  updatedBy: String
-  _version: Int
-}
-
-input DeleteRoleInput {
-  id: ID!
-  _version: Int
-}
-
-input ModelRoleConditionInput {
-  name: ModelStringInput
-  description: ModelStringInput
-  createdBy: ModelStringInput
-  updatedBy: ModelStringInput
-  and: [ModelRoleConditionInput]
-  or: [ModelRoleConditionInput]
-  not: ModelRoleConditionInput
-}
-
-type ModelPrivilegeConnection @aws_api_key @aws_cognito_user_pools {
-  items: [Privilege]!
-  nextToken: String
-  startedAt: AWSTimestamp
-}
-
-input ModelPrivilegeFilterInput {
-  id: ModelIDInput
-  name: ModelStringInput
-  description: ModelStringInput
-  and: [ModelPrivilegeFilterInput]
-  or: [ModelPrivilegeFilterInput]
-  not: ModelPrivilegeFilterInput
-}
-
-input CreatePrivilegeInput {
-  id: ID
-  name: String!
-  description: String
-  _version: Int
-}
-
-input UpdatePrivilegeInput {
-  id: ID!
-  name: String
-  description: String
-  _version: Int
-}
-
-input DeletePrivilegeInput {
-  id: ID!
-  _version: Int
-}
-
-input ModelPrivilegeConditionInput {
-  name: ModelStringInput
-  description: ModelStringInput
-  and: [ModelPrivilegeConditionInput]
-  or: [ModelPrivilegeConditionInput]
-  not: ModelPrivilegeConditionInput
-}
-
 type ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools {
   items: [UserLabPracticeSession]!
   nextToken: String
@@ -744,7 +563,6 @@ input ModelUserLabPracticeSessionFilterInput {
   sessionEndDate: ModelStringInput
   userID: ModelIDInput
   labpracticesessionID: ModelIDInput
-  roleID: ModelIDInput
   and: [ModelUserLabPracticeSessionFilterInput]
   or: [ModelUserLabPracticeSessionFilterInput]
   not: ModelUserLabPracticeSessionFilterInput
@@ -756,7 +574,6 @@ input CreateUserLabPracticeSessionInput {
   sessionEndDate: AWSDateTime
   userID: ID!
   labpracticesessionID: ID!
-  roleID: ID
   _version: Int
 }
 
@@ -766,7 +583,6 @@ input UpdateUserLabPracticeSessionInput {
   sessionEndDate: AWSDateTime
   userID: ID
   labpracticesessionID: ID
-  roleID: ID
   _version: Int
 }
 
@@ -780,7 +596,6 @@ input ModelUserLabPracticeSessionConditionInput {
   sessionEndDate: ModelStringInput
   userID: ModelIDInput
   labpracticesessionID: ModelIDInput
-  roleID: ModelIDInput
   and: [ModelUserLabPracticeSessionConditionInput]
   or: [ModelUserLabPracticeSessionConditionInput]
   not: ModelUserLabPracticeSessionConditionInput
@@ -1430,90 +1245,6 @@ input ModelLaboratoryConditionInput {
   and: [ModelLaboratoryConditionInput]
   or: [ModelLaboratoryConditionInput]
   not: ModelLaboratoryConditionInput
-}
-
-type ModelPrivilegeRoleConnection @aws_api_key @aws_cognito_user_pools {
-  items: [PrivilegeRole]!
-  nextToken: String
-  startedAt: AWSTimestamp
-}
-
-input ModelPrivilegeRoleFilterInput {
-  id: ModelIDInput
-  privilegeID: ModelIDInput
-  roleID: ModelIDInput
-  and: [ModelPrivilegeRoleFilterInput]
-  or: [ModelPrivilegeRoleFilterInput]
-  not: ModelPrivilegeRoleFilterInput
-}
-
-input CreatePrivilegeRoleInput {
-  id: ID
-  privilegeID: ID!
-  roleID: ID!
-  _version: Int
-}
-
-input UpdatePrivilegeRoleInput {
-  id: ID!
-  privilegeID: ID
-  roleID: ID
-  _version: Int
-}
-
-input DeletePrivilegeRoleInput {
-  id: ID!
-  _version: Int
-}
-
-input ModelPrivilegeRoleConditionInput {
-  privilegeID: ModelIDInput
-  roleID: ModelIDInput
-  and: [ModelPrivilegeRoleConditionInput]
-  or: [ModelPrivilegeRoleConditionInput]
-  not: ModelPrivilegeRoleConditionInput
-}
-
-type ModelRoleUserConnection @aws_api_key @aws_cognito_user_pools {
-  items: [RoleUser]!
-  nextToken: String
-  startedAt: AWSTimestamp
-}
-
-input ModelRoleUserFilterInput {
-  id: ModelIDInput
-  userID: ModelIDInput
-  roleID: ModelIDInput
-  and: [ModelRoleUserFilterInput]
-  or: [ModelRoleUserFilterInput]
-  not: ModelRoleUserFilterInput
-}
-
-input CreateRoleUserInput {
-  id: ID
-  userID: ID!
-  roleID: ID!
-  _version: Int
-}
-
-input UpdateRoleUserInput {
-  id: ID!
-  userID: ID
-  roleID: ID
-  _version: Int
-}
-
-input DeleteRoleUserInput {
-  id: ID!
-  _version: Int
-}
-
-input ModelRoleUserConditionInput {
-  userID: ModelIDInput
-  roleID: ModelIDInput
-  and: [ModelRoleUserConditionInput]
-  or: [ModelRoleUserConditionInput]
-  not: ModelRoleUserConditionInput
 }
 
 type ModelUserLabSemesterConnection @aws_api_key @aws_cognito_user_pools {

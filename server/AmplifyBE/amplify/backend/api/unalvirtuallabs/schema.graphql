@@ -13,25 +13,7 @@ type Organization @model @auth(rules: [{ allow: public },  { allow: private}]){
   Laboratories: [Laboratory] @connection(keyName: "byOrganization", fields: ["id"])
 }
 
-type Role @model @auth(rules: [{ allow: public },  { allow: private}]){
-  id: ID!
-  name: String!
-  description: String
-  createdBy: String!
-  updatedBy: String
-  UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byRole", fields: ["id"])
-  Privileges: [PrivilegeRole] @connection(keyName: "byRole", fields: ["id"])
-  Users: [RoleUser] @connection(keyName: "byRole", fields: ["id"])
-}
-
-type Privilege @model @auth(rules: [{ allow: public },  { allow: private}]){
-  id: ID!
-  name: String!
-  description: String
-  Roles: [PrivilegeRole] @connection(keyName: "byPrivilege", fields: ["id"])
-}
-
-type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID"]) @key(name: "byLabPracticeSession", fields: ["labpracticesessionID"]) @key(name: "byRole", fields: ["roleID"]) {
+type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID"]) @key(name: "byLabPracticeSession", fields: ["labpracticesessionID"]) {
   id: ID!
   sessionStartDate: AWSDateTime
   sessionEndDate: AWSDateTime
@@ -39,8 +21,6 @@ type UserLabPracticeSession @model @auth(rules: [{ allow: public },  { allow: pr
   userID: ID!
   LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
-  role: Role @connection(fields: ["roleID"])
-  roleID: ID
 }
 
 type User @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byEmail", fields: ["email"]) {
@@ -56,7 +36,6 @@ type User @model @auth(rules: [{ allow: public },  { allow: private}]) @key(name
   updatedBy: String
   createdBy: String!
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byUser", fields: ["id"])
-  Roles: [RoleUser] @connection(keyName: "byUser", fields: ["id"])
   UserLabSemesters: [UserLabSemester] @connection(keyName: "byUser", fields: ["id"])
 }
 
@@ -187,22 +166,6 @@ type Laboratory @model @auth(rules: [{ allow: public },  { allow: private}]) @ke
   LabPractices: [LabPractice] @connection(keyName: "byLaboratory", fields: ["id"])
 }
 
-type PrivilegeRole @model(queries: null) @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byPrivilege", fields: ["privilegeID", "roleID"]) @key(name: "byRole", fields: ["roleID", "privilegeID"]) {
-  id: ID!
-  privilegeID: ID!
-  roleID: ID!
-  privilege: Privilege! @connection(fields: ["privilegeID"])
-  role: Role! @connection(fields: ["roleID"])
-}
-
-type RoleUser @model(queries: null) @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID", "roleID"]) @key(name: "byRole", fields: ["roleID", "userID"]) {
-  id: ID!
-  userID: ID!
-  roleID: ID!
-  user: User! @connection(fields: ["userID"])
-  role: Role! @connection(fields: ["roleID"])
-}
-
 type UserLabSemester @model(queries: null) @auth(rules: [{ allow: public },  { allow: private}]) @key(name: "byUser", fields: ["userID", "labsemesterID"]) @key(name: "byLabSemester", fields: ["labsemesterID", "userID"]) {
   id: ID!
   userID: ID!
@@ -239,4 +202,3 @@ type Subscription {
   onLabOutputListen(rpiID: ID! ): LabOutputOut @aws_subscribe(mutations: ["labOutputListen"]) @auth(rules: [{ allow: public },  { allow: private}])
   onUpdateLabPracticeSessionCommandBySessionID(labpracticesessionID: ID!): LabPracticeSessionCommand @aws_subscribe(mutations: ["updateLabPracticeSessionCommand"]) @auth(rules: [{ allow: public },  { allow: private}])
 }
- 

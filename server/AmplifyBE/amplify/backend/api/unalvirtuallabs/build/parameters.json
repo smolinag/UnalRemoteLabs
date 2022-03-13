@@ -1,8 +1,8 @@
 {
-    "CreateAPIKey": 1,
     "AppSyncApiName": "unalvirtuallabs",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": false,
+    "AuthModeLastUpdated": "2022-01-15T19:06:09.922Z",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
             "authunalvirtuallabsa596f245",
@@ -10,5 +10,5 @@
         ]
     },
     "S3DeploymentBucket": "amplify-unalvirtuallabs-develop-222622-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/c65ae21addfab1987de398a6262754a4f05b74f3"
+    "S3DeploymentRootKey": "amplify-appsync-files/d11a445409e15a5ed759ec961f701d3a7a6ecebc"
 }

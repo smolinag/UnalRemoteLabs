@@ -193,9 +193,16 @@ input LambdaInput {
   topic: String!
 }
 
+input EmailInput{
+  topic: String!
+  message: String!
+  emailList: String!
+}
+
 type Mutation {
   publishMqttMessage(input: LambdaInput!): String @function(name: "iotpub-${env}") @auth(rules: [{ allow: public },  { allow: private}])
   labOutputListen(input: LabOutputIn!): LabOutputOut @function(name: "laboutputlogger-${env}") @auth(rules: [{ allow: public },  { allow: private}])
+  sendEmail(input: EmailInput!): String @function(name: "emaildelivery-${env}") @auth(rules: [{ allow: public },  { allow: private}])
 }
 
 type Subscription {

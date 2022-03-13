@@ -258,6 +258,12 @@ input LambdaInput {
   topic: String!
 }
 
+input EmailInput {
+  topic: String!
+  message: String!
+  emailList: String!
+}
+
 type Mutation {
   createOrganization(input: CreateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
   updateOrganization(input: UpdateOrganizationInput!, condition: ModelOrganizationConditionInput): Organization @aws_api_key @aws_cognito_user_pools
@@ -300,6 +306,7 @@ type Mutation {
   deleteUserLabSemester(input: DeleteUserLabSemesterInput!, condition: ModelUserLabSemesterConditionInput): UserLabSemester @aws_api_key @aws_cognito_user_pools
   publishMqttMessage(input: LambdaInput!): String @aws_api_key @aws_cognito_user_pools
   labOutputListen(input: LabOutputIn!): LabOutputOut @aws_api_key @aws_cognito_user_pools
+  sendEmail(input: EmailInput!): String @aws_api_key @aws_cognito_user_pools
 }
 
 type Subscription {

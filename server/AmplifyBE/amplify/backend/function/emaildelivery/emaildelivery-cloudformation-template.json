@@ -2,49 +2,18 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.14\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
-    "GROUP": {
+    "CloudWatchRule": {
       "Type": "String",
-      "Default": ""
-    },
-    "modules": {
-      "Type": "String",
-      "Default": "",
-      "Description": "Comma-delimited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
-    },
-    "resourceName": {
-      "Type": "String",
-      "Default": ""
-    },
-    "trigger": {
-      "Type": "String",
-      "Default": "true"
-    },
-    "functionName": {
-      "Type": "String",
-      "Default": ""
-    },
-    "roleName": {
-      "Type": "String",
-      "Default": ""
-    },
-    "parentResource": {
-      "Type": "String",
-      "Default": ""
-    },
-    "parentStack": {
-      "Type": "String",
-      "Default": ""
-    },
-    "env": {
-      "Type": "String"
+      "Default": "NONE",
+      "Description": " Schedule Expression"
     },
     "deploymentBucketName": {
       "Type": "String"
     },
-    "s3Key": {
+    "env": {
       "Type": "String"
     },
-    "usersTable": {
+    "s3Key": {
       "Type": "String"
     }
   },
@@ -66,16 +35,24 @@
         "aws:asset:property": "Code"
       },
       "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "deploymentBucketName"
+          },
+          "S3Key": {
+            "Ref": "s3Key"
+          }
+        },
         "Handler": "index.handler",
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "unalvirtuallabsa596f245PostConfirmation",
+            "emaildelivery",
             {
               "Fn::Join": [
                 "",
                 [
-                  "unalvirtuallabsa596f245PostConfirmation",
+                  "emaildelivery",
                   "-",
                   {
                     "Ref": "env"
@@ -90,17 +67,8 @@
             "ENV": {
               "Ref": "env"
             },
-            "MODULES": {
-              "Ref": "modules"
-            },
             "REGION": {
               "Ref": "AWS::Region"
-            },
-            "GROUP": {
-              "Ref": "GROUP"
-            },
-            "USERS_TABLE": {
-              "Ref": "usersTable"
             }
           }
         },
@@ -111,15 +79,8 @@
           ]
         },
         "Runtime": "nodejs14.x",
-        "Timeout": 25,
-        "Code": {
-          "S3Bucket": {
-            "Ref": "deploymentBucketName"
-          },
-          "S3Key": {
-            "Ref": "s3Key"
-          }
-        }
+        "Layers": [],
+        "Timeout": 25
       }
     },
     "LambdaExecutionRole": {
@@ -128,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "unalvirtuallabsa596f245PostConfirmation",
+            "unalvirtuallabsLambdaRole6b228abb",
             {
               "Fn::Join": [
                 "",
                 [
-                  "unalvirtuallabsa596f245PostConfirmation",
+                  "unalvirtuallabsLambdaRole6b228abb",
                   "-",
                   {
                     "Ref": "env"
@@ -214,28 +175,19 @@
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:*"
+                "ses:SendEmail"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-2:119135969665:table/*"
+                "arn:aws:ses:us-east-2:119135969665:identity/*"
               ]
             },
             {
               "Effect": "Allow",
               "Action": [
-                "dynamodb:*"
+                "ses:SendRawEmail"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-2:119135969665:table/*/*"
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "cognito-idp:*"
-              ],
-              "Resource": [
-                "arn:aws:cognito-idp:us-east-2:119135969665:userpool/*"
+                "arn:aws:ses:us-east-2:119135969665:identity/*"
               ]
             }
           ]
@@ -263,14 +215,14 @@
         ]
       }
     },
-    "LambdaExecutionRole": {
-      "Value": {
-        "Ref": "LambdaExecutionRole"
-      }
-    },
     "Region": {
       "Value": {
         "Ref": "AWS::Region"
+      }
+    },
+    "LambdaExecutionRole": {
+      "Value": {
+        "Ref": "LambdaExecutionRole"
       }
     }
   }

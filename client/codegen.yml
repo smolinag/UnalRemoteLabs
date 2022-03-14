@@ -1,8 +1,8 @@
 overwrite: true
 schema:
-  - https://4xgfahcqmvfmti2gv2rfwhflxe.appsync-api.us-east-2.amazonaws.com/graphql:
+  - https://suyo76f525grpph3owjsbkoepa.appsync-api.us-east-2.amazonaws.com/graphql:
       headers:
-        x-api-key: 'da2-oznphqdk6fhulig7ivj645d4yi'
+        x-api-key: 'da2-2lwzqnmamjfwbnownxgqur6sgy'
 documents: ./src/graphql/**/*.gql
 generates:
   src/graphql/generated/schema.ts:

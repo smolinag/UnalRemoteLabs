@@ -13,21 +13,42 @@ export const getOrganization = /* GraphQL */ `
       description
       phone
       address
-      createdBy
       updatedBy
+      createdBy
       _version
       _deleted
       _lastChangedAt
       createdAt
       updatedAt
+      Users {
+        items {
+          id
+          name
+          identificationNumber
+          email
+          phone
+          userName
+          s3AvatarPath
+          organizationID
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        nextToken
+        startedAt
+      }
       Laboratories {
         items {
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -57,13 +78,17 @@ export const listOrganizations = /* GraphQL */ `
         description
         phone
         address
-        createdBy
         updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        Users {
+          nextToken
+          startedAt
+        }
         Laboratories {
           nextToken
           startedAt
@@ -97,13 +122,17 @@ export const syncOrganizations = /* GraphQL */ `
         description
         phone
         address
-        createdBy
         updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        Users {
+          nextToken
+          startedAt
+        }
         Laboratories {
           nextToken
           startedAt
@@ -130,13 +159,12 @@ export const getUserLabPracticeSession = /* GraphQL */ `
       User {
         id
         name
-        lastNames
-        documentIdNumber
+        identificationNumber
         email
         phone
         userName
         s3AvatarPath
-        dateOfBirth
+        organizationID
         updatedBy
         createdBy
         _version
@@ -144,6 +172,24 @@ export const getUserLabPracticeSession = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        Organization {
+          id
+          country
+          region
+          city
+          type
+          name
+          description
+          phone
+          address
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         UserLabPracticeSessions {
           nextToken
           startedAt
@@ -158,10 +204,10 @@ export const getUserLabPracticeSession = /* GraphQL */ `
         startDate
         endDate
         description
-        updatedBy
-        createdBy
         labpracticeID
         labSemesterID
+        updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
@@ -180,9 +226,9 @@ export const getUserLabPracticeSession = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -196,9 +242,9 @@ export const getUserLabPracticeSession = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -234,13 +280,12 @@ export const listUserLabPracticeSessions = /* GraphQL */ `
         User {
           id
           name
-          lastNames
-          documentIdNumber
+          identificationNumber
           email
           phone
           userName
           s3AvatarPath
-          dateOfBirth
+          organizationID
           updatedBy
           createdBy
           _version
@@ -254,10 +299,10 @@ export const listUserLabPracticeSessions = /* GraphQL */ `
           startDate
           endDate
           description
-          updatedBy
-          createdBy
           labpracticeID
           labSemesterID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -297,13 +342,12 @@ export const syncUserLabPracticeSessions = /* GraphQL */ `
         User {
           id
           name
-          lastNames
-          documentIdNumber
+          identificationNumber
           email
           phone
           userName
           s3AvatarPath
-          dateOfBirth
+          organizationID
           updatedBy
           createdBy
           _version
@@ -317,10 +361,10 @@ export const syncUserLabPracticeSessions = /* GraphQL */ `
           startDate
           endDate
           description
-          updatedBy
-          createdBy
           labpracticeID
           labSemesterID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -338,13 +382,12 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       name
-      lastNames
-      documentIdNumber
+      identificationNumber
       email
       phone
       userName
       s3AvatarPath
-      dateOfBirth
+      organizationID
       updatedBy
       createdBy
       _version
@@ -352,6 +395,32 @@ export const getUser = /* GraphQL */ `
       _lastChangedAt
       createdAt
       updatedAt
+      Organization {
+        id
+        country
+        region
+        city
+        type
+        name
+        description
+        phone
+        address
+        updatedBy
+        createdBy
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        Users {
+          nextToken
+          startedAt
+        }
+        Laboratories {
+          nextToken
+          startedAt
+        }
+      }
       UserLabPracticeSessions {
         items {
           id
@@ -395,13 +464,12 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         name
-        lastNames
-        documentIdNumber
+        identificationNumber
         email
         phone
         userName
         s3AvatarPath
-        dateOfBirth
+        organizationID
         updatedBy
         createdBy
         _version
@@ -409,6 +477,24 @@ export const listUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        Organization {
+          id
+          country
+          region
+          city
+          type
+          name
+          description
+          phone
+          address
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         UserLabPracticeSessions {
           nextToken
           startedAt
@@ -439,13 +525,12 @@ export const syncUsers = /* GraphQL */ `
       items {
         id
         name
-        lastNames
-        documentIdNumber
+        identificationNumber
         email
         phone
         userName
         s3AvatarPath
-        dateOfBirth
+        organizationID
         updatedBy
         createdBy
         _version
@@ -453,6 +538,24 @@ export const syncUsers = /* GraphQL */ `
         _lastChangedAt
         createdAt
         updatedAt
+        Organization {
+          id
+          country
+          region
+          city
+          type
+          name
+          description
+          phone
+          address
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
         UserLabPracticeSessions {
           nextToken
           startedAt
@@ -487,10 +590,10 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
         startDate
         endDate
         description
-        updatedBy
-        createdBy
         labpracticeID
         labSemesterID
+        updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
@@ -509,9 +612,9 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -525,9 +628,9 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -541,9 +644,9 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
         labelName
         order
         description
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -562,9 +665,9 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -604,10 +707,10 @@ export const listLabPracticeSessionCommands = /* GraphQL */ `
           startDate
           endDate
           description
-          updatedBy
-          createdBy
           labpracticeID
           labSemesterID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -620,9 +723,9 @@ export const listLabPracticeSessionCommands = /* GraphQL */ `
           labelName
           order
           description
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -666,10 +769,10 @@ export const syncLabPracticeSessionCommands = /* GraphQL */ `
           startDate
           endDate
           description
-          updatedBy
-          createdBy
           labpracticeID
           labSemesterID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -682,9 +785,9 @@ export const syncLabPracticeSessionCommands = /* GraphQL */ `
           labelName
           order
           description
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -720,9 +823,9 @@ export const getLabPracticeOutput = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -741,9 +844,9 @@ export const getLabPracticeOutput = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -762,9 +865,9 @@ export const getLabPracticeOutput = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -807,9 +910,9 @@ export const listLabPracticeOutputs = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -856,9 +959,9 @@ export const syncLabPracticeOutputs = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -878,10 +981,10 @@ export const getLabPracticeSession = /* GraphQL */ `
       startDate
       endDate
       description
-      updatedBy
-      createdBy
       labpracticeID
       labSemesterID
+      updatedBy
+      createdBy
       _version
       _deleted
       _lastChangedAt
@@ -926,9 +1029,9 @@ export const getLabPracticeSession = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -947,9 +1050,9 @@ export const getLabPracticeSession = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -968,9 +1071,9 @@ export const getLabPracticeSession = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -985,9 +1088,9 @@ export const getLabPracticeSession = /* GraphQL */ `
         professor
         monitorEmailList
         studentEmailList
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -1001,9 +1104,9 @@ export const getLabPracticeSession = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -1034,10 +1137,10 @@ export const listLabPracticeSessions = /* GraphQL */ `
         startDate
         endDate
         description
-        updatedBy
-        createdBy
         labpracticeID
         labSemesterID
+        updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
@@ -1056,9 +1159,9 @@ export const listLabPracticeSessions = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1072,9 +1175,9 @@ export const listLabPracticeSessions = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1105,10 +1208,10 @@ export const syncLabPracticeSessions = /* GraphQL */ `
         startDate
         endDate
         description
-        updatedBy
-        createdBy
         labpracticeID
         labSemesterID
+        updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
@@ -1127,9 +1230,9 @@ export const syncLabPracticeSessions = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1143,9 +1246,9 @@ export const syncLabPracticeSessions = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1165,9 +1268,9 @@ export const getLabPracticeDevice = /* GraphQL */ `
       name
       description
       type
+      labpracticeID
       updatedBy
       createdBy
-      labpracticeID
       _version
       _deleted
       _lastChangedAt
@@ -1178,9 +1281,9 @@ export const getLabPracticeDevice = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -1199,9 +1302,9 @@ export const getLabPracticeDevice = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -1220,9 +1323,9 @@ export const getLabPracticeDevice = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -1249,9 +1352,9 @@ export const listLabPracticeDevices = /* GraphQL */ `
         name
         description
         type
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -1262,9 +1365,9 @@ export const listLabPracticeDevices = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1295,9 +1398,9 @@ export const syncLabPracticeDevices = /* GraphQL */ `
         name
         description
         type
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -1308,9 +1411,9 @@ export const syncLabPracticeDevices = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1335,10 +1438,10 @@ export const getLabPracticeParameter = /* GraphQL */ `
       minValue
       maxValue
       regex
-      updatedBy
-      createdBy
       labpracticecommandID
       labpracticeID
+      updatedBy
+      createdBy
       _version
       _deleted
       _lastChangedAt
@@ -1350,9 +1453,9 @@ export const getLabPracticeParameter = /* GraphQL */ `
         labelName
         order
         description
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -1371,9 +1474,9 @@ export const getLabPracticeParameter = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1386,9 +1489,9 @@ export const getLabPracticeParameter = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -1407,9 +1510,9 @@ export const getLabPracticeParameter = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -1428,9 +1531,9 @@ export const getLabPracticeParameter = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -1462,10 +1565,10 @@ export const listLabPracticeParameters = /* GraphQL */ `
         minValue
         maxValue
         regex
-        updatedBy
-        createdBy
         labpracticecommandID
         labpracticeID
+        updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
@@ -1477,9 +1580,9 @@ export const listLabPracticeParameters = /* GraphQL */ `
           labelName
           order
           description
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -1491,9 +1594,9 @@ export const listLabPracticeParameters = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1529,10 +1632,10 @@ export const syncLabPracticeParameters = /* GraphQL */ `
         minValue
         maxValue
         regex
-        updatedBy
-        createdBy
         labpracticecommandID
         labpracticeID
+        updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
@@ -1544,9 +1647,9 @@ export const syncLabPracticeParameters = /* GraphQL */ `
           labelName
           order
           description
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -1558,9 +1661,9 @@ export const syncLabPracticeParameters = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1581,9 +1684,9 @@ export const getLabPracticeCommand = /* GraphQL */ `
       labelName
       order
       description
+      labpracticeID
       updatedBy
       createdBy
-      labpracticeID
       _version
       _deleted
       _lastChangedAt
@@ -1618,10 +1721,10 @@ export const getLabPracticeCommand = /* GraphQL */ `
           minValue
           maxValue
           regex
-          updatedBy
-          createdBy
           labpracticecommandID
           labpracticeID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -1636,9 +1739,9 @@ export const getLabPracticeCommand = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -1657,9 +1760,9 @@ export const getLabPracticeCommand = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -1678,9 +1781,9 @@ export const getLabPracticeCommand = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -1708,9 +1811,9 @@ export const listLabPracticeCommands = /* GraphQL */ `
         labelName
         order
         description
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -1729,9 +1832,9 @@ export const listLabPracticeCommands = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1763,9 +1866,9 @@ export const syncLabPracticeCommands = /* GraphQL */ `
         labelName
         order
         description
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -1784,9 +1887,9 @@ export const syncLabPracticeCommands = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1806,9 +1909,9 @@ export const getLabPractice = /* GraphQL */ `
       name
       description
       duration
+      laboratoryID
       updatedBy
       createdBy
-      laboratoryID
       _version
       _deleted
       _lastChangedAt
@@ -1841,10 +1944,10 @@ export const getLabPractice = /* GraphQL */ `
           startDate
           endDate
           description
-          updatedBy
-          createdBy
           labpracticeID
           labSemesterID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -1859,9 +1962,9 @@ export const getLabPractice = /* GraphQL */ `
         name
         description
         type
+        labpracticeID
         updatedBy
         createdBy
-        labpracticeID
         _version
         _deleted
         _lastChangedAt
@@ -1872,9 +1975,9 @@ export const getLabPractice = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -1893,10 +1996,10 @@ export const getLabPractice = /* GraphQL */ `
           minValue
           maxValue
           regex
-          updatedBy
-          createdBy
           labpracticecommandID
           labpracticeID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -1913,9 +2016,9 @@ export const getLabPractice = /* GraphQL */ `
           labelName
           order
           description
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -1929,9 +2032,9 @@ export const getLabPractice = /* GraphQL */ `
         id
         name
         description
+        organizationID
         updatedBy
         createdBy
-        organizationID
         _version
         _deleted
         _lastChangedAt
@@ -1947,8 +2050,8 @@ export const getLabPractice = /* GraphQL */ `
           description
           phone
           address
-          createdBy
           updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -1979,9 +2082,9 @@ export const listLabPractices = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -2000,9 +2103,9 @@ export const listLabPractices = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -2021,9 +2124,9 @@ export const listLabPractices = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -2054,9 +2157,9 @@ export const syncLabPractices = /* GraphQL */ `
         name
         description
         duration
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -2075,9 +2178,9 @@ export const syncLabPractices = /* GraphQL */ `
           name
           description
           type
+          labpracticeID
           updatedBy
           createdBy
-          labpracticeID
           _version
           _deleted
           _lastChangedAt
@@ -2096,9 +2199,9 @@ export const syncLabPractices = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -2120,9 +2223,9 @@ export const getLabSemester = /* GraphQL */ `
       professor
       monitorEmailList
       studentEmailList
+      laboratoryID
       updatedBy
       createdBy
-      laboratoryID
       _version
       _deleted
       _lastChangedAt
@@ -2134,10 +2237,10 @@ export const getLabSemester = /* GraphQL */ `
           startDate
           endDate
           description
-          updatedBy
-          createdBy
           labpracticeID
           labSemesterID
+          updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -2151,9 +2254,9 @@ export const getLabSemester = /* GraphQL */ `
         id
         name
         description
+        organizationID
         updatedBy
         createdBy
-        organizationID
         _version
         _deleted
         _lastChangedAt
@@ -2169,8 +2272,8 @@ export const getLabSemester = /* GraphQL */ `
           description
           phone
           address
-          createdBy
           updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -2217,9 +2320,9 @@ export const listLabSemesters = /* GraphQL */ `
         professor
         monitorEmailList
         studentEmailList
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -2233,9 +2336,9 @@ export const listLabSemesters = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -2272,9 +2375,9 @@ export const syncLabSemesters = /* GraphQL */ `
         professor
         monitorEmailList
         studentEmailList
+        laboratoryID
         updatedBy
         createdBy
-        laboratoryID
         _version
         _deleted
         _lastChangedAt
@@ -2288,9 +2391,9 @@ export const syncLabSemesters = /* GraphQL */ `
           id
           name
           description
+          organizationID
           updatedBy
           createdBy
-          organizationID
           _version
           _deleted
           _lastChangedAt
@@ -2313,9 +2416,9 @@ export const getLaboratory = /* GraphQL */ `
       id
       name
       description
+      organizationID
       updatedBy
       createdBy
-      organizationID
       _version
       _deleted
       _lastChangedAt
@@ -2331,13 +2434,17 @@ export const getLaboratory = /* GraphQL */ `
         description
         phone
         address
-        createdBy
         updatedBy
+        createdBy
         _version
         _deleted
         _lastChangedAt
         createdAt
         updatedAt
+        Users {
+          nextToken
+          startedAt
+        }
         Laboratories {
           nextToken
           startedAt
@@ -2349,9 +2456,9 @@ export const getLaboratory = /* GraphQL */ `
           name
           description
           duration
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -2369,9 +2476,9 @@ export const getLaboratory = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt
@@ -2395,9 +2502,9 @@ export const listLaboratorys = /* GraphQL */ `
         id
         name
         description
+        organizationID
         updatedBy
         createdBy
-        organizationID
         _version
         _deleted
         _lastChangedAt
@@ -2413,8 +2520,8 @@ export const listLaboratorys = /* GraphQL */ `
           description
           phone
           address
-          createdBy
           updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -2452,9 +2559,9 @@ export const syncLaboratories = /* GraphQL */ `
         id
         name
         description
+        organizationID
         updatedBy
         createdBy
-        organizationID
         _version
         _deleted
         _lastChangedAt
@@ -2470,8 +2577,8 @@ export const syncLaboratories = /* GraphQL */ `
           description
           phone
           address
-          createdBy
           updatedBy
+          createdBy
           _version
           _deleted
           _lastChangedAt
@@ -2485,6 +2592,159 @@ export const syncLaboratories = /* GraphQL */ `
         LabSemesters {
           nextToken
           startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getUserLabSemester = /* GraphQL */ `
+  query GetUserLabSemester($id: ID!) {
+    getUserLabSemester(id: $id) {
+      id
+      userID
+      labsemesterID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      user {
+        id
+        name
+        identificationNumber
+        email
+        phone
+        userName
+        s3AvatarPath
+        organizationID
+        updatedBy
+        createdBy
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        Organization {
+          id
+          country
+          region
+          city
+          type
+          name
+          description
+          phone
+          address
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        UserLabPracticeSessions {
+          nextToken
+          startedAt
+        }
+        UserLabSemesters {
+          nextToken
+          startedAt
+        }
+      }
+      labsemester {
+        id
+        semesterName
+        description
+        professor
+        monitorEmailList
+        studentEmailList
+        laboratoryID
+        updatedBy
+        createdBy
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        LabPracticeSessions {
+          nextToken
+          startedAt
+        }
+        Laboratory {
+          id
+          name
+          description
+          organizationID
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+          startedAt
+        }
+      }
+    }
+  }
+`;
+export const listUserLabSemesters = /* GraphQL */ `
+  query ListUserLabSemesters(
+    $filter: ModelUserLabSemesterFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserLabSemesters(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        userID
+        labsemesterID
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        user {
+          id
+          name
+          identificationNumber
+          email
+          phone
+          userName
+          s3AvatarPath
+          organizationID
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        labsemester {
+          id
+          semesterName
+          description
+          professor
+          monitorEmailList
+          studentEmailList
+          laboratoryID
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
         }
       }
       nextToken
@@ -2517,13 +2777,12 @@ export const syncUserLabSemesters = /* GraphQL */ `
         user {
           id
           name
-          lastNames
-          documentIdNumber
+          identificationNumber
           email
           phone
           userName
           s3AvatarPath
-          dateOfBirth
+          organizationID
           updatedBy
           createdBy
           _version
@@ -2539,9 +2798,9 @@ export const syncUserLabSemesters = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
+          laboratoryID
           updatedBy
           createdBy
-          laboratoryID
           _version
           _deleted
           _lastChangedAt

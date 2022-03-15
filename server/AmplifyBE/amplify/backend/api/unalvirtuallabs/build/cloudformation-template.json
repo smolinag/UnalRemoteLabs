@@ -201,7 +201,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1678744102
+                        1678843008
                     ]
                 }
             },
@@ -1494,6 +1494,7 @@
                 "Laboratory",
                 "User",
                 "LabPracticeSession",
+                "Organization",
                 "UserLabPracticeSession",
                 "UserLabSemester",
                 "LabPracticeCommand",
@@ -1502,8 +1503,7 @@
                 "LabPracticeSessionCommand",
                 "LabPracticeParameter",
                 "LabPracticeDevice",
-                "LabPracticeOutput",
-                "Organization"
+                "LabPracticeOutput"
             ]
         },
         "CustomResourcesjson": {

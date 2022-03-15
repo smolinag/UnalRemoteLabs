@@ -27,9 +27,9 @@ export type CreateLabPracticeCommandInput = {
 	labelName?: Maybe<Scalars['String']>;
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
+	labpracticeID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	labpracticeID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -38,9 +38,9 @@ export type CreateLabPracticeDeviceInput = {
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
 	type?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -49,9 +49,9 @@ export type CreateLabPracticeInput = {
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
+	laboratoryID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	laboratoryID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
 	labPracticeLabPracticeDeviceId?: Maybe<Scalars['ID']>;
 };
@@ -80,10 +80,10 @@ export type CreateLabPracticeParameterInput = {
 	minValue?: Maybe<Scalars['Int']>;
 	maxValue?: Maybe<Scalars['Int']>;
 	regex?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -103,10 +103,10 @@ export type CreateLabPracticeSessionInput = {
 	startDate: Scalars['AWSDateTime'];
 	endDate: Scalars['AWSDateTime'];
 	description?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -117,9 +117,9 @@ export type CreateLabSemesterInput = {
 	professor: Scalars['String'];
 	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
 	studentEmailList: Scalars['AWSJSON'];
+	laboratoryID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	laboratoryID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -127,9 +127,9 @@ export type CreateLaboratoryInput = {
 	id?: Maybe<Scalars['ID']>;
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
+	organizationID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	organizationID: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -143,21 +143,20 @@ export type CreateOrganizationInput = {
 	description?: Maybe<Scalars['String']>;
 	phone?: Maybe<Scalars['String']>;
 	address?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
 	updatedBy?: Maybe<Scalars['String']>;
+	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
 };
 
 export type CreateUserInput = {
 	id?: Maybe<Scalars['ID']>;
 	name: Scalars['String'];
-	lastNames: Scalars['String'];
-	documentIdNumber?: Maybe<Scalars['String']>;
+	identificationNumber?: Maybe<Scalars['String']>;
 	email: Scalars['String'];
 	phone?: Maybe<Scalars['String']>;
 	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
-	dateOfBirth?: Maybe<Scalars['String']>;
+	organizationID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
@@ -271,9 +270,9 @@ export type LabPractice = {
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
+	laboratoryID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	laboratoryID: Scalars['ID'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -322,9 +321,9 @@ export type LabPracticeCommand = {
 	labelName?: Maybe<Scalars['String']>;
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
+	labpracticeID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	labpracticeID: Scalars['ID'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -355,9 +354,9 @@ export type LabPracticeDevice = {
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
 	type?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -397,10 +396,10 @@ export type LabPracticeParameter = {
 	minValue?: Maybe<Scalars['Int']>;
 	maxValue?: Maybe<Scalars['Int']>;
 	regex?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy?: Maybe<Scalars['String']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -416,10 +415,10 @@ export type LabPracticeSession = {
 	startDate: Scalars['AWSDateTime'];
 	endDate: Scalars['AWSDateTime'];
 	description?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -471,9 +470,9 @@ export type LabSemester = {
 	professor: Scalars['String'];
 	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
 	studentEmailList: Scalars['AWSJSON'];
+	laboratoryID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	laboratoryID: Scalars['ID'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -504,9 +503,9 @@ export type Laboratory = {
 	id: Scalars['ID'];
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
+	organizationID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
-	organizationID: Scalars['ID'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
@@ -611,9 +610,9 @@ export type ModelLabPracticeCommandConditionInput = {
 	labelName?: Maybe<ModelStringInput>;
 	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
+	labpracticeID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	labpracticeID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeCommandConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeCommandConditionInput>>>;
 	not?: Maybe<ModelLabPracticeCommandConditionInput>;
@@ -632,9 +631,9 @@ export type ModelLabPracticeCommandFilterInput = {
 	labelName?: Maybe<ModelStringInput>;
 	order?: Maybe<ModelIntInput>;
 	description?: Maybe<ModelStringInput>;
+	labpracticeID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	labpracticeID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeCommandFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeCommandFilterInput>>>;
 	not?: Maybe<ModelLabPracticeCommandFilterInput>;
@@ -644,9 +643,9 @@ export type ModelLabPracticeConditionInput = {
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
+	laboratoryID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	laboratoryID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeConditionInput>>>;
 	not?: Maybe<ModelLabPracticeConditionInput>;
@@ -663,9 +662,9 @@ export type ModelLabPracticeDeviceConditionInput = {
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
 	type?: Maybe<ModelStringInput>;
+	labpracticeID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	labpracticeID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeDeviceConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeDeviceConditionInput>>>;
 	not?: Maybe<ModelLabPracticeDeviceConditionInput>;
@@ -683,9 +682,9 @@ export type ModelLabPracticeDeviceFilterInput = {
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
 	type?: Maybe<ModelStringInput>;
+	labpracticeID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	labpracticeID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeDeviceFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeDeviceFilterInput>>>;
 	not?: Maybe<ModelLabPracticeDeviceFilterInput>;
@@ -696,9 +695,9 @@ export type ModelLabPracticeFilterInput = {
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
+	laboratoryID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	laboratoryID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeFilterInput>>>;
 	not?: Maybe<ModelLabPracticeFilterInput>;
@@ -751,10 +750,10 @@ export type ModelLabPracticeParameterConditionInput = {
 	minValue?: Maybe<ModelIntInput>;
 	maxValue?: Maybe<ModelIntInput>;
 	regex?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	labpracticecommandID?: Maybe<ModelIdInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
+	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeParameterConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeParameterConditionInput>>>;
 	not?: Maybe<ModelLabPracticeParameterConditionInput>;
@@ -777,10 +776,10 @@ export type ModelLabPracticeParameterFilterInput = {
 	minValue?: Maybe<ModelIntInput>;
 	maxValue?: Maybe<ModelIntInput>;
 	regex?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	labpracticecommandID?: Maybe<ModelIdInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
+	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeParameterFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeParameterFilterInput>>>;
 	not?: Maybe<ModelLabPracticeParameterFilterInput>;
@@ -822,10 +821,10 @@ export type ModelLabPracticeSessionConditionInput = {
 	startDate?: Maybe<ModelStringInput>;
 	endDate?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeSessionConditionInput>>>;
 	not?: Maybe<ModelLabPracticeSessionConditionInput>;
@@ -843,10 +842,10 @@ export type ModelLabPracticeSessionFilterInput = {
 	startDate?: Maybe<ModelStringInput>;
 	endDate?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabPracticeSessionFilterInput>>>;
 	not?: Maybe<ModelLabPracticeSessionFilterInput>;
@@ -858,9 +857,9 @@ export type ModelLabSemesterConditionInput = {
 	professor?: Maybe<ModelStringInput>;
 	monitorEmailList?: Maybe<ModelStringInput>;
 	studentEmailList?: Maybe<ModelStringInput>;
+	laboratoryID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	laboratoryID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabSemesterConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabSemesterConditionInput>>>;
 	not?: Maybe<ModelLabSemesterConditionInput>;
@@ -880,9 +879,9 @@ export type ModelLabSemesterFilterInput = {
 	professor?: Maybe<ModelStringInput>;
 	monitorEmailList?: Maybe<ModelStringInput>;
 	studentEmailList?: Maybe<ModelStringInput>;
+	laboratoryID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	laboratoryID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLabSemesterFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLabSemesterFilterInput>>>;
 	not?: Maybe<ModelLabSemesterFilterInput>;
@@ -891,9 +890,9 @@ export type ModelLabSemesterFilterInput = {
 export type ModelLaboratoryConditionInput = {
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
+	organizationID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	organizationID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLaboratoryConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelLaboratoryConditionInput>>>;
 	not?: Maybe<ModelLaboratoryConditionInput>;
@@ -910,9 +909,9 @@ export type ModelLaboratoryFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
+	organizationID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
-	organizationID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelLaboratoryFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelLaboratoryFilterInput>>>;
 	not?: Maybe<ModelLaboratoryFilterInput>;
@@ -927,8 +926,8 @@ export type ModelOrganizationConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	phone?: Maybe<ModelStringInput>;
 	address?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelOrganizationConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelOrganizationConditionInput>>>;
 	not?: Maybe<ModelOrganizationConditionInput>;
@@ -951,8 +950,8 @@ export type ModelOrganizationFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	phone?: Maybe<ModelStringInput>;
 	address?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
+	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelOrganizationFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelOrganizationFilterInput>>>;
 	not?: Maybe<ModelOrganizationFilterInput>;
@@ -991,13 +990,12 @@ export type ModelStringInput = {
 
 export type ModelUserConditionInput = {
 	name?: Maybe<ModelStringInput>;
-	lastNames?: Maybe<ModelStringInput>;
-	documentIdNumber?: Maybe<ModelStringInput>;
+	identificationNumber?: Maybe<ModelStringInput>;
 	email?: Maybe<ModelStringInput>;
 	phone?: Maybe<ModelStringInput>;
 	userName?: Maybe<ModelStringInput>;
 	s3AvatarPath?: Maybe<ModelStringInput>;
-	dateOfBirth?: Maybe<ModelStringInput>;
+	organizationID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelUserConditionInput>>>;
@@ -1015,13 +1013,12 @@ export type ModelUserConnection = {
 export type ModelUserFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
-	lastNames?: Maybe<ModelStringInput>;
-	documentIdNumber?: Maybe<ModelStringInput>;
+	identificationNumber?: Maybe<ModelStringInput>;
 	email?: Maybe<ModelStringInput>;
 	phone?: Maybe<ModelStringInput>;
 	userName?: Maybe<ModelStringInput>;
 	s3AvatarPath?: Maybe<ModelStringInput>;
-	dateOfBirth?: Maybe<ModelStringInput>;
+	organizationID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelUserFilterInput>>>;
@@ -1345,14 +1342,22 @@ export type Organization = {
 	description?: Maybe<Scalars['String']>;
 	phone?: Maybe<Scalars['String']>;
 	address?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
 	updatedBy?: Maybe<Scalars['String']>;
+	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	Users?: Maybe<ModelUserConnection>;
 	Laboratories?: Maybe<ModelLaboratoryConnection>;
+};
+
+export type OrganizationUsersArgs = {
+	filter?: Maybe<ModelUserFilterInput>;
+	sortDirection?: Maybe<ModelSortDirection>;
+	limit?: Maybe<Scalars['Int']>;
+	nextToken?: Maybe<Scalars['String']>;
 };
 
 export type OrganizationLaboratoriesArgs = {
@@ -1400,6 +1405,8 @@ export type Query = {
 	getLaboratory?: Maybe<Laboratory>;
 	listLaboratorys?: Maybe<ModelLaboratoryConnection>;
 	syncLaboratories?: Maybe<ModelLaboratoryConnection>;
+	getUserLabSemester?: Maybe<UserLabSemester>;
+	listUserLabSemesters?: Maybe<ModelUserLabSemesterConnection>;
 	syncUserLabSemesters?: Maybe<ModelUserLabSemesterConnection>;
 };
 
@@ -1607,12 +1614,29 @@ export type QuerySyncLaboratoriesArgs = {
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
 };
 
+export type QueryGetUserLabSemesterArgs = {
+	id: Scalars['ID'];
+};
+
+export type QueryListUserLabSemestersArgs = {
+	filter?: Maybe<ModelUserLabSemesterFilterInput>;
+	limit?: Maybe<Scalars['Int']>;
+	nextToken?: Maybe<Scalars['String']>;
+};
+
 export type QuerySyncUserLabSemestersArgs = {
 	filter?: Maybe<ModelUserLabSemesterFilterInput>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
 };
+
+export enum Roles {
+	Admins = 'Admins',
+	Monitors = 'Monitors',
+	Students = 'Students',
+	Professors = 'Professors'
+}
 
 export type Subscription = {
 	__typename?: 'Subscription';
@@ -1673,9 +1697,9 @@ export type UpdateLabPracticeCommandInput = {
 	labelName?: Maybe<Scalars['String']>;
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -1684,9 +1708,9 @@ export type UpdateLabPracticeDeviceInput = {
 	name?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
 	type?: Maybe<Scalars['String']>;
+	labpracticeID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -1695,9 +1719,9 @@ export type UpdateLabPracticeInput = {
 	name?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
 	duration?: Maybe<Scalars['Int']>;
+	laboratoryID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	laboratoryID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 	labPracticeLabPracticeDeviceId?: Maybe<Scalars['ID']>;
 };
@@ -1726,10 +1750,10 @@ export type UpdateLabPracticeParameterInput = {
 	minValue?: Maybe<Scalars['Int']>;
 	maxValue?: Maybe<Scalars['Int']>;
 	regex?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
 	labpracticecommandID?: Maybe<Scalars['ID']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -1749,10 +1773,10 @@ export type UpdateLabPracticeSessionInput = {
 	startDate?: Maybe<Scalars['AWSDateTime']>;
 	endDate?: Maybe<Scalars['AWSDateTime']>;
 	description?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	updatedBy?: Maybe<Scalars['String']>;
+	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -1763,9 +1787,9 @@ export type UpdateLabSemesterInput = {
 	professor?: Maybe<Scalars['String']>;
 	monitorEmailList?: Maybe<Scalars['AWSJSON']>;
 	studentEmailList?: Maybe<Scalars['AWSJSON']>;
+	laboratoryID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	laboratoryID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -1773,9 +1797,9 @@ export type UpdateLaboratoryInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
+	organizationID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
-	organizationID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -1789,21 +1813,20 @@ export type UpdateOrganizationInput = {
 	description?: Maybe<Scalars['String']>;
 	phone?: Maybe<Scalars['String']>;
 	address?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
+	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
 export type UpdateUserInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
-	lastNames?: Maybe<Scalars['String']>;
-	documentIdNumber?: Maybe<Scalars['String']>;
+	identificationNumber?: Maybe<Scalars['String']>;
 	email?: Maybe<Scalars['String']>;
 	phone?: Maybe<Scalars['String']>;
 	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
-	dateOfBirth?: Maybe<Scalars['String']>;
+	organizationID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
@@ -1829,13 +1852,12 @@ export type User = {
 	__typename?: 'User';
 	id: Scalars['ID'];
 	name: Scalars['String'];
-	lastNames: Scalars['String'];
-	documentIdNumber?: Maybe<Scalars['String']>;
+	identificationNumber?: Maybe<Scalars['String']>;
 	email: Scalars['String'];
 	phone?: Maybe<Scalars['String']>;
 	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
-	dateOfBirth?: Maybe<Scalars['String']>;
+	organizationID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
@@ -1843,6 +1865,7 @@ export type User = {
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
+	Organization?: Maybe<Organization>;
 	UserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
 	UserLabSemesters?: Maybe<ModelUserLabSemesterConnection>;
 };

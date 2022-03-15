@@ -1,6 +1,11 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
-
+export enum Roles {
+  ADMINS = "Admins",
+  MONITORS = "Monitors",
+  STUDENTS = "Students",
+  PROFESSORS = "Professors"
+}
 
 export declare class LabOutputOut {
   readonly labPracticeOutputID: string;
@@ -26,11 +31,7 @@ type LaboratoryMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type LabSemesterMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type UserLabSemesterMetaData = {
+type OrganizationMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -42,7 +43,11 @@ type UserLabPracticeSessionMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type OrganizationMetaData = {
+type UserLabSemesterMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+type LabSemesterMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -81,12 +86,12 @@ export declare class LabPracticeSession {
   readonly startDate: string;
   readonly endDate: string;
   readonly description?: string;
-  readonly updatedBy?: string;
-  readonly createdBy: string;
   readonly LabPractice?: LabPractice;
   readonly LabSemester?: LabSemester;
   readonly LabPracticeSessionCommands?: (LabPracticeSessionCommand | null)[];
   readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[];
+  readonly updatedBy?: string;
+  readonly createdBy: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<LabPracticeSession, LabPracticeSessionMetaData>);
@@ -98,14 +103,14 @@ export declare class LabPractice {
   readonly name: string;
   readonly description?: string;
   readonly duration: number;
-  readonly updatedBy?: string;
-  readonly createdBy: string;
   readonly Laboratory?: Laboratory;
   readonly LabPracticeCommands?: (LabPracticeCommand | null)[];
   readonly LabPracticeParameters?: (LabPracticeParameter | null)[];
   readonly LabPracticeDevice?: LabPracticeDevice;
   readonly LabPracticeSessions?: (LabPracticeSession | null)[];
   readonly LabPracticeOutputs?: (LabPracticeOutput | null)[];
+  readonly updatedBy?: string;
+  readonly createdBy: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<LabPractice, LabPracticeMetaData>);
@@ -116,59 +121,50 @@ export declare class Laboratory {
   readonly id: string;
   readonly name: string;
   readonly description?: string;
+  readonly Organization?: Organization;
+  readonly LabSemesters?: (LabSemester | null)[];
+  readonly LabPractices?: (LabPractice | null)[];
   readonly updatedBy?: string;
   readonly createdBy: string;
-  readonly LabSemesters?: (LabSemester | null)[];
-  readonly Organization?: Organization;
-  readonly LabPractices?: (LabPractice | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Laboratory, LaboratoryMetaData>);
   static copyOf(source: Laboratory, mutator: (draft: MutableModel<Laboratory, LaboratoryMetaData>) => MutableModel<Laboratory, LaboratoryMetaData> | void): Laboratory;
 }
 
-export declare class LabSemester {
+export declare class Organization {
   readonly id: string;
-  readonly semesterName: string;
+  readonly country: string;
+  readonly region: string;
+  readonly city: string;
+  readonly type: string;
+  readonly name: string;
   readonly description?: string;
-  readonly professor: string;
-  readonly monitorEmailList?: string;
-  readonly studentEmailList: string;
+  readonly phone?: string;
+  readonly address?: string;
+  readonly Laboratories?: (Laboratory | null)[];
+  readonly Users?: (User | null)[];
   readonly updatedBy?: string;
   readonly createdBy: string;
-  readonly Laboratory?: Laboratory;
-  readonly users?: (UserLabSemester | null)[];
-  readonly LabPracticeSessions?: (LabPracticeSession | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<LabSemester, LabSemesterMetaData>);
-  static copyOf(source: LabSemester, mutator: (draft: MutableModel<LabSemester, LabSemesterMetaData>) => MutableModel<LabSemester, LabSemesterMetaData> | void): LabSemester;
-}
-
-export declare class UserLabSemester {
-  readonly id: string;
-  readonly user: User;
-  readonly labsemester: LabSemester;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<UserLabSemester, UserLabSemesterMetaData>);
-  static copyOf(source: UserLabSemester, mutator: (draft: MutableModel<UserLabSemester, UserLabSemesterMetaData>) => MutableModel<UserLabSemester, UserLabSemesterMetaData> | void): UserLabSemester;
+  constructor(init: ModelInit<Organization, OrganizationMetaData>);
+  static copyOf(source: Organization, mutator: (draft: MutableModel<Organization, OrganizationMetaData>) => MutableModel<Organization, OrganizationMetaData> | void): Organization;
 }
 
 export declare class User {
   readonly id: string;
   readonly name: string;
-  readonly lastNames: string;
-  readonly documentIdNumber?: string;
+  readonly identificationNumber?: string;
   readonly email: string;
   readonly phone?: string;
   readonly userName?: string;
   readonly s3AvatarPath?: string;
-  readonly dateOfBirth?: string;
-  readonly updatedBy?: string;
-  readonly createdBy: string;
+  readonly Organization?: Organization;
   readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[];
   readonly UserLabSemesters?: (UserLabSemester | null)[];
+  readonly updatedBy?: string;
+  readonly createdBy: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);
@@ -187,23 +183,32 @@ export declare class UserLabPracticeSession {
   static copyOf(source: UserLabPracticeSession, mutator: (draft: MutableModel<UserLabPracticeSession, UserLabPracticeSessionMetaData>) => MutableModel<UserLabPracticeSession, UserLabPracticeSessionMetaData> | void): UserLabPracticeSession;
 }
 
-export declare class Organization {
+export declare class UserLabSemester {
   readonly id: string;
-  readonly country: string;
-  readonly region: string;
-  readonly city: string;
-  readonly type: string;
-  readonly name: string;
-  readonly description?: string;
-  readonly phone?: string;
-  readonly address?: string;
-  readonly createdBy: string;
-  readonly updatedBy?: string;
-  readonly Laboratories?: (Laboratory | null)[];
+  readonly user: User;
+  readonly labsemester: LabSemester;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Organization, OrganizationMetaData>);
-  static copyOf(source: Organization, mutator: (draft: MutableModel<Organization, OrganizationMetaData>) => MutableModel<Organization, OrganizationMetaData> | void): Organization;
+  constructor(init: ModelInit<UserLabSemester, UserLabSemesterMetaData>);
+  static copyOf(source: UserLabSemester, mutator: (draft: MutableModel<UserLabSemester, UserLabSemesterMetaData>) => MutableModel<UserLabSemester, UserLabSemesterMetaData> | void): UserLabSemester;
+}
+
+export declare class LabSemester {
+  readonly id: string;
+  readonly semesterName: string;
+  readonly description?: string;
+  readonly professor: string;
+  readonly monitorEmailList?: string;
+  readonly studentEmailList: string;
+  readonly Laboratory?: Laboratory;
+  readonly users?: (UserLabSemester | null)[];
+  readonly LabPracticeSessions?: (LabPracticeSession | null)[];
+  readonly updatedBy?: string;
+  readonly createdBy: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<LabSemester, LabSemesterMetaData>);
+  static copyOf(source: LabSemester, mutator: (draft: MutableModel<LabSemester, LabSemesterMetaData>) => MutableModel<LabSemester, LabSemesterMetaData> | void): LabSemester;
 }
 
 export declare class LabPracticeCommand {
@@ -212,11 +217,11 @@ export declare class LabPracticeCommand {
   readonly labelName?: string;
   readonly order?: number;
   readonly description?: string;
-  readonly updatedBy?: string;
-  readonly createdBy: string;
   readonly LabPractice?: LabPractice;
   readonly LabPracticeParameters?: (LabPracticeParameter | null)[];
   readonly LabPracticeSessionCommands?: (LabPracticeSessionCommand | null)[];
+  readonly updatedBy?: string;
+  readonly createdBy: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<LabPracticeCommand, LabPracticeCommandMetaData>);
@@ -233,10 +238,10 @@ export declare class LabPracticeParameter {
   readonly minValue?: number;
   readonly maxValue?: number;
   readonly regex?: string;
-  readonly updatedBy?: string;
-  readonly createdBy?: string;
   readonly LabPracticeCommand?: LabPracticeCommand;
   readonly LabPractice?: LabPractice;
+  readonly updatedBy?: string;
+  readonly createdBy?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<LabPracticeParameter, LabPracticeParameterMetaData>);
@@ -248,9 +253,9 @@ export declare class LabPracticeDevice {
   readonly name: string;
   readonly description?: string;
   readonly type?: string;
+  readonly LabPractice?: LabPractice;
   readonly updatedBy?: string;
   readonly createdBy?: string;
-  readonly LabPractice?: LabPractice;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<LabPracticeDevice, LabPracticeDeviceMetaData>);

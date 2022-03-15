@@ -164,20 +164,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "updatedBy": {
-                    "name": "updatedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "LabPractice": {
                     "name": "LabPractice",
                     "isArray": false,
@@ -231,6 +217,20 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "LabPracticeSession"
                     }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -332,20 +332,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "updatedBy": {
-                    "name": "updatedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "Laboratory": {
                     "name": "Laboratory",
                     "isArray": false,
@@ -427,6 +413,20 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "LabPractice"
                     }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -512,19 +512,18 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "updatedBy": {
-                    "name": "updatedBy",
+                "Organization": {
+                    "name": "Organization",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "model": "Organization"
+                    },
                     "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "organizationID"
+                    }
                 },
                 "LabSemesters": {
                     "name": "LabSemesters",
@@ -540,19 +539,6 @@ export const schema = {
                         "associatedWith": "Laboratory"
                     }
                 },
-                "Organization": {
-                    "name": "Organization",
-                    "isArray": false,
-                    "type": {
-                        "model": "Organization"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "organizationID"
-                    }
-                },
                 "LabPractices": {
                     "name": "LabPractices",
                     "isArray": true,
@@ -566,6 +552,20 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "Laboratory"
                     }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -627,8 +627,8 @@ export const schema = {
                 }
             ]
         },
-        "LabSemester": {
-            "name": "LabSemester",
+        "Organization": {
+            "name": "Organization",
             "fields": {
                 "id": {
                     "name": "id",
@@ -637,8 +637,36 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "semesterName": {
-                    "name": "semesterName",
+                "country": {
+                    "name": "country",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "region": {
+                    "name": "region",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "city": {
+                    "name": "city",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "type": {
+                    "name": "type",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
@@ -651,26 +679,47 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "professor": {
-                    "name": "professor",
+                "phone": {
+                    "name": "phone",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "monitorEmailList": {
-                    "name": "monitorEmailList",
-                    "isArray": false,
-                    "type": "AWSJSON",
                     "isRequired": false,
                     "attributes": []
                 },
-                "studentEmailList": {
-                    "name": "studentEmailList",
+                "address": {
+                    "name": "address",
                     "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": true,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
+                },
+                "Laboratories": {
+                    "name": "Laboratories",
+                    "isArray": true,
+                    "type": {
+                        "model": "Laboratory"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Organization"
+                    }
+                },
+                "Users": {
+                    "name": "Users",
+                    "isArray": true,
+                    "type": {
+                        "model": "User"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "Organization"
+                    }
                 },
                 "updatedBy": {
                     "name": "updatedBy",
@@ -686,47 +735,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "Laboratory": {
-                    "name": "Laboratory",
-                    "isArray": false,
-                    "type": {
-                        "model": "Laboratory"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "laboratoryID"
-                    }
-                },
-                "users": {
-                    "name": "users",
-                    "isArray": true,
-                    "type": {
-                        "model": "UserLabSemester"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "labsemester"
-                    }
-                },
-                "LabPracticeSessions": {
-                    "name": "LabPracticeSessions",
-                    "isArray": true,
-                    "type": {
-                        "model": "LabPracticeSession"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "LabPractice"
-                    }
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -745,129 +753,11 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "LabSemesters",
+            "pluralName": "Organizations",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byLaboratory",
-                        "fields": [
-                            "laboratoryID"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            },
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "UserLabSemester": {
-            "name": "UserLabSemester",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "user": {
-                    "name": "user",
-                    "isArray": false,
-                    "type": {
-                        "model": "User"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "userID"
-                    }
-                },
-                "labsemester": {
-                    "name": "labsemester",
-                    "isArray": false,
-                    "type": {
-                        "model": "LabSemester"
-                    },
-                    "isRequired": true,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "labsemesterID"
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "UserLabSemesters",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {
-                        "queries": null
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byUser",
-                        "fields": [
-                            "userID",
-                            "labsemesterID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "byLabSemester",
-                        "fields": [
-                            "labsemesterID",
-                            "userID"
-                        ]
-                    }
                 },
                 {
                     "type": "auth",
@@ -913,15 +803,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "lastNames": {
-                    "name": "lastNames",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "documentIdNumber": {
-                    "name": "documentIdNumber",
+                "identificationNumber": {
+                    "name": "identificationNumber",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -955,26 +838,18 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "dateOfBirth": {
-                    "name": "dateOfBirth",
+                "Organization": {
+                    "name": "Organization",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "model": "Organization"
+                    },
                     "isRequired": false,
-                    "attributes": []
-                },
-                "updatedBy": {
-                    "name": "updatedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "organizationID"
+                    }
                 },
                 "UserLabPracticeSessions": {
                     "name": "UserLabPracticeSessions",
@@ -1003,6 +878,20 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "user"
                     }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1034,6 +923,15 @@ export const schema = {
                         "name": "byEmail",
                         "fields": [
                             "email"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byOrganization",
+                        "fields": [
+                            "organizationID"
                         ]
                     }
                 },
@@ -1183,8 +1081,8 @@ export const schema = {
                 }
             ]
         },
-        "Organization": {
-            "name": "Organization",
+        "UserLabSemester": {
+            "name": "UserLabSemester",
             "fields": {
                 "id": {
                     "name": "id",
@@ -1193,88 +1091,30 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "country": {
-                    "name": "country",
+                "user": {
+                    "name": "user",
                     "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "region": {
-                    "name": "region",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "city": {
-                    "name": "city",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "type": {
-                    "name": "type",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "phone": {
-                    "name": "phone",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "address": {
-                    "name": "address",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "updatedBy": {
-                    "name": "updatedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "Laboratories": {
-                    "name": "Laboratories",
-                    "isArray": true,
                     "type": {
-                        "model": "Laboratory"
+                        "model": "User"
                     },
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": [],
-                    "isArrayNullable": true,
                     "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": "Organization"
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "userID"
+                    }
+                },
+                "labsemester": {
+                    "name": "labsemester",
+                    "isArray": false,
+                    "type": {
+                        "model": "LabSemester"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "labsemesterID"
                     }
                 },
                 "createdAt": {
@@ -1295,11 +1135,191 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Organizations",
+            "pluralName": "UserLabSemesters",
             "attributes": [
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byUser",
+                        "fields": [
+                            "userID",
+                            "labsemesterID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byLabSemester",
+                        "fields": [
+                            "labsemesterID",
+                            "userID"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "LabSemester": {
+            "name": "LabSemester",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "semesterName": {
+                    "name": "semesterName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "professor": {
+                    "name": "professor",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "monitorEmailList": {
+                    "name": "monitorEmailList",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "studentEmailList": {
+                    "name": "studentEmailList",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "Laboratory": {
+                    "name": "Laboratory",
+                    "isArray": false,
+                    "type": {
+                        "model": "Laboratory"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "laboratoryID"
+                    }
+                },
+                "users": {
+                    "name": "users",
+                    "isArray": true,
+                    "type": {
+                        "model": "UserLabSemester"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "labsemester"
+                    }
+                },
+                "LabPracticeSessions": {
+                    "name": "LabPracticeSessions",
+                    "isArray": true,
+                    "type": {
+                        "model": "LabPracticeSession"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "LabPractice"
+                    }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "LabSemesters",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byLaboratory",
+                        "fields": [
+                            "laboratoryID"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -1366,20 +1386,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "updatedBy": {
-                    "name": "updatedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "LabPractice": {
                     "name": "LabPractice",
                     "isArray": false,
@@ -1420,6 +1426,20 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "LabPracticeCommand"
                     }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1547,20 +1567,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "updatedBy": {
-                    "name": "updatedBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdBy": {
-                    "name": "createdBy",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "LabPracticeCommand": {
                     "name": "LabPracticeCommand",
                     "isArray": false,
@@ -1586,6 +1592,20 @@ export const schema = {
                         "connectionType": "BELONGS_TO",
                         "targetName": "labpracticeID"
                     }
+                },
+                "updatedBy": {
+                    "name": "updatedBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdBy": {
+                    "name": "createdBy",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1687,6 +1707,19 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "LabPractice": {
+                    "name": "LabPractice",
+                    "isArray": false,
+                    "type": {
+                        "model": "LabPractice"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "labpracticeID"
+                    }
+                },
                 "updatedBy": {
                     "name": "updatedBy",
                     "isArray": false,
@@ -1700,19 +1733,6 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "LabPractice": {
-                    "name": "LabPractice",
-                    "isArray": false,
-                    "type": {
-                        "model": "LabPractice"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "labpracticeID"
-                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1914,7 +1934,17 @@ export const schema = {
             ]
         }
     },
-    "enums": {},
+    "enums": {
+        "Roles": {
+            "name": "Roles",
+            "values": [
+                "Admins",
+                "Monitors",
+                "Students",
+                "Professors"
+            ]
+        }
+    },
     "nonModels": {
         "LabOutputOut": {
             "name": "LabOutputOut",
@@ -1950,5 +1980,5 @@ export const schema = {
             }
         }
     },
-    "version": "8897e50157325b03477b52327f1d22b1"
+    "version": "019880dc6f957575fb267f17260eb5c0"
 };

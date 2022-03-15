@@ -29,6 +29,7 @@ export const getOrganization = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -164,6 +165,7 @@ export const getUserLabPracticeSession = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -285,6 +287,7 @@ export const listUserLabPracticeSessions = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -347,6 +350,7 @@ export const syncUserLabPracticeSessions = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -387,6 +391,7 @@ export const getUser = /* GraphQL */ `
       phone
       userName
       s3AvatarPath
+      role
       organizationID
       updatedBy
       createdBy
@@ -469,6 +474,7 @@ export const listUsers = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -530,6 +536,7 @@ export const syncUsers = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -2618,6 +2625,7 @@ export const getUserLabSemester = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -2721,6 +2729,7 @@ export const listUserLabSemesters = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -2782,6 +2791,7 @@ export const syncUserLabSemesters = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy

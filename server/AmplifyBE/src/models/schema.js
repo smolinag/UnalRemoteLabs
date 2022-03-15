@@ -27,7 +27,9 @@ export const schema = {
                 "status": {
                     "name": "status",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "enum": "Status"
+                    },
                     "isRequired": true,
                     "attributes": []
                 },
@@ -836,6 +838,15 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
+                    "attributes": []
+                },
+                "role": {
+                    "name": "role",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Role"
+                    },
+                    "isRequired": true,
                     "attributes": []
                 },
                 "Organization": {
@@ -1935,8 +1946,16 @@ export const schema = {
         }
     },
     "enums": {
-        "Roles": {
-            "name": "Roles",
+        "Status": {
+            "name": "Status",
+            "values": [
+                "pending",
+                "success",
+                "failure"
+            ]
+        },
+        "Role": {
+            "name": "Role",
             "values": [
                 "Admins",
                 "Monitors",
@@ -1980,5 +1999,5 @@ export const schema = {
             }
         }
     },
-    "version": "019880dc6f957575fb267f17260eb5c0"
+    "version": "f5fbb7b6faa364a8e5ca71bdcfc9788a"
 };

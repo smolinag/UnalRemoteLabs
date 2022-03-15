@@ -2,7 +2,13 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
-const Roles = {
+const Status = {
+  "PENDING": "pending",
+  "SUCCESS": "success",
+  "FAILURE": "failure"
+};
+
+const Role = {
   "ADMINS": "Admins",
   "MONITORS": "Monitors",
   "STUDENTS": "Students",
@@ -25,6 +31,7 @@ export {
   LabPracticeParameter,
   LabPracticeDevice,
   LabPracticeOutput,
-  Roles,
+  Status,
+  Role,
   LabOutputOut
 };

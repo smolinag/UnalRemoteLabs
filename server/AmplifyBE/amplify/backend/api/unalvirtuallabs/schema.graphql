@@ -32,6 +32,7 @@ type User @model @key(name: "byEmail", fields: ["email"])  @key(name: "byOrganiz
   phone: String
   userName: String
   s3AvatarPath: String
+  role: Role!
   organizationID: ID!
   Organization: Organization @connection(fields: ["organizationID"])
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byUser", fields: ["id"])
@@ -44,7 +45,7 @@ type LabPracticeSessionCommand @model @key(name: "byLabPracticeSession", fields:
   id: ID!
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
-  status: String!
+  status: Status!
   parameters: AWSJSON
   LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!
@@ -200,11 +201,17 @@ input EmailInput{
   emailList: String!
 }
 
-enum Roles {
+enum Role {
     Admins
     Monitors
     Students
     Professors
+}
+
+enum Status {
+    pending
+    success
+    failure
 }
 
 type Mutation {

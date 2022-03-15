@@ -32,6 +32,7 @@ export const createOrganization = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -95,6 +96,7 @@ export const updateOrganization = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -158,6 +160,7 @@ export const deleteOrganization = /* GraphQL */ `
           phone
           userName
           s3AvatarPath
+          role
           organizationID
           updatedBy
           createdBy
@@ -214,6 +217,7 @@ export const createUserLabPracticeSession = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -329,6 +333,7 @@ export const updateUserLabPracticeSession = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -444,6 +449,7 @@ export const deleteUserLabPracticeSession = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -548,6 +554,7 @@ export const createUser = /* GraphQL */ `
       phone
       userName
       s3AvatarPath
+      role
       organizationID
       updatedBy
       createdBy
@@ -628,6 +635,7 @@ export const updateUser = /* GraphQL */ `
       phone
       userName
       s3AvatarPath
+      role
       organizationID
       updatedBy
       createdBy
@@ -708,6 +716,7 @@ export const deleteUser = /* GraphQL */ `
       phone
       userName
       s3AvatarPath
+      role
       organizationID
       updatedBy
       createdBy
@@ -3833,6 +3842,7 @@ export const createUserLabSemester = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -3930,6 +3940,7 @@ export const updateUserLabSemester = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy
@@ -4027,6 +4038,7 @@ export const deleteUserLabSemester = /* GraphQL */ `
         phone
         userName
         s3AvatarPath
+        role
         organizationID
         updatedBy
         createdBy

@@ -91,7 +91,7 @@ export type CreateLabPracticeSessionCommandInput = {
 	id?: Maybe<Scalars['ID']>;
 	requestDate: Scalars['AWSDateTime'];
 	executionDate?: Maybe<Scalars['AWSDateTime']>;
-	status: Scalars['String'];
+	status: Status;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID: Scalars['ID'];
 	labpracticecommandID: Scalars['ID'];
@@ -156,6 +156,7 @@ export type CreateUserInput = {
 	phone?: Maybe<Scalars['String']>;
 	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
+	role: Role;
 	organizationID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
@@ -449,7 +450,7 @@ export type LabPracticeSessionCommand = {
 	id: Scalars['ID'];
 	requestDate: Scalars['AWSDateTime'];
 	executionDate?: Maybe<Scalars['AWSDateTime']>;
-	status: Scalars['String'];
+	status: Status;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID: Scalars['ID'];
 	labpracticecommandID: Scalars['ID'];
@@ -788,7 +789,7 @@ export type ModelLabPracticeParameterFilterInput = {
 export type ModelLabPracticeSessionCommandConditionInput = {
 	requestDate?: Maybe<ModelStringInput>;
 	executionDate?: Maybe<ModelStringInput>;
-	status?: Maybe<ModelStringInput>;
+	status?: Maybe<ModelStatusInput>;
 	parameters?: Maybe<ModelStringInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
 	labpracticecommandID?: Maybe<ModelIdInput>;
@@ -808,7 +809,7 @@ export type ModelLabPracticeSessionCommandFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	requestDate?: Maybe<ModelStringInput>;
 	executionDate?: Maybe<ModelStringInput>;
-	status?: Maybe<ModelStringInput>;
+	status?: Maybe<ModelStatusInput>;
 	parameters?: Maybe<ModelStringInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
 	labpracticecommandID?: Maybe<ModelIdInput>;
@@ -957,6 +958,11 @@ export type ModelOrganizationFilterInput = {
 	not?: Maybe<ModelOrganizationFilterInput>;
 };
 
+export type ModelRoleInput = {
+	eq?: Maybe<Role>;
+	ne?: Maybe<Role>;
+};
+
 export type ModelSizeInput = {
 	ne?: Maybe<Scalars['Int']>;
 	eq?: Maybe<Scalars['Int']>;
@@ -971,6 +977,11 @@ export enum ModelSortDirection {
 	Asc = 'ASC',
 	Desc = 'DESC'
 }
+
+export type ModelStatusInput = {
+	eq?: Maybe<Status>;
+	ne?: Maybe<Status>;
+};
 
 export type ModelStringInput = {
 	ne?: Maybe<Scalars['String']>;
@@ -995,6 +1006,7 @@ export type ModelUserConditionInput = {
 	phone?: Maybe<ModelStringInput>;
 	userName?: Maybe<ModelStringInput>;
 	s3AvatarPath?: Maybe<ModelStringInput>;
+	role?: Maybe<ModelRoleInput>;
 	organizationID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -1018,6 +1030,7 @@ export type ModelUserFilterInput = {
 	phone?: Maybe<ModelStringInput>;
 	userName?: Maybe<ModelStringInput>;
 	s3AvatarPath?: Maybe<ModelStringInput>;
+	role?: Maybe<ModelRoleInput>;
 	organizationID?: Maybe<ModelIdInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -1631,11 +1644,17 @@ export type QuerySyncUserLabSemestersArgs = {
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
 };
 
-export enum Roles {
+export enum Role {
 	Admins = 'Admins',
 	Monitors = 'Monitors',
 	Students = 'Students',
 	Professors = 'Professors'
+}
+
+export enum Status {
+	Pending = 'pending',
+	Success = 'success',
+	Failure = 'failure'
 }
 
 export type Subscription = {
@@ -1761,7 +1780,7 @@ export type UpdateLabPracticeSessionCommandInput = {
 	id: Scalars['ID'];
 	requestDate?: Maybe<Scalars['AWSDateTime']>;
 	executionDate?: Maybe<Scalars['AWSDateTime']>;
-	status?: Maybe<Scalars['String']>;
+	status?: Maybe<Status>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID?: Maybe<Scalars['ID']>;
 	labpracticecommandID?: Maybe<Scalars['ID']>;
@@ -1826,6 +1845,7 @@ export type UpdateUserInput = {
 	phone?: Maybe<Scalars['String']>;
 	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
+	role?: Maybe<Role>;
 	organizationID?: Maybe<Scalars['ID']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -1857,6 +1877,7 @@ export type User = {
 	phone?: Maybe<Scalars['String']>;
 	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
+	role: Role;
 	organizationID: Scalars['ID'];
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];

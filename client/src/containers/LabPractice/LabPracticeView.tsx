@@ -22,18 +22,16 @@ const SESSION_ID = '93a1909e-eef3-421c-9cca-22396177f39c'; //TODO despues debemo
 const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77';
 // const COMMAND_NAME_PREFIX = 'cmd';
 
-// REVISAR LOS TIPOS DE LOS PARÁMETROS
-
 interface OutputListDto {
 	id: string;
 	name: string;
 	value: string;
 }
 
-enum CommandExecutionState {
+export enum Status {
+	Pending = 'pending',
 	Success = 'success',
-	Error = 'error',
-	Pending = 'pending'
+	Failure = 'failure'
 }
 
 export interface LocationState {
@@ -140,12 +138,12 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
-		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
+		if (!updatedCommand || updatedCommand.status === 'pending') {
 			return;
 		}
 		setIsExecutingCommand(false);
 		const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
-		if (updatedCommand.status === CommandExecutionState.Success) {
+		if (updatedCommand.status === 'success') {
 			showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
 		} else {
 			showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
@@ -161,7 +159,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 						labpracticesessionID: labPracticeSessionId,
 						labpracticecommandID: id,
 						parameters: JSON.stringify(parameters[0]),
-						status: 'pending',
+						status: Status.Pending,
 						requestDate: new Date()
 					}
 				}

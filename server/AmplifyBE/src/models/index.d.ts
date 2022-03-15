@@ -1,6 +1,12 @@
 import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
 
-export enum Roles {
+export enum Status {
+  PENDING = "pending",
+  SUCCESS = "success",
+  FAILURE = "failure"
+}
+
+export enum Role {
   ADMINS = "Admins",
   MONITORS = "Monitors",
   STUDENTS = "Students",
@@ -71,7 +77,7 @@ export declare class LabPracticeSessionCommand {
   readonly id: string;
   readonly requestDate: string;
   readonly executionDate?: string;
-  readonly status: string;
+  readonly status: Status | keyof typeof Status;
   readonly parameters?: string;
   readonly LabPracticeSession?: LabPracticeSession;
   readonly LabPracticeCommand?: LabPracticeCommand;
@@ -160,6 +166,7 @@ export declare class User {
   readonly phone?: string;
   readonly userName?: string;
   readonly s3AvatarPath?: string;
+  readonly role: Role | keyof typeof Role;
   readonly Organization?: Organization;
   readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[];
   readonly UserLabSemesters?: (UserLabSemester | null)[];

@@ -42,6 +42,7 @@ type User @aws_api_key @aws_cognito_user_pools {
   phone: String
   userName: String
   s3AvatarPath: String
+  role: Role!
   organizationID: ID!
   updatedBy: String
   createdBy: String!
@@ -59,7 +60,7 @@ type LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools {
   id: ID!
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
-  status: String!
+  status: Status!
   parameters: AWSJSON
   labpracticesessionID: ID!
   labpracticecommandID: ID!
@@ -265,11 +266,17 @@ input EmailInput {
   emailList: String!
 }
 
-enum Roles {
+enum Role {
   Admins
   Monitors
   Students
   Professors
+}
+
+enum Status {
+  pending
+  success
+  failure
 }
 
 type Mutation {
@@ -624,6 +631,11 @@ type ModelUserConnection @aws_api_key @aws_cognito_user_pools {
   startedAt: AWSTimestamp
 }
 
+input ModelRoleInput {
+  eq: Role
+  ne: Role
+}
+
 input ModelUserFilterInput {
   id: ModelIDInput
   name: ModelStringInput
@@ -632,6 +644,7 @@ input ModelUserFilterInput {
   phone: ModelStringInput
   userName: ModelStringInput
   s3AvatarPath: ModelStringInput
+  role: ModelRoleInput
   organizationID: ModelIDInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
@@ -648,6 +661,7 @@ input CreateUserInput {
   phone: String
   userName: String
   s3AvatarPath: String
+  role: Role!
   organizationID: ID!
   updatedBy: String
   createdBy: String!
@@ -662,6 +676,7 @@ input UpdateUserInput {
   phone: String
   userName: String
   s3AvatarPath: String
+  role: Role
   organizationID: ID
   updatedBy: String
   createdBy: String
@@ -680,6 +695,7 @@ input ModelUserConditionInput {
   phone: ModelStringInput
   userName: ModelStringInput
   s3AvatarPath: ModelStringInput
+  role: ModelRoleInput
   organizationID: ModelIDInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
@@ -694,11 +710,16 @@ type ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_poo
   startedAt: AWSTimestamp
 }
 
+input ModelStatusInput {
+  eq: Status
+  ne: Status
+}
+
 input ModelLabPracticeSessionCommandFilterInput {
   id: ModelIDInput
   requestDate: ModelStringInput
   executionDate: ModelStringInput
-  status: ModelStringInput
+  status: ModelStatusInput
   parameters: ModelStringInput
   labpracticesessionID: ModelIDInput
   labpracticecommandID: ModelIDInput
@@ -711,7 +732,7 @@ input CreateLabPracticeSessionCommandInput {
   id: ID
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
-  status: String!
+  status: Status!
   parameters: AWSJSON
   labpracticesessionID: ID!
   labpracticecommandID: ID!
@@ -722,7 +743,7 @@ input UpdateLabPracticeSessionCommandInput {
   id: ID!
   requestDate: AWSDateTime
   executionDate: AWSDateTime
-  status: String
+  status: Status
   parameters: AWSJSON
   labpracticesessionID: ID
   labpracticecommandID: ID
@@ -737,7 +758,7 @@ input DeleteLabPracticeSessionCommandInput {
 input ModelLabPracticeSessionCommandConditionInput {
   requestDate: ModelStringInput
   executionDate: ModelStringInput
-  status: ModelStringInput
+  status: ModelStatusInput
   parameters: ModelStringInput
   labpracticesessionID: ModelIDInput
   labpracticecommandID: ModelIDInput

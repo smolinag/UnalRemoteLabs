@@ -1,3 +1,1 @@
-{
-	"schemaPath": "./graphql-schema.json"
-}
+{"schemaPath":"./graphql-schema.json","projects":{},"extensions":{"amplify":{"version":3}}}

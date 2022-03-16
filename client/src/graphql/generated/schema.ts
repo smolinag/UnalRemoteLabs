@@ -148,36 +148,6 @@ export type CreateOrganizationInput = {
 	_version?: Maybe<Scalars['Int']>;
 };
 
-export type CreatePrivilegeInput = {
-	id?: Maybe<Scalars['ID']>;
-	name: Scalars['String'];
-	description?: Maybe<Scalars['String']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type CreatePrivilegeRoleInput = {
-	id?: Maybe<Scalars['ID']>;
-	privilegeID: Scalars['ID'];
-	roleID: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type CreateRoleInput = {
-	id?: Maybe<Scalars['ID']>;
-	name: Scalars['String'];
-	description?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
-	updatedBy?: Maybe<Scalars['String']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type CreateRoleUserInput = {
-	id?: Maybe<Scalars['ID']>;
-	userID: Scalars['ID'];
-	roleID: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
 export type CreateUserInput = {
 	id?: Maybe<Scalars['ID']>;
 	name: Scalars['String'];
@@ -199,7 +169,6 @@ export type CreateUserLabPracticeSessionInput = {
 	sessionEndDate?: Maybe<Scalars['AWSDateTime']>;
 	userID: Scalars['ID'];
 	labpracticesessionID: Scalars['ID'];
-	roleID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -260,26 +229,6 @@ export type DeleteOrganizationInput = {
 	_version?: Maybe<Scalars['Int']>;
 };
 
-export type DeletePrivilegeInput = {
-	id: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type DeletePrivilegeRoleInput = {
-	id: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type DeleteRoleInput = {
-	id: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type DeleteRoleUserInput = {
-	id: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
 export type DeleteUserInput = {
 	id: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
@@ -293,6 +242,12 @@ export type DeleteUserLabPracticeSessionInput = {
 export type DeleteUserLabSemesterInput = {
 	id: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
+};
+
+export type EmailInput = {
+	topic: Scalars['String'];
+	message: Scalars['String'];
+	emailList: Scalars['String'];
 };
 
 export type LabOutputIn = {
@@ -1003,106 +958,6 @@ export type ModelOrganizationFilterInput = {
 	not?: Maybe<ModelOrganizationFilterInput>;
 };
 
-export type ModelPrivilegeConditionInput = {
-	name?: Maybe<ModelStringInput>;
-	description?: Maybe<ModelStringInput>;
-	and?: Maybe<Array<Maybe<ModelPrivilegeConditionInput>>>;
-	or?: Maybe<Array<Maybe<ModelPrivilegeConditionInput>>>;
-	not?: Maybe<ModelPrivilegeConditionInput>;
-};
-
-export type ModelPrivilegeConnection = {
-	__typename?: 'ModelPrivilegeConnection';
-	items: Array<Maybe<Privilege>>;
-	nextToken?: Maybe<Scalars['String']>;
-	startedAt?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type ModelPrivilegeFilterInput = {
-	id?: Maybe<ModelIdInput>;
-	name?: Maybe<ModelStringInput>;
-	description?: Maybe<ModelStringInput>;
-	and?: Maybe<Array<Maybe<ModelPrivilegeFilterInput>>>;
-	or?: Maybe<Array<Maybe<ModelPrivilegeFilterInput>>>;
-	not?: Maybe<ModelPrivilegeFilterInput>;
-};
-
-export type ModelPrivilegeRoleConditionInput = {
-	privilegeID?: Maybe<ModelIdInput>;
-	roleID?: Maybe<ModelIdInput>;
-	and?: Maybe<Array<Maybe<ModelPrivilegeRoleConditionInput>>>;
-	or?: Maybe<Array<Maybe<ModelPrivilegeRoleConditionInput>>>;
-	not?: Maybe<ModelPrivilegeRoleConditionInput>;
-};
-
-export type ModelPrivilegeRoleConnection = {
-	__typename?: 'ModelPrivilegeRoleConnection';
-	items: Array<Maybe<PrivilegeRole>>;
-	nextToken?: Maybe<Scalars['String']>;
-	startedAt?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type ModelPrivilegeRoleFilterInput = {
-	id?: Maybe<ModelIdInput>;
-	privilegeID?: Maybe<ModelIdInput>;
-	roleID?: Maybe<ModelIdInput>;
-	and?: Maybe<Array<Maybe<ModelPrivilegeRoleFilterInput>>>;
-	or?: Maybe<Array<Maybe<ModelPrivilegeRoleFilterInput>>>;
-	not?: Maybe<ModelPrivilegeRoleFilterInput>;
-};
-
-export type ModelRoleConditionInput = {
-	name?: Maybe<ModelStringInput>;
-	description?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	and?: Maybe<Array<Maybe<ModelRoleConditionInput>>>;
-	or?: Maybe<Array<Maybe<ModelRoleConditionInput>>>;
-	not?: Maybe<ModelRoleConditionInput>;
-};
-
-export type ModelRoleConnection = {
-	__typename?: 'ModelRoleConnection';
-	items: Array<Maybe<Role>>;
-	nextToken?: Maybe<Scalars['String']>;
-	startedAt?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type ModelRoleFilterInput = {
-	id?: Maybe<ModelIdInput>;
-	name?: Maybe<ModelStringInput>;
-	description?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	and?: Maybe<Array<Maybe<ModelRoleFilterInput>>>;
-	or?: Maybe<Array<Maybe<ModelRoleFilterInput>>>;
-	not?: Maybe<ModelRoleFilterInput>;
-};
-
-export type ModelRoleUserConditionInput = {
-	userID?: Maybe<ModelIdInput>;
-	roleID?: Maybe<ModelIdInput>;
-	and?: Maybe<Array<Maybe<ModelRoleUserConditionInput>>>;
-	or?: Maybe<Array<Maybe<ModelRoleUserConditionInput>>>;
-	not?: Maybe<ModelRoleUserConditionInput>;
-};
-
-export type ModelRoleUserConnection = {
-	__typename?: 'ModelRoleUserConnection';
-	items: Array<Maybe<RoleUser>>;
-	nextToken?: Maybe<Scalars['String']>;
-	startedAt?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type ModelRoleUserFilterInput = {
-	id?: Maybe<ModelIdInput>;
-	userID?: Maybe<ModelIdInput>;
-	roleID?: Maybe<ModelIdInput>;
-	and?: Maybe<Array<Maybe<ModelRoleUserFilterInput>>>;
-	or?: Maybe<Array<Maybe<ModelRoleUserFilterInput>>>;
-	not?: Maybe<ModelRoleUserFilterInput>;
-};
-
 export type ModelSizeInput = {
 	ne?: Maybe<Scalars['Int']>;
 	eq?: Maybe<Scalars['Int']>;
@@ -1179,7 +1034,6 @@ export type ModelUserLabPracticeSessionConditionInput = {
 	sessionEndDate?: Maybe<ModelStringInput>;
 	userID?: Maybe<ModelIdInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
-	roleID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelUserLabPracticeSessionConditionInput>>>;
 	or?: Maybe<Array<Maybe<ModelUserLabPracticeSessionConditionInput>>>;
 	not?: Maybe<ModelUserLabPracticeSessionConditionInput>;
@@ -1198,7 +1052,6 @@ export type ModelUserLabPracticeSessionFilterInput = {
 	sessionEndDate?: Maybe<ModelStringInput>;
 	userID?: Maybe<ModelIdInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
-	roleID?: Maybe<ModelIdInput>;
 	and?: Maybe<Array<Maybe<ModelUserLabPracticeSessionFilterInput>>>;
 	or?: Maybe<Array<Maybe<ModelUserLabPracticeSessionFilterInput>>>;
 	not?: Maybe<ModelUserLabPracticeSessionFilterInput>;
@@ -1233,12 +1086,6 @@ export type Mutation = {
 	createOrganization?: Maybe<Organization>;
 	updateOrganization?: Maybe<Organization>;
 	deleteOrganization?: Maybe<Organization>;
-	createRole?: Maybe<Role>;
-	updateRole?: Maybe<Role>;
-	deleteRole?: Maybe<Role>;
-	createPrivilege?: Maybe<Privilege>;
-	updatePrivilege?: Maybe<Privilege>;
-	deletePrivilege?: Maybe<Privilege>;
 	createUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
 	updateUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
 	deleteUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
@@ -1272,17 +1119,12 @@ export type Mutation = {
 	createLaboratory?: Maybe<Laboratory>;
 	updateLaboratory?: Maybe<Laboratory>;
 	deleteLaboratory?: Maybe<Laboratory>;
-	createPrivilegeRole?: Maybe<PrivilegeRole>;
-	updatePrivilegeRole?: Maybe<PrivilegeRole>;
-	deletePrivilegeRole?: Maybe<PrivilegeRole>;
-	createRoleUser?: Maybe<RoleUser>;
-	updateRoleUser?: Maybe<RoleUser>;
-	deleteRoleUser?: Maybe<RoleUser>;
 	createUserLabSemester?: Maybe<UserLabSemester>;
 	updateUserLabSemester?: Maybe<UserLabSemester>;
 	deleteUserLabSemester?: Maybe<UserLabSemester>;
 	publishMqttMessage?: Maybe<Scalars['String']>;
 	labOutputListen?: Maybe<LabOutputOut>;
+	sendEmail?: Maybe<Scalars['String']>;
 };
 
 export type MutationCreateOrganizationArgs = {
@@ -1298,36 +1140,6 @@ export type MutationUpdateOrganizationArgs = {
 export type MutationDeleteOrganizationArgs = {
 	input: DeleteOrganizationInput;
 	condition?: Maybe<ModelOrganizationConditionInput>;
-};
-
-export type MutationCreateRoleArgs = {
-	input: CreateRoleInput;
-	condition?: Maybe<ModelRoleConditionInput>;
-};
-
-export type MutationUpdateRoleArgs = {
-	input: UpdateRoleInput;
-	condition?: Maybe<ModelRoleConditionInput>;
-};
-
-export type MutationDeleteRoleArgs = {
-	input: DeleteRoleInput;
-	condition?: Maybe<ModelRoleConditionInput>;
-};
-
-export type MutationCreatePrivilegeArgs = {
-	input: CreatePrivilegeInput;
-	condition?: Maybe<ModelPrivilegeConditionInput>;
-};
-
-export type MutationUpdatePrivilegeArgs = {
-	input: UpdatePrivilegeInput;
-	condition?: Maybe<ModelPrivilegeConditionInput>;
-};
-
-export type MutationDeletePrivilegeArgs = {
-	input: DeletePrivilegeInput;
-	condition?: Maybe<ModelPrivilegeConditionInput>;
 };
 
 export type MutationCreateUserLabPracticeSessionArgs = {
@@ -1495,36 +1307,6 @@ export type MutationDeleteLaboratoryArgs = {
 	condition?: Maybe<ModelLaboratoryConditionInput>;
 };
 
-export type MutationCreatePrivilegeRoleArgs = {
-	input: CreatePrivilegeRoleInput;
-	condition?: Maybe<ModelPrivilegeRoleConditionInput>;
-};
-
-export type MutationUpdatePrivilegeRoleArgs = {
-	input: UpdatePrivilegeRoleInput;
-	condition?: Maybe<ModelPrivilegeRoleConditionInput>;
-};
-
-export type MutationDeletePrivilegeRoleArgs = {
-	input: DeletePrivilegeRoleInput;
-	condition?: Maybe<ModelPrivilegeRoleConditionInput>;
-};
-
-export type MutationCreateRoleUserArgs = {
-	input: CreateRoleUserInput;
-	condition?: Maybe<ModelRoleUserConditionInput>;
-};
-
-export type MutationUpdateRoleUserArgs = {
-	input: UpdateRoleUserInput;
-	condition?: Maybe<ModelRoleUserConditionInput>;
-};
-
-export type MutationDeleteRoleUserArgs = {
-	input: DeleteRoleUserInput;
-	condition?: Maybe<ModelRoleUserConditionInput>;
-};
-
 export type MutationCreateUserLabSemesterArgs = {
 	input: CreateUserLabSemesterInput;
 	condition?: Maybe<ModelUserLabSemesterConditionInput>;
@@ -1546,6 +1328,10 @@ export type MutationPublishMqttMessageArgs = {
 
 export type MutationLabOutputListenArgs = {
 	input: LabOutputIn;
+};
+
+export type MutationSendEmailArgs = {
+	input: EmailInput;
 };
 
 export type Organization = {
@@ -1576,52 +1362,11 @@ export type OrganizationLaboratoriesArgs = {
 	nextToken?: Maybe<Scalars['String']>;
 };
 
-export type Privilege = {
-	__typename?: 'Privilege';
-	id: Scalars['ID'];
-	name: Scalars['String'];
-	description?: Maybe<Scalars['String']>;
-	_version: Scalars['Int'];
-	_deleted?: Maybe<Scalars['Boolean']>;
-	_lastChangedAt: Scalars['AWSTimestamp'];
-	createdAt: Scalars['AWSDateTime'];
-	updatedAt: Scalars['AWSDateTime'];
-	Roles?: Maybe<ModelPrivilegeRoleConnection>;
-};
-
-export type PrivilegeRolesArgs = {
-	roleID?: Maybe<ModelIdKeyConditionInput>;
-	filter?: Maybe<ModelPrivilegeRoleFilterInput>;
-	sortDirection?: Maybe<ModelSortDirection>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type PrivilegeRole = {
-	__typename?: 'PrivilegeRole';
-	id: Scalars['ID'];
-	privilegeID: Scalars['ID'];
-	roleID: Scalars['ID'];
-	_version: Scalars['Int'];
-	_deleted?: Maybe<Scalars['Boolean']>;
-	_lastChangedAt: Scalars['AWSTimestamp'];
-	createdAt: Scalars['AWSDateTime'];
-	updatedAt: Scalars['AWSDateTime'];
-	role: Role;
-	privilege: Privilege;
-};
-
 export type Query = {
 	__typename?: 'Query';
 	getOrganization?: Maybe<Organization>;
 	listOrganizations?: Maybe<ModelOrganizationConnection>;
 	syncOrganizations?: Maybe<ModelOrganizationConnection>;
-	getRole?: Maybe<Role>;
-	listRoles?: Maybe<ModelRoleConnection>;
-	syncRoles?: Maybe<ModelRoleConnection>;
-	getPrivilege?: Maybe<Privilege>;
-	listPrivileges?: Maybe<ModelPrivilegeConnection>;
-	syncPrivileges?: Maybe<ModelPrivilegeConnection>;
 	getUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
 	listUserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
 	syncUserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
@@ -1655,8 +1400,6 @@ export type Query = {
 	getLaboratory?: Maybe<Laboratory>;
 	listLaboratorys?: Maybe<ModelLaboratoryConnection>;
 	syncLaboratories?: Maybe<ModelLaboratoryConnection>;
-	syncPrivilegeRoles?: Maybe<ModelPrivilegeRoleConnection>;
-	syncRoleUsers?: Maybe<ModelRoleUserConnection>;
 	syncUserLabSemesters?: Maybe<ModelUserLabSemesterConnection>;
 };
 
@@ -1672,40 +1415,6 @@ export type QueryListOrganizationsArgs = {
 
 export type QuerySyncOrganizationsArgs = {
 	filter?: Maybe<ModelOrganizationFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-	lastSync?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type QueryGetRoleArgs = {
-	id: Scalars['ID'];
-};
-
-export type QueryListRolesArgs = {
-	filter?: Maybe<ModelRoleFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type QuerySyncRolesArgs = {
-	filter?: Maybe<ModelRoleFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-	lastSync?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type QueryGetPrivilegeArgs = {
-	id: Scalars['ID'];
-};
-
-export type QueryListPrivilegesArgs = {
-	filter?: Maybe<ModelPrivilegeFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type QuerySyncPrivilegesArgs = {
-	filter?: Maybe<ModelPrivilegeFilterInput>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
@@ -1898,20 +1607,6 @@ export type QuerySyncLaboratoriesArgs = {
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
 };
 
-export type QuerySyncPrivilegeRolesArgs = {
-	filter?: Maybe<ModelPrivilegeRoleFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-	lastSync?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type QuerySyncRoleUsersArgs = {
-	filter?: Maybe<ModelRoleUserFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-	lastSync?: Maybe<Scalars['AWSTimestamp']>;
-};
-
 export type QuerySyncUserLabSemestersArgs = {
 	filter?: Maybe<ModelUserLabSemesterFilterInput>;
 	limit?: Maybe<Scalars['Int']>;
@@ -1919,71 +1614,11 @@ export type QuerySyncUserLabSemestersArgs = {
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
 };
 
-export type Role = {
-	__typename?: 'Role';
-	id: Scalars['ID'];
-	name: Scalars['String'];
-	description?: Maybe<Scalars['String']>;
-	createdBy: Scalars['String'];
-	updatedBy?: Maybe<Scalars['String']>;
-	_version: Scalars['Int'];
-	_deleted?: Maybe<Scalars['Boolean']>;
-	_lastChangedAt: Scalars['AWSTimestamp'];
-	createdAt: Scalars['AWSDateTime'];
-	updatedAt: Scalars['AWSDateTime'];
-	UserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
-	Privileges?: Maybe<ModelPrivilegeRoleConnection>;
-	Users?: Maybe<ModelRoleUserConnection>;
-};
-
-export type RoleUserLabPracticeSessionsArgs = {
-	filter?: Maybe<ModelUserLabPracticeSessionFilterInput>;
-	sortDirection?: Maybe<ModelSortDirection>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type RolePrivilegesArgs = {
-	privilegeID?: Maybe<ModelIdKeyConditionInput>;
-	filter?: Maybe<ModelPrivilegeRoleFilterInput>;
-	sortDirection?: Maybe<ModelSortDirection>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type RoleUsersArgs = {
-	userID?: Maybe<ModelIdKeyConditionInput>;
-	filter?: Maybe<ModelRoleUserFilterInput>;
-	sortDirection?: Maybe<ModelSortDirection>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type RoleUser = {
-	__typename?: 'RoleUser';
-	id: Scalars['ID'];
-	userID: Scalars['ID'];
-	roleID: Scalars['ID'];
-	_version: Scalars['Int'];
-	_deleted?: Maybe<Scalars['Boolean']>;
-	_lastChangedAt: Scalars['AWSTimestamp'];
-	createdAt: Scalars['AWSDateTime'];
-	updatedAt: Scalars['AWSDateTime'];
-	role: Role;
-	user: User;
-};
-
 export type Subscription = {
 	__typename?: 'Subscription';
 	onCreateOrganization?: Maybe<Organization>;
 	onUpdateOrganization?: Maybe<Organization>;
 	onDeleteOrganization?: Maybe<Organization>;
-	onCreateRole?: Maybe<Role>;
-	onUpdateRole?: Maybe<Role>;
-	onDeleteRole?: Maybe<Role>;
-	onCreatePrivilege?: Maybe<Privilege>;
-	onUpdatePrivilege?: Maybe<Privilege>;
-	onDeletePrivilege?: Maybe<Privilege>;
 	onCreateUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
 	onUpdateUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
 	onDeleteUserLabPracticeSession?: Maybe<UserLabPracticeSession>;
@@ -2017,12 +1652,6 @@ export type Subscription = {
 	onCreateLaboratory?: Maybe<Laboratory>;
 	onUpdateLaboratory?: Maybe<Laboratory>;
 	onDeleteLaboratory?: Maybe<Laboratory>;
-	onCreatePrivilegeRole?: Maybe<PrivilegeRole>;
-	onUpdatePrivilegeRole?: Maybe<PrivilegeRole>;
-	onDeletePrivilegeRole?: Maybe<PrivilegeRole>;
-	onCreateRoleUser?: Maybe<RoleUser>;
-	onUpdateRoleUser?: Maybe<RoleUser>;
-	onDeleteRoleUser?: Maybe<RoleUser>;
 	onCreateUserLabSemester?: Maybe<UserLabSemester>;
 	onUpdateUserLabSemester?: Maybe<UserLabSemester>;
 	onDeleteUserLabSemester?: Maybe<UserLabSemester>;
@@ -2165,36 +1794,6 @@ export type UpdateOrganizationInput = {
 	_version?: Maybe<Scalars['Int']>;
 };
 
-export type UpdatePrivilegeInput = {
-	id: Scalars['ID'];
-	name?: Maybe<Scalars['String']>;
-	description?: Maybe<Scalars['String']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type UpdatePrivilegeRoleInput = {
-	id: Scalars['ID'];
-	privilegeID?: Maybe<Scalars['ID']>;
-	roleID?: Maybe<Scalars['ID']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type UpdateRoleInput = {
-	id: Scalars['ID'];
-	name?: Maybe<Scalars['String']>;
-	description?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
-export type UpdateRoleUserInput = {
-	id: Scalars['ID'];
-	userID?: Maybe<Scalars['ID']>;
-	roleID?: Maybe<Scalars['ID']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
 export type UpdateUserInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
@@ -2216,7 +1815,6 @@ export type UpdateUserLabPracticeSessionInput = {
 	sessionEndDate?: Maybe<Scalars['AWSDateTime']>;
 	userID?: Maybe<Scalars['ID']>;
 	labpracticesessionID?: Maybe<Scalars['ID']>;
-	roleID?: Maybe<Scalars['ID']>;
 	_version?: Maybe<Scalars['Int']>;
 };
 
@@ -2246,20 +1844,11 @@ export type User = {
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
 	UserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
-	Roles?: Maybe<ModelRoleUserConnection>;
 	UserLabSemesters?: Maybe<ModelUserLabSemesterConnection>;
 };
 
 export type UserUserLabPracticeSessionsArgs = {
 	filter?: Maybe<ModelUserLabPracticeSessionFilterInput>;
-	sortDirection?: Maybe<ModelSortDirection>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type UserRolesArgs = {
-	roleID?: Maybe<ModelIdKeyConditionInput>;
-	filter?: Maybe<ModelRoleUserFilterInput>;
 	sortDirection?: Maybe<ModelSortDirection>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
@@ -2280,13 +1869,11 @@ export type UserLabPracticeSession = {
 	sessionEndDate?: Maybe<Scalars['AWSDateTime']>;
 	userID: Scalars['ID'];
 	labpracticesessionID: Scalars['ID'];
-	roleID?: Maybe<Scalars['ID']>;
 	_version: Scalars['Int'];
 	_deleted?: Maybe<Scalars['Boolean']>;
 	_lastChangedAt: Scalars['AWSTimestamp'];
 	createdAt: Scalars['AWSDateTime'];
 	updatedAt: Scalars['AWSDateTime'];
-	role?: Maybe<Role>;
 	User?: Maybe<User>;
 	LabPracticeSession?: Maybe<LabPracticeSession>;
 };
@@ -2512,6 +2099,12 @@ export type PublishMqttMessageMutationVariables = Exact<{
 }>;
 
 export type PublishMqttMessageMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'publishMqttMessage'>;
+
+export type SendEmailMutationVariables = Exact<{
+	input: EmailInput;
+}>;
+
+export type SendEmailMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'sendEmail'>;
 
 export type UpdateLabPracticeMutationVariables = Exact<{
 	input: UpdateLabPracticeInput;
@@ -3747,6 +3340,39 @@ export type PublishMqttMessageMutationOptions = Apollo.BaseMutationOptions<
 	PublishMqttMessageMutation,
 	PublishMqttMessageMutationVariables
 >;
+export const SendEmailDocument = gql`
+	mutation sendEmail($input: EmailInput!) {
+		sendEmail(input: $input)
+	}
+`;
+export type SendEmailMutationFn = Apollo.MutationFunction<SendEmailMutation, SendEmailMutationVariables>;
+
+/**
+ * __useSendEmailMutation__
+ *
+ * To run a mutation, you first call `useSendEmailMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendEmailMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendEmailMutation, { data, loading, error }] = useSendEmailMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSendEmailMutation(
+	baseOptions?: Apollo.MutationHookOptions<SendEmailMutation, SendEmailMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<SendEmailMutation, SendEmailMutationVariables>(SendEmailDocument, options);
+}
+export type SendEmailMutationHookResult = ReturnType<typeof useSendEmailMutation>;
+export type SendEmailMutationResult = Apollo.MutationResult<SendEmailMutation>;
+export type SendEmailMutationOptions = Apollo.BaseMutationOptions<SendEmailMutation, SendEmailMutationVariables>;
 export const UpdateLabPracticeDocument = gql`
 	mutation updateLabPractice($input: UpdateLabPracticeInput!) {
 		updateLabPractice(input: $input) {

@@ -4,7 +4,11 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LabSemesterData, EmailsInputWithTable} from '../../components/LabSemester/index';
 import {Button, LoadingContainer} from '../../components/UI';
-import {useGetLaboratoryQuery, useCreateLabSemesterMutation} from '../../graphql/generated/schema';
+import {
+	useGetLaboratoryQuery,
+	useCreateLabSemesterMutation,
+	useSendEmailMutation
+} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {LabSemester, Laboratory, Params, ErrorIdentifier, LocationStateCreation} from './types';
 
@@ -33,6 +37,7 @@ const LabSemesterCreation: React.FC<unknown> = () => {
 	const [laboratory, setLaboratory] = useState<Laboratory>(initialLaboratory);
 
 	const [createLabSemester] = useCreateLabSemesterMutation();
+	const [sendEmail] = useSendEmailMutation();
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
@@ -104,19 +109,31 @@ const LabSemesterCreation: React.FC<unknown> = () => {
 
 				if (!labPracticeData?.createLabSemester?.id) {
 					throw Error('Error insertando Lab Semester');
+				} else {
+					await sendEmail({
+						variables: {
+							input: {
+								topic: 'Registro a semestre de laboratorio ' + labSemester.semesterName,
+								emailList: JSON.stringify(labSemester.studentEmailList),
+								message:
+									'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que usted ha sido registrado al nuevo semestre de laboratorio ' +
+									labSemester.semesterName +
+									'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+							}
+						}
+					});
 				}
 
 				showSuccessBanner(`El semestre de laboratorio ${labSemester.semesterName} fue creado exitosamente`);
 				setLabSemester(initialLabSemester);
 			} catch (error) {
-				console.error(error);
 				showErrorBanner(`Error en la creación del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
 				navigate('/lab-semesters', {state: {laboratoryID}});
 			}
 		}
-	};
+	};	
 
 	return (
 		<Container fluid>

@@ -33,10 +33,6 @@ const LabSemesterList: React.FC<unknown> = () => {
 	const {data: LabSemesterData, loading: loadingLabSemesterData} = useListLabSemestersByLaboratoryIdQuery({
 		variables: {laboratoryID}
 	});
-	// eslint-disable-next-line no-console
-	console.log(LabSemesterData);
-	// eslint-disable-next-line no-console
-	console.log(loadingLabSemesterData);
 
 	const [labSemesters, setLabSemesters] = useState<Array<LabSemester>>([]);
 

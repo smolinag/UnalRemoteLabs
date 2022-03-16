@@ -9,7 +9,8 @@ import {
 	useGetLabPracticeQuery,
 	useCreateLabPracticeSessionMutation,
 	useListUsersBySemesterQuery,
-	useCreateUserLabPracticeSessionMutation
+	useCreateUserLabPracticeSessionMutation,
+	useSendEmailMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import classes from './LabSessionProgrammingView.module.scss';
@@ -37,6 +38,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 	const [createUserLabPracticeSession] = useCreateUserLabPracticeSessionMutation({});
 	const {data: labPracticeData} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
 	const {data: semesterUsers} = useListUsersBySemesterQuery({variables: {id: labSemesterId}});
+	const [sendEmail] = useSendEmailMutation();
 
 	useEffect(() => {
 		if (labPracticeData?.getLabPractice) {
@@ -50,8 +52,8 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 	}, [labPracticeData]);
 
 	useEffect(() => {
-		console.warn(labSemesterId)
-		console.warn(semesterUsers)
+		console.warn(labSemesterId);
+		console.warn(semesterUsers);
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
 		if (semesterUserList) {
 			const data = semesterUserList.map((item) => {
@@ -103,6 +105,19 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 					});
 					if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
 						throw Error('');
+					} else {
+						await sendEmail({
+							variables: {
+								input: {
+									topic: 'Registro a sesión de laboratorio ' + labPracticeInfo.name,
+									emailList: JSON.stringify(studentList.map((item) => item.email)),
+									message:
+										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
+										labPracticeInfo.name + ' para la fecha: ' + labSessionInfo.startDate.toLocaleString() + 
+										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+								}
+							}
+						});
 					}
 				}
 			}

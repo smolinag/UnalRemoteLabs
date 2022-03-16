@@ -10,6 +10,8 @@ export interface Parameter {
 	label: string;
 	id: string;
 	value: number;
+	maxValue: number;
+	minValue: number;
 }
 
 interface Props {
@@ -47,6 +49,8 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 							type="number"
 							className={classes.input}
 							value={parameter.value}
+							max={parameter.maxValue}
+							min={parameter.minValue}
 							onChange={(evt) => handleParameterValueChange(Number(evt.target.value), parameter.id)}
 						/>
 					</InputGroup>

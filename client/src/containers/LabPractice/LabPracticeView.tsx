@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 // import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
-import {Command} from '../../components/Lab/Commands/Commands';
+import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
 import {LoadingContainer} from '../../components/UI';
 import {
@@ -13,6 +13,7 @@ import {
 	useOnUpdateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription
+	// useListLabPracticeSessionCommandsQuery,
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
@@ -48,6 +49,7 @@ const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as s
 const LabPracticeView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
+	const [executedCommands, setExecutedCommands] = useState<CommandSession[]>([]);
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
@@ -63,11 +65,78 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
+	// const {data: commandsSessions} = useListLabPracticeSessionCommandsQuery();
 
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: SESSION_ID}
 	});
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: DEVICE_ID}});
+
+	// const data1 = [
+	// 	{
+	// 		id: '247f05ab-34a6-4d0d-9621-2953e53466e0',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Electrodo B Circular',
+	// 		parameters: '',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '924552b6-87e7-4fab-8dbb-bde2da558957'
+	// 	},
+	// 	{
+	// 		id: '09873f12-a151-47ed-aed1-1453a6754384',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Electrodo B Plano',
+	// 		parameters: '',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '8b464580-4297-486f-9f1e-a06d627f9b3e'
+	// 	},
+	// 	{
+	// 		id: '6e0a44a6-527a-4b92-856d-ee49773c54a9',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Electrodo A Circular',
+	// 		parameters: '',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '89cd34ec-cf44-4a35-ac37-9860788b7333'
+	// 	},
+	// 	{
+	// 		id: '34920937-86d4-423f-852e-0e32c46475fb',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Electrodo B Circular',
+	// 		parameters: '',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '924552b6-87e7-4fab-8dbb-bde2da558957'
+	// 	},
+	// 	{
+	// 		id: 'b2e0275f-4f29-4573-b37c-f1694c784590',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Medir',
+	// 		parameters: '{"id":"281bf321-de6b-40c4-b180-17119c8d3895","label":"Posicion X","value":3}',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '710cf63d-00e5-40dd-8d93-ad9fe29beae7'
+	// 	},
+	// 	{
+	// 		id: '5a1d91b0-53f7-4ce4-b392-0a1925f098a5',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Medir',
+	// 		parameters: '{"id":"281bf321-de6b-40c4-b180-17119c8d3895","label":"Posicion X","value":3}',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '710cf63d-00e5-40dd-8d93-ad9fe29beae7'
+	// 	},
+	// 	{
+	// 		id: '7d37ea93-9dec-4d54-8485-65d3364d8174',
+	// 		executionDate: '',
+	// 		status: 'pending',
+	// 		command: 'Electrodo B Plano',
+	// 		parameters: '',
+	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
+	// 		labpracticeCommandID: '8b464580-4297-486f-9f1e-a06d627f9b3e'
+	// 	}
+	// ];
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
@@ -80,7 +149,9 @@ const LabPracticeView: React.FC<unknown> = () => {
 							return {
 								id: parameter?.id as string,
 								label: (parameter?.labelName ?? parameter?.name) as string,
-								value: Number((parameter?.defaultValue as string) ?? 0)
+								value: Number((parameter?.defaultValue as string) ?? 0),
+								maxValue: Number(parameter?.maxValue ?? 0),
+								minValue: Number(parameter?.minValue ?? 0)
 							};
 						});
 
@@ -140,15 +211,52 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
-		if (!updatedCommand || updatedCommand.status === CommandExecutionState.Pending) {
-			return;
-		}
-		setIsExecutingCommand(false);
-		const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
-		if (updatedCommand.status === CommandExecutionState.Success) {
-			showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
-		} else {
-			showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
+
+		if (updatedCommand) {
+			if (updatedCommand.status === CommandExecutionState.Pending) {
+				setExecutedCommands((previousState) => {
+					previousState.unshift({
+						id: updatedCommand?.id ? updatedCommand?.id : '',
+						executionDate: updatedCommand?.executionDate ? updatedCommand?.executionDate : '',
+						labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
+						labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
+						parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
+						status: updatedCommand?.status ? updatedCommand?.status : '',
+						command: updatedCommand?.LabPracticeCommand ? updatedCommand?.LabPracticeCommand?.name : ''
+					});
+					return previousState;
+				});
+				setIsExecutingCommand(false);
+
+				return;
+			}
+
+			const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
+
+			if (updatedCommand.status === CommandExecutionState.Success) {
+				const command = executedCommands.filter((obj) => obj.id === updatedCommand?.id);
+
+				setExecutedCommands((previousState) => {
+					const rowIndex = previousState.findIndex((obj) => obj.id === command[0].id);
+
+					previousState.slice(0, rowIndex).concat(previousState.slice(rowIndex + 1, executedCommands.length + 1));
+
+					previousState.unshift({
+						id: updatedCommand?.id ? updatedCommand?.id : '',
+						executionDate: updatedCommand?.executionDate ? updatedCommand?.executionDate : '',
+						labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
+						labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
+						parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
+						status: updatedCommand?.status ? updatedCommand?.status : '',
+						command: updatedCommand?.LabPracticeCommand ? updatedCommand?.LabPracticeCommand?.name : ''
+					});
+
+					return previousState;
+				});
+				showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
+			} else {
+				showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
+			}
 		}
 	}, [updatedSessionCommand]);
 
@@ -195,7 +303,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				duration={practiceInfo?.getLabPractice?.duration}
 			/>
 			<LoadingContainer loading={isExecutingCommand}>
-				<Commands commands={labCommands} onCommandChange={handleCommandChange} />
+				<Commands commands={labCommands} onCommandChange={handleCommandChange} data={executedCommands} />
 			</LoadingContainer>
 			<LabOutputs data={outputs.map(mapOutput)} />
 		</LoadingContainer>

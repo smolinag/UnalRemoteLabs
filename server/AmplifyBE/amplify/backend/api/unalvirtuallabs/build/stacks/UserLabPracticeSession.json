@@ -137,10 +137,6 @@
                     {
                         "AttributeName": "labpracticesessionID",
                         "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "roleID",
-                        "AttributeType": "S"
                     }
                 ],
                 "StreamSpecification": {
@@ -229,34 +225,6 @@
                         "KeySchema": [
                             {
                                 "AttributeName": "labpracticesessionID",
-                                "KeyType": "HASH"
-                            }
-                        ],
-                        "Projection": {
-                            "ProjectionType": "ALL"
-                        },
-                        "ProvisionedThroughput": {
-                            "Fn::If": [
-                                "ShouldUsePayPerRequestBilling",
-                                {
-                                    "Ref": "AWS::NoValue"
-                                },
-                                {
-                                    "ReadCapacityUnits": {
-                                        "Ref": "DynamoDBModelTableReadIOPS"
-                                    },
-                                    "WriteCapacityUnits": {
-                                        "Ref": "DynamoDBModelTableWriteIOPS"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "IndexName": "byRole",
-                        "KeySchema": [
-                            {
-                                "AttributeName": "roleID",
                                 "KeyType": "HASH"
                             }
                         ],

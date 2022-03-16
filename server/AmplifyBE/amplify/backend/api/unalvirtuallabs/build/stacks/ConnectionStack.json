@@ -159,7 +159,7 @@
                 }
             }
         },
-        "RoleUserLabPracticeSessionsResolver": {
+        "OrganizationUsersResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -174,160 +174,14 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "UserLabPracticeSessionDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "UserLabPracticeSessions",
-                "TypeName": "Role",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Role",
-                                        "UserLabPracticeSessions",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Role",
-                                        "UserLabPracticeSessions",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "RolePrivilegesResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "PrivilegeRoleDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "Privileges",
-                "TypeName": "Role",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Role",
-                                        "Privileges",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Role",
-                                        "Privileges",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "RoleUsersResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "RoleUserDataSource",
+                                "UserDataSource",
                                 "Name"
                             ]
                         ]
                     }
                 },
                 "FieldName": "Users",
-                "TypeName": "Role",
+                "TypeName": "Organization",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
                         "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
@@ -342,7 +196,7 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "Role",
+                                        "Organization",
                                         "Users",
                                         "req",
                                         "vtl"
@@ -366,81 +220,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "Role",
+                                        "Organization",
                                         "Users",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "PrivilegeRolesResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "PrivilegeRoleDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "Roles",
-                "TypeName": "Privilege",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Privilege",
-                                        "Roles",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Privilege",
-                                        "Roles",
                                         "res",
                                         "vtl"
                                     ]
@@ -597,7 +378,7 @@
                 }
             }
         },
-        "UserLabPracticeSessionroleResolver": {
+        "UserOrganizationResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -612,14 +393,14 @@
                                     "Ref": "AppSyncApiId"
                                 },
                                 "GetAtt",
-                                "RoleDataSource",
+                                "OrganizationDataSource",
                                 "Name"
                             ]
                         ]
                     }
                 },
-                "FieldName": "role",
-                "TypeName": "UserLabPracticeSession",
+                "FieldName": "Organization",
+                "TypeName": "User",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
                         "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
@@ -634,8 +415,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "UserLabPracticeSession",
-                                        "role",
+                                        "User",
+                                        "Organization",
                                         "req",
                                         "vtl"
                                     ]
@@ -658,8 +439,8 @@
                                 "Fn::Join": [
                                     ".",
                                     [
-                                        "UserLabPracticeSession",
-                                        "role",
+                                        "User",
+                                        "Organization",
                                         "res",
                                         "vtl"
                                     ]
@@ -733,79 +514,6 @@
                                     [
                                         "User",
                                         "UserLabPracticeSessions",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "UserRolesResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "RoleUserDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "Roles",
-                "TypeName": "User",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "User",
-                                        "Roles",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "User",
-                                        "Roles",
                                         "res",
                                         "vtl"
                                     ]
@@ -2495,79 +2203,6 @@
                 }
             }
         },
-        "LaboratoryLabSemestersResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "LabSemesterDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "LabSemesters",
-                "TypeName": "Laboratory",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Laboratory",
-                                        "LabSemesters",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "Laboratory",
-                                        "LabSemesters",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
         "LaboratoryOrganizationResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
@@ -2641,6 +2276,79 @@
                 }
             }
         },
+        "LaboratoryLabSemestersResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "GetAttGraphQLAPIApiId"
+                },
+                "DataSourceName": {
+                    "Fn::ImportValue": {
+                        "Fn::Join": [
+                            ":",
+                            [
+                                {
+                                    "Ref": "AppSyncApiId"
+                                },
+                                "GetAtt",
+                                "LabSemesterDataSource",
+                                "Name"
+                            ]
+                        ]
+                    }
+                },
+                "FieldName": "LabSemesters",
+                "TypeName": "Laboratory",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Laboratory",
+                                        "LabSemesters",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Laboratory",
+                                        "LabSemesters",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
         "LaboratoryLabPracticesResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
@@ -2704,298 +2412,6 @@
                                     [
                                         "Laboratory",
                                         "LabPractices",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "PrivilegeRoleprivilegeResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "PrivilegeDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "privilege",
-                "TypeName": "PrivilegeRole",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "PrivilegeRole",
-                                        "privilege",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "PrivilegeRole",
-                                        "privilege",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "PrivilegeRoleroleResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "RoleDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "role",
-                "TypeName": "PrivilegeRole",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "PrivilegeRole",
-                                        "role",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "PrivilegeRole",
-                                        "role",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "RoleUseruserResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "UserDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "user",
-                "TypeName": "RoleUser",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "RoleUser",
-                                        "user",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "RoleUser",
-                                        "user",
-                                        "res",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "RoleUserroleResolver": {
-            "Type": "AWS::AppSync::Resolver",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "GetAttGraphQLAPIApiId"
-                },
-                "DataSourceName": {
-                    "Fn::ImportValue": {
-                        "Fn::Join": [
-                            ":",
-                            [
-                                {
-                                    "Ref": "AppSyncApiId"
-                                },
-                                "GetAtt",
-                                "RoleDataSource",
-                                "Name"
-                            ]
-                        ]
-                    }
-                },
-                "FieldName": "role",
-                "TypeName": "RoleUser",
-                "RequestMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "RoleUser",
-                                        "role",
-                                        "req",
-                                        "vtl"
-                                    ]
-                                ]
-                            }
-                        }
-                    ]
-                },
-                "ResponseMappingTemplateS3Location": {
-                    "Fn::Sub": [
-                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
-                        {
-                            "S3DeploymentBucket": {
-                                "Ref": "S3DeploymentBucket"
-                            },
-                            "S3DeploymentRootKey": {
-                                "Ref": "S3DeploymentRootKey"
-                            },
-                            "ResolverFileName": {
-                                "Fn::Join": [
-                                    ".",
-                                    [
-                                        "RoleUser",
-                                        "role",
                                         "res",
                                         "vtl"
                                     ]

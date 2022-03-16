@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.3\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.14\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "GROUP": {
       "Type": "String",
@@ -42,6 +42,9 @@
       "Type": "String"
     },
     "s3Key": {
+      "Type": "String"
+    },
+    "userTable": {
       "Type": "String"
     }
   },
@@ -95,6 +98,9 @@
             },
             "GROUP": {
               "Ref": "GROUP"
+            },
+            "USER_TABLE": {
+              "Ref": "userTable"
             }
           }
         },
@@ -211,7 +217,7 @@
                 "dynamodb:*"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-2:119135969665:table/User-bd36mmgvjjcjzfrtzph2g44mqq-dev"
+                "arn:aws:dynamodb:us-east-2:119135969665:table/*"
               ]
             },
             {
@@ -220,7 +226,7 @@
                 "dynamodb:*"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-2:119135969665:table/User-bd36mmgvjjcjzfrtzph2g44mqq-dev/*"
+                "arn:aws:dynamodb:us-east-2:119135969665:table/*/*"
               ]
             },
             {
@@ -229,7 +235,7 @@
                 "cognito-idp:*"
               ],
               "Resource": [
-                "arn:aws:cognito-idp:us-east-2:119135969665:userpool/us-east-2_zsUbsMO4I"
+                "arn:aws:cognito-idp:us-east-2:119135969665:userpool/*"
               ]
             }
           ]

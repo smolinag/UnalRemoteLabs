@@ -38,5 +38,77 @@
         "userPoolGroups": {}
       }
     }
+  },
+  "test": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-unalvirtuallabs-test-210952-authRole",
+      "UnauthRoleArn": "arn:aws:iam::119135969665:role/amplify-unalvirtuallabs-test-210952-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::119135969665:role/amplify-unalvirtuallabs-test-210952-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-unalvirtuallabs-test-210952-deployment",
+      "UnauthRoleName": "amplify-unalvirtuallabs-test-210952-unauthRole",
+      "StackName": "amplify-unalvirtuallabs-test-210952",
+      "StackId": "arn:aws:cloudformation:us-east-2:119135969665:stack/amplify-unalvirtuallabs-test-210952/acd6ea20-a272-11ec-98e1-0669c38239ac",
+      "AmplifyAppId": "d2p6avitml4xyd"
+    },
+    "categories": {
+      "function": {
+        "iotpub": {},
+        "laboutputlogger": {},
+        "unalvirtuallabsa596f245PreSignup": {},
+        "unalvirtuallabsa596f245PostConfirmation": {}
+      },
+      "auth": {
+        "unalvirtuallabsa596f245": {
+          "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com"
+        },
+        "userPoolGroups": {}
+      }
+    }
+  },
+  "develop": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-unalvirtuallabs-develop-222622-authRole",
+      "UnauthRoleArn": "arn:aws:iam::119135969665:role/amplify-unalvirtuallabs-develop-222622-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::119135969665:role/amplify-unalvirtuallabs-develop-222622-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+      "UnauthRoleName": "amplify-unalvirtuallabs-develop-222622-unauthRole",
+      "StackName": "amplify-unalvirtuallabs-develop-222622",
+      "StackId": "arn:aws:cloudformation:us-east-2:119135969665:stack/amplify-unalvirtuallabs-develop-222622/5ca9b400-a27d-11ec-af05-0a7d4a232a8a",
+      "AmplifyAppId": "df4xq0qbpptl7",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-unalvirtuallabs-develop-222622-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
+    },
+    "categories": {
+      "function": {
+        "iotpub": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/iotpub-375442697577314a7439-build.zip"
+        },
+        "laboutputlogger": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/laboutputlogger-5161352f3678716f4a37-build.zip"
+        },
+        "unalvirtuallabsa596f245PreSignup": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PreSignup-4d5a7975335a42354f56-build.zip"
+        },
+        "unalvirtuallabsa596f245PostConfirmation": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-6c4e445431595a444a69-build.zip",
+          "userTable": "User-glgsgvfuj5c3rgtir6lz5gpqdi-develop"
+        },
+        "emaildelivery": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/emaildelivery-76346a48754c59324564-build.zip"
+        }
+      },
+      "auth": {
+        "unalvirtuallabsa596f245": {
+          "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com"
+        },
+        "userPoolGroups": {}
+      }
+    }
   }
 }

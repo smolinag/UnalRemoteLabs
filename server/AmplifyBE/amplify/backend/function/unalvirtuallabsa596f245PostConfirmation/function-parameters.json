@@ -13,5 +13,11 @@
   "triggerEventPath": "PostConfirmation.event.json",
   "roleName": "unalvirtuallabsa596f245PostConfirmation",
   "skipEdit": true,
-  "enableCors": false
+  "enableCors": false,
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "userTable",
+      "environmentVariableName": "USER_TABLE"
+    }
+  ]
 }

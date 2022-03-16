@@ -6,7 +6,7 @@ import React from 'react';
 import {Route, Routes} from 'react-router-dom';
 
 import classes from './App.module.scss';
-import awsExports from './aws-exports';
+import awsmobile from './aws-exports';
 import {Footer, Header, NotificationBanner} from './components/UI';
 import {
 	LabPracticeView,
@@ -21,14 +21,14 @@ import {
 	LaboratoryCreation,
 	LabSessionProgrammingView,
 	LabPracticeEdition,
-	LabPracticeListView
+	LabPracticeListView,
+	HomeView
 } from './containers';
 import authComponents from './login/authComponents';
 
-Amplify.configure(awsExports);
+Amplify.configure(awsmobile);
 
 const App = (): JSX.Element => {
-
 	return (
 		<Authenticator components={authComponents} socialProviders={['google']}>
 			{() => (
@@ -36,8 +36,9 @@ const App = (): JSX.Element => {
 					<NotificationBanner />
 					<Header />
 					<div className={classes.content}>
-						<Routes>
-							<Route path="/" element={<LabTemp />} />
+						<Routes>							
+							<Route path="/" element={<HomeView />} />
+							<Route path="/temp" element={<LabTemp />} />
 							<Route path="/lab-semesters" element={<LabSemesterList />} />
 							<Route path="/lab-semester-creation" element={<LabSemesterCreation />} />
 							<Route path="/lab-semester-edition" element={<LabSemesterEdition />} />

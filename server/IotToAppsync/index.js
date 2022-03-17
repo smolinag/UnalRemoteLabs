@@ -10,15 +10,11 @@ const { InMemoryCache } = require("@apollo/client/core");
 const apolloCore = require("@apollo/client/core");
 const { gql } = apolloCore;
 
-const appSyncConfig = require("./aws-exports.js");
-
-const url = appSyncConfig.aws_appsync_graphqlEndpoint;
-const region = appSyncConfig.aws_appsync_region;
+const url = process.env.GRAPHQL_ENDPOINT;
+const region = "us-east-2";
 const auth = {
-  type: appSyncConfig.aws_appsync_authenticationType,
-  apiKey: appSyncConfig.aws_appsync_apiKey,
-  // jwtToken: async () => token, // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
-  // credentials: async () => credentials, // Required when you use IAM-based auth.
+  type: "API_KEY",
+  apiKey: process.env.API_KEY
 };
 
 const httpLink = createHttpLink({ uri: url, fetch: fetch });
@@ -66,7 +62,7 @@ const QUERY_COMMAND = gql`
 `;
 
 const UPDATE_COMMAND = gql`
-  mutation updateLabPracticeSessionCommand($id: ID!, $status: String!, $version: Int!, $executionDate: AWSDateTime!) {
+  mutation updateLabPracticeSessionCommand($id: ID!, $status: Status!, $version: Int!, $executionDate: AWSDateTime!) {
     updateLabPracticeSessionCommand(input: { id: $id, status: $status, _version: $version, executionDate: $executionDate }) {
       id
       labpracticecommandID

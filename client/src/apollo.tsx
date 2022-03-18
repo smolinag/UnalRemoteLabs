@@ -2,10 +2,8 @@ import {ApolloClient, HttpLink, InMemoryCache, ApolloLink} from '@apollo/client'
 import {Auth} from '@aws-amplify/auth';
 import {createAuthLink, AuthOptions} from 'aws-appsync-auth-link';
 import {createSubscriptionHandshakeLink} from 'aws-appsync-subscription-link';
-import { createContext, useContext } from 'react';
 
 import awsmobile from './aws-exports';
-import {GroupsProvider} from './GroupsProvider'
 
 const url = awsmobile.aws_appsync_graphqlEndpoint;
 const region = awsmobile.aws_appsync_region;

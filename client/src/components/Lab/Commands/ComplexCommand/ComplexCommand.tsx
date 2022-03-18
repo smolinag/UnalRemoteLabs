@@ -40,7 +40,7 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 	};
 
 	return (
-		<div style={{margin: '0px 8px', textAlignLast: 'center'}}>
+		<div style={{margin: '0px 8px', textAlignLast:'center', maxWidth: "150px"}}>
 			<div className={classes.container}>
 				<Button variant="green" className={classes.button} onClick={() => onExecute(commandId, formParametersValues)}>
 					{label}

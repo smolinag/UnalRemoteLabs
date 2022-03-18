@@ -1,3 +1,4 @@
+import orderBy from 'lodash/orderBy';
 import React, {useState, useEffect, useRef, useContext} from 'react';
 // import {useLocation} from 'react-router-dom';
 
@@ -13,7 +14,6 @@ import {
 	useOnUpdateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription
-	// useListLabPracticeSessionCommandsQuery,
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
@@ -27,6 +27,7 @@ interface OutputListDto {
 	id: string;
 	name: string;
 	value: string;
+	order: number;
 }
 
 export enum Status {
@@ -63,85 +64,20 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
-	// const {data: commandsSessions} = useListLabPracticeSessionCommandsQuery();
 
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: SESSION_ID}
 	});
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: DEVICE_ID}});
 
-	// const data1 = [
-	// 	{
-	// 		id: '247f05ab-34a6-4d0d-9621-2953e53466e0',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Electrodo B Circular',
-	// 		parameters: '',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '924552b6-87e7-4fab-8dbb-bde2da558957'
-	// 	},
-	// 	{
-	// 		id: '09873f12-a151-47ed-aed1-1453a6754384',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Electrodo B Plano',
-	// 		parameters: '',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '8b464580-4297-486f-9f1e-a06d627f9b3e'
-	// 	},
-	// 	{
-	// 		id: '6e0a44a6-527a-4b92-856d-ee49773c54a9',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Electrodo A Circular',
-	// 		parameters: '',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '89cd34ec-cf44-4a35-ac37-9860788b7333'
-	// 	},
-	// 	{
-	// 		id: '34920937-86d4-423f-852e-0e32c46475fb',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Electrodo B Circular',
-	// 		parameters: '',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '924552b6-87e7-4fab-8dbb-bde2da558957'
-	// 	},
-	// 	{
-	// 		id: 'b2e0275f-4f29-4573-b37c-f1694c784590',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Medir',
-	// 		parameters: '{"id":"281bf321-de6b-40c4-b180-17119c8d3895","label":"Posicion X","value":3}',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '710cf63d-00e5-40dd-8d93-ad9fe29beae7'
-	// 	},
-	// 	{
-	// 		id: '5a1d91b0-53f7-4ce4-b392-0a1925f098a5',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Medir',
-	// 		parameters: '{"id":"281bf321-de6b-40c4-b180-17119c8d3895","label":"Posicion X","value":3}',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '710cf63d-00e5-40dd-8d93-ad9fe29beae7'
-	// 	},
-	// 	{
-	// 		id: '7d37ea93-9dec-4d54-8485-65d3364d8174',
-	// 		executionDate: '',
-	// 		status: 'pending',
-	// 		command: 'Electrodo B Plano',
-	// 		parameters: '',
-	// 		labpracticeSessionID: '93a1909e-eef3-421c-9cca-22396177f39c',
-	// 		labpracticeCommandID: '8b464580-4297-486f-9f1e-a06d627f9b3e'
-	// 	}
-	// ];
-
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
-			const labCommands: Command[] = labCommandsData?.listLabPracticeCommands?.items
+			let commandIndex = 0;
+			let labCommands: Command[] = labCommandsData?.listLabPracticeCommands?.items
 				.filter((command) => !command?._deleted)
 				.map((command): Command => {
-					const parameters = command?.LabPracticeParameters?.items
+					let parameterIndex = 0;
+					let parameters = command?.LabPracticeParameters?.items
 						?.filter((parameter) => !parameter?._deleted)
 						.map((parameter): Parameter => {
 							return {
@@ -149,17 +85,22 @@ const LabPracticeView: React.FC<unknown> = () => {
 								label: (parameter?.labelName ?? parameter?.name) as string,
 								value: Number((parameter?.defaultValue as string) ?? 0),
 								maxValue: Number(parameter?.maxValue ?? 0),
-								minValue: Number(parameter?.minValue ?? 0)
+								minValue: Number(parameter?.minValue ?? 0),
+								order: Number(parameter?.order) ?? parameterIndex++
 							};
 						});
 
+					parameters = orderBy(parameters, 'order', 'asc');
 					return {
 						id: command?.id as string,
 						name: command?.name as string,
 						label: (command?.labelName ?? command?.name) as string,
-						parameters
+						parameters,
+						order: command?.order ?? commandIndex++
 					};
 				});
+
+			labCommands = orderBy(labCommands, 'order', 'asc');
 			setLabCommands(labCommands);
 		}
 	}, [labCommandsData]);
@@ -167,10 +108,12 @@ const LabPracticeView: React.FC<unknown> = () => {
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
 		if (receivedOutputs) {
+			let ouputs = 0
 			const outputs: OutputListDto[] = receivedOutputs.map((output) => ({
 				id: output?.id as string,
 				name: output?.name as string,
-				value: '-'
+				value: '-',
+				order: output?.order ?? ouputs++
 			}));
 			setOutputs(outputs);
 		}
@@ -217,7 +160,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 				const command = executedCommands.filter((obj) => obj.id === updatedCommand?.id);
 
 				let exeCommands = executedCommands;
-
 				const rowIndex = exeCommands.findIndex((obj) => obj.id === command[0].id);
 
 				exeCommands = exeCommands
@@ -226,7 +168,11 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 				exeCommands.unshift({
 					id: updatedCommand?.id ? updatedCommand?.id : '',
-					executionDate: updatedCommand?.executionDate ? (`${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(updatedCommand?.executionDate).toLocaleTimeString()}`) : '',
+					executionDate: updatedCommand?.executionDate
+						? `${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(
+								updatedCommand?.executionDate
+						  ).toLocaleTimeString()}`
+						: '',
 					labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
 					labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
 					parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',

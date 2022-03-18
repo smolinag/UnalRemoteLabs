@@ -11,6 +11,7 @@ export interface Command {
 	name: string;
 	label: string;
 	parameters?: Parameter[];
+	order: number;
 }
 
 export interface CommandSession {
@@ -29,12 +30,12 @@ interface Props {
 	data: CommandSession[];
 }
 
-const mapOutput = ({
-	status,
+const mapOutput = ({status, executionDate, command, parameters}: CommandSession): string[] => [
 	executionDate,
 	command,
-	parameters
-}: CommandSession): string[] => [executionDate, command, status, parameters && `${JSON.parse(parameters).label.toString()} ${JSON.parse(parameters).value.toString()}`];
+	status,
+	parameters && `${JSON.parse(parameters).label.toString()} ${JSON.parse(parameters).value.toString()}`
+];
 
 const COLUMNS = ['Fecha de ejecución', 'Comando', 'Estado', 'Parámetro'];
 
@@ -61,7 +62,7 @@ const Commands: React.FC<Props> = ({commands, onCommandChange, data}) => {
 			<div className={classes.commands}>
 				<div className={`${classes.commands} ${classes.margin}`}>
 					{commands.map(({label, id, parameters}, index) =>
-						parameters ? (
+						(parameters && parameters?.length > 0) ? (
 							<ComplexCommand
 								label={label}
 								parameters={parameters}
@@ -76,7 +77,13 @@ const Commands: React.FC<Props> = ({commands, onCommandChange, data}) => {
 				</div>
 				<div className={classes.margin}>
 					<h5>Histórico de comandos</h5>
-					<Table headers={COLUMNS} data={data.length > 0 ? data.map(mapOutput) : []} overflow stickyHeader maxHeight={'400px'} />
+					<Table
+						headers={COLUMNS}
+						data={data.length > 0 ? data.map(mapOutput) : []}
+						overflow
+						stickyHeader
+						maxHeight={'400px'}
+					/>
 				</div>
 			</div>
 		</Row>

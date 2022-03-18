@@ -8,6 +8,7 @@ query listLabPracticeCommands ($id: ID!) {
 			labpracticeID
 			_version
 			_deleted
+			order
 			LabPracticeParameters {
 				items {
 					id
@@ -20,6 +21,7 @@ query listLabPracticeCommands ($id: ID!) {
 					regex
 					_version
 					_deleted
+					order
 				}
 			}
 		}

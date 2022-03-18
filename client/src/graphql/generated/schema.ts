@@ -50,6 +50,7 @@ export type CreateLabPracticeInput = {
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
 	laboratoryID: Scalars['ID'];
+	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
@@ -105,6 +106,7 @@ export type CreateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
@@ -272,6 +274,7 @@ export type LabPractice = {
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
 	laboratoryID: Scalars['ID'];
+	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
@@ -418,6 +421,7 @@ export type LabPracticeSession = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
@@ -645,6 +649,7 @@ export type ModelLabPracticeConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
+	guideS3Path?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeConditionInput>>>;
@@ -697,6 +702,7 @@ export type ModelLabPracticeFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
+	guideS3Path?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeFilterInput>>>;
@@ -824,6 +830,7 @@ export type ModelLabPracticeSessionConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	videoUrlCode?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionConditionInput>>>;
@@ -845,6 +852,7 @@ export type ModelLabPracticeSessionFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	videoUrlCode?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionFilterInput>>>;
@@ -1654,7 +1662,8 @@ export enum Role {
 export enum Status {
 	Pending = 'pending',
 	Success = 'success',
-	Failure = 'failure'
+	Failure = 'failure',
+	Busy = 'busy'
 }
 
 export type Subscription = {
@@ -1739,6 +1748,7 @@ export type UpdateLabPracticeInput = {
 	description?: Maybe<Scalars['String']>;
 	duration?: Maybe<Scalars['Int']>;
 	laboratoryID?: Maybe<Scalars['ID']>;
+	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
@@ -1794,6 +1804,7 @@ export type UpdateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
@@ -2373,7 +2384,7 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'LabPracticeCommand'} & Pick<
 						LabPracticeCommand,
-						'id' | 'name' | 'description' | 'labelName' | 'labpracticeID' | '_version' | '_deleted'
+						'id' | 'name' | 'description' | 'labelName' | 'labpracticeID' | '_version' | '_deleted' | 'order'
 					> & {
 							LabPracticeParameters?: Maybe<
 								{__typename?: 'ModelLabPracticeParameterConnection'} & {
@@ -2391,6 +2402,7 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 												| 'regex'
 												| '_version'
 												| '_deleted'
+												| 'order'
 											>
 										>
 									>;
@@ -2414,7 +2426,7 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'LabPracticeOutput'} & Pick<
 						LabPracticeOutput,
-						'id' | 'name' | 'description' | 'units' | 'outputType' | '_version' | '_deleted'
+						'id' | 'name' | 'description' | 'units' | 'outputType' | '_version' | '_deleted' | 'order'
 					>
 				>
 			>;
@@ -4077,6 +4089,7 @@ export const ListLabPracticeCommandsDocument = gql`
 				labpracticeID
 				_version
 				_deleted
+				order
 				LabPracticeParameters {
 					items {
 						id
@@ -4089,6 +4102,7 @@ export const ListLabPracticeCommandsDocument = gql`
 						regex
 						_version
 						_deleted
+						order
 					}
 				}
 			}
@@ -4147,6 +4161,7 @@ export const ListLabPracticeOutputsDocument = gql`
 				outputType
 				_version
 				_deleted
+				order
 			}
 		}
 	}

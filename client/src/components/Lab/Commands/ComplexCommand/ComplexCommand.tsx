@@ -12,6 +12,7 @@ export interface Parameter {
 	value: number;
 	maxValue: number;
 	minValue: number;
+	order: number;
 }
 
 interface Props {
@@ -39,11 +40,13 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 	};
 
 	return (
-		<div style={{marginRight: '15px'}}>
-			<h6 className={classes.title}>{label}</h6>
+		<div style={{margin: '0px 8px', textAlignLast: 'center'}}>
 			<div className={classes.container}>
+				<Button variant="green" className={classes.button} onClick={() => onExecute(commandId, formParametersValues)}>
+					{label}
+				</Button>
 				{formParametersValues.map((parameter) => (
-					<InputGroup key={parameter.id}>
+					<InputGroup key={parameter.id} className={`input-group ${classes.inputGroup}`}>
 						<InputGroup.Text className={classes.command_name}>{parameter.label}</InputGroup.Text>
 						<Form.Control
 							type="number"
@@ -55,9 +58,6 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 						/>
 					</InputGroup>
 				))}
-				<Button variant="green" className={classes.button} onClick={() => onExecute(commandId, formParametersValues)}>
-					Ejecutar
-				</Button>
 			</div>
 		</div>
 	);

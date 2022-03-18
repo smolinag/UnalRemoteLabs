@@ -68,7 +68,7 @@ const Table: React.FC<Props> = ({
 				...(overflow && {overflowY: 'auto'}),
 				...(maxHeight && {maxHeight: maxHeight})
 			}}>
-			<BootstrapTable bordered hover className={classes.table}>
+			<BootstrapTable bordered hover className={classes.table} style={{lineBreak: 'auto'}}>
 				<thead>
 					<tr>
 						{headers.map((header, i) => (

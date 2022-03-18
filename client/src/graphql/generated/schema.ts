@@ -2397,7 +2397,7 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'LabPracticeCommand'} & Pick<
 						LabPracticeCommand,
-						'id' | 'name' | 'description' | 'labelName' | 'labpracticeID' | '_version' | '_deleted'
+						'id' | 'name' | 'description' | 'labelName' | 'labpracticeID' | '_version' | '_deleted' | 'order'
 					> & {
 							LabPracticeParameters?: Maybe<
 								{__typename?: 'ModelLabPracticeParameterConnection'} & {
@@ -2415,6 +2415,7 @@ export type ListLabPracticeCommandsQuery = {__typename?: 'Query'} & {
 												| 'regex'
 												| '_version'
 												| '_deleted'
+												| 'order'
 											>
 										>
 									>;
@@ -2438,8 +2439,25 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'LabPracticeOutput'} & Pick<
 						LabPracticeOutput,
-						'id' | 'name' | 'description' | 'units' | 'outputType' | '_version' | '_deleted'
+						'id' | 'name' | 'description' | 'units' | 'outputType' | '_version' | '_deleted' | 'order'
 					>
+				>
+			>;
+		}
+	>;
+};
+
+export type ListLabPracticeSessionCommandsQueryVariables = Exact<{[key: string]: never}>;
+
+export type ListLabPracticeSessionCommandsQuery = {__typename?: 'Query'} & {
+	listLabPracticeSessionCommands?: Maybe<
+		{__typename?: 'ModelLabPracticeSessionCommandConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'LabPracticeSessionCommand'} & Pick<
+						LabPracticeSessionCommand,
+						'id' | 'executionDate' | 'status' | 'parameters' | 'labpracticesessionID' | 'labpracticecommandID'
+					> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'name'>>}
 				>
 			>;
 		}
@@ -2607,8 +2625,8 @@ export type OnUpdateLabPracticeSessionCommandBySessionIdSubscription = {__typena
 	onUpdateLabPracticeSessionCommandBySessionID?: Maybe<
 		{__typename?: 'LabPracticeSessionCommand'} & Pick<
 			LabPracticeSessionCommand,
-			'id' | 'labpracticecommandID' | 'labpracticesessionID' | 'status'
-		>
+			'id' | 'executionDate' | 'status' | 'parameters' | 'labpracticesessionID' | 'labpracticecommandID'
+		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'name'>>}
 	>;
 };
 
@@ -4139,6 +4157,7 @@ export const ListLabPracticeCommandsDocument = gql`
 				labpracticeID
 				_version
 				_deleted
+				order
 				LabPracticeParameters {
 					items {
 						id
@@ -4151,6 +4170,7 @@ export const ListLabPracticeCommandsDocument = gql`
 						regex
 						_version
 						_deleted
+						order
 					}
 				}
 			}
@@ -4209,6 +4229,7 @@ export const ListLabPracticeOutputsDocument = gql`
 				outputType
 				_version
 				_deleted
+				order
 			}
 		}
 	}
@@ -4253,6 +4274,71 @@ export type ListLabPracticeOutputsLazyQueryHookResult = ReturnType<typeof useLis
 export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 	ListLabPracticeOutputsQuery,
 	ListLabPracticeOutputsQueryVariables
+>;
+export const ListLabPracticeSessionCommandsDocument = gql`
+	query listLabPracticeSessionCommands {
+		listLabPracticeSessionCommands(filter: {labpracticesessionID: {eq: "93a1909e-eef3-421c-9cca-22396177f39c"}}) {
+			items {
+				id
+				executionDate
+				status
+				LabPracticeCommand {
+					name
+				}
+				parameters
+				labpracticesessionID
+				labpracticecommandID
+			}
+		}
+	}
+`;
+
+/**
+ * __useListLabPracticeSessionCommandsQuery__
+ *
+ * To run a query within a React component, call `useListLabPracticeSessionCommandsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListLabPracticeSessionCommandsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListLabPracticeSessionCommandsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListLabPracticeSessionCommandsQuery(
+	baseOptions?: Apollo.QueryHookOptions<
+		ListLabPracticeSessionCommandsQuery,
+		ListLabPracticeSessionCommandsQueryVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListLabPracticeSessionCommandsQuery, ListLabPracticeSessionCommandsQueryVariables>(
+		ListLabPracticeSessionCommandsDocument,
+		options
+	);
+}
+export function useListLabPracticeSessionCommandsLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		ListLabPracticeSessionCommandsQuery,
+		ListLabPracticeSessionCommandsQueryVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListLabPracticeSessionCommandsQuery, ListLabPracticeSessionCommandsQueryVariables>(
+		ListLabPracticeSessionCommandsDocument,
+		options
+	);
+}
+export type ListLabPracticeSessionCommandsQueryHookResult = ReturnType<typeof useListLabPracticeSessionCommandsQuery>;
+export type ListLabPracticeSessionCommandsLazyQueryHookResult = ReturnType<
+	typeof useListLabPracticeSessionCommandsLazyQuery
+>;
+export type ListLabPracticeSessionCommandsQueryResult = Apollo.QueryResult<
+	ListLabPracticeSessionCommandsQuery,
+	ListLabPracticeSessionCommandsQueryVariables
 >;
 export const ListLabPracticesDocument = gql`
 	query listLabPractices($id: ID!) {
@@ -4649,9 +4735,14 @@ export const OnUpdateLabPracticeSessionCommandBySessionIdDocument = gql`
 	subscription onUpdateLabPracticeSessionCommandBySessionID($id: ID!) {
 		onUpdateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 			id
-			labpracticecommandID
-			labpracticesessionID
+			executionDate
 			status
+			LabPracticeCommand {
+				name
+			}
+			parameters
+			labpracticesessionID
+			labpracticecommandID
 		}
 	}
 `;

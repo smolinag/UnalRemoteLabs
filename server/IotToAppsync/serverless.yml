@@ -1,0 +1,39 @@
+service: iot-to-appsync
+
+frameworkVersion: "3"
+
+plugins:
+  - serverless-webpack
+
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  memorySize: 256
+  stage: ${opt:stage, "develop"}
+  region: "us-east-2"
+  environment:
+    GRAPHQL_ENDPOINT: ${self:custom.graphqlEndpoint.${self:provider.stage}}
+    API_KEY: ${self:custom.apiKey.${self:provider.stage}}
+  # iamRoleStatements:
+  #   - Effect: "Allow"
+  #     Action:
+  #       - iot:*
+  #     Resource: "*"
+
+functions:
+  lambda:
+    handler: index.handler
+    events:
+      - iot:
+          sql: "SELECT * FROM '${self:provider.stage}/topic_out/#'"
+
+custom:
+  graphqlEndpoint:
+    develop: https://suyo76f525grpph3owjsbkoepa.appsync-api.us-east-2.amazonaws.com/graphql
+    test: https://uaghns5v3vcl5cypbe3eympl3i.appsync-api.us-east-2.amazonaws.com/graphql
+  apiKey:
+    develop: da2-2lwzqnmamjfwbnownxgqur6sgy
+    test: da2-tb74bj7sorckxphsce4u3ulzv4

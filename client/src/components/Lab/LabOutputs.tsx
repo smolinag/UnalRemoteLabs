@@ -25,7 +25,17 @@ const LabOutputs: React.FC<Props> = ({data}) => {
 			<h4 className="title">Parámetros de salida</h4>
 			<Row>
 				<Col md={6}>
-					<h5>Imágen tiempo real</h5>
+					<div className="video-responsive">
+						<iframe
+							width="100%"
+							height="480"
+							src={`https://www.youtube.com/embed/6HJDHQ_7Q5g`}
+							frameBorder="0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowFullScreen
+							title="Embedded youtube"
+						/>
+					</div>
 				</Col>
 				<Col md={6}>
 					<h5>Datos</h5>

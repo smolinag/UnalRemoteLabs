@@ -3,6 +3,7 @@ import {Row, Col} from 'react-bootstrap';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LoadingContainer, Table} from '../../components/UI';
+import {Action} from '../../components/UI/Table/Table';
 import {useListLabPracticesQuery, useGetLaboratoryQuery} from '../../graphql/generated/schema';
 import classes from './LabPracticeListView.module.scss';
 import {LabPracticeData} from './types';
@@ -72,7 +73,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 
 	const getTableHeaders = () => {
 		const headers = ['Nombre', 'Descripción', 'Duración'];
-		if(labSemesterId){
+		if (labSemesterId) {
 			headers.push('Programar');
 		}
 		return headers;
@@ -92,16 +93,22 @@ const LabPracticeListView: React.FC<unknown> = () => {
 		);
 	};
 
-	// const handleTableAction = (index: number, action: Action, row: React.ReactNode[] = []) => {
-	// 	switch (action) {
-	// 		case Action.Delete:
-	// 			console.warn("DELETE")
-	// 			break;
-	// 		case Action.DeleteAll:
-	// 			console.warn("DELETE ALL")
-	// 			break;
-	// 	}
-	// };
+	const handleTableAction = (index: number, action: Action, row: React.ReactNode[] = []) => {
+		switch (action) {
+			case Action.Delete:
+				console.warn('DELETE');
+				break;
+			case Action.DeleteAll:
+				console.warn('DELETE ALL');
+				break;
+			case Action.Edit:
+				console.log('Edit');
+				navigate('/lab-practice-edition', {
+					state: {labPracticeId: labPractices[index].id}
+				})
+				break;
+		}
+	};
 
 	return (
 		<LoadingContainer loading={false}>
@@ -113,6 +120,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 					<Table
 						headers={getTableHeaders()}
 						data={mapLabpracticesForTable(labPractices)}
+						onAction={handleTableAction}
 						removable
 						hasRemoveAll
 						editable

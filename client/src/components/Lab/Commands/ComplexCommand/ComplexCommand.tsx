@@ -39,7 +39,7 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 	};
 
 	return (
-		<div>
+		<div style={{marginRight: '15px'}}>
 			<h6 className={classes.title}>{label}</h6>
 			<div className={classes.container}>
 				{formParametersValues.map((parameter) => (

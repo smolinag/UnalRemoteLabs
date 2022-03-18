@@ -59,10 +59,10 @@ const Commands: React.FC<Props> = ({commands, onCommandChange, data}) => {
 	return (
 		<Row className="section">
 			<h4 className="title">Comandos de entrada</h4>
-			<div className={classes.commands}>
-				<div className={`col-8 ${classes.margin}`} style={{display: "flex"}}>
+			<div className='row'>
+				<div className={`col-lg-8 ${classes.margin}`} style={{display: 'flex'}}>
 					{commands.map(({label, id, parameters}, index) =>
-						(parameters && parameters?.length > 0) ? (
+						parameters && parameters?.length > 0 ? (
 							<ComplexCommand
 								label={label}
 								parameters={parameters}
@@ -75,7 +75,7 @@ const Commands: React.FC<Props> = ({commands, onCommandChange, data}) => {
 						)
 					)}
 				</div>
-				<div className={`col-4 ${classes.margin}`}>
+				<div className={`col-lg-4 ${classes.margin}`}>
 					<h5>Histórico de comandos</h5>
 					<Table
 						headers={COLUMNS}

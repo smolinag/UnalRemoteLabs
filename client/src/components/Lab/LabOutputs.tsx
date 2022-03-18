@@ -29,7 +29,7 @@ const LabOutputs: React.FC<Props> = ({data}) => {
 						<iframe
 							width="100%"
 							height="480"
-							src={`https://www.youtube.com/embed/6HJDHQ_7Q5g`}
+							src={`https://www.youtube.com/embed/oTXNDKmoTUk`}
 							frameBorder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowFullScreen

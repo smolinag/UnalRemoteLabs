@@ -1,5 +1,5 @@
 import orderBy from 'lodash/orderBy';
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 // import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
@@ -45,12 +45,24 @@ const COMMAND_EXECUTION_TIMEOUT = 10000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
+const initCommand = {
+	id: '',
+	executionDate: '',
+	labpracticeCommandID: '',
+	labpracticeSessionID: '',
+	parameters: '',
+	status: 'Status.Pending',
+	command: ''
+};
+
 const LabPracticeView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [executedCommands, setExecutedCommands] = useState<CommandSession[]>([]);
+	const [executedCommand, setExecutedCommand] = useState<CommandSession>(initCommand);
+
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
-	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
+	// const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(SESSION_ID);
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
@@ -108,7 +120,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
 		if (receivedOutputs) {
-			let ouputs = 0
+			let ouputs = 0;
 			const outputs: OutputListDto[] = receivedOutputs.map((output) => ({
 				id: output?.id as string,
 				name: output?.name as string,
@@ -182,12 +194,45 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 				setExecutedCommands(exeCommands);
 
+				setExecutedCommand({
+					id: updatedCommand?.id ? updatedCommand?.id : '',
+					executionDate: updatedCommand?.executionDate
+						? `${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(
+								updatedCommand?.executionDate
+						  ).toLocaleTimeString()}`
+						: '',
+					labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
+					labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
+					parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
+					status: updatedCommand?.status ? updatedCommand?.status : '',
+					command: command[0].command
+				});
+
 				showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
 			} else {
 				showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
 			}
 		}
 	}, [updatedSessionCommand]);
+
+	useEffect(() => {
+		let commandExecutionTimeout: NodeJS.Timeout
+		
+		if (executedCommand.status === Status.Pending) {
+			commandExecutionTimeout = setTimeout(() => {
+				setIsExecutingCommand(false);
+				showErrorBanner(`No se pudo ejecutar el comando ${executedCommand.command}`);
+			}, COMMAND_EXECUTION_TIMEOUT);
+		} else if(executedCommand.status === Status.Success) {
+			setIsExecutingCommand(false);
+		}
+
+		return () => {
+			if (commandExecutionTimeout) {
+				clearTimeout(commandExecutionTimeout);
+			}
+		};
+	}, [executedCommand]);
 
 	const handleCommandChange = async ({parameters = [], name, label}: Command, id: string) => {
 		try {
@@ -216,20 +261,26 @@ const LabPracticeView: React.FC<unknown> = () => {
 			});
 			setExecutedCommands(exeCommand);
 
+			setExecutedCommand({
+				id: data?.createLabPracticeSessionCommand?.id ? data?.createLabPracticeSessionCommand?.id : '',
+				executionDate: '',
+				labpracticeCommandID: id,
+				labpracticeSessionID: labPracticeSessionId,
+				parameters: JSON.stringify(parameters[0]),
+				status: Status.Pending,
+				command: name
+			});
+
 			const mqttMessage = {
 				name,
 				params: parameters,
-				uuid: data?.createLabPracticeSessionCommand?.id
+				uuid: data?.createLabPracticeSessionCommand?.id,
+				type: 'command'
 			};
 
 			await publishMqttMessageMutation({
 				variables: {input: {message: JSON.stringify(mqttMessage), topic: `${DEVICE_ID}/topic_in`}}
 			});
-
-			commandExecutionTimeout.current = setTimeout(() => {
-				setIsExecutingCommand(false);
-				showErrorBanner(`No se pudo ejecutar el comando ${label}`);
-			}, COMMAND_EXECUTION_TIMEOUT);
 		} catch (error) {
 			console.error('no se pudo ejecutar el comando', error);
 			setIsExecutingCommand(false);

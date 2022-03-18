@@ -1,9 +1,14 @@
 .commands {
-	display: flex;
+	display: contents;
 	flex-direction: row;
 	gap: 15px;
+	max-width: 10px
 }
 
 .command {
 	margin: 10px;
+}
+
+.margin{
+	padding: 0px 10px;
 }

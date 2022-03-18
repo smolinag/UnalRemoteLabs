@@ -8,6 +8,7 @@ query listLabPracticeOutputs($id: ID!) {
 			outputType
 			_version
 			_deleted
+			order
 		}
 	}
 }

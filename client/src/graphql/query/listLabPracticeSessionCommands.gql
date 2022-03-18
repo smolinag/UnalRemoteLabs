@@ -1,0 +1,15 @@
+query listLabPracticeSessionCommands {
+	listLabPracticeSessionCommands(filter: {labpracticesessionID: {eq: "93a1909e-eef3-421c-9cca-22396177f39c"}}) {
+		items {
+			id
+			executionDate
+			status
+			LabPracticeCommand {
+				name
+			}
+			parameters
+			labpracticesessionID
+			labpracticecommandID
+		}
+	}
+}

@@ -1,8 +1,13 @@
 subscription onUpdateLabPracticeSessionCommandBySessionID($id: ID!) {
 	onUpdateLabPracticeSessionCommandBySessionID(labpracticesessionID: $id) {
 		id
-		labpracticecommandID
-		labpracticesessionID
+		executionDate
 		status
+		LabPracticeCommand {
+			name
+		}
+		parameters
+		labpracticesessionID
+		labpracticecommandID
 	}
 }

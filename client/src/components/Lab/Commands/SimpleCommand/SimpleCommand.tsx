@@ -10,9 +10,11 @@ interface Props {
 
 const SimpleCommand: React.FC<Props> = ({onExecute, label}) => {
 	return (
-		<Button variant="green" className={classes.button} onClick={onExecute}>
-			{label}
-		</Button>
+		<div style={{margin: '0px 8px', textAlignLast:'center', maxWidth: "150px"}}>
+				<Button variant="green" className={classes.button} onClick={onExecute}>
+					{label}
+				</Button>
+		</div>
 	);
 };
 

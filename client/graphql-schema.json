@@ -391,6 +391,18 @@
             "deprecationReason": null
           },
           {
+            "name": "guideS3Path",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedBy",
             "description": null,
             "type": {
@@ -996,6 +1008,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "videoUrlCode",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,
@@ -2615,6 +2639,18 @@
             "deprecationReason": null
           },
           {
+            "name": "guideS3Path",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedBy",
             "description": null,
             "args": [],
@@ -4128,6 +4164,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "videoUrlCode",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "isDeprecated": false,
@@ -6377,6 +6425,18 @@
             "deprecationReason": null
           },
           {
+            "name": "guideS3Path",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedBy",
             "description": null,
             "type": {
@@ -6885,6 +6945,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "ModelIDInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "guideS3Path",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -8210,6 +8282,18 @@
             "deprecationReason": null
           },
           {
+            "name": "videoUrlCode",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedBy",
             "description": null,
             "type": {
@@ -8409,6 +8493,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "ModelIDInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "videoUrlCode",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ModelStringInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -14793,6 +14889,12 @@
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "busy",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -15639,6 +15741,18 @@
             "deprecationReason": null
           },
           {
+            "name": "guideS3Path",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "updatedBy",
             "description": null,
             "type": {
@@ -16208,6 +16322,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "videoUrlCode",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "defaultValue": null,

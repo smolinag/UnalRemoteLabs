@@ -50,6 +50,7 @@ export type CreateLabPracticeInput = {
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
 	laboratoryID: Scalars['ID'];
+	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
@@ -105,6 +106,7 @@ export type CreateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
@@ -272,6 +274,7 @@ export type LabPractice = {
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
 	laboratoryID: Scalars['ID'];
+	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
@@ -418,6 +421,7 @@ export type LabPracticeSession = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version: Scalars['Int'];
@@ -645,6 +649,7 @@ export type ModelLabPracticeConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
+	guideS3Path?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeConditionInput>>>;
@@ -697,6 +702,7 @@ export type ModelLabPracticeFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
+	guideS3Path?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeFilterInput>>>;
@@ -824,6 +830,7 @@ export type ModelLabPracticeSessionConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	videoUrlCode?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionConditionInput>>>;
@@ -845,6 +852,7 @@ export type ModelLabPracticeSessionFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	videoUrlCode?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
 	and?: Maybe<Array<Maybe<ModelLabPracticeSessionFilterInput>>>;
@@ -1654,7 +1662,8 @@ export enum Role {
 export enum Status {
 	Pending = 'pending',
 	Success = 'success',
-	Failure = 'failure'
+	Failure = 'failure',
+	Busy = 'busy'
 }
 
 export type Subscription = {
@@ -1739,6 +1748,7 @@ export type UpdateLabPracticeInput = {
 	description?: Maybe<Scalars['String']>;
 	duration?: Maybe<Scalars['Int']>;
 	laboratoryID?: Maybe<Scalars['ID']>;
+	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
@@ -1794,6 +1804,7 @@ export type UpdateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
@@ -2286,6 +2297,19 @@ export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 				>;
 				Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id'>>;
 			}
+	>;
+};
+
+export type GetLabPracticeSessionQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
+
+export type GetLabPracticeSessionQuery = {__typename?: 'Query'} & {
+	getLabPracticeSession?: Maybe<
+		{__typename?: 'LabPracticeSession'} & Pick<
+			LabPracticeSession,
+			'id' | 'videoUrlCode' | 'endDate' | 'description' | '_deleted' | 'labpracticeID' | 'startDate' | 'labSemesterID'
+		>
 	>;
 };
 
@@ -3840,6 +3864,61 @@ export function useGetLabPracticeLazyQuery(
 export type GetLabPracticeQueryHookResult = ReturnType<typeof useGetLabPracticeQuery>;
 export type GetLabPracticeLazyQueryHookResult = ReturnType<typeof useGetLabPracticeLazyQuery>;
 export type GetLabPracticeQueryResult = Apollo.QueryResult<GetLabPracticeQuery, GetLabPracticeQueryVariables>;
+export const GetLabPracticeSessionDocument = gql`
+	query getLabPracticeSession($id: ID!) {
+		getLabPracticeSession(id: $id) {
+			id
+			videoUrlCode
+			endDate
+			description
+			_deleted
+			labpracticeID
+			startDate
+			labSemesterID
+		}
+	}
+`;
+
+/**
+ * __useGetLabPracticeSessionQuery__
+ *
+ * To run a query within a React component, call `useGetLabPracticeSessionQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLabPracticeSessionQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLabPracticeSessionQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetLabPracticeSessionQuery(
+	baseOptions: Apollo.QueryHookOptions<GetLabPracticeSessionQuery, GetLabPracticeSessionQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<GetLabPracticeSessionQuery, GetLabPracticeSessionQueryVariables>(
+		GetLabPracticeSessionDocument,
+		options
+	);
+}
+export function useGetLabPracticeSessionLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<GetLabPracticeSessionQuery, GetLabPracticeSessionQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<GetLabPracticeSessionQuery, GetLabPracticeSessionQueryVariables>(
+		GetLabPracticeSessionDocument,
+		options
+	);
+}
+export type GetLabPracticeSessionQueryHookResult = ReturnType<typeof useGetLabPracticeSessionQuery>;
+export type GetLabPracticeSessionLazyQueryHookResult = ReturnType<typeof useGetLabPracticeSessionLazyQuery>;
+export type GetLabPracticeSessionQueryResult = Apollo.QueryResult<
+	GetLabPracticeSessionQuery,
+	GetLabPracticeSessionQueryVariables
+>;
 export const GetLabPracticeSessionCommandDocument = gql`
 	query getLabPracticeSessionCommand($id: ID!) {
 		getLabPracticeSessionCommand(id: $id) {

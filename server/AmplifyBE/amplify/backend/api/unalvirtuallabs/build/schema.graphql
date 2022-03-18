@@ -99,6 +99,7 @@ type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   description: String
   labpracticeID: ID
   labSemesterID: ID
+  videoUrlCode: String
   updatedBy: String
   createdBy: String!
   _version: Int!
@@ -176,6 +177,7 @@ type LabPractice @aws_api_key @aws_cognito_user_pools {
   description: String
   duration: Int!
   laboratoryID: ID!
+  guideS3Path: String
   updatedBy: String
   createdBy: String!
   _version: Int!
@@ -277,6 +279,7 @@ enum Status {
   pending
   success
   failure
+  busy
 }
 
 type Mutation {
@@ -850,6 +853,7 @@ input ModelLabPracticeSessionFilterInput {
   description: ModelStringInput
   labpracticeID: ModelIDInput
   labSemesterID: ModelIDInput
+  videoUrlCode: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   and: [ModelLabPracticeSessionFilterInput]
@@ -864,6 +868,7 @@ input CreateLabPracticeSessionInput {
   description: String
   labpracticeID: ID
   labSemesterID: ID
+  videoUrlCode: String
   updatedBy: String
   createdBy: String!
   _version: Int
@@ -876,6 +881,7 @@ input UpdateLabPracticeSessionInput {
   description: String
   labpracticeID: ID
   labSemesterID: ID
+  videoUrlCode: String
   updatedBy: String
   createdBy: String
   _version: Int
@@ -892,6 +898,7 @@ input ModelLabPracticeSessionConditionInput {
   description: ModelStringInput
   labpracticeID: ModelIDInput
   labSemesterID: ModelIDInput
+  videoUrlCode: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   and: [ModelLabPracticeSessionConditionInput]
@@ -1113,6 +1120,7 @@ input ModelLabPracticeFilterInput {
   description: ModelStringInput
   duration: ModelIntInput
   laboratoryID: ModelIDInput
+  guideS3Path: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   and: [ModelLabPracticeFilterInput]
@@ -1126,6 +1134,7 @@ input CreateLabPracticeInput {
   description: String
   duration: Int!
   laboratoryID: ID!
+  guideS3Path: String
   updatedBy: String
   createdBy: String!
   _version: Int
@@ -1138,6 +1147,7 @@ input UpdateLabPracticeInput {
   description: String
   duration: Int
   laboratoryID: ID
+  guideS3Path: String
   updatedBy: String
   createdBy: String
   _version: Int
@@ -1154,6 +1164,7 @@ input ModelLabPracticeConditionInput {
   description: ModelStringInput
   duration: ModelIntInput
   laboratoryID: ModelIDInput
+  guideS3Path: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
   and: [ModelLabPracticeConditionInput]

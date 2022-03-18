@@ -12,7 +12,8 @@ import {
 	useCreateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandBySessionIdSubscription,
 	usePublishMqttMessageMutation,
-	useOnLabOutputListenSubscription
+	useOnLabOutputListenSubscription,
+	useGetLabPracticeSessionQuery
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
@@ -47,6 +48,8 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
+	const [labSessionVideoUrl, setlabSessionVideoUrl] = useState('');
+
 	const commandExecutionTimeout = useRef<NodeJS.Timeout>();
 	// TODO Deberiamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(SESSION_ID);
@@ -59,6 +62,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
+	const {data: labSessionData} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
@@ -111,6 +115,13 @@ const LabPracticeView: React.FC<unknown> = () => {
 			setLabPracticeSessionId(sessionData.id);
 		}
 	}, [practiceInfo]);
+
+	useEffect(() => {
+		const videoUrl = labSessionData?.getLabPracticeSession?.videoUrlCode
+			? labSessionData.getLabPracticeSession.videoUrlCode
+			: '';
+		setlabSessionVideoUrl(videoUrl);
+	}, [labSessionData]);
 
 	useEffect(() => {
 		const updatedSessionOutputData = updatedSessionOutput?.onLabOutputListen;
@@ -191,11 +202,13 @@ const LabPracticeView: React.FC<unknown> = () => {
 				name={practiceInfo?.getLabPractice?.name}
 				description={practiceInfo?.getLabPractice?.description}
 				duration={practiceInfo?.getLabPractice?.duration}
+				isVideoUrlInputEnabled={true}
+				laPracticeSessionId={SESSION_ID}
 			/>
 			<LoadingContainer loading={isExecutingCommand}>
 				<Commands commands={labCommands} onCommandChange={handleCommandChange} />
 			</LoadingContainer>
-			<LabOutputs data={outputs.map(mapOutput)} />
+			<LabOutputs data={outputs.map(mapOutput)} videoUrl={labSessionVideoUrl} />
 		</LoadingContainer>
 	);
 };

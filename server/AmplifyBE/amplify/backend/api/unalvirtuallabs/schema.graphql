@@ -78,6 +78,7 @@ type LabPracticeSession @model @key(name: "byLabPractice", fields: ["labpractice
   labSemesterID: ID
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeSession", fields: ["id"])
   UserLabPracticeSessions: [UserLabPracticeSession] @connection(keyName: "byLabPracticeSession", fields: ["id"])
+  videoUrlCode: String
   updatedBy: String
   createdBy: String!
 }
@@ -122,7 +123,7 @@ type LabPracticeCommand @model @key(name: "byLabPractice", fields: ["labpractice
   LabPracticeParameters: [LabPracticeParameter] @connection(keyName: "byLabPracticeCommand", fields: ["id"])
   LabPracticeSessionCommands: [LabPracticeSessionCommand] @connection(keyName: "byLabPracticeCommand", fields: ["id"])
   updatedBy: String
-  createdBy: String!
+  createdBy: String!  
 }
 
 type LabPractice @model @key(name: "byLaboratory", fields: ["laboratoryID"]) @auth(rules: [{ allow: public },  { allow: private}]) {
@@ -137,6 +138,7 @@ type LabPractice @model @key(name: "byLaboratory", fields: ["laboratoryID"]) @au
   LabPracticeDevice: LabPracticeDevice @connection
   LabPracticeSessions: [LabPracticeSession] @connection(keyName: "byLabPractice", fields: ["id"])
   LabPracticeOutputs: [LabPracticeOutput] @connection(keyName: "byLabPractice", fields: ["id"])
+  guideS3Path: String
   updatedBy: String
   createdBy: String!
 }
@@ -212,6 +214,7 @@ enum Status {
     pending
     success
     failure
+    busy
 }
 
 type Mutation {

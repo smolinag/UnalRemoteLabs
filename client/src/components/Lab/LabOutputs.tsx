@@ -15,11 +15,12 @@ export interface Output {
 
 interface Props {
 	data: Data;
+	videoUrl: string;
 }
 
 const COLUMNS = ['Salida', 'Valores'];
 
-const LabOutputs: React.FC<Props> = ({data}) => {
+const LabOutputs: React.FC<Props> = ({data, videoUrl}) => {
 	return (
 		<Row className="section">
 			<h4 className="title">Parámetros de salida</h4>
@@ -29,7 +30,7 @@ const LabOutputs: React.FC<Props> = ({data}) => {
 						<iframe
 							width="100%"
 							height="480"
-							src={`https://www.youtube.com/embed/6HJDHQ_7Q5g`}
+							src={`https://www.youtube.com/embed/` + videoUrl}
 							frameBorder="0"
 							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 							allowFullScreen

@@ -1,0 +1,12 @@
+query getLabPracticeSession($id: ID!) {
+  getLabPracticeSession(id: $id) {
+    id
+    videoUrlCode
+    endDate
+    description
+    _deleted
+    labpracticeID
+    startDate
+    labSemesterID
+  }
+}

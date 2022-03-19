@@ -15,7 +15,6 @@ import {
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
-	useListLaboratoriesQuery,
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
 	useListLabPracticeOutputsQuery,
@@ -39,13 +38,14 @@ import {
 	LabPracticeInfo,
 	ErrorIdentifier,
 	Section,
-	LaboratoryInfo,
 	ActionType
 } from './types';
 
 export interface LocationState {
 	labPracticeId: string;
 	deviceId: string;
+	labName: string;
+	labId: string;
 }
 
 const initialPracticeValue: LabPracticeInfo = {
@@ -84,7 +84,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
-	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
 	const [parametersList, setParametersList] = React.useState<LabPracticeParameterInfo[]>([]);
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
 
@@ -109,12 +108,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	const location = useLocation();
 	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	const labName = (location.state as LocationState)?.labName;
 
 	// const location = useLocation();
 	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	// const deviceId = (location.state as LocationState)?.deviceId;
 
-	const {data: laboratoriesList} = useListLaboratoriesQuery();
 	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
 	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
@@ -157,21 +156,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			setPracticeInfo(practice);
 		}
 	}, [practiceInfoDb]);
-
-	React.useEffect(() => {
-		const labs = laboratoriesList?.listLaboratorys?.items;
-		if (labs) {
-			setLaboratories((previousState) => {
-				labs.forEach((obj) => {
-					if (!obj?._deleted) {
-						previousState.push({id: obj !== null ? obj.id : '', name: obj !== null ? obj.name : ''});
-					}
-				});
-
-				return previousState;
-			});
-		}
-	}, [laboratoriesList]);
 
 	// Load commands and parameters info
 	React.useEffect(() => {
@@ -1095,7 +1079,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			<LoadingContainer loading={loading}>
 				<LabPractice
 					practice={practiceInfo}
-					laboratories={laboratories}
+					labName={labName}
 					onValueChange={practiceChange}
 					errors={errors}
 				/>

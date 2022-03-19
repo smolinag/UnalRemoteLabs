@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import {useLocation, useNavigate} from 'react-router-dom';
 
-import {LoadingContainer, Table} from '../../components/UI';
+import {LoadingContainer, Table, Button} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {useListLabPracticesQuery, useGetLaboratoryQuery} from '../../graphql/generated/schema';
 import classes from './LabPracticeListView.module.scss';
@@ -104,11 +104,17 @@ const LabPracticeListView: React.FC<unknown> = () => {
 			case Action.Edit:
 				console.log('Edit');
 				navigate('/lab-practice-edition', {
-					state: {labPracticeId: labPractices[index].id}
+					state: {labPracticeId: labPractices[index].id, labName: laboratoryName}
 				})
 				break;
 		}
 	};
+
+	const handleLabPracticeCreation = () =>{
+		navigate('/lab-practice-creation', {
+			state: {labId: labId, labName: laboratoryName}
+		})
+	}
 
 	return (
 		<LoadingContainer loading={false}>
@@ -129,6 +135,13 @@ const LabPracticeListView: React.FC<unknown> = () => {
 						maxHeight={'400px'}
 					/>
 				</Col>
+			</Row>
+			<Row className="section">
+				<div className="justifyEnd">
+					<Button loading={false} onClick={handleLabPracticeCreation}>
+						Crear
+					</Button>
+				</div>
 			</Row>
 		</LoadingContainer>
 	);

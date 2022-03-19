@@ -51,12 +51,10 @@ const App = (): JSX.Element => {
 							<Route path="/lab-practice" element={<LabPracticeView />} />
 							<Route path="/lab-practices" element={<LabPracticeListView />} />
 							<Route path="/lab-practice-edition" element={<LabPracticeEdition />} />
+							<Route path="/lab-practice-creation" element={<LabPracticeCreation />} />
 
 							<Route path="/lab-creation" element={<LaboratoryCreation />} />
 							<Route path="/lab-edition" element={<LaboratoryEdition />} />
-
-							<Route path="/create-lab-practice" element={<LabPracticeCreation />} />
-							
 
 							{/* Crear componente para rutas no existentes */}
 							<Route path="*" element={<div> La página solicitada no existe </div>} />

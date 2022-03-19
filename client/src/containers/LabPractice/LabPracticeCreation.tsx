@@ -1,5 +1,6 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
+import {useLocation} from 'react-router-dom';
 
 import {
 	LabPractice,
@@ -13,7 +14,6 @@ import {
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
-	useListLaboratoriesQuery,
 	useCreateLabPracticeMutation,
 	useCreateLabPracticeCommandMutation,
 	useCreateLabPracticeParameterMutation,
@@ -27,8 +27,7 @@ import {
 	LabPracticeParameterInfo,
 	LabPracticeInfo,
 	ErrorIdentifier,
-	Section,
-	LaboratoryInfo
+	Section
 } from './types';
 
 // const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
@@ -63,6 +62,11 @@ const initialPracticeValue: LabPracticeInfo = {
 
 let rowIndex = -1;
 
+export interface LocationState {
+	labId: string;
+	labName: string;
+}
+
 const LabPracticeCreation: React.FC<unknown> = () => {
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
@@ -70,7 +74,6 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const [outputsList, setOutputsList] = React.useState<OutputInfo[]>([]);
 	const [loading, setLoading] = React.useState<boolean>(false);
 	const [errors, setErrors] = React.useState<ErrorIdentifier[]>([]);
-	const [laboratories, setLaboratories] = React.useState<LaboratoryInfo[]>([]);
 
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
 	const [modalType, setModalType] = React.useState<Section>(Section.CommandInfo);
@@ -81,23 +84,15 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
-	const {data: laboratoriesList} = useListLaboratoriesQuery();
 	const [createLabPractice] = useCreateLabPracticeMutation({});
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	useEffect(() => {
-		const labs = laboratoriesList?.listLaboratorys?.items;
-		if (labs) {
-			setLaboratories(
-				labs.map((obj) => {
-					return {id: obj !== null ? obj.id : '', name: obj !== null ? obj.name : ''};
-				})
-			);
-		}
-	}, [laboratoriesList]);
+	const location = useLocation();
+	const labId = (location.state as LocationState)?.labId;
+	const labName = (location.state as LocationState)?.labName;
 
 	const practiceChange = (value: string, id: string) => {
 		const practice: LabPracticeInfo = {
@@ -328,7 +323,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				const {data: labPracticeData} = await createLabPractice({
 					variables: {
 						input: {
-							laboratoryID: practiceInfo.laboratoryId,
+							laboratoryID: labId,
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
@@ -673,7 +668,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 			<LoadingContainer loading={loading}>
 				<LabPractice
 					practice={practiceInfo}
-					laboratories={laboratories}
+					labName={labName}
 					onValueChange={practiceChange}
 					errors={errors}
 				/>

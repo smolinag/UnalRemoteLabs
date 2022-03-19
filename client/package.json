@@ -6,7 +6,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "codegen": "graphql-codegen --config codegen.yml",
-    "deploy-test": "aws s3 rm s3://unal-frontend-app --recursive && aws s3 sync ./build s3://unal-frontend-app"
+    "deploy-dev": "aws s3 rm s3://unal-labs-dev --recursive && aws s3 sync ./build s3://unal-labs-dev && aws cloudfront create-invalidation --distribution-id EFE6KFT84MZ56 --paths \"/*\"",
+    "deploy-test": "aws s3 rm s3://unal-labs-test --recursive && aws s3 sync ./build s3://unal-labs-test && aws cloudfront create-invalidation --distribution-id E1D9S9KG837KSU --paths \"/*\""
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",

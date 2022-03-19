@@ -1,9 +1,10 @@
-service: iot-to-appsync
+service: unal-labs
 
 frameworkVersion: "3"
 
-plugins:
-  - serverless-webpack
+# plugins:
+  # - serverless-webpack
+  # - serverless-bundle
 
 package:
   individually: true
@@ -12,7 +13,7 @@ provider:
   name: aws
   runtime: nodejs14.x
   memorySize: 256
-  stage: ${opt:stage, "develop"}
+  stage: ${opt:stage, "dev"}
   region: "us-east-2"
   environment:
     GRAPHQL_ENDPOINT: ${self:custom.graphqlEndpoint.${self:provider.stage}}
@@ -24,16 +25,16 @@ provider:
   #     Resource: "*"
 
 functions:
-  lambda:
-    handler: index.handler
-    events:
-      - iot:
-          sql: "SELECT * FROM '${self:provider.stage}/topic_out/#'"
+  - ${file(resources/functions/Functions.yml)}
+
+resources:
+  - ${file(resources/storage/FrontendBucket.yml)}
 
 custom:
+  bucketName: unal-labs-${self:provider.stage}
   graphqlEndpoint:
-    develop: https://suyo76f525grpph3owjsbkoepa.appsync-api.us-east-2.amazonaws.com/graphql
+    dev: https://suyo76f525grpph3owjsbkoepa.appsync-api.us-east-2.amazonaws.com/graphql
     test: https://uaghns5v3vcl5cypbe3eympl3i.appsync-api.us-east-2.amazonaws.com/graphql
   apiKey:
-    develop: da2-2lwzqnmamjfwbnownxgqur6sgy
+    dev: da2-2lwzqnmamjfwbnownxgqur6sgy
     test: da2-tb74bj7sorckxphsce4u3ulzv4

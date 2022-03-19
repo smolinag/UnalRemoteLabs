@@ -5,7 +5,8 @@ import { schema } from './schema';
 const Status = {
   "PENDING": "pending",
   "SUCCESS": "success",
-  "FAILURE": "failure"
+  "FAILURE": "failure",
+  "BUSY": "busy"
 };
 
 const Role = {

@@ -43,9 +43,6 @@
     },
     "s3Key": {
       "Type": "String"
-    },
-    "userTable": {
-      "Type": "String"
     }
   },
   "Conditions": {
@@ -98,9 +95,6 @@
             },
             "GROUP": {
               "Ref": "GROUP"
-            },
-            "USER_TABLE": {
-              "Ref": "userTable"
             }
           }
         },

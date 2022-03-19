@@ -220,6 +220,13 @@ export const schema = {
                         "associatedWith": "LabPracticeSession"
                     }
                 },
+                "videoUrlCode": {
+                    "name": "videoUrlCode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "updatedBy": {
                     "name": "updatedBy",
                     "isArray": false,
@@ -415,6 +422,13 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "LabPractice"
                     }
+                },
+                "guideS3Path": {
+                    "name": "guideS3Path",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "updatedBy": {
                     "name": "updatedBy",
@@ -1951,7 +1965,8 @@ export const schema = {
             "values": [
                 "pending",
                 "success",
-                "failure"
+                "failure",
+                "busy"
             ]
         },
         "Role": {
@@ -1999,5 +2014,5 @@ export const schema = {
             }
         }
     },
-    "version": "f5fbb7b6faa364a8e5ca71bdcfc9788a"
+    "version": "5b1e23b1722832817a44fc90f2729512"
 };

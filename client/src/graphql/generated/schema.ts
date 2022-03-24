@@ -2297,7 +2297,10 @@ export type GetLabPracticeQueryVariables = Exact<{
 
 export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 	getLabPractice?: Maybe<
-		{__typename?: 'LabPractice'} & Pick<LabPractice, 'id' | 'name' | 'description' | 'duration' | '_version'> & {
+		{__typename?: 'LabPractice'} & Pick<
+			LabPractice,
+			'id' | 'name' | 'description' | 'duration' | 'guideS3Path' | '_version'
+		> & {
 				LabPracticeSessions?: Maybe<
 					{__typename?: 'ModelLabPracticeSessionConnection'} & {
 						items: Array<Maybe<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>>;
@@ -3855,6 +3858,7 @@ export const GetLabPracticeDocument = gql`
 			name
 			description
 			duration
+			guideS3Path
 			_version
 			LabPracticeSessions {
 				items {

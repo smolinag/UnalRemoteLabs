@@ -2231,7 +2231,15 @@ export type UpdateLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
 	updateLabPracticeSession?: Maybe<
 		{__typename?: 'LabPracticeSession'} & Pick<
 			LabPracticeSession,
-			'id' | 'description' | 'startDate' | 'createdBy' | 'updatedAt' | 'updatedBy' | 'createdAt' | '_version'
+			| 'id'
+			| 'description'
+			| 'startDate'
+			| 'createdBy'
+			| 'updatedAt'
+			| 'updatedBy'
+			| 'createdAt'
+			| 'videoUrlCode'
+			| '_version'
 		>
 	>;
 };
@@ -2308,7 +2316,15 @@ export type GetLabPracticeSessionQuery = {__typename?: 'Query'} & {
 	getLabPracticeSession?: Maybe<
 		{__typename?: 'LabPracticeSession'} & Pick<
 			LabPracticeSession,
-			'id' | 'videoUrlCode' | 'endDate' | 'description' | '_deleted' | 'labpracticeID' | 'startDate' | 'labSemesterID'
+			| 'id'
+			| 'videoUrlCode'
+			| 'endDate'
+			| 'description'
+			| '_deleted'
+			| 'labpracticeID'
+			| 'startDate'
+			| 'labSemesterID'
+			| '_version'
 		>
 	>;
 };
@@ -3681,6 +3697,7 @@ export const UpdateLabPracticeSessionDocument = gql`
 			updatedAt
 			updatedBy
 			createdAt
+			videoUrlCode
 			_version
 		}
 	}
@@ -3893,6 +3910,7 @@ export const GetLabPracticeSessionDocument = gql`
 			labpracticeID
 			startDate
 			labSemesterID
+			_version
 		}
 	}
 `;

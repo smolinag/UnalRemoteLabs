@@ -77,7 +77,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
-	const {data: labSessionData} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
+	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
@@ -146,6 +146,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 		const videoUrl = labSessionData?.getLabPracticeSession?.videoUrlCode
 			? labSessionData.getLabPracticeSession.videoUrlCode
 			: '';
+		console.log('Refresh Video UseEffect: ' + videoUrl);
 		setlabSessionVideoUrl(videoUrl);
 	}, [labSessionData]);
 
@@ -227,14 +228,14 @@ const LabPracticeView: React.FC<unknown> = () => {
 	}, [updatedSessionCommand]);
 
 	useEffect(() => {
-		let commandExecutionTimeout: NodeJS.Timeout
-		
+		let commandExecutionTimeout: NodeJS.Timeout;
+
 		if (executedCommand.status === Status.Pending) {
 			commandExecutionTimeout = setTimeout(() => {
 				setIsExecutingCommand(false);
 				showErrorBanner(`No se pudo ejecutar el comando ${executedCommand.command}`);
 			}, COMMAND_EXECUTION_TIMEOUT);
-		} else if(executedCommand.status === Status.Success) {
+		} else if (executedCommand.status === Status.Success) {
 			setIsExecutingCommand(false);
 		}
 
@@ -298,6 +299,12 @@ const LabPracticeView: React.FC<unknown> = () => {
 		}
 	};
 
+	const handleVideoUrlRefresh = () => {
+		console.log('Refresh Video');
+		refetch().then(response => console.log(response));
+		console.log(labSessionData);
+	};
+
 	return (
 		<LoadingContainer loading={loading}>
 			<LabTitle
@@ -310,7 +317,11 @@ const LabPracticeView: React.FC<unknown> = () => {
 			<LoadingContainer loading={isExecutingCommand}>
 				<Commands commands={labCommands} onCommandChange={handleCommandChange} data={executedCommands} />
 			</LoadingContainer>
-			<LabOutputs data={outputs.map(mapOutput)} videoUrl={labSessionVideoUrl} />
+			<LabOutputs
+				data={outputs.map(mapOutput)}
+				videoUrl={labSessionVideoUrl}
+				onVideoUrlRefresh={handleVideoUrlRefresh}
+			/>
 		</LoadingContainer>
 	);
 };

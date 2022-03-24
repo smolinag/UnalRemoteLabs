@@ -8,5 +8,6 @@ query getLabPracticeSession($id: ID!) {
     labpracticeID
     startDate
     labSemesterID
+    _version
   }
 }

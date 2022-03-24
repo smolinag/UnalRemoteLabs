@@ -1,12 +1,13 @@
 mutation updateLabPracticeSession($input: UpdateLabPracticeSessionInput!) {
-	updateLabPracticeSession (input: $input) {
-		id		
+	updateLabPracticeSession(input: $input) {
+		id
 		description
-    startDate
+		startDate
 		createdBy
 		updatedAt
 		updatedBy
 		createdAt
+		videoUrlCode
 		_version
 	}
 }

@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import {useUpdateLabPracticeSessionMutation} from '../../graphql/generated/schema';
+import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery } from '../../graphql/generated/schema';
+import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import Button from '../UI/Button/Button';
 
 interface Props {
@@ -17,25 +18,35 @@ const LabTitle: React.FC<Props> = ({description, duration, name, isVideoUrlInput
 	const [videoUrl, setVideoUrl] = useState('');
 	const [loading, setLoading] = useState(false);
 
+	const {data: labSessionData} = useGetLabPracticeSessionQuery({variables: {id: laPracticeSessionId}});
 	const [updateLabPracticeSession] = useUpdateLabPracticeSessionMutation({});
+
+	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const handleVideoUrlChange = (value: string) => {
 		setVideoUrl(value);
 	};
 
+	console.log(labSessionData)
+
 	const handleLabPracticeSessionUpdate = async() => {
 		try{
 			setLoading(true);
-			await updateLabPracticeSession({
+			console.log(laPracticeSessionId)
+			console.log(videoUrl)
+			const data = await updateLabPracticeSession({
 				variables:{
 					input:{
 						id: laPracticeSessionId,
-						videoUrlCode: videoUrl
+						videoUrlCode: videoUrl,
+						_version: labSessionData?.getLabPracticeSession?._version
 					}
 				}
 			})
+			console.log(data)
+			showSuccessBanner(`El código del video  ${videoUrl ?? ''} fue correctamente guardado`);
 		} catch(e){
-			console.error('No se pudo guardar el link del video', e);
+			showErrorBanner(`No se pudo guardar el código del video  ${videoUrl ?? ''}`);
 		}	finally{
 			setLoading(false);
 		}	

@@ -108,6 +108,7 @@
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
     "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\"],\"LogoutURLs\":[\"http://localhost:3000/\"]}"
+    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"673127242587-hdr06rtgl3kf62v2bmugtdfdqilnkva7.apps.googleusercontent.com\",\"client_secret\":\"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\"}]",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://d1p0lxk2wvxo6e.cloudfront.net/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://d1p0lxk2wvxo6e.cloudfront.net/\"]}"
   }
 }

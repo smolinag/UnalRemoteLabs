@@ -165,10 +165,10 @@
     "googleClientId": {
       "Type": "String"
     },
-    "oAuthMetadata": {
+    "hostedUIProviderCreds": {
       "Type": "String"
     },
-    "hostedUIProviderCreds": {
+    "oAuthMetadata": {
       "Type": "String"
     }
   },

@@ -3,7 +3,8 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 export enum Status {
   PENDING = "pending",
   SUCCESS = "success",
-  FAILURE = "failure"
+  FAILURE = "failure",
+  BUSY = "busy"
 }
 
 export enum Role {
@@ -96,6 +97,7 @@ export declare class LabPracticeSession {
   readonly LabSemester?: LabSemester;
   readonly LabPracticeSessionCommands?: (LabPracticeSessionCommand | null)[];
   readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[];
+  readonly videoUrlCode?: string;
   readonly updatedBy?: string;
   readonly createdBy: string;
   readonly createdAt?: string;
@@ -115,6 +117,7 @@ export declare class LabPractice {
   readonly LabPracticeDevice?: LabPracticeDevice;
   readonly LabPracticeSessions?: (LabPracticeSession | null)[];
   readonly LabPracticeOutputs?: (LabPracticeOutput | null)[];
+  readonly guideS3Path?: string;
   readonly updatedBy?: string;
   readonly createdBy: string;
   readonly createdAt?: string;

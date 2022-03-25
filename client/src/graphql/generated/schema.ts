@@ -2338,7 +2338,7 @@ export type GetLabPracticeSessionQuery = {__typename?: 'Query'} & {
 			| 'startDate'
 			| 'labSemesterID'
 			| '_version'
-		>
+		> & {LabSemester?: Maybe<{__typename?: 'LabSemester'} & Pick<LabSemester, 'professor'>>}
 	>;
 };
 
@@ -3990,6 +3990,9 @@ export const GetLabPracticeSessionDocument = gql`
 			startDate
 			labSemesterID
 			_version
+			LabSemester {
+				professor
+			}
 		}
 	}
 `;

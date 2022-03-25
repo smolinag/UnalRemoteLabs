@@ -2,11 +2,20 @@ import React, {useState, useContext} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { MonitorsGroup } from '../../generalUtils/groups';
+import { Groups } from '../../generalUtils/groups';
 import ValidateGroup from '../../generalUtils/ValidateGroup';
 import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import Button from '../UI/Button/Button';
+
+export interface Session {
+	id: string;
+	videoUrlCode: string;
+	startDate: string;
+	endDate: string;
+	description: string;
+	professor: string;
+}
 
 interface Props {
 	name?: string | null;
@@ -14,9 +23,17 @@ interface Props {
 	duration?: number | null;
 	isVideoUrlInputEnabled?: boolean | null;
 	laPracticeSessionId: string;
+	sessionInformation: Session;
 }
 
-const LabTitle: React.FC<Props> = ({description, duration, name, isVideoUrlInputEnabled, laPracticeSessionId}) => {
+const LabTitle: React.FC<Props> = ({
+	description,
+	duration,
+	name,
+	isVideoUrlInputEnabled,
+	laPracticeSessionId,
+	sessionInformation
+}) => {
 	const [videoUrl, setVideoUrl] = useState('');
 	const [loading, setLoading] = useState(false);
 
@@ -59,8 +76,27 @@ const LabTitle: React.FC<Props> = ({description, duration, name, isVideoUrlInput
 				<Row>
 					<span>Duración: {duration ? duration : '-'} minutos</span>
 				</Row>
+				<Row>
+					<span>
+						Inicio:
+						{`${new Date(sessionInformation?.startDate).toDateString()} - ${new Date(
+							sessionInformation?.startDate
+						).toLocaleTimeString()}`}
+					</span>
+				</Row>
+				<Row>
+					<span>
+						Finalización:{' '}
+						{`${new Date(sessionInformation?.endDate).toDateString()} - ${new Date(
+							sessionInformation?.endDate
+						).toLocaleTimeString()}`}
+					</span>
+				</Row>
+				<Row>
+					<span>Profesor: {sessionInformation.professor ? sessionInformation.professor : '-'}</span>
+				</Row>
 			</Col>
-			<ValidateGroup groups={[MonitorsGroup]}>
+			<ValidateGroup groups={[Groups.MonitorsGroup]}>
 				{isVideoUrlInputEnabled ? (
 					<Col sm={6}>
 						<Row>

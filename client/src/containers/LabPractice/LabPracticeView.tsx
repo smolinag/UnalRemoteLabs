@@ -5,6 +5,7 @@ import React, {useState, useEffect, useContext} from 'react';
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
+import {Session} from '../../components/Lab/LabTitle';
 import {LoadingContainer} from '../../components/UI';
 import {
 	useGetLabPracticeQuery,
@@ -50,13 +51,22 @@ const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as s
 
 let commandExecutionTimeout: NodeJS.Timeout;
 
+const initSessionInformation: Session = {
+	id: '',
+	videoUrlCode: '',
+	startDate: '',
+	endDate: '',
+	description: '',
+	professor: ''
+};
+
 const LabPracticeView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [executedCommands, setExecutedCommands] = useState<CommandSession[]>([]);
 
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
-	const [labSessionVideoUrl, setLabSessionVideoUrl] = useState('');
+	const [sessionInformation, setSessionInformation] = useState<Session>(initSessionInformation);
 
 	// TODO Deberíamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(SESSION_ID);
@@ -88,10 +98,17 @@ const LabPracticeView: React.FC<unknown> = () => {
 	}, [practiceInfo]);
 
 	useEffect(() => {
-		const videoUrl = labSessionData?.getLabPracticeSession?.videoUrlCode
-			? labSessionData.getLabPracticeSession.videoUrlCode
-			: '';
-		setLabSessionVideoUrl(videoUrl);
+		const sessionInfo = labSessionData?.getLabPracticeSession;
+		setSessionInformation(() => {
+			return {
+				id: sessionInfo?.id ?? '',
+				description: sessionInfo?.description ?? '',
+				startDate: sessionInfo?.startDate,
+				endDate: sessionInfo?.endDate,
+				professor: sessionInfo?.LabSemester?.professor ?? '',
+				videoUrlCode: sessionInfo?.videoUrlCode ?? ''
+			};
+		});
 	}, [labSessionData]);
 
 	useEffect(() => {
@@ -354,13 +371,14 @@ const LabPracticeView: React.FC<unknown> = () => {
 				duration={practiceInfo?.getLabPractice?.duration}
 				isVideoUrlInputEnabled={true}
 				laPracticeSessionId={SESSION_ID}
+				sessionInformation={sessionInformation}
 			/>
 			<LoadingContainer loading={isExecutingCommand}>
 				<Commands commands={labCommands} onCommandChange={handleCommandChange} data={executedCommands} />
 			</LoadingContainer>
 			<LabOutputs
 				data={outputs.map(mapOutput)}
-				videoUrl={labSessionVideoUrl}
+				videoUrl={sessionInformation.videoUrlCode}
 				onVideoUrlRefresh={handleVideoUrlRefresh}
 			/>
 		</LoadingContainer>

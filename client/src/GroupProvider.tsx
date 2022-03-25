@@ -2,16 +2,16 @@ import React, {createContext, useState, useContext} from 'react';
 
 export interface AuthContext {
 	group: string;
-	login: (jwt: string) => void;
-	logout: () => void;
+	defineGroup: (jwt: string) => void;
+	clearGroup: () => void;
 }
 
 const authContext = createContext<AuthContext>({
 	group: '',
-	login() {
+	defineGroup() {
 		/*  */
 	},
-	logout() {
+	clearGroup() {
 		/*  */
 	}
 });
@@ -19,11 +19,12 @@ const authContext = createContext<AuthContext>({
 const GroupProvider: React.FC = ({children}) => {
 	const [group, setGroup] = useState<string>('');
 
-	function logout() {
+	function clearGroup() {
 		setGroup('');
+		window.sessionStorage.removeItem('token');
 	}
 
-	function login(group: string) {
+	function defineGroup(group: string) {
 		setGroup(group);
 	}
 
@@ -31,8 +32,8 @@ const GroupProvider: React.FC = ({children}) => {
 		<authContext.Provider
 			value={{
 				group,
-				login,
-				logout
+				defineGroup,
+				clearGroup
 			}}>
 			{children}
 		</authContext.Provider>

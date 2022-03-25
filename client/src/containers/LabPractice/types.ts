@@ -71,6 +71,7 @@ export enum Params {
 	ParameterMaxValue = 'parameterMaxValue',
 	ParameterMinValue = 'parameterMinValue',
 	ParameterRegex = 'parameterRegex',
+	PracticeGuideS3Path = 'practiceGuideS3Path',
 	OutputType = 'outputType',
 	OutputName = 'outputName',
 	OutputDescription = 'outputDescription',

@@ -108,6 +108,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
+	const [guideFile, setGuideFile] = React.useState<File | null>(null);
+
 	const location = useLocation();
 	const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const labName = (location.state as LocationState)?.labName;
@@ -250,6 +252,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return {...previousState, practiceInfoDescription: value};
 				case Params.Duration:
 					return {...previousState, practiceInfoDuration: value.length > 0 && parseInt(value) > 0 ? value : '0'};
+				case Params.PracticeGuideS3Path:
+					return {...previousState, practiceGuideS3Path: value};
 				case Params.CommandName:
 					practice.command = {
 						...practiceInfo.command,
@@ -489,6 +493,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
+							guideS3Path: practiceInfo.practiceGuideS3Path,
 							createdBy: '1',
 							_version: practiceInfo.version
 						}
@@ -1067,8 +1072,10 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	};
 
 	const handleGuideFileSelection = (file: File) => {
-		console.log(file)
-	} 
+		setGuideFile(file);
+		console.log(guideFile);
+		practiceChange(file.name, 'practiceGuideS3');
+	};
 
 	return (
 		<>
@@ -1085,7 +1092,10 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			<LoadingContainer loading={loading}>
 				<LabPractice practice={practiceInfo} labName={labName} onValueChange={practiceChange} errors={errors} />
 
-				<LabPracticeGuide guideFileName={practiceInfo.practiceGuideS3Path} onFileSelected={(file) => handleGuideFileSelection(file)}/>
+				<LabPracticeGuide
+					guideFileName={practiceInfo.practiceGuideS3Path}
+					onFileSelected={(file) => handleGuideFileSelection(file)}
+				/>
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className="justifyCenter">

@@ -5,5 +5,7 @@ mutation createLabPracticeSessionCommand($input: CreateLabPracticeSessionCommand
 		labpracticecommandID
 		status
 		parameters
+		_version
+		executionDate
 	}
 }

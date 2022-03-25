@@ -4,6 +4,7 @@ subscription onUpdateLabPracticeSessionCommandBySessionID($id: ID!) {
 		executionDate
 		status
 		LabPracticeCommand {
+			id
 			name
 		}
 		parameters

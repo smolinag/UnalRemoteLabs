@@ -40,19 +40,19 @@ export const apolloClient = new ApolloClient({
 // let chroneTime = 0;
 
 const decodeToken = (token: string) => {
-	const base64Url = token.split('.')[1];
-	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-	const jsonPayload = decodeURIComponent(
-		atob(base64)
-			.split('')
-			.map(function (c) {
-				return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-			})
-			.join('')
-	);
+	// const base64Url = token.split('.')[1];
+	// const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+	// const jsonPayload = decodeURIComponent(
+	// 	atob(base64)
+	// 		.split('')
+	// 		.map(function (c) {
+	// 			return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+	// 		})
+	// 		.join('')
+	// );
 
-	const payload = JSON.parse(jsonPayload);
-	console.log(payload["cognito:groups"]);
+	// const payload = JSON.parse(jsonPayload);
+	// console.log(payload["cognito:groups"]);
 
 	// createContext(payload["cognito:groups"]);
 

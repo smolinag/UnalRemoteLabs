@@ -2030,7 +2030,7 @@ export type CreateLabPracticeSessionCommandMutation = {__typename?: 'Mutation'} 
 	createLabPracticeSessionCommand?: Maybe<
 		{__typename?: 'LabPracticeSessionCommand'} & Pick<
 			LabPracticeSessionCommand,
-			'id' | 'labpracticesessionID' | 'labpracticecommandID' | 'status' | 'parameters'
+			'id' | 'labpracticesessionID' | 'labpracticecommandID' | 'status' | 'parameters' | '_version' | 'executionDate'
 		>
 	>;
 };
@@ -2240,6 +2240,19 @@ export type UpdateLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
 			| 'createdAt'
 			| 'videoUrlCode'
 			| '_version'
+		>
+	>;
+};
+
+export type UpdateLabPracticeSessionCommandMutationVariables = Exact<{
+	input: UpdateLabPracticeSessionCommandInput;
+}>;
+
+export type UpdateLabPracticeSessionCommandMutation = {__typename?: 'Mutation'} & {
+	updateLabPracticeSessionCommand?: Maybe<
+		{__typename?: 'LabPracticeSessionCommand'} & Pick<
+			LabPracticeSessionCommand,
+			'id' | 'labpracticesessionID' | 'labpracticecommandID' | 'status' | 'parameters' | '_version' | 'executionDate'
 		>
 	>;
 };
@@ -2472,8 +2485,16 @@ export type ListLabPracticeSessionCommandsQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'LabPracticeSessionCommand'} & Pick<
 						LabPracticeSessionCommand,
-						'id' | 'executionDate' | 'status' | 'parameters' | 'labpracticesessionID' | 'labpracticecommandID'
-					> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'name'>>}
+						| 'id'
+						| 'status'
+						| 'parameters'
+						| 'executionDate'
+						| 'requestDate'
+						| 'labpracticecommandID'
+						| 'labpracticesessionID'
+					> & {
+							LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>;
+						}
 				>
 			>;
 		}
@@ -2642,7 +2663,7 @@ export type OnUpdateLabPracticeSessionCommandBySessionIdSubscription = {__typena
 		{__typename?: 'LabPracticeSessionCommand'} & Pick<
 			LabPracticeSessionCommand,
 			'id' | 'executionDate' | 'status' | 'parameters' | 'labpracticesessionID' | 'labpracticecommandID'
-		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'name'>>}
+		> & {LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>}
 	>;
 };
 
@@ -2915,6 +2936,8 @@ export const CreateLabPracticeSessionCommandDocument = gql`
 			labpracticecommandID
 			status
 			parameters
+			_version
+			executionDate
 		}
 	}
 `;
@@ -3739,6 +3762,62 @@ export type UpdateLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions
 	UpdateLabPracticeSessionMutation,
 	UpdateLabPracticeSessionMutationVariables
 >;
+export const UpdateLabPracticeSessionCommandDocument = gql`
+	mutation updateLabPracticeSessionCommand($input: UpdateLabPracticeSessionCommandInput!) {
+		updateLabPracticeSessionCommand(input: $input) {
+			id
+			labpracticesessionID
+			labpracticecommandID
+			status
+			parameters
+			_version
+			executionDate
+		}
+	}
+`;
+export type UpdateLabPracticeSessionCommandMutationFn = Apollo.MutationFunction<
+	UpdateLabPracticeSessionCommandMutation,
+	UpdateLabPracticeSessionCommandMutationVariables
+>;
+
+/**
+ * __useUpdateLabPracticeSessionCommandMutation__
+ *
+ * To run a mutation, you first call `useUpdateLabPracticeSessionCommandMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateLabPracticeSessionCommandMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateLabPracticeSessionCommandMutation, { data, loading, error }] = useUpdateLabPracticeSessionCommandMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateLabPracticeSessionCommandMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		UpdateLabPracticeSessionCommandMutation,
+		UpdateLabPracticeSessionCommandMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<UpdateLabPracticeSessionCommandMutation, UpdateLabPracticeSessionCommandMutationVariables>(
+		UpdateLabPracticeSessionCommandDocument,
+		options
+	);
+}
+export type UpdateLabPracticeSessionCommandMutationHookResult = ReturnType<
+	typeof useUpdateLabPracticeSessionCommandMutation
+>;
+export type UpdateLabPracticeSessionCommandMutationResult =
+	Apollo.MutationResult<UpdateLabPracticeSessionCommandMutation>;
+export type UpdateLabPracticeSessionCommandMutationOptions = Apollo.BaseMutationOptions<
+	UpdateLabPracticeSessionCommandMutation,
+	UpdateLabPracticeSessionCommandMutationVariables
+>;
 export const UpdateLabSemesterDocument = gql`
 	mutation updateLabSemester($input: UpdateLabSemesterInput!) {
 		updateLabSemester(input: $input) {
@@ -4295,17 +4374,19 @@ export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 >;
 export const ListLabPracticeSessionCommandsDocument = gql`
 	query listLabPracticeSessionCommands {
-		listLabPracticeSessionCommands(filter: {labpracticesessionID: {eq: "93a1909e-eef3-421c-9cca-22396177f39c"}}) {
+		listLabPracticeSessionCommands {
 			items {
 				id
-				executionDate
 				status
+				parameters
 				LabPracticeCommand {
+					id
 					name
 				}
-				parameters
-				labpracticesessionID
+				executionDate
+				requestDate
 				labpracticecommandID
+				labpracticesessionID
 			}
 		}
 	}
@@ -4756,6 +4837,7 @@ export const OnUpdateLabPracticeSessionCommandBySessionIdDocument = gql`
 			executionDate
 			status
 			LabPracticeCommand {
+				id
 				name
 			}
 			parameters

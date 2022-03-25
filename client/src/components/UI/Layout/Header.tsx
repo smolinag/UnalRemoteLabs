@@ -24,6 +24,11 @@ const Header: React.FC<unknown> = () => {
 		})();
 	}, [loggedUser]);
 
+	const signOutFunction = () => {
+		signOut;
+		window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net/lab-practice';
+	};
+
 	return (
 		<header>
 			<Navbar expand="lg" className={classes.navbar}>
@@ -45,7 +50,7 @@ const Header: React.FC<unknown> = () => {
 
 						<div className={classes.option}>
 							<BiExit className={classes.icon} />
-							<span onClick={signOut}>Salir</span>
+							<span onClick={signOutFunction}>Salir</span>
 						</div>
 					</Nav>
 				</Navbar.Collapse>

@@ -27,8 +27,6 @@ const LabTitle: React.FC<Props> = ({description, duration, name, isVideoUrlInput
 		setVideoUrl(value);
 	};
 
-	console.log(labSessionData)
-
 	const handleLabPracticeSessionUpdate = async() => {
 		try{
 			setLoading(true);

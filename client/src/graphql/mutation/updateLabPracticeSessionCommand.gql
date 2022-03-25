@@ -1,0 +1,11 @@
+mutation updateLabPracticeSessionCommand($input: UpdateLabPracticeSessionCommandInput!) {
+	updateLabPracticeSessionCommand (input: $input) {
+		id
+		labpracticesessionID
+		labpracticecommandID
+		status
+		parameters
+		_version
+		executionDate
+	}
+}

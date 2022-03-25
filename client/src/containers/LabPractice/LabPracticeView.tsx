@@ -9,9 +9,11 @@ import {LoadingContainer} from '../../components/UI';
 import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
+	useListLabPracticeSessionCommandsQuery,
 	useListLabPracticeOutputsQuery,
 	useCreateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandBySessionIdSubscription,
+	useUpdateLabPracticeSessionCommandMutation,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription,
 	useGetLabPracticeSessionQuery
@@ -46,27 +48,17 @@ const COMMAND_EXECUTION_TIMEOUT = 10000;
 
 const mapOutput = ({name, value}: OutputListDto): [string, string] => [name as string, value as string];
 
-const initCommand = {
-	id: '',
-	executionDate: '',
-	labpracticeCommandID: '',
-	labpracticeSessionID: '',
-	parameters: '',
-	status: 'Status.Pending',
-	command: ''
-};
+let commandExecutionTimeout: NodeJS.Timeout;
 
 const LabPracticeView: React.FC<unknown> = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [executedCommands, setExecutedCommands] = useState<CommandSession[]>([]);
-	const [executedCommand, setExecutedCommand] = useState<CommandSession>(initCommand);
 
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
-	const [labSessionVideoUrl, setlabSessionVideoUrl] = useState('');
-	// const commandExecutionTimeout = useRef<NodeJS.Timeout>();
+	const [labSessionVideoUrl, setLabSessionVideoUrl] = useState('');
 
-	// TODO Deberiamos pasar esto a context?
+	// TODO Deberíamos pasar esto a context?
 	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(SESSION_ID);
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
@@ -75,16 +67,32 @@ const LabPracticeView: React.FC<unknown> = () => {
 	// const deviceId = (location.state as LocationState)?.deviceId;
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
-	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
-	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
 	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
+	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
+	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery();
+	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
+	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: SESSION_ID}
 	});
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: DEVICE_ID}});
+
+	useEffect(() => {
+		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items?.[0];
+		if (sessionData) {
+			setLabPracticeSessionId(sessionData.id);
+		}
+	}, [practiceInfo]);
+
+	useEffect(() => {
+		const videoUrl = labSessionData?.getLabPracticeSession?.videoUrlCode
+			? labSessionData.getLabPracticeSession.videoUrlCode
+			: '';
+		setLabSessionVideoUrl(videoUrl);
+	}, [labSessionData]);
 
 	useEffect(() => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
@@ -121,34 +129,46 @@ const LabPracticeView: React.FC<unknown> = () => {
 		}
 	}, [labCommandsData]);
 
+	// Get last 5 session commands
+	useEffect(() => {
+		const sessionCommandsList = sessionCommands?.listLabPracticeSessionCommands?.items;
+
+		if (sessionCommandsList && sessionCommandsList?.length > 0) {
+			setExecutedCommands(() => {
+				const ordererArray = orderBy(sessionCommandsList, 'requestDate', 'desc').slice(0, 5);
+
+				return ordererArray.map((sessionCommand) => {
+					return {
+						id: sessionCommand?.id ? sessionCommand?.id : '',
+						executionDate: sessionCommand?.executionDate
+							? `${new Date(sessionCommand?.executionDate).toDateString()} - ${new Date(
+									sessionCommand?.executionDate
+							  ).toLocaleTimeString()}`
+							: '',
+						labpracticeCommandID: sessionCommand?.labpracticecommandID ? sessionCommand?.labpracticecommandID : '',
+						labpracticeSessionID: sessionCommand?.labpracticesessionID ? sessionCommand?.labpracticesessionID : '',
+						parameters: sessionCommand?.parameters ? sessionCommand?.parameters : '',
+						status: sessionCommand?.status ? sessionCommand?.status : '',
+						command: sessionCommand?.LabPracticeCommand ? sessionCommand?.LabPracticeCommand.name : ''
+					};
+				});
+			});
+		}
+	}, [sessionCommands]);
+
 	useEffect(() => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
 		if (receivedOutputs) {
-			let ouputs = 0;
-			const outputs: OutputListDto[] = receivedOutputs.map((output) => ({
+			let outputsIndex = 0;
+			const outputsArray: OutputListDto[] = receivedOutputs.map((output) => ({
 				id: output?.id as string,
 				name: output?.name as string,
 				value: '-',
-				order: output?.order ?? ouputs++
+				order: output?.order ?? outputsIndex++
 			}));
-			setOutputs(outputs);
+			setOutputs(orderBy(outputsArray, 'order', 'asc'));
 		}
 	}, [practiceOutputs]);
-
-	useEffect(() => {
-		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items?.[0];
-		if (sessionData) {
-			setLabPracticeSessionId(sessionData.id);
-		}
-	}, [practiceInfo]);
-
-	useEffect(() => {
-		const videoUrl = labSessionData?.getLabPracticeSession?.videoUrlCode
-			? labSessionData.getLabPracticeSession.videoUrlCode
-			: '';
-		console.log('Refresh Video UseEffect: ' + videoUrl);
-		setlabSessionVideoUrl(videoUrl);
-	}, [labSessionData]);
 
 	useEffect(() => {
 		const updatedSessionOutputData = updatedSessionOutput?.onLabOutputListen;
@@ -180,9 +200,26 @@ const LabPracticeView: React.FC<unknown> = () => {
 		if (updatedCommand) {
 			const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
 
-			if (updatedCommand.status === Status.Success) {
-				const command = executedCommands.filter((obj) => obj.id === updatedCommand?.id);
+			const commandUpdated = {
+				id: updatedCommand?.id ? updatedCommand?.id : '',
+				executionDate: updatedCommand?.executionDate
+					? `${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(
+							updatedCommand?.executionDate
+					  ).toLocaleTimeString()}`
+					: '',
+				labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
+				labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
+				parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
+				status: updatedCommand?.status ? updatedCommand?.status : '',
+				command: updatedCommand?.LabPracticeCommand ? updatedCommand?.LabPracticeCommand.name : ''
+			};
 
+			clearTimeout(commandExecutionTimeout);
+			setIsExecutingCommand(false);
+
+			const command = executedCommands.filter((obj) => obj.id === updatedCommand?.id);
+
+			if (command.length > 0) {
 				let exeCommands = executedCommands;
 				const rowIndex = exeCommands.findIndex((obj) => obj.id === command[0].id);
 
@@ -190,63 +227,24 @@ const LabPracticeView: React.FC<unknown> = () => {
 					.slice(0, rowIndex)
 					.concat(exeCommands.slice(rowIndex + 1, executedCommands.length + 1));
 
-				exeCommands.unshift({
-					id: updatedCommand?.id ? updatedCommand?.id : '',
-					executionDate: updatedCommand?.executionDate
-						? `${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(
-								updatedCommand?.executionDate
-						  ).toLocaleTimeString()}`
-						: '',
-					labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
-					labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
-					parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
-					status: updatedCommand?.status ? updatedCommand?.status : '',
-					command: command[0].command
-				});
-
+				exeCommands.unshift(commandUpdated);
 				setExecutedCommands(exeCommands);
-
-				setExecutedCommand({
-					id: updatedCommand?.id ? updatedCommand?.id : '',
-					executionDate: updatedCommand?.executionDate
-						? `${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(
-								updatedCommand?.executionDate
-						  ).toLocaleTimeString()}`
-						: '',
-					labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
-					labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
-					parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
-					status: updatedCommand?.status ? updatedCommand?.status : '',
-					command: command[0].command
-				});
-
-				showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
 			} else {
-				showErrorBanner(`No se pudo ejecutar el comando ${commandLabel?.name ?? ''}`);
+				// Remove last session command item if the array length is 5
+				let exeCommands = executedCommands;
+				if (exeCommands.length === 5) {
+					exeCommands = exeCommands.slice(0, exeCommands.length - 1);
+				}
+				exeCommands.unshift(commandUpdated);
+				setExecutedCommands(exeCommands);
+			}
+			if (updatedCommand.status === Status.Success) {
+				showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
 			}
 		}
 	}, [updatedSessionCommand]);
 
-	useEffect(() => {
-		let commandExecutionTimeout: NodeJS.Timeout;
-
-		if (executedCommand.status === Status.Pending) {
-			commandExecutionTimeout = setTimeout(() => {
-				setIsExecutingCommand(false);
-				showErrorBanner(`No se pudo ejecutar el comando ${executedCommand.command}`);
-			}, COMMAND_EXECUTION_TIMEOUT);
-		} else if (executedCommand.status === Status.Success) {
-			setIsExecutingCommand(false);
-		}
-
-		return () => {
-			if (commandExecutionTimeout) {
-				clearTimeout(commandExecutionTimeout);
-			}
-		};
-	}, [executedCommand]);
-
-	const handleCommandChange = async ({parameters = [], name, label}: Command, id: string) => {
+	const handleCommandChange = async ({parameters = [], name}: Command, id: string) => {
 		try {
 			setIsExecutingCommand(true);
 			const {data} = await createLabPracticeSessionCommand({
@@ -256,24 +254,20 @@ const LabPracticeView: React.FC<unknown> = () => {
 						labpracticecommandID: id,
 						parameters: JSON.stringify(parameters[0]),
 						status: Status.Pending,
-						requestDate: new Date()
+						requestDate: new Date().toISOString()
 					}
 				}
 			});
 
-			const exeCommand = executedCommands;
-			exeCommand.unshift({
-				id: data?.createLabPracticeSessionCommand?.id ? data?.createLabPracticeSessionCommand?.id : '',
-				executionDate: '',
-				labpracticeCommandID: id,
-				labpracticeSessionID: labPracticeSessionId,
-				parameters: JSON.stringify(parameters[0]),
-				status: Status.Pending,
-				command: name
-			});
-			setExecutedCommands(exeCommand);
+			const sessionCommandId = data?.createLabPracticeSessionCommand?.id;
+			const version = data?.createLabPracticeSessionCommand?._version;
 
-			setExecutedCommand({
+			let exeCommands = executedCommands;
+			if (exeCommands.length === 5) {
+				exeCommands = exeCommands.slice(0, exeCommands.length - 1);
+			}
+
+			exeCommands.unshift({
 				id: data?.createLabPracticeSessionCommand?.id ? data?.createLabPracticeSessionCommand?.id : '',
 				executionDate: '',
 				labpracticeCommandID: id,
@@ -282,6 +276,8 @@ const LabPracticeView: React.FC<unknown> = () => {
 				status: Status.Pending,
 				command: name
 			});
+
+			setExecutedCommands(exeCommands);
 
 			const mqttMessage = {
 				name,
@@ -293,6 +289,53 @@ const LabPracticeView: React.FC<unknown> = () => {
 			await publishMqttMessageMutation({
 				variables: {input: {message: JSON.stringify(mqttMessage), topic: `${DEVICE_ID}/topic_in`}}
 			});
+
+			commandExecutionTimeout = setTimeout(async () => {
+				setIsExecutingCommand(false);
+				showErrorBanner(`No se pudo ejecutar el comando ${name}`);
+
+				const {data: dataError} = await updateLabPracticeSessionCommand({
+					variables: {
+						input: {
+							id: sessionCommandId ? sessionCommandId : '',
+							labpracticecommandID: id,
+							labpracticesessionID: labPracticeSessionId,
+							parameters: JSON.stringify(parameters[0]),
+							status: Status.Failure,
+							requestDate: new Date().toISOString(),
+							executionDate: new Date().toISOString(),
+							_version: version
+						}
+					}
+				});
+
+				let exeCommands = executedCommands;
+				if (exeCommands.length === 5) {
+					exeCommands = exeCommands.slice(0, exeCommands.length - 1);
+				}
+
+				exeCommands.unshift({
+					id: dataError?.updateLabPracticeSessionCommand?.id ? dataError?.updateLabPracticeSessionCommand?.id : '',
+					executionDate: dataError?.updateLabPracticeSessionCommand?.executionDate
+						? `${new Date(dataError?.updateLabPracticeSessionCommand?.executionDate).toDateString()} - ${new Date(
+								dataError?.updateLabPracticeSessionCommand?.executionDate
+						  ).toLocaleTimeString()}`
+						: '',
+					labpracticeCommandID: dataError?.updateLabPracticeSessionCommand?.labpracticecommandID
+						? dataError?.updateLabPracticeSessionCommand?.labpracticecommandID
+						: '',
+					labpracticeSessionID: dataError?.updateLabPracticeSessionCommand?.labpracticesessionID
+						? dataError?.updateLabPracticeSessionCommand?.labpracticesessionID
+						: '',
+					parameters: dataError?.updateLabPracticeSessionCommand?.parameters,
+					status: dataError?.updateLabPracticeSessionCommand?.status
+						? dataError?.updateLabPracticeSessionCommand?.status
+						: '',
+					command: name
+				});
+
+				setExecutedCommands(exeCommands);
+			}, COMMAND_EXECUTION_TIMEOUT);
 		} catch (error) {
 			console.error('no se pudo ejecutar el comando', error);
 			setIsExecutingCommand(false);
@@ -300,9 +343,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	};
 
 	const handleVideoUrlRefresh = () => {
-		console.log('Refresh Video');
-		refetch().then(response => console.log(response));
-		console.log(labSessionData);
+		refetch().then((response) => console.log(response));
 	};
 
 	return (

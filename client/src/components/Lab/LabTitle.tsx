@@ -2,7 +2,9 @@ import React, {useState, useContext} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery } from '../../graphql/generated/schema';
+import { MonitorsGroup } from '../../generalUtils/groups';
+import ValidateGroup from '../../generalUtils/ValidateGroup';
+import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import Button from '../UI/Button/Button';
 
@@ -27,28 +29,25 @@ const LabTitle: React.FC<Props> = ({description, duration, name, isVideoUrlInput
 		setVideoUrl(value);
 	};
 
-	const handleLabPracticeSessionUpdate = async() => {
-		try{
+	const handleLabPracticeSessionUpdate = async () => {
+		try {
 			setLoading(true);
-			console.log(laPracticeSessionId)
-			console.log(videoUrl)
-			const data = await updateLabPracticeSession({
-				variables:{
-					input:{
+			await updateLabPracticeSession({
+				variables: {
+					input: {
 						id: laPracticeSessionId,
 						videoUrlCode: videoUrl,
 						_version: labSessionData?.getLabPracticeSession?._version
 					}
 				}
-			})
-			console.log(data)
+			});
 			showSuccessBanner(`El código del video  ${videoUrl ?? ''} fue correctamente guardado`);
-		} catch(e){
+		} catch (e) {
 			showErrorBanner(`No se pudo guardar el código del video  ${videoUrl ?? ''}`);
-		}	finally{
+		} finally {
 			setLoading(false);
-		}	
-	}
+		}
+	};
 
 	return (
 		<Row className="section">
@@ -61,30 +60,32 @@ const LabTitle: React.FC<Props> = ({description, duration, name, isVideoUrlInput
 					<span>Duración: {duration ? duration : '-'} minutos</span>
 				</Row>
 			</Col>
-			{isVideoUrlInputEnabled ? (
-				<Col sm={6}>
-					<Row>
-						<span>Código de vídeo: </span>
-					</Row>
-					<Row style={{display: 'flex',  alignItems: 'center'}}>
-						<Col xs={4}>
-							<input
-								type="text"
-								placeholder="Código"
-								value={videoUrl}
-								onChange={(e) => handleVideoUrlChange(e.target.value)}
-							/>
-						</Col>
-						<Col xs={3}>
-							<Button loading={loading} onClick={handleLabPracticeSessionUpdate}>
-								Guardar
-							</Button>
-						</Col>
-					</Row>
-				</Col>
-			) : (
-				<></>
-			)}
+			<ValidateGroup groups={[MonitorsGroup]}>
+				{isVideoUrlInputEnabled ? (
+					<Col sm={6}>
+						<Row>
+							<span>Código de vídeo: </span>
+						</Row>
+						<Row style={{display: 'flex', alignItems: 'center'}}>
+							<Col xs={4}>
+								<input
+									type="text"
+									placeholder="Código"
+									value={videoUrl}
+									onChange={(e) => handleVideoUrlChange(e.target.value)}
+								/>
+							</Col>
+							<Col xs={3}>
+								<Button loading={loading} onClick={handleLabPracticeSessionUpdate}>
+									Guardar
+								</Button>
+							</Col>
+						</Row>
+					</Col>
+				) : (
+					<></>
+				)}
+			</ValidateGroup>
 		</Row>
 	);
 };

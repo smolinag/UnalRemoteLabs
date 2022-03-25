@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/global.scss';
 import {apolloClient} from './apollo';
 import App from './App';
+import GroupProvider from './GroupProvider';
 import NotificationBannerProvider from './state/NotificationBannerProvider';
 
 ReactDOM.render(
@@ -14,7 +15,9 @@ ReactDOM.render(
 		<ApolloProvider client={apolloClient}>
 			<BrowserRouter>
 				<NotificationBannerProvider>
-					<App />
+					<GroupProvider>
+						<App />
+					</GroupProvider>
 				</NotificationBannerProvider>
 			</BrowserRouter>
 		</ApolloProvider>

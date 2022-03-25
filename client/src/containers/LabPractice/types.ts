@@ -11,6 +11,7 @@ export interface LabPracticeInfo {
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
+	practiceGuideS3Path: string;
 	version?: number;
 	command: LabPracticeCommandInfo;
 	parameter: LabPracticeParameterInfo;

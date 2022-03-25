@@ -9,7 +9,8 @@ import {
 	LabPracticeParameters,
 	LabPracticeParametersTable,
 	LabPracticeOutput,
-	LabPracticeOutputTable
+	LabPracticeOutputTable,
+	LabPracticeGuide
 } from '../../components/LabPracticeCreation';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
@@ -37,6 +38,7 @@ const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
+	practiceGuideS3Path: '',
 	version: 0,
 	command: {
 		commandName: '',
@@ -654,6 +656,10 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 		}
 	};
 
+	const handleGuideFileSelection = (file: File) => {
+		console.log(file)
+	} 
+
 	return (
 		<>
 			{
@@ -666,12 +672,9 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				</ModalComponent>
 			}
 			<LoadingContainer loading={loading}>
-				<LabPractice
-					practice={practiceInfo}
-					labName={labName}
-					onValueChange={practiceChange}
-					errors={errors}
-				/>
+				<LabPractice practice={practiceInfo} labName={labName} onValueChange={practiceChange} errors={errors} />
+
+				<LabPracticeGuide guideFileName={practiceInfo.practiceGuideS3Path} onFileSelected={(file) => handleGuideFileSelection(file)}/>
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className="justifyCenter">

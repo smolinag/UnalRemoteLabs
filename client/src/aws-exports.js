@@ -20,9 +20,9 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:3000/",
-        "redirectSignOut": "http://localhost:3000/",
-        // "redirectSignIn": "https://d1p0lxk2wvxo6e.cloudfront.net/",
+        "redirectSignIn": "http://localhost:3000/,https://d1p0lxk2wvxo6e.cloudfront.net/",
+        "redirectSignOut": "http://localhost:3000/,https://d1p0lxk2wvxo6e.cloudfront.net/",
+		// "redirectSignIn": "https://d1p0lxk2wvxo6e.cloudfront.net/",
         // "redirectSignOut": "https://d1p0lxk2wvxo6e.cloudfront.net/",
         "responseType": "code"
     },
@@ -46,7 +46,9 @@ const awsmobile = {
     },
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
-    ]
+    ],
+    "aws_user_files_s3_bucket": "unal-labs-files-dev222622-develop",
+    "aws_user_files_s3_bucket_region": "us-east-2"
 };
 
 

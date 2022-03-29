@@ -96,7 +96,7 @@ const LabTitle: React.FC<Props> = ({
 					<span>Profesor: {sessionInformation.professor ? sessionInformation.professor : '-'}</span>
 				</Row>
 			</Col>
-			<ValidateGroup groups={[Groups.MonitorsGroup]}>
+			{/* <ValidateGroup groups={[Groups.MonitorsGroup]}> */}
 				{isVideoUrlInputEnabled ? (
 					<Col sm={6}>
 						<Row>
@@ -121,7 +121,7 @@ const LabTitle: React.FC<Props> = ({
 				) : (
 					<></>
 				)}
-			</ValidateGroup>
+			{/* </ValidateGroup> */}
 		</Row>
 	);
 };

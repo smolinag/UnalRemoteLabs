@@ -7,6 +7,7 @@ import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
 import {Session} from '../../components/Lab/LabTitle';
 import {LoadingContainer} from '../../components/UI';
+import { TimeConvert } from '../../generalUtils/ConvertTypes';
 import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
@@ -157,11 +158,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				return ordererArray.map((sessionCommand) => {
 					return {
 						id: sessionCommand?.id ? sessionCommand?.id : '',
-						executionDate: sessionCommand?.executionDate
-							? `${new Date(sessionCommand?.executionDate).toDateString()} - ${new Date(
-									sessionCommand?.executionDate
-							  ).toLocaleTimeString()}`
-							: '',
+						executionDate: TimeConvert(sessionCommand?.executionDate),
 						labpracticeCommandID: sessionCommand?.labpracticecommandID ? sessionCommand?.labpracticecommandID : '',
 						labpracticeSessionID: sessionCommand?.labpracticesessionID ? sessionCommand?.labpracticesessionID : '',
 						parameters: sessionCommand?.parameters ? sessionCommand?.parameters : '',
@@ -219,11 +216,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 			const commandUpdated = {
 				id: updatedCommand?.id ? updatedCommand?.id : '',
-				executionDate: updatedCommand?.executionDate
-					? `${new Date(updatedCommand?.executionDate).toDateString()} - ${new Date(
-							updatedCommand?.executionDate
-					  ).toLocaleTimeString()}`
-					: '',
+				executionDate: TimeConvert(updatedCommand?.executionDate),
 				labpracticeCommandID: updatedCommand?.labpracticecommandID ? updatedCommand?.labpracticecommandID : '',
 				labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
 				parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
@@ -333,11 +326,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 				exeCommands.unshift({
 					id: dataError?.updateLabPracticeSessionCommand?.id ? dataError?.updateLabPracticeSessionCommand?.id : '',
-					executionDate: dataError?.updateLabPracticeSessionCommand?.executionDate
-						? `${new Date(dataError?.updateLabPracticeSessionCommand?.executionDate).toDateString()} - ${new Date(
-								dataError?.updateLabPracticeSessionCommand?.executionDate
-						  ).toLocaleTimeString()}`
-						: '',
+					executionDate: TimeConvert(dataError?.updateLabPracticeSessionCommand?.executionDate),
 					labpracticeCommandID: dataError?.updateLabPracticeSessionCommand?.labpracticecommandID
 						? dataError?.updateLabPracticeSessionCommand?.labpracticecommandID
 						: '',
@@ -373,14 +362,14 @@ const LabPracticeView: React.FC<unknown> = () => {
 				laPracticeSessionId={SESSION_ID}
 				sessionInformation={sessionInformation}
 			/>
-			<LoadingContainer loading={isExecutingCommand}>
-				<Commands commands={labCommands} onCommandChange={handleCommandChange} data={executedCommands} />
-			</LoadingContainer>
-			<LabOutputs
-				data={outputs.map(mapOutput)}
+			<Commands
+				commands={labCommands}
+				onCommandChange={handleCommandChange}
 				videoUrl={sessionInformation.videoUrlCode}
 				onVideoUrlRefresh={handleVideoUrlRefresh}
+				isExecutingCommand={isExecutingCommand}
 			/>
+			<LabOutputs dataOutput={outputs.map(mapOutput)} dataCommands={executedCommands} />
 		</LoadingContainer>
 	);
 };

@@ -154,6 +154,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				practiceInfoDuration: practiceInfoDb?.getLabPractice.duration
 					? practiceInfoDb?.getLabPractice.duration.toString()
 					: '0',
+				practiceGuideS3Path: practiceInfoDb?.getLabPractice.guideS3Path ?? '',
 				version: practiceInfoDb.getLabPractice._version
 			};
 			setLoading(false);
@@ -499,6 +500,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						}
 					}
 				});
+				console.log(labPracticeData);
 
 				if (!labPracticeData?.updateLabPractice?.id) {
 					throw Error('');
@@ -1074,7 +1076,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const handleGuideFileSelection = (file: File) => {
 		setGuideFile(file);
 		console.log(guideFile);
-		practiceChange(file.name, 'practiceGuideS3');
+		practiceChange(file.name, 'practiceGuideS3Path');
 	};
 
 	return (

@@ -16,7 +16,7 @@ const LabPracticeGuide: React.FC<Props> = ({guideFileName, onFileSelected}) => {
 			<Row>
 				<div>
 					<div className={classes.wrapper}>
-						<span>Archivo actual: </span>
+						<span>{"Archivo actual:  -"}</span>
 						<span>{guideFileName ?? '--'}</span>
 					</div>
 				</div>

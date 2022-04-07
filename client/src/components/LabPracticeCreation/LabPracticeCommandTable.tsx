@@ -13,14 +13,17 @@ interface Props {
 const COLUMNS = [
 	'Nombre del comando',
 	'Descripción del comando',
+	'Posición'
 ];
 
 const mapOutput = ({
 	commandName,
 	commandDescription,
+	order
 }: LabPracticeCommandInfo): string[] => [
 	commandName,
 	commandDescription,
+	order.toString()
 ];
 
 const LabPracticeCommandTable: React.FC<Props> = ({data, onAction}) => {

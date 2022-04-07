@@ -2,8 +2,8 @@ import React, {useState, useContext} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-import { Groups } from '../../generalUtils/groups';
-import ValidateGroup from '../../generalUtils/ValidateGroup';
+// import { Groups } from '../../generalUtils/groups';
+// import ValidateGroup from '../../generalUtils/ValidateGroup';
 import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import Button from '../UI/Button/Button';

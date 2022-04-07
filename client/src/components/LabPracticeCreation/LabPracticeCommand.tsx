@@ -68,6 +68,18 @@ const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdi
 							: onValueEdit && onValueEdit(Params.CommandDescription, value, command)
 					}
 				/>
+
+				<Input
+					type="number"
+					placeholder="Posición"
+					value={command.order}
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.Order)
+							: onValueEdit && onValueEdit(Params.Order, value, command)
+					}
+					required
+				/>
 			</div>
 		</Row>
 	);

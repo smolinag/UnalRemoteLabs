@@ -13,18 +13,21 @@ interface Props {
 const COLUMNS = [
 	'Nombre',
 	'Descripción',
-	'Unidad'
+	'Unidad', 
+	'Posición'
 ];
 
 const LabPracticeOutputTable: React.FC<Props> = ({data, onAction}) => {
 	const mapOutput = ({
       outputName,
       outputDescription,
-      outputUnit
+      outputUnit,
+		order
 	}: OutputInfo): string[] => [
 		outputName,
 		outputDescription,
-		outputUnit
+		outputUnit ?? '',
+		order.toString()
 	];
 
 	return (

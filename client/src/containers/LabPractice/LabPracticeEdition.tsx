@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
 
 import {
@@ -57,7 +57,8 @@ const initialPracticeValue: LabPracticeInfo = {
 	command: {
 		commandName: '',
 		commandDescription: '',
-		version: 0
+		version: 0,
+		order: 0
 	},
 	parameter: {
 		commandName: '',
@@ -71,8 +72,9 @@ const initialPracticeValue: LabPracticeInfo = {
 	output: {
 		outputName: '',
 		outputDescription: '',
-		outputUnit: '',
-		outputType: 'string'
+		outputUnit: null,
+		outputType: 'string',
+		order: 0
 	}
 };
 
@@ -107,17 +109,19 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
 	const location = useLocation();
-	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const labName = (location.state as LocationState)?.labName;
 
 	// const location = useLocation();
 	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	// const deviceId = (location.state as LocationState)?.deviceId;
 
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
-	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}});
+	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({
+		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
+	});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: labPracticeId}
+		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
@@ -173,7 +177,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							commandDescription: command?.description ? command?.description : '',
 							label: (command?.labelName ?? command?.name) as string,
 							version: command?._version,
-							action: ActionType.Nothing
+							action: ActionType.Nothing,
+							order: command?.order ?? 0
 						});
 					}
 				});
@@ -223,9 +228,10 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							id: output?.id,
 							outputName: output?.name ? output?.name : '',
 							outputDescription: output?.description ? output?.description : '',
-							outputUnit: output?.units ? output?.units : '',
+							outputUnit: output?.units ? output?.units : null,
 							outputType: output?.outputType ? output?.outputType : '',
-							version: output?._version
+							version: output?._version,
+							order: output?.order ?? 0
 						});
 					}
 				});
@@ -320,6 +326,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						outputUnit: value
 					};
 					return {...previousState, output: practice.output};
+				case Params.OutputOrder:
+					practice.output = {
+						...practiceInfo.output,
+						order: parseInt(value)
+					};
+					return {...previousState, output: practice.output};
 				default:
 					return previousState;
 			}
@@ -332,8 +344,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (command.commandName.length > 0) {
 			setCommandsList((previousState) => {
 				const newCommand: LabPracticeCommandInfo = {
-					commandName: command.commandName,
-					commandDescription: command.commandDescription,
+					...command,
 					action: ActionType.Add
 				};
 
@@ -440,7 +451,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					outputName: output.outputName,
 					outputDescription: output.outputDescription,
 					outputUnit: output.outputUnit,
-					outputType: output.outputType
+					outputType: output.outputType,
+					order: output.order
 				};
 				return previousState.concat(newOutput);
 			});
@@ -514,6 +526,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										name: command.commandName,
 										description: command.commandDescription,
 										labelName: command.label,
+										order: command.order,
 										updatedBy: '1',
 										_version: command.version
 									}
@@ -575,7 +588,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										labpracticeID: practiceId,
 										name: command.commandName,
 										description: command.commandDescription,
-										createdBy: '1'
+										createdBy: '1',
+										order: command.order
 									}
 								}
 							}).then((responseCommandData) => {
@@ -629,6 +643,11 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 				if (outputsList.length > 0) {
 					outputsList.map(async (output) => {
+						let unit = null;
+						if (output.outputUnit && output.outputUnit?.length > 0) {
+							unit = JSON.stringify(output.outputUnit);
+						}
+
 						if (!output.id) {
 							await createLabPracticeOutput({
 								variables: {
@@ -637,8 +656,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										outputType: 'string',
 										name: output.outputName,
 										description: output.outputDescription,
-										units: JSON.stringify(output.outputUnit),
-										createdBy: '1'
+										units: unit,
+										createdBy: '1',
+										order: output.order
 									}
 								}
 							});
@@ -651,9 +671,10 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										outputType: 'string',
 										name: output.outputName,
 										description: output.outputDescription,
-										units: JSON.stringify(output.outputUnit),
+										units: unit,
 										updatedBy: '1',
-										_version: output.version
+										_version: output.version,
+										order: output.order
 									}
 								}
 							});
@@ -794,6 +815,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						return {...previousState, commandName: value};
 					case Params.CommandDescription:
 						return {...previousState, commandDescription: value};
+					case Params.Order:
+						return {...previousState, order: parseInt(value)};
 					default:
 						return previousState;
 				}
@@ -828,6 +851,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						return {...previousState, outputDescription: value};
 					case Params.OutputUnit:
 						return {...previousState, outputUnit: value};
+					case Params.OutputOrder:
+						return {...previousState, order: parseInt(value)};
 					default:
 						return previousState;
 				}
@@ -853,6 +878,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							obj.updatedBy = commandToEdit.updatedBy;
 							obj.updatedAt = commandToEdit.updatedAt;
 							obj.action = ActionType.Edit;
+							obj.order = commandToEdit.order;
 						}
 					});
 					return previousState;
@@ -908,15 +934,15 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 		// Edición de parámetro de salida
 		if (modalType === Section.OutputInfo) {
-			if (outputToEdit.outputName.length > 0 && outputToEdit.outputUnit.length > 0) {
+			if (outputToEdit.outputName.length > 0) {
 				setOutputsList((previousState) => {
 					const output = previousState[rowIndex];
-
 					previousState.map((obj) => {
 						if (obj.outputName === output.outputName) {
 							obj.outputName = outputToEdit.outputName;
 							obj.outputDescription = outputToEdit.outputDescription;
 							obj.outputUnit = outputToEdit.outputUnit;
+							obj.order = outputToEdit.order;
 						}
 					});
 					return previousState;
@@ -1077,12 +1103,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				</ModalComponent>
 			}
 			<LoadingContainer loading={loading}>
-				<LabPractice
-					practice={practiceInfo}
-					labName={labName}
-					onValueChange={practiceChange}
-					errors={errors}
-				/>
+				<LabPractice practice={practiceInfo} labName={labName} onValueChange={practiceChange} errors={errors} />
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className="justifyCenter">

@@ -27,7 +27,8 @@ export interface LabPracticeCommandInfo {
 	updatedAt?: string;
 	createdBy?: string;
 	createdAt?: string;
-	action?: ActionType
+	action?: ActionType;
+	order: number;
 }
 
 export interface LabPracticeParameterInfo {
@@ -52,9 +53,10 @@ export interface OutputInfo {
 	id?: string;
 	outputName: string;
 	outputDescription: string;
-	outputUnit: string;
+	outputUnit: string | null;
 	outputType: string;
 	version?: number;
+	order: number;
 }
 
 export enum Params {
@@ -63,6 +65,7 @@ export enum Params {
 	Duration = 'duration',
 	CommandName = 'commandName',
 	CommandDescription = 'commandDescription',
+	Order = 'order',
 	SelectedCommand = 'selectedCommand',
 	ParameterName = 'parameterName',
 	ParameterDescription = 'parameterDescription',
@@ -76,7 +79,8 @@ export enum Params {
 	OutputUnit = 'outputUnit',
 	AddCommand = 'addCommand',
 	Laboratory = 'laboratoryId',
-	ModalCommandName = 'modalCommandName'
+	ModalCommandName = 'modalCommandName',
+	OutputOrder = 'outputOrder'
 }
 
 export interface ErrorIdentifier {

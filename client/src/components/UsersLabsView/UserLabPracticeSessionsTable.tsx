@@ -29,7 +29,7 @@ const COLUMNS = [
 	'Eliminar'
 ];
 
-const TIME_TO_ENTER_TO_PRACTICE = 15;
+// const TIME_TO_ENTER_TO_PRACTICE = 15;
 
 const showDate = (date: string) => {
 	if (date.length > 0) {
@@ -81,15 +81,15 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 		/* Verificar que el usuario ingrese entre el lapsus de tiempo, el usuario puede 
 		ingresar hasta 15 minutos después de la hora de inicio de la práctica*/
 
-		if (
-			new Date() > new Date(labPracticeSession.startDate) &&
-			new Date() <
-				new Date(
-					new Date(labPracticeSession.startDate).setMinutes(
-						new Date(labPracticeSession.startDate).getMinutes() + TIME_TO_ENTER_TO_PRACTICE
-					)
-				)
-		) {
+		// if (
+		// 	new Date() > new Date(labPracticeSession.startDate) &&
+		// 	new Date() <
+		// 		new Date(
+		// 			new Date(labPracticeSession.startDate).setMinutes(
+		// 				new Date(labPracticeSession.startDate).getMinutes() + TIME_TO_ENTER_TO_PRACTICE
+		// 			)
+		// 		)
+		// ) {
 			return (
 				<IoEnter
 					key={labPracticeSession.labPracticeInfo.laboratory.name}
@@ -97,9 +97,9 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 					onClick={() => navigate('/lab-practice', {state: {labPracticeId: labPracticeSession.labPracticeInfo.id, deviceId: labPracticeSession.labPracticeInfo.labPracticeDeviceId}})}
 				/>
 			);
-		} else {
-			return null;
-		}
+		// } else {
+		// 	return null;
+		// }
 	};
 
 	const redirectEdit = (labPracticeSession: LabPracticeSession) => {

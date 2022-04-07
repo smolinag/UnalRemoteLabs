@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
-import {useLocation} from 'react-router-dom';
+// import {useLocation} from 'react-router-dom';
 
 import {
 	LabPractice,
@@ -41,7 +41,8 @@ const initialPracticeValue: LabPracticeInfo = {
 	command: {
 		commandName: '',
 		commandDescription: '',
-		version: 0
+		version: 0,
+		order: 0
 	},
 	parameter: {
 		commandName: '',
@@ -56,7 +57,8 @@ const initialPracticeValue: LabPracticeInfo = {
 		outputName: '',
 		outputDescription: '',
 		outputUnit: '',
-		outputType: 'string'
+		outputType: 'string',
+		order: 0
 	}
 };
 
@@ -90,11 +92,13 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	const location = useLocation();
-	const labId = (location.state as LocationState)?.labId;
-	const labName = (location.state as LocationState)?.labName;
+	// const location = useLocation();
+	const labId = 'bb8d939a-b2c5-41e3-b98b-5599d931797a';
+	const labName = 'Física Electricidad y Magnetismo';
 
 	const practiceChange = (value: string, id: string) => {
+		console.log(value);
+		console.log(id);
 		const practice: LabPracticeInfo = {
 			...practiceInfo
 		};
@@ -118,6 +122,12 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					practice.command = {
 						...practiceInfo.command,
 						commandDescription: value
+					};
+					return {...previousState, command: practice.command};
+				case Params.Order:
+					practice.command = {
+						...practiceInfo.command,
+						order: parseInt(value)
 					};
 					return {...previousState, command: practice.command};
 				case Params.SelectedCommand:
@@ -180,6 +190,12 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 						outputUnit: value
 					};
 					return {...previousState, output: practice.output};
+				case Params.OutputOrder:
+					practice.output = {
+						...practiceInfo.output,
+						order: parseInt(value)
+					};
+					return {...previousState, output: practice.output};
 				default:
 					return previousState;
 			}
@@ -194,7 +210,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				const newCommand: LabPracticeCommandInfo = {
 					commandName: command.commandName,
 					commandDescription: command.commandDescription,
-					version: 0
+					version: 0,
+					order: command.order
 				};
 
 				return previousState.concat(newCommand);
@@ -284,7 +301,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					outputName: output.outputName,
 					outputDescription: output.outputDescription,
 					outputUnit: output.outputUnit,
-					outputType: output.outputType
+					outputType: output.outputType,
+					order: output.order
 				};
 				return previousState.concat(newOutput);
 			});
@@ -353,7 +371,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 										labpracticeID: practiceId,
 										name: command.commandName,
 										description: command.commandDescription,
-										createdBy: '1'
+										createdBy: '1',
+										order: command.order
 									}
 								}
 							}).then((commandData) => {
@@ -401,7 +420,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 										name: obj.outputName,
 										description: obj.outputDescription,
 										units: JSON.stringify(obj.outputUnit),
-										createdBy: '1'
+										createdBy: '1',
+										order: obj.order
 									}
 								}
 							})
@@ -527,6 +547,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 						return {...previousState, commandName: value};
 					case Params.CommandDescription:
 						return {...previousState, commandDescription: value};
+					case Params.Order:
+						return {...previousState, order: parseInt(value)};
 					default:
 						return previousState;
 				}
@@ -561,6 +583,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 						return {...previousState, outputDescription: value};
 					case Params.OutputUnit:
 						return {...previousState, outputUnit: value};
+					case Params.OutputOrder:
+						return {...previousState, order: parseInt(value)};
 					default:
 						return previousState;
 				}
@@ -577,7 +601,8 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					previousState.map((obj) => {
 						if (obj.commandName === command.commandName) {
 							(obj.commandName = commandToEdit.commandName),
-								(obj.commandDescription = commandToEdit.commandDescription);
+								(obj.commandDescription = commandToEdit.commandDescription),
+								(obj.order = commandToEdit.order);
 						}
 					});
 					return previousState;
@@ -615,7 +640,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 		}
 
 		if (modalType === Section.OutputInfo) {
-			if (outputToEdit.outputName.length > 0 && outputToEdit.outputUnit.length > 0) {
+			if (outputToEdit.outputName.length > 0) {
 				setOutputsList((previousState) => {
 					const output = previousState[rowIndex];
 
@@ -624,6 +649,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 							obj.outputName = outputToEdit.outputName;
 							obj.outputDescription = outputToEdit.outputDescription;
 							obj.outputUnit = outputToEdit.outputUnit;
+							obj.order = outputToEdit.order;
 						}
 					});
 					return previousState;
@@ -666,12 +692,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				</ModalComponent>
 			}
 			<LoadingContainer loading={loading}>
-				<LabPractice
-					practice={practiceInfo}
-					labName={labName}
-					onValueChange={practiceChange}
-					errors={errors}
-				/>
+				<LabPractice practice={practiceInfo} labName={labName} onValueChange={practiceChange} errors={errors} />
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className="justifyCenter">

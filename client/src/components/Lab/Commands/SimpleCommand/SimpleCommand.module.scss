@@ -1,6 +1,7 @@
 .button {
 	height: fit-content;
 	min-width: 50px;
-	width: fit-content;
-	margin: auto
+	margin: auto;
+	width: -webkit-fill-available;
+	min-height: 60px;
 }

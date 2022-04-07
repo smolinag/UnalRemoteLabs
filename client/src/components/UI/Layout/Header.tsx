@@ -9,12 +9,14 @@ import {BsPersonCircle} from 'react-icons/bs';
 import {useNavigate} from 'react-router-dom';
 
 import logosimbolo from '../../../assets/images/logosimbolo.png';
+import {useAuthContext} from '../../../GroupProvider';
 import classes from './Header.module.scss';
 
 const Header: React.FC<unknown> = () => {
 	const navigate = useNavigate();
 	const [loggedUser, setLoggedUser] = useState<string>('');
 	const {signOut} = useAuthenticator();
+	const {clearGroup} = useAuthContext();
 
 	useEffect(() => {
 		(async () => {
@@ -23,6 +25,14 @@ const Header: React.FC<unknown> = () => {
 			setLoggedUser(response);
 		})();
 	}, [loggedUser]);
+
+	const signOutFunction = () => {
+		signOut;
+		clearGroup();
+		setLoggedUser('');
+		Auth.signOut()
+		// window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
+	};
 
 	return (
 		<header>
@@ -45,7 +55,7 @@ const Header: React.FC<unknown> = () => {
 
 						<div className={classes.option}>
 							<BiExit className={classes.icon} />
-							<span onClick={signOut}>Salir</span>
+							<span onClick={signOutFunction}>Salir</span>
 						</div>
 					</Nav>
 				</Navbar.Collapse>

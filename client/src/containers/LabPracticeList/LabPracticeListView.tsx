@@ -31,7 +31,8 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	}, [labData]);
 
 	useEffect(() => {
-		console.warn(labPracticesData);
+		console.log(labId);
+		console.log(labPracticesData);
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
 				.filter((item) => !item?._deleted)
@@ -72,6 +73,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	};
 
 	const getTableHeaders = () => {
+		console.log(labSemesterId);
 		const headers = ['Nombre', 'Descripción', 'Duración'];
 		if (labSemesterId) {
 			headers.push('Programar');
@@ -105,16 +107,16 @@ const LabPracticeListView: React.FC<unknown> = () => {
 				console.log('Edit');
 				navigate('/lab-practice-edition', {
 					state: {labPracticeId: labPractices[index].id, labName: laboratoryName}
-				})
+				});
 				break;
 		}
 	};
 
-	const handleLabPracticeCreation = () =>{
+	const handleLabPracticeCreation = () => {
 		navigate('/lab-practice-creation', {
 			state: {labId: labId, labName: laboratoryName}
-		})
-	}
+		});
+	};
 
 	return (
 		<LoadingContainer loading={false}>
@@ -127,22 +129,26 @@ const LabPracticeListView: React.FC<unknown> = () => {
 						headers={getTableHeaders()}
 						data={mapLabpracticesForTable(labPractices)}
 						onAction={handleTableAction}
-						removable
-						hasRemoveAll
-						editable
+						removable={!labSemesterId}
+						hasRemoveAll={!labSemesterId}
+						editable={!labSemesterId}
 						overflow
 						stickyHeader
 						maxHeight={'400px'}
 					/>
 				</Col>
 			</Row>
-			<Row className="section">
-				<div className="justifyEnd">
-					<Button loading={false} onClick={handleLabPracticeCreation}>
-						Crear
-					</Button>
-				</div>
-			</Row>
+			{!labSemesterId ? (
+				<Row className="section">
+					<div className="justifyEnd">
+						<Button loading={false} onClick={handleLabPracticeCreation}>
+							Crear
+						</Button>
+					</div>
+				</Row>
+			) : (
+				<></>
+			)}
 		</LoadingContainer>
 	);
 };

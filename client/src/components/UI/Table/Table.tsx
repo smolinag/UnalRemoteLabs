@@ -38,7 +38,7 @@ const Table: React.FC<Props> = ({
 			return data.map((row, i) => (
 				<tr key={`row_${i}`}>
 					{row.map((cell, j) => (
-						<td key={`cell_${i}_${j}`}>{cell}</td>
+						<td key={`cell_${i}_${j}`} style={{fontSize: 'smaller'}}>{cell}</td>
 					))}
 					{(editable || removable) && (
 						<td style={{width: editable && removable && removable ? '70px' : '30px'}}>

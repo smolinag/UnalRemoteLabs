@@ -14,7 +14,9 @@ const auth: AuthOptions = {
 	jwtToken: async () => {
 		try {
 			const token = (await Auth.currentSession()).getAccessToken().getJwtToken();
-			decodeToken(token);
+			if(token.length > 0) {
+				decodeToken(token);
+			}
 			window.sessionStorage.setItem('token', token);
 			return token;
 		} catch (e) {
@@ -39,7 +41,8 @@ export const apolloClient = new ApolloClient({
 
 // let chroneTime = 0;
 
-const decodeToken = (token: string) => {
+export const decodeToken = (token: string): string => {
+
 	const base64Url = token.split('.')[1];
 	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
 	const jsonPayload = decodeURIComponent(
@@ -52,18 +55,7 @@ const decodeToken = (token: string) => {
 	);
 
 	const payload = JSON.parse(jsonPayload);
-	console.log(payload["cognito:groups"]);
-
-	// createContext(payload["cognito:groups"]);
-
-
-	// const [groups, setGroups] = useContext(GroupsProvider)
-
-	// setGroups(payload["cognito:groups"])
-
-	// console.log(groups);
-
-	
+	return payload["cognito:groups"][0]
 };
 
 // const getNewToken = () => {

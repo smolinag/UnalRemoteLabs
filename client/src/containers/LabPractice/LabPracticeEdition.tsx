@@ -1,3 +1,4 @@
+import {Storage} from 'aws-amplify';
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useLocation} from 'react-router-dom';
@@ -108,6 +109,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
+	const [downloadingGuideFile, setDownloadingGuideFile] = React.useState<boolean>(false);
 	const [guideFile, setGuideFile] = React.useState<File | null>(null);
 
 	const location = useLocation();
@@ -484,6 +486,17 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (errors.length === 0) {
 			setLoading(true);
 
+			//Cargar guia a S3
+			if (guideFile) {
+				try {
+					console.log(guideFile);
+					await Storage.put(guideFile.name, guideFile);
+					practiceChange(guideFile.name, 'practiceGuideS3Path');
+				} catch (e) {
+					console.error('Error uploading guide to S3', e);
+				}
+			}
+
 			try {
 				// Actualizar práctica
 				const {data: labPracticeData} = await updateLabPractice({
@@ -494,13 +507,14 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
-							guideS3Path: practiceInfo.practiceGuideS3Path,
+							guideS3Path: guideFile?.name,
 							createdBy: '1',
 							_version: practiceInfo.version
 						}
 					}
 				});
-				console.log(labPracticeData);
+				practiceInfo.practiceGuideS3Path = guideFile?.name ?? '';
+				setPracticeInfo(practiceInfo)
 
 				if (!labPracticeData?.updateLabPractice?.id) {
 					throw Error('');
@@ -511,6 +525,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				if (!practiceId) {
 					return;
 				}
+
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				if (commandsList.length > 0) {
 					commandsList.map(async (command) => {
@@ -1075,8 +1090,35 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	const handleGuideFileSelection = (file: File) => {
 		setGuideFile(file);
-		console.log(guideFile);
-		practiceChange(file.name, 'practiceGuideS3Path');
+	};
+
+	const handleDownloadGuideFile = async () => {
+		try {
+			setDownloadingGuideFile(true);
+			const data = await Storage.get(practiceInfo.practiceGuideS3Path, {download: true});
+			if (data?.Body) {
+				downloadBlob(data.Body as Blob, practiceInfo.practiceGuideS3Path);
+			}
+			setDownloadingGuideFile(false);
+		} catch (e) {
+			console.error('Error downloading S3 file', e);
+		}
+	};
+
+	const downloadBlob = async (blob: Blob, filename: string) => {
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = filename || 'download';
+		const clickHandler = () => {
+			setTimeout(() => {
+				URL.revokeObjectURL(url);
+				a.removeEventListener('click', clickHandler);
+			}, 150);
+		};
+		a.addEventListener('click', clickHandler, false);
+		a.click();
+		return a;
 	};
 
 	return (
@@ -1097,6 +1139,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				<LabPracticeGuide
 					guideFileName={practiceInfo.practiceGuideS3Path}
 					onFileSelected={(file) => handleGuideFileSelection(file)}
+					onFileDownload={handleDownloadGuideFile}
+					fileDownloadEnabled={practiceInfo?.practiceGuideS3Path ? true : false}
+					downloadingFile={downloadingGuideFile}
 				/>
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />

@@ -313,6 +313,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				duration={practiceInfo?.getLabPractice?.duration}
 				isVideoUrlInputEnabled={true}
 				laPracticeSessionId={SESSION_ID}
+				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 			/>
 			<LoadingContainer loading={isExecutingCommand}>
 				<Commands commands={labCommands} onCommandChange={handleCommandChange} data={executedCommands} />

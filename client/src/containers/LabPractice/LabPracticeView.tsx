@@ -80,7 +80,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
-	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery();
+	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery({variables: {id: SESSION_ID}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});

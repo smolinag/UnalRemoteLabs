@@ -73,7 +73,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	};
 
 	const getTableHeaders = () => {
-		console.log(labSemesterId);
 		const headers = ['Nombre', 'Descripción', 'Duración'];
 		if (labSemesterId) {
 			headers.push('Programar');

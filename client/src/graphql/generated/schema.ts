@@ -2479,7 +2479,9 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	>;
 };
 
-export type ListLabPracticeSessionCommandsQueryVariables = Exact<{[key: string]: never}>;
+export type ListLabPracticeSessionCommandsQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
 
 export type ListLabPracticeSessionCommandsQuery = {__typename?: 'Query'} & {
 	listLabPracticeSessionCommands?: Maybe<
@@ -4380,8 +4382,8 @@ export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 	ListLabPracticeOutputsQueryVariables
 >;
 export const ListLabPracticeSessionCommandsDocument = gql`
-	query listLabPracticeSessionCommands {
-		listLabPracticeSessionCommands {
+	query listLabPracticeSessionCommands($id: ID!) {
+		listLabPracticeSessionCommands(filter: {labpracticesessionID: {eq: $id}}) {
 			items {
 				id
 				status
@@ -4411,11 +4413,12 @@ export const ListLabPracticeSessionCommandsDocument = gql`
  * @example
  * const { data, loading, error } = useListLabPracticeSessionCommandsQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
 export function useListLabPracticeSessionCommandsQuery(
-	baseOptions?: Apollo.QueryHookOptions<
+	baseOptions: Apollo.QueryHookOptions<
 		ListLabPracticeSessionCommandsQuery,
 		ListLabPracticeSessionCommandsQueryVariables
 	>

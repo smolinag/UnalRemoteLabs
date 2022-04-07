@@ -1,5 +1,5 @@
-query listLabPracticeSessionCommands {
-	listLabPracticeSessionCommands {
+query listLabPracticeSessionCommands($id: ID!) {
+	listLabPracticeSessionCommands(filter: {labpracticesessionID: {eq: $id}}) {
 		items {
 			id
 			status

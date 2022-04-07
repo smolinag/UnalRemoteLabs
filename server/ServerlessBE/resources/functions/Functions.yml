@@ -2,4 +2,4 @@ iot-to-appsync:
   handler: index.handler
   events:
     - iot:
-        sql: "SELECT * FROM '${self:provider.stage}/topic_out/#'"
+        sql: "SELECT * FROM 'topic_out/#'"

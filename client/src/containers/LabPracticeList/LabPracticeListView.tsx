@@ -82,15 +82,15 @@ const LabPracticeListView: React.FC<unknown> = () => {
 
 	const redirectToLabPracticeSessionProgram = (labPracticeId: string) => {
 		return (
-			<a
-				href=""
+			<p
+				className="links"
 				onClick={() =>
 					navigate('/lab-practice-session-creation', {
 						state: {labPracticeId, labSemesterId}
 					})
 				}>
 				Programar
-			</a>
+			</p>
 		);
 	};
 

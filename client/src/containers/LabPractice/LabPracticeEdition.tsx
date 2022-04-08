@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useLocation} from 'react-router-dom';
@@ -182,7 +183,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						});
 					}
 				});
-				return tempCommands;
+				return _.orderBy(tempCommands, 'order', 'asc');
 			});
 
 			setParametersList(() => {
@@ -235,7 +236,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						});
 					}
 				});
-				return outputs;
+				return _.orderBy(outputs, 'order', 'asc');;
 			});
 		}
 	}, [practiceOutputsDb]);

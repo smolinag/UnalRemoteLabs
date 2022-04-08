@@ -57,5 +57,11 @@ export type AmplifyDependentResourcesAttributes = {
             "MonitorsGroupRole": "string",
             "StudentsGroupRole": "string"
         }
+    },
+    "storage": {
+        "laboratoryGuideFiles": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }

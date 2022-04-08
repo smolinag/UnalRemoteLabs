@@ -2310,7 +2310,10 @@ export type GetLabPracticeQueryVariables = Exact<{
 
 export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 	getLabPractice?: Maybe<
-		{__typename?: 'LabPractice'} & Pick<LabPractice, 'id' | 'name' | 'description' | 'duration' | '_version'> & {
+		{__typename?: 'LabPractice'} & Pick<
+			LabPractice,
+			'id' | 'name' | 'description' | 'duration' | 'guideS3Path' | '_version'
+		> & {
 				LabPracticeSessions?: Maybe<
 					{__typename?: 'ModelLabPracticeSessionConnection'} & {
 						items: Array<Maybe<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>>;
@@ -2476,7 +2479,9 @@ export type ListLabPracticeOutputsQuery = {__typename?: 'Query'} & {
 	>;
 };
 
-export type ListLabPracticeSessionCommandsQueryVariables = Exact<{[key: string]: never}>;
+export type ListLabPracticeSessionCommandsQueryVariables = Exact<{
+	id: Scalars['ID'];
+}>;
 
 export type ListLabPracticeSessionCommandsQuery = {__typename?: 'Query'} & {
 	listLabPracticeSessionCommands?: Maybe<
@@ -3934,6 +3939,7 @@ export const GetLabPracticeDocument = gql`
 			name
 			description
 			duration
+			guideS3Path
 			_version
 			LabPracticeSessions {
 				items {
@@ -4376,8 +4382,8 @@ export type ListLabPracticeOutputsQueryResult = Apollo.QueryResult<
 	ListLabPracticeOutputsQueryVariables
 >;
 export const ListLabPracticeSessionCommandsDocument = gql`
-	query listLabPracticeSessionCommands {
-		listLabPracticeSessionCommands {
+	query listLabPracticeSessionCommands($id: ID!) {
+		listLabPracticeSessionCommands(filter: {labpracticesessionID: {eq: $id}}) {
 			items {
 				id
 				status
@@ -4407,11 +4413,12 @@ export const ListLabPracticeSessionCommandsDocument = gql`
  * @example
  * const { data, loading, error } = useListLabPracticeSessionCommandsQuery({
  *   variables: {
+ *      id: // value for 'id'
  *   },
  * });
  */
 export function useListLabPracticeSessionCommandsQuery(
-	baseOptions?: Apollo.QueryHookOptions<
+	baseOptions: Apollo.QueryHookOptions<
 		ListLabPracticeSessionCommandsQuery,
 		ListLabPracticeSessionCommandsQueryVariables
 	>

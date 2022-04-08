@@ -5,3 +5,4 @@ export {default as LabPracticeParameters} from './LabPracticeParameters';
 export {default as LabPracticeParametersTable} from './LabPracticeParametersTable';
 export {default as LabPracticeOutput} from './LabPracticeOutput';
 export {default as LabPracticeOutputTable} from './LabPracticeOutputTable';
+export {default as LabPracticeGuide} from './LabPracticeGuide';

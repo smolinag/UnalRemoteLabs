@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import _ from 'lodash';
+=======
+import {Storage} from 'aws-amplify';
+>>>>>>> develop
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useLocation} from 'react-router-dom';
@@ -11,7 +15,8 @@ import {
 	LabPracticeParameters,
 	LabPracticeParametersTable,
 	LabPracticeOutput,
-	LabPracticeOutputTable
+	LabPracticeOutputTable,
+	LabPracticeGuide
 } from '../../components/LabPracticeCreation';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
@@ -54,6 +59,7 @@ const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoName: '',
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
+	practiceGuideS3Path: '',
 	version: 0,
 	command: {
 		commandName: '',
@@ -109,6 +115,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	);
 	const [outputToEdit, setOutputToEdit] = React.useState<OutputInfo>(initialPracticeValue.output);
 
+	const [downloadingGuideFile, setDownloadingGuideFile] = React.useState<boolean>(false);
+	const [guideFile, setGuideFile] = React.useState<File | null>(null);
+
 	const location = useLocation();
 	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const labName = (location.state as LocationState)?.labName;
@@ -155,6 +164,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				practiceInfoDuration: practiceInfoDb?.getLabPractice.duration
 					? practiceInfoDb?.getLabPractice.duration.toString()
 					: '0',
+				practiceGuideS3Path: practiceInfoDb?.getLabPractice.guideS3Path ?? '',
 				version: practiceInfoDb.getLabPractice._version
 			};
 			setLoading(false);
@@ -255,6 +265,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return {...previousState, practiceInfoDescription: value};
 				case Params.Duration:
 					return {...previousState, practiceInfoDuration: value.length > 0 && parseInt(value) > 0 ? value : '0'};
+				case Params.PracticeGuideS3Path:
+					return {...previousState, practiceGuideS3Path: value};
 				case Params.CommandName:
 					practice.command = {
 						...practiceInfo.command,
@@ -490,6 +502,17 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (errors.length === 0) {
 			setLoading(true);
 
+			//Cargar guia a S3
+			if (guideFile) {
+				try {
+					console.log(guideFile);
+					await Storage.put(guideFile.name, guideFile);
+					practiceChange(guideFile.name, 'practiceGuideS3Path');
+				} catch (e) {
+					console.error('Error uploading guide to S3', e);
+				}
+			}
+
 			try {
 				// Actualizar práctica
 				const {data: labPracticeData} = await updateLabPractice({
@@ -500,11 +523,14 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
+							guideS3Path: guideFile?.name,
 							createdBy: '1',
 							_version: practiceInfo.version
 						}
 					}
 				});
+				practiceInfo.practiceGuideS3Path = guideFile?.name ?? '';
+				setPracticeInfo(practiceInfo)
 
 				if (!labPracticeData?.updateLabPractice?.id) {
 					throw Error('');
@@ -515,6 +541,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				if (!practiceId) {
 					return;
 				}
+
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				if (commandsList.length > 0) {
 					commandsList.map(async (command) => {
@@ -1091,6 +1118,39 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		}
 	};
 
+	const handleGuideFileSelection = (file: File) => {
+		setGuideFile(file);
+	};
+
+	const handleDownloadGuideFile = async () => {
+		try {
+			setDownloadingGuideFile(true);
+			const data = await Storage.get(practiceInfo.practiceGuideS3Path, {download: true});
+			if (data?.Body) {
+				downloadBlob(data.Body as Blob, practiceInfo.practiceGuideS3Path);
+			}
+			setDownloadingGuideFile(false);
+		} catch (e) {
+			console.error('Error downloading S3 file', e);
+		}
+	};
+
+	const downloadBlob = async (blob: Blob, filename: string) => {
+		const url = URL.createObjectURL(blob);
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = filename || 'download';
+		const clickHandler = () => {
+			setTimeout(() => {
+				URL.revokeObjectURL(url);
+				a.removeEventListener('click', clickHandler);
+			}, 150);
+		};
+		a.addEventListener('click', clickHandler, false);
+		a.click();
+		return a;
+	};
+
 	return (
 		<>
 			{
@@ -1105,6 +1165,14 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			}
 			<LoadingContainer loading={loading}>
 				<LabPractice practice={practiceInfo} labName={labName} onValueChange={practiceChange} errors={errors} />
+
+				<LabPracticeGuide
+					guideFileName={practiceInfo.practiceGuideS3Path}
+					onFileSelected={(file) => handleGuideFileSelection(file)}
+					onFileDownload={handleDownloadGuideFile}
+					fileDownloadEnabled={practiceInfo?.practiceGuideS3Path ? true : false}
+					downloadingFile={downloadingGuideFile}
+				/>
 
 				<LabPracticeCommand command={practiceInfo.command} onValueChange={practiceChange} errors={errors} />
 				<div className="justifyCenter">

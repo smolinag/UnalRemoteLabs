@@ -13,12 +13,13 @@ type Variants = BootstrapVariants | CustomVariants;
 interface Props {
 	variant?: Variants;
 	loading: boolean;
+	disabled?: boolean;
 	onClick: () => void;
 }
 
 const DEFAULT_VARIANT: Variants = 'red';
 
-const Button: React.FC<Props> = ({children, variant = DEFAULT_VARIANT, loading, onClick}) => {
+const Button: React.FC<Props> = ({children, variant = DEFAULT_VARIANT, loading, disabled, onClick}) => {
 	const loadingSpinner = (
 		<>
 			<Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
@@ -26,9 +27,11 @@ const Button: React.FC<Props> = ({children, variant = DEFAULT_VARIANT, loading, 
 		</>
 	);
 
+	const color = disabled ? 'secondary' : variant;
+
 	return (
 		<div className={classes.button}>
-			<BootstrapButton variant={variant} size="lg" className={classes.button} disabled={loading} onClick={onClick}>
+			<BootstrapButton variant={color} size="lg" className={classes.button} disabled={loading || disabled} onClick={onClick}>
 				{loading ? loadingSpinner : children}
 			</BootstrapButton>
 		</div>

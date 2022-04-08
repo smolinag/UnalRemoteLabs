@@ -25,29 +25,29 @@ const LaboratoriesTable: React.FC<Props> = ({data, onAction}) => {
 
 	const redirectToLabPractice = (labId: string) => {
 		return (
-			<a
-				href=""
+			<p
+				className="links"
 				onClick={() =>
 					navigate('/lab-practices', {
 						state: {labId}
 					})
 				}>
 				Prácticas
-			</a>
+			</p>
 		);
 	};
 
 	const redirectToLabSemester = (labId: string) => {
 		return (
-			<a
-				href=""
+			<p
+				className="links"
 				onClick={() =>
 					navigate('/lab-semesters', {
 						state: {laboratoryID: labId}
 					})
 				}>
 				Semestres
-			</a>
+			</p>
 		);
 	};
 

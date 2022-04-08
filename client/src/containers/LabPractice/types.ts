@@ -11,6 +11,7 @@ export interface LabPracticeInfo {
 	practiceInfoName: string;
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
+	practiceGuideS3Path: string;
 	version?: number;
 	command: LabPracticeCommandInfo;
 	parameter: LabPracticeParameterInfo;
@@ -73,6 +74,7 @@ export enum Params {
 	ParameterMaxValue = 'parameterMaxValue',
 	ParameterMinValue = 'parameterMinValue',
 	ParameterRegex = 'parameterRegex',
+	PracticeGuideS3Path = 'practiceGuideS3Path',
 	OutputType = 'outputType',
 	OutputName = 'outputName',
 	OutputDescription = 'outputDescription',

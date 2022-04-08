@@ -22,10 +22,13 @@ import {
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
-// const PRACTICE_ID = '7f735a8d-2d46-466f-a40e-49a32d891654';
-const PRACTICE_ID = '52698b41-6586-4fa8-b024-a134892a0a59';
-const SESSION_ID = '2974b73d-dbc3-4bd4-b3c9-8c7d3e6b343d'; //TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
-const DEVICE_ID = 'b13743e4-8951-4e97-9392-d7f07c910f30';
+//const PRACTICE_ID = '52698b41-6586-4fa8-b024-a134892a0a59'; //Lineas
+//const SESSION_ID = '2974b73d-dbc3-4bd4-b3c9-8c7d3e6b343d'; //Lineas TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
+//const DEVICE_ID = 'b13743e4-8951-4e97-9392-d7f07c910f30'; //Lineas
+
+const PRACTICE_ID = '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'; //Motores
+const SESSION_ID = '11df7731-d269-49c5-807e-53e6ae43dd8d'; //Motores
+const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77'; //Motores
 // const COMMAND_NAME_PREFIX = 'cmd';
 
 interface OutputListDto {
@@ -80,7 +83,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
 	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
-	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery();
+	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery({variables: {id: SESSION_ID}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
@@ -210,6 +213,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
+		console.log(updatedCommand)
 
 		if (updatedCommand) {
 			const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
@@ -297,7 +301,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 			};
 
 			await publishMqttMessageMutation({
-				variables: {input: {message: JSON.stringify(mqttMessage), topic: `${DEVICE_ID}/topic_in`}}
+				variables: {input: {message: JSON.stringify(mqttMessage), topic: `topic_in/${DEVICE_ID}`}}
 			});
 
 			commandExecutionTimeout = setTimeout(async () => {
@@ -360,6 +364,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				duration={practiceInfo?.getLabPractice?.duration}
 				isVideoUrlInputEnabled={true}
 				laPracticeSessionId={SESSION_ID}
+				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 				sessionInformation={sessionInformation}
 			/>
 			<Commands

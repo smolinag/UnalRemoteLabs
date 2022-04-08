@@ -9,3 +9,4 @@ export {default as NotificationBanner} from './NotificationBanner/NotificationBa
 export {default as ModalComponent} from './ModalComponent/ModalComponent';
 export {default as DateTimePickerComponent} from './DateTimePicker/DateTimePickerComponent';
 export {default as TextLabel} from './TextLabel/TextLabel';
+export {default as FileInput} from './FileInput/FileInput';

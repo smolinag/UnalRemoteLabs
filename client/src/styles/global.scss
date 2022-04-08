@@ -59,7 +59,12 @@ body {
 	color: black;
 }
 
-
 .react-datetime-picker__calendar {
 	z-index: 999 !important;
+}
+
+.links {
+	margin-bottom: 0px; 	
+	color: rgb(33, 49, 139); 
+	cursor: pointer;
 }

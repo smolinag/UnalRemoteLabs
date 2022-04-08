@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-import _ from 'lodash';
-=======
 import {Storage} from 'aws-amplify';
->>>>>>> develop
+import _ from 'lodash';
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useLocation} from 'react-router-dom';

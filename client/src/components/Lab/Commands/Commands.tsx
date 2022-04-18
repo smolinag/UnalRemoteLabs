@@ -2,7 +2,7 @@ import React from 'react';
 import {Col, Row} from 'react-bootstrap';
 import {IoRefreshOutline} from 'react-icons/io5';
 
-import { LoadingContainer } from '../../UI';
+import {LoadingContainer} from '../../UI';
 import classes from './Commands.module.scss';
 import ComplexCommand, {Parameter} from './ComplexCommand/ComplexCommand';
 import SimpleCommand from './SimpleCommand/SimpleCommand';

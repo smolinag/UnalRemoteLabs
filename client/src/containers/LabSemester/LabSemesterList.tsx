@@ -65,7 +65,7 @@ const LabSemesterList: React.FC<unknown> = () => {
 						studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
 						version: obj?._version ? obj._version : null,
 						deleted: obj?._deleted ? obj._deleted : null,
-						laboratoryID: laboratory?.id ? laboratory.id : ''
+						laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''
 					};
 				});
 

@@ -1,4 +1,4 @@
-export const TimeConvert = (date: string) => {
+export const TimeConvert = (date: string): string => {
 	const addZero = (value: number) => {
 		if (value.toString().length === 1) {
 			return `0${value}`;

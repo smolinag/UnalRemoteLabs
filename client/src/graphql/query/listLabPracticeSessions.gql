@@ -1,0 +1,34 @@
+query listLabPracticeSessions($labSemesterID: ID!) {
+	listLabPracticeSessions(filter: {labSemesterID: {eq: $labSemesterID}}) {
+		items {
+			id
+			labSemesterID
+			startDate
+			endDate
+			description
+			_version
+			_deleted
+			LabSemester {
+				id
+				semesterName
+				description
+				Laboratory {
+					name
+				}
+			}
+			LabPractice {
+				_deleted
+				id
+				name
+				description
+				duration
+				Laboratory {
+					id
+					name
+					description
+				}
+	
+			}
+		}
+	}
+}

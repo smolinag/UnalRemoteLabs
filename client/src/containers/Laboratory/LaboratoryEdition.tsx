@@ -12,7 +12,7 @@ import {
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Laboratory, LocationState, Organization, Params} from './types';
 
-const initialLaboratoryValue: Laboratory = {
+export const initialLaboratoryValue: Laboratory = {
 	id: '',
 	name: '',
 	description: '',

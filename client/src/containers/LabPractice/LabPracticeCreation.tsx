@@ -15,6 +15,7 @@ import {
 } from '../../components/LabPracticeCreation';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
+import {generateUuid} from '../../generalUtils/GenerateUuid';
 import {
 	useCreateLabPracticeMutation,
 	useCreateLabPracticeCommandMutation,
@@ -103,8 +104,6 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const labName = 'Física Electricidad y Magnetismo';
 
 	const practiceChange = (value: string, id: string) => {
-		console.log(value);
-		console.log(id);
 		const practice: LabPracticeInfo = {
 			...practiceInfo
 		};
@@ -128,6 +127,12 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					practice.command = {
 						...practiceInfo.command,
 						commandDescription: value
+					};
+					return {...previousState, command: practice.command};
+				case Params.CommandLabel:
+					practice.command = {
+						...practiceInfo.command,
+						commandLabel: value
 					};
 					return {...previousState, command: practice.command};
 				case Params.Order:
@@ -346,7 +351,6 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 			//Cargar guia a S3
 			if (guideFile) {
 				try {
-					console.log(guideFile);
 					await Storage.put(guideFile.name, guideFile);
 					practiceChange(guideFile.name, 'practiceGuideS3Path');
 				} catch (e) {
@@ -363,12 +367,13 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
 							guideS3Path: guideFile?.name,
-							createdBy: '1'
+							createdBy: '1',
+							LabPracticeDeviceId: generateUuid()
 						}
 					}
 				});
 				practiceInfo.practiceGuideS3Path = guideFile?.name ?? '';
-				setPracticeInfo(practiceInfo)
+				setPracticeInfo(practiceInfo);
 
 				if (!labPracticeData?.createLabPractice?.id) {
 					throw Error('');

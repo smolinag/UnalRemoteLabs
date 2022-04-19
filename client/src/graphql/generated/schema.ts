@@ -33,28 +33,17 @@ export type CreateLabPracticeCommandInput = {
 	_version?: Maybe<Scalars['Int']>;
 };
 
-export type CreateLabPracticeDeviceInput = {
-	id?: Maybe<Scalars['ID']>;
-	name: Scalars['String'];
-	description?: Maybe<Scalars['String']>;
-	type?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
 export type CreateLabPracticeInput = {
 	id?: Maybe<Scalars['ID']>;
 	name: Scalars['String'];
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
 	laboratoryID: Scalars['ID'];
+	LabPracticeDeviceId: Scalars['String'];
 	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeLabPracticeDeviceId?: Maybe<Scalars['ID']>;
 };
 
 export type CreateLabPracticeOutputInput = {
@@ -186,11 +175,6 @@ export type DeleteLabPracticeCommandInput = {
 	_version?: Maybe<Scalars['Int']>;
 };
 
-export type DeleteLabPracticeDeviceInput = {
-	id: Scalars['ID'];
-	_version?: Maybe<Scalars['Int']>;
-};
-
 export type DeleteLabPracticeInput = {
 	id: Scalars['ID'];
 	_version?: Maybe<Scalars['Int']>;
@@ -274,6 +258,7 @@ export type LabPractice = {
 	description?: Maybe<Scalars['String']>;
 	duration: Scalars['Int'];
 	laboratoryID: Scalars['ID'];
+	LabPracticeDeviceId: Scalars['String'];
 	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
@@ -284,7 +269,6 @@ export type LabPractice = {
 	updatedAt: Scalars['AWSDateTime'];
 	LabPracticeOutputs?: Maybe<ModelLabPracticeOutputConnection>;
 	LabPracticeSessions?: Maybe<ModelLabPracticeSessionConnection>;
-	LabPracticeDevice?: Maybe<LabPracticeDevice>;
 	LabPracticeParameters?: Maybe<ModelLabPracticeParameterConnection>;
 	LabPracticeCommands?: Maybe<ModelLabPracticeCommandConnection>;
 	Laboratory?: Maybe<Laboratory>;
@@ -350,23 +334,6 @@ export type LabPracticeCommandLabPracticeParametersArgs = {
 	sortDirection?: Maybe<ModelSortDirection>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type LabPracticeDevice = {
-	__typename?: 'LabPracticeDevice';
-	id: Scalars['ID'];
-	name: Scalars['String'];
-	description?: Maybe<Scalars['String']>;
-	type?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
-	_version: Scalars['Int'];
-	_deleted?: Maybe<Scalars['Boolean']>;
-	_lastChangedAt: Scalars['AWSTimestamp'];
-	createdAt: Scalars['AWSDateTime'];
-	updatedAt: Scalars['AWSDateTime'];
-	LabPractice?: Maybe<LabPractice>;
 };
 
 export type LabPracticeOutput = {
@@ -649,6 +616,7 @@ export type ModelLabPracticeConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
+	LabPracticeDeviceId?: Maybe<ModelStringInput>;
 	guideS3Path?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -664,44 +632,13 @@ export type ModelLabPracticeConnection = {
 	startedAt?: Maybe<Scalars['AWSTimestamp']>;
 };
 
-export type ModelLabPracticeDeviceConditionInput = {
-	name?: Maybe<ModelStringInput>;
-	description?: Maybe<ModelStringInput>;
-	type?: Maybe<ModelStringInput>;
-	labpracticeID?: Maybe<ModelIdInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
-	and?: Maybe<Array<Maybe<ModelLabPracticeDeviceConditionInput>>>;
-	or?: Maybe<Array<Maybe<ModelLabPracticeDeviceConditionInput>>>;
-	not?: Maybe<ModelLabPracticeDeviceConditionInput>;
-};
-
-export type ModelLabPracticeDeviceConnection = {
-	__typename?: 'ModelLabPracticeDeviceConnection';
-	items: Array<Maybe<LabPracticeDevice>>;
-	nextToken?: Maybe<Scalars['String']>;
-	startedAt?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type ModelLabPracticeDeviceFilterInput = {
-	id?: Maybe<ModelIdInput>;
-	name?: Maybe<ModelStringInput>;
-	description?: Maybe<ModelStringInput>;
-	type?: Maybe<ModelStringInput>;
-	labpracticeID?: Maybe<ModelIdInput>;
-	updatedBy?: Maybe<ModelStringInput>;
-	createdBy?: Maybe<ModelStringInput>;
-	and?: Maybe<Array<Maybe<ModelLabPracticeDeviceFilterInput>>>;
-	or?: Maybe<Array<Maybe<ModelLabPracticeDeviceFilterInput>>>;
-	not?: Maybe<ModelLabPracticeDeviceFilterInput>;
-};
-
 export type ModelLabPracticeFilterInput = {
 	id?: Maybe<ModelIdInput>;
 	name?: Maybe<ModelStringInput>;
 	description?: Maybe<ModelStringInput>;
 	duration?: Maybe<ModelIntInput>;
 	laboratoryID?: Maybe<ModelIdInput>;
+	LabPracticeDeviceId?: Maybe<ModelStringInput>;
 	guideS3Path?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -1119,9 +1056,6 @@ export type Mutation = {
 	createLabPracticeSession?: Maybe<LabPracticeSession>;
 	updateLabPracticeSession?: Maybe<LabPracticeSession>;
 	deleteLabPracticeSession?: Maybe<LabPracticeSession>;
-	createLabPracticeDevice?: Maybe<LabPracticeDevice>;
-	updateLabPracticeDevice?: Maybe<LabPracticeDevice>;
-	deleteLabPracticeDevice?: Maybe<LabPracticeDevice>;
 	createLabPracticeParameter?: Maybe<LabPracticeParameter>;
 	updateLabPracticeParameter?: Maybe<LabPracticeParameter>;
 	deleteLabPracticeParameter?: Maybe<LabPracticeParameter>;
@@ -1233,21 +1167,6 @@ export type MutationUpdateLabPracticeSessionArgs = {
 export type MutationDeleteLabPracticeSessionArgs = {
 	input: DeleteLabPracticeSessionInput;
 	condition?: Maybe<ModelLabPracticeSessionConditionInput>;
-};
-
-export type MutationCreateLabPracticeDeviceArgs = {
-	input: CreateLabPracticeDeviceInput;
-	condition?: Maybe<ModelLabPracticeDeviceConditionInput>;
-};
-
-export type MutationUpdateLabPracticeDeviceArgs = {
-	input: UpdateLabPracticeDeviceInput;
-	condition?: Maybe<ModelLabPracticeDeviceConditionInput>;
-};
-
-export type MutationDeleteLabPracticeDeviceArgs = {
-	input: DeleteLabPracticeDeviceInput;
-	condition?: Maybe<ModelLabPracticeDeviceConditionInput>;
 };
 
 export type MutationCreateLabPracticeParameterArgs = {
@@ -1408,9 +1327,6 @@ export type Query = {
 	getLabPracticeSession?: Maybe<LabPracticeSession>;
 	listLabPracticeSessions?: Maybe<ModelLabPracticeSessionConnection>;
 	syncLabPracticeSessions?: Maybe<ModelLabPracticeSessionConnection>;
-	getLabPracticeDevice?: Maybe<LabPracticeDevice>;
-	listLabPracticeDevices?: Maybe<ModelLabPracticeDeviceConnection>;
-	syncLabPracticeDevices?: Maybe<ModelLabPracticeDeviceConnection>;
 	getLabPracticeParameter?: Maybe<LabPracticeParameter>;
 	listLabPracticeParameters?: Maybe<ModelLabPracticeParameterConnection>;
 	syncLabPracticeParameters?: Maybe<ModelLabPracticeParameterConnection>;
@@ -1528,23 +1444,6 @@ export type QueryListLabPracticeSessionsArgs = {
 
 export type QuerySyncLabPracticeSessionsArgs = {
 	filter?: Maybe<ModelLabPracticeSessionFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-	lastSync?: Maybe<Scalars['AWSTimestamp']>;
-};
-
-export type QueryGetLabPracticeDeviceArgs = {
-	id: Scalars['ID'];
-};
-
-export type QueryListLabPracticeDevicesArgs = {
-	filter?: Maybe<ModelLabPracticeDeviceFilterInput>;
-	limit?: Maybe<Scalars['Int']>;
-	nextToken?: Maybe<Scalars['String']>;
-};
-
-export type QuerySyncLabPracticeDevicesArgs = {
-	filter?: Maybe<ModelLabPracticeDeviceFilterInput>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
 	lastSync?: Maybe<Scalars['AWSTimestamp']>;
@@ -1686,9 +1585,6 @@ export type Subscription = {
 	onCreateLabPracticeSession?: Maybe<LabPracticeSession>;
 	onUpdateLabPracticeSession?: Maybe<LabPracticeSession>;
 	onDeleteLabPracticeSession?: Maybe<LabPracticeSession>;
-	onCreateLabPracticeDevice?: Maybe<LabPracticeDevice>;
-	onUpdateLabPracticeDevice?: Maybe<LabPracticeDevice>;
-	onDeleteLabPracticeDevice?: Maybe<LabPracticeDevice>;
 	onCreateLabPracticeParameter?: Maybe<LabPracticeParameter>;
 	onUpdateLabPracticeParameter?: Maybe<LabPracticeParameter>;
 	onDeleteLabPracticeParameter?: Maybe<LabPracticeParameter>;
@@ -1731,28 +1627,17 @@ export type UpdateLabPracticeCommandInput = {
 	_version?: Maybe<Scalars['Int']>;
 };
 
-export type UpdateLabPracticeDeviceInput = {
-	id: Scalars['ID'];
-	name?: Maybe<Scalars['String']>;
-	description?: Maybe<Scalars['String']>;
-	type?: Maybe<Scalars['String']>;
-	labpracticeID?: Maybe<Scalars['ID']>;
-	updatedBy?: Maybe<Scalars['String']>;
-	createdBy?: Maybe<Scalars['String']>;
-	_version?: Maybe<Scalars['Int']>;
-};
-
 export type UpdateLabPracticeInput = {
 	id: Scalars['ID'];
 	name?: Maybe<Scalars['String']>;
 	description?: Maybe<Scalars['String']>;
 	duration?: Maybe<Scalars['Int']>;
 	laboratoryID?: Maybe<Scalars['ID']>;
+	LabPracticeDeviceId?: Maybe<Scalars['String']>;
 	guideS3Path?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
 	_version?: Maybe<Scalars['Int']>;
-	labPracticeLabPracticeDeviceId?: Maybe<Scalars['ID']>;
 };
 
 export type UpdateLabPracticeOutputInput = {
@@ -2498,7 +2383,40 @@ export type ListLabPracticeSessionCommandsQuery = {__typename?: 'Query'} & {
 						| 'labpracticecommandID'
 						| 'labpracticesessionID'
 					> & {
-							LabPracticeCommand?: Maybe<{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name'>>;
+							LabPracticeCommand?: Maybe<
+								{__typename?: 'LabPracticeCommand'} & Pick<LabPracticeCommand, 'id' | 'name' | 'labelName'>
+							>;
+						}
+				>
+			>;
+		}
+	>;
+};
+
+export type ListLabPracticeSessionsQueryVariables = Exact<{
+	labSemesterID: Scalars['ID'];
+}>;
+
+export type ListLabPracticeSessionsQuery = {__typename?: 'Query'} & {
+	listLabPracticeSessions?: Maybe<
+		{__typename?: 'ModelLabPracticeSessionConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'LabPracticeSession'} & Pick<
+						LabPracticeSession,
+						'id' | 'labSemesterID' | 'startDate' | 'endDate' | 'description' | '_version' | '_deleted'
+					> & {
+							LabSemester?: Maybe<
+								{__typename?: 'LabSemester'} & Pick<LabSemester, 'id' | 'semesterName' | 'description'> & {
+										Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'name'>>;
+									}
+							>;
+							LabPractice?: Maybe<
+								{__typename?: 'LabPractice'} & Pick<
+									LabPractice,
+									'_deleted' | 'id' | 'name' | 'description' | 'duration'
+								> & {Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>>}
+							>;
 						}
 				>
 			>;
@@ -2518,11 +2436,7 @@ export type ListLabPracticesQuery = {__typename?: 'Query'} & {
 					{__typename?: 'LabPractice'} & Pick<
 						LabPractice,
 						'description' | 'id' | 'duration' | 'name' | '_deleted' | '_version'
-					> & {
-							LabPracticeDevice?: Maybe<
-								{__typename?: 'LabPracticeDevice'} & Pick<LabPracticeDevice, 'id' | 'name' | 'type' | '_deleted'>
-							>;
-						}
+					>
 				>
 			>;
 		}
@@ -2612,12 +2526,11 @@ export type ListUserLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 										LabPractice?: Maybe<
 											{__typename?: 'LabPractice'} & Pick<
 												LabPractice,
-												'id' | 'name' | 'description' | 'duration' | '_deleted'
+												'id' | 'name' | 'description' | 'duration' | '_deleted' | 'LabPracticeDeviceId'
 											> & {
 													Laboratory?: Maybe<
 														{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>
 													>;
-													LabPracticeDevice?: Maybe<{__typename?: 'LabPracticeDevice'} & Pick<LabPracticeDevice, 'id'>>;
 												}
 										>;
 									}
@@ -4391,6 +4304,7 @@ export const ListLabPracticeSessionCommandsDocument = gql`
 				LabPracticeCommand {
 					id
 					name
+					labelName
 				}
 				executionDate
 				requestDate
@@ -4449,6 +4363,82 @@ export type ListLabPracticeSessionCommandsQueryResult = Apollo.QueryResult<
 	ListLabPracticeSessionCommandsQuery,
 	ListLabPracticeSessionCommandsQueryVariables
 >;
+export const ListLabPracticeSessionsDocument = gql`
+	query listLabPracticeSessions($labSemesterID: ID!) {
+		listLabPracticeSessions(filter: {labSemesterID: {eq: $labSemesterID}}) {
+			items {
+				id
+				labSemesterID
+				startDate
+				endDate
+				description
+				_version
+				_deleted
+				LabSemester {
+					id
+					semesterName
+					description
+					Laboratory {
+						name
+					}
+				}
+				LabPractice {
+					_deleted
+					id
+					name
+					description
+					duration
+					Laboratory {
+						id
+						name
+						description
+					}
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useListLabPracticeSessionsQuery__
+ *
+ * To run a query within a React component, call `useListLabPracticeSessionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListLabPracticeSessionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListLabPracticeSessionsQuery({
+ *   variables: {
+ *      labSemesterID: // value for 'labSemesterID'
+ *   },
+ * });
+ */
+export function useListLabPracticeSessionsQuery(
+	baseOptions: Apollo.QueryHookOptions<ListLabPracticeSessionsQuery, ListLabPracticeSessionsQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListLabPracticeSessionsQuery, ListLabPracticeSessionsQueryVariables>(
+		ListLabPracticeSessionsDocument,
+		options
+	);
+}
+export function useListLabPracticeSessionsLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListLabPracticeSessionsQuery, ListLabPracticeSessionsQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListLabPracticeSessionsQuery, ListLabPracticeSessionsQueryVariables>(
+		ListLabPracticeSessionsDocument,
+		options
+	);
+}
+export type ListLabPracticeSessionsQueryHookResult = ReturnType<typeof useListLabPracticeSessionsQuery>;
+export type ListLabPracticeSessionsLazyQueryHookResult = ReturnType<typeof useListLabPracticeSessionsLazyQuery>;
+export type ListLabPracticeSessionsQueryResult = Apollo.QueryResult<
+	ListLabPracticeSessionsQuery,
+	ListLabPracticeSessionsQueryVariables
+>;
 export const ListLabPracticesDocument = gql`
 	query listLabPractices($id: ID!) {
 		listLabPractices(filter: {laboratoryID: {eq: $id}}) {
@@ -4459,12 +4449,6 @@ export const ListLabPracticesDocument = gql`
 				name
 				_deleted
 				_version
-				LabPracticeDevice {
-					id
-					name
-					type
-					_deleted
-				}
 			}
 		}
 	}
@@ -4696,9 +4680,7 @@ export const ListUserLabPracticeSessionsDocument = gql`
 							name
 							description
 						}
-						LabPracticeDevice {
-							id
-						}
+						LabPracticeDeviceId
 					}
 				}
 			}

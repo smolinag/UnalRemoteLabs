@@ -11,11 +11,13 @@ import {Action} from '../UI/Table/Table';
 import classes from './UserLabPracticeSessionsTable.module.scss';
 
 interface Props {
-	laboratories?: UserLabPracticeSession[];
+	userLabPracticeSession?: UserLabPracticeSession[];
+	labPracticeSession?: LabPracticeSession[];
 	onAction?: (rowIndex: number, action: Action) => void;
+	labSemesterId?: string;
 }
 
-const COLUMNS = [
+const COLUMNS_USER_SESSIONS = [
 	'Laboratorio',
 	'Práctica',
 	'Descripción',
@@ -27,6 +29,15 @@ const COLUMNS = [
 	'Ingresar',
 	'Editar',
 	'Eliminar'
+];
+
+const COLUMNS_SESSIONS = [
+	'Práctica',
+	'Descripción',
+	'Duración',
+	'Inicio de la práctica',
+	'Fin de la práctica',
+	'Ingresar',
 ];
 
 // const TIME_TO_ENTER_TO_PRACTICE = 15;
@@ -44,7 +55,12 @@ const showDate = (date: string) => {
 	}
 };
 
-const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction}) => {
+const UserLabPracticeSessionsTable: React.FC<Props> = ({
+	userLabPracticeSession,
+	labPracticeSession,
+	onAction,
+	labSemesterId
+}) => {
 	const navigate = useNavigate();
 	const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
 	const [labSession, setLabSession] = useState<LabPracticeSession>();
@@ -53,11 +69,11 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 
 	const [deleteLabPracticeSession] = useDeleteLabPracticeSessionMutation({});
 
-	if (!laboratories) {
+	if (!userLabPracticeSession || !labPracticeSession) {
 		return null;
 	}
 
-	const mapOutput = ({
+	const mapOutputUserSessions = ({
 		sessionStartDate,
 		sessionEndDate,
 		labPracticeSession
@@ -77,6 +93,15 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 		warnDelete(labPracticeSession)
 	];
 
+	const mapOutputLabSessions = (labPracticeSession: LabPracticeSession): (boolean | string | React.ReactNode | number)[] => [
+		labPracticeSession.labPracticeInfo.practiceInfoName,
+		labPracticeSession.labPracticeInfo.practiceInfoDescription,
+		`${labPracticeSession.labPracticeInfo.practiceInfoDuration} minutos`,
+		showDate(labPracticeSession.startDate),
+		showDate(labPracticeSession.endDate),
+		redirectToSession(labPracticeSession),
+	];
+
 	const redirectToSession = (labPracticeSession: LabPracticeSession) => {
 		/* Verificar que el usuario ingrese entre el lapsus de tiempo, el usuario puede 
 		ingresar hasta 15 minutos después de la hora de inicio de la práctica*/
@@ -90,13 +115,21 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 		// 			)
 		// 		)
 		// ) {
-			return (
-				<IoEnter
-					key={labPracticeSession.labPracticeInfo.laboratory.name}
-					className={classes.actionIcon}
-					onClick={() => navigate('/lab-practice', {state: {labPracticeId: labPracticeSession.labPracticeInfo.id, deviceId: labPracticeSession.labPracticeInfo.labPracticeDeviceId}})}
-				/>
-			);
+		return (
+			<IoEnter
+				key={labPracticeSession.labPracticeInfo.laboratory.id}
+				className={classes.actionIcon}
+				onClick={() =>
+					navigate('/lab-practice', {
+						state: {
+							labPracticeId: labPracticeSession.labPracticeInfo.id,
+							deviceId: labPracticeSession.labPracticeInfo.labPracticeDeviceId,
+							sessionId: labPracticeSession.id
+						}
+					})
+				}
+			/>
+		);
 		// } else {
 		// 	return null;
 		// }
@@ -115,9 +148,13 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 							startDate: labPracticeSession.startDate,
 							endDate: labPracticeSession.endDate,
 							description: labPracticeSession.description,
-							labPracticeName: labPracticeSession.labPracticeInfo?.practiceInfoName ? labPracticeSession.labPracticeInfo.practiceInfoName : "--",
-							duration: labPracticeSession.labPracticeInfo?.practiceInfoDuration ? labPracticeSession.labPracticeInfo.practiceInfoDuration : "--",
-							semesterId: labPracticeSession.labSemesterInfo?.id ? labPracticeSession.labSemesterInfo.id : "--",
+							labPracticeName: labPracticeSession.labPracticeInfo?.practiceInfoName
+								? labPracticeSession.labPracticeInfo.practiceInfoName
+								: '--',
+							duration: labPracticeSession.labPracticeInfo?.practiceInfoDuration
+								? labPracticeSession.labPracticeInfo.practiceInfoDuration
+								: '--',
+							semesterId: labPracticeSession.labSemesterInfo?.id ? labPracticeSession.labSemesterInfo.id : '--'
 						}
 					})
 				}
@@ -181,7 +218,17 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({laboratories, onAction})
 				onSave={handleDeleteAccept}>
 				<div>{'¿Desea eliminar la sesión de la práctica de laboratorio programada?'}</div>
 			</ModalComponent>
-			<Table headers={COLUMNS} data={laboratories.map(mapOutput)} overflow stickyHeader onAction={onAction} />
+			<Table
+				headers={labSemesterId ? COLUMNS_SESSIONS : COLUMNS_USER_SESSIONS}
+				data={
+					labSemesterId
+						? labPracticeSession.map(mapOutputLabSessions)
+						: userLabPracticeSession.map(mapOutputUserSessions)
+				}
+				overflow
+				stickyHeader
+				onAction={onAction}
+			/>
 		</Row>
 	);
 };

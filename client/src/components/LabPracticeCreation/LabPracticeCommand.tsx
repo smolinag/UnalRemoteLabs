@@ -70,6 +70,20 @@ const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdi
 				/>
 
 				<Input
+					type="text"
+					placeholder="Etiqueta"
+					required
+					value={command.commandLabel ? command.commandLabel : ''}
+					tooltip="Ingrese la etiqueta del comando"
+					onValueChange={(value) =>
+						onValueChange
+							? onValueChange(value, Params.CommandLabel)
+							: onValueEdit && onValueEdit(Params.CommandLabel, value, command)
+					}
+					error={checkErrorMessage(!modal ? Params.CommandLabel : Params.ModalCommandLabel)}
+				/>
+
+				<Input
 					type="number"
 					placeholder="Posición"
 					value={command.order}

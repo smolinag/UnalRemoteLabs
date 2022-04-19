@@ -136,7 +136,7 @@ const LabTitle: React.FC<Props> = ({
 					<span>Guía de práctica: </span>
 				</Row>
 				<Row style={{display: 'flex', alignItems: 'center'}}>
-					<Col xs={4}>
+					<Col xs={6}>
 						<span>{guideFileName} </span>
 					</Col>
 					<Col xs={3}>
@@ -152,12 +152,13 @@ const LabTitle: React.FC<Props> = ({
 							<span>Código de vídeo: </span>
 						</Row>
 					<Row style={{display: 'flex', alignItems: 'center'}}>
-							<Col xs={4}>
+							<Col xs={6}>
 								<input
 									type="text"
 									placeholder="Código"
 									value={videoUrl}
 									onChange={(e) => handleVideoUrlChange(e.target.value)}
+									style={{width: "-webkit-fill-available"}}
 								/>
 							</Col>
 							<Col xs={3}>

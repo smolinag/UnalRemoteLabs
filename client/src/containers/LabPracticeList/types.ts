@@ -3,7 +3,6 @@ export interface LabPracticeData {
 	id: string;
 	duration: number;
 	name: string;
-	labPracticeDevice: LabPracticeDeviceData;
 	version: number | null;
 }
 

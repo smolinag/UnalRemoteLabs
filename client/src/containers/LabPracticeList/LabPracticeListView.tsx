@@ -31,8 +31,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	}, [labData]);
 
 	useEffect(() => {
-		console.log(labId);
-		console.log(labPracticesData);
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
 				.filter((item) => !item?._deleted)
@@ -43,11 +41,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 						description: item?.description ? item?.description : '',
 						duration: item?.duration ? item.duration : 0,
 						version: item?._version ? item._version : 0,
-						labPracticeDevice: {
-							id: item?.LabPracticeDevice?.id ? item.LabPracticeDevice.id : '',
-							name: item?.LabPracticeDevice?.name ? item.LabPracticeDevice.name : '',
-							type: item?.LabPracticeDevice?.type ? item.LabPracticeDevice.type : ''
-						}
 					};
 				});
 			setLabPractices(labpractices);
@@ -103,7 +96,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 				console.warn('DELETE ALL');
 				break;
 			case Action.Edit:
-				console.log('Edit');
 				navigate('/lab-practice-edition', {
 					state: {labPracticeId: labPractices[index].id, labName: laboratoryName}
 				});

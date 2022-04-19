@@ -8,6 +8,7 @@ import classes from './ComplexCommand.module.scss';
 
 export interface Parameter {
 	label: string;
+	name: string;
 	id: string;
 	value: number;
 	maxValue: number;

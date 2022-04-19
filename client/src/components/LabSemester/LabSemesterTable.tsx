@@ -27,7 +27,7 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 		description,
 		professor,
 		redirectToLabPractice(laboratoryID ? laboratoryID : '', id ? id : ''),
-		redirectToLabPracticeSession(id ? id : '')
+		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
 	];
 
 	const redirectToLabPractice = (labId: string, labSemesterId: string) => {
@@ -44,16 +44,15 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 		);
 	};
 
-	const redirectToLabPracticeSession = (labSemesterId: string) => {
+	const redirectToLabPracticeSession = (labId: string, labSemesterId: string) => {
 		return (
 			<p
 				className="links"
-				// onClick={() =>
-				// 	navigate('/lab-practices', {
-				// 		state: {labId, labSemesterId}
-				// 	})
-				// }
-			>
+				onClick={() =>
+					navigate('/user-labs-sessions', {
+						state: {labId, labSemesterId}
+					})
+				}>
 				Sesiones
 			</p>
 		);

@@ -52,8 +52,6 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 	}, [labPracticeData]);
 
 	useEffect(() => {
-		console.warn(labSemesterId);
-		console.warn(semesterUsers);
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
 		if (semesterUserList) {
 			const data = semesterUserList.map((item) => {

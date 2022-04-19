@@ -1,5 +1,6 @@
 import orderBy from 'lodash/orderBy';
 import React, {useState, useEffect, useContext} from 'react';
+import { useLocation } from 'react-router-dom';
 // import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
@@ -26,9 +27,9 @@ import {notificationBannerContext} from '../../state/NotificationBannerProvider'
 //const SESSION_ID = '2974b73d-dbc3-4bd4-b3c9-8c7d3e6b343d'; //Lineas TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
 //const DEVICE_ID = 'b13743e4-8951-4e97-9392-d7f07c910f30'; //Lineas
 
-const PRACTICE_ID = '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'; //Motores
-const SESSION_ID = '11df7731-d269-49c5-807e-53e6ae43dd8d'; //Motores
-const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77'; //Motores
+// const PRACTICE_ID = '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'; //Motores
+// const SESSION_ID = '11df7731-d269-49c5-807e-53e6ae43dd8d'; //Motores
+// const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77'; //Motores
 // const COMMAND_NAME_PREFIX = 'cmd';
 
 interface OutputListDto {
@@ -45,6 +46,7 @@ export enum Status {
 }
 
 export interface LocationState {
+	sessionId: string;
 	labPracticeId: string;
 	deviceId: string;
 }
@@ -72,27 +74,28 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const [outputs, setOutputs] = useState<OutputListDto[]>([]);
 	const [sessionInformation, setSessionInformation] = useState<Session>(initSessionInformation);
 
+	const location = useLocation();
+	const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	const deviceId = (location.state as LocationState)?.deviceId;
+	const sessionId = (location.state as LocationState)?.sessionId;
+
 	// TODO Deberíamos pasar esto a context?
-	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(SESSION_ID);
+	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(sessionId);
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	// const location = useLocation();
-	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
-	// const deviceId = (location.state as LocationState)?.deviceId;
-
-	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: PRACTICE_ID}});
-	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: SESSION_ID}});
-	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: PRACTICE_ID}});
-	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery({variables: {id: SESSION_ID}});
-	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: PRACTICE_ID}});
+	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
+	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: sessionId}});
+	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
+	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery({variables: {id: sessionId}});
+	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: labPracticeId}});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
-		variables: {id: SESSION_ID}
+		variables: {id: sessionId}
 	});
-	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: DEVICE_ID}});
+	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
 
 	useEffect(() => {
 		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items?.[0];
@@ -127,7 +130,8 @@ const LabPracticeView: React.FC<unknown> = () => {
 						.map((parameter): Parameter => {
 							return {
 								id: parameter?.id as string,
-								label: (parameter?.labelName ?? parameter?.name) as string,
+								name: parameter?.name as string,
+								label: (parameter?.labelName ?? parameter?.labelName) as string,
 								value: Number((parameter?.defaultValue as string) ?? 0),
 								maxValue: Number(parameter?.maxValue ?? 0),
 								minValue: Number(parameter?.minValue ?? 0),
@@ -136,10 +140,11 @@ const LabPracticeView: React.FC<unknown> = () => {
 						});
 
 					parameters = orderBy(parameters, 'order', 'asc');
+
 					return {
 						id: command?.id as string,
 						name: command?.name as string,
-						label: (command?.labelName ?? command?.name) as string,
+						label: (command?.labelName ?? command?.labelName) as string,
 						parameters,
 						order: command?.order ?? commandIndex++
 					};
@@ -166,7 +171,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 						labpracticeSessionID: sessionCommand?.labpracticesessionID ? sessionCommand?.labpracticesessionID : '',
 						parameters: sessionCommand?.parameters ? sessionCommand?.parameters : '',
 						status: sessionCommand?.status ? sessionCommand?.status : '',
-						command: sessionCommand?.LabPracticeCommand ? sessionCommand?.LabPracticeCommand.name : ''
+						command: sessionCommand?.LabPracticeCommand?.labelName ? sessionCommand?.LabPracticeCommand.labelName : ''
 					};
 				});
 			});
@@ -213,6 +218,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
+
 		console.log(updatedCommand)
 
 		if (updatedCommand) {
@@ -225,7 +231,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
 				parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
 				status: updatedCommand?.status ? updatedCommand?.status : '',
-				command: updatedCommand?.LabPracticeCommand ? updatedCommand?.LabPracticeCommand.name : ''
+				command: commandLabel?.label ? commandLabel?.label : ''
 			};
 
 			clearTimeout(commandExecutionTimeout);
@@ -253,7 +259,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				setExecutedCommands(exeCommands);
 			}
 			if (updatedCommand.status === Status.Success) {
-				showSuccessBanner(`El comando ${commandLabel?.name ?? ''} fue correctamente ejecutado`);
+				showSuccessBanner(`El comando ${commandLabel?.label ?? ''} fue correctamente ejecutado`);
 			}
 		}
 	}, [updatedSessionCommand]);
@@ -301,7 +307,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 			};
 
 			await publishMqttMessageMutation({
-				variables: {input: {message: JSON.stringify(mqttMessage), topic: `topic_in/${DEVICE_ID}`}}
+				variables: {input: {message: JSON.stringify(mqttMessage), topic: `topic_in/${deviceId}`}}
 			});
 
 			commandExecutionTimeout = setTimeout(async () => {
@@ -363,7 +369,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				description={practiceInfo?.getLabPractice?.description}
 				duration={practiceInfo?.getLabPractice?.duration}
 				isVideoUrlInputEnabled={true}
-				laPracticeSessionId={SESSION_ID}
+				laPracticeSessionId={sessionId}
 				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 				sessionInformation={sessionInformation}
 			/>

@@ -7,12 +7,7 @@ query listLabPractices($id: ID!) {
 			name
 			_deleted
 			_version
-			LabPracticeDevice {
-				id
-				name
-				type
-        _deleted
-			}
+			
 		}
 	}
 }

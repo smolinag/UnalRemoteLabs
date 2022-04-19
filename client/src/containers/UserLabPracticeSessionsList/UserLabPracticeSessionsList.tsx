@@ -1,85 +1,176 @@
 import React, {useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
+import {useLocation} from 'react-router-dom';
 
 import {LoadingContainer} from '../../components/UI';
 import {UserLabPracticeSessionsTable} from '../../components/UsersLabsView';
-import {useListUserLabPracticeSessionsQuery} from '../../graphql/generated/schema';
-import {UserLabPracticeSession} from './types';
+import {
+	useGetLaboratoryQuery,
+	useListLabPracticeSessionsQuery,
+	useListUserLabPracticeSessionsQuery
+} from '../../graphql/generated/schema';
+import {initialLaboratoryValue} from '../Laboratory/LaboratoryEdition';
+import {Laboratory} from '../Laboratory/types';
+import {LocationState} from '../LabPracticeList/LabPracticeListView';
+import {LabPracticeSession, UserLabPracticeSession} from './types';
 
 const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
 
 const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
-	const [userLabPracticeSessionsList, setUserLabPracticeSessionsList] = React.useState<UserLabPracticeSession[]>();
+	const [userLabPracticeSessionsList, setUserLabPracticeSessionsList] = React.useState<UserLabPracticeSession[]>([]);
+	const [labPracticeSessionsList, setLabPracticeSessionsList] = React.useState<LabPracticeSession[]>([]);
+	const [laboratory, setLaboratory] = React.useState<Laboratory>(initialLaboratoryValue);
 
-	const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: USER_ID}});
+	const location = useLocation();
+	const labId = (location.state as LocationState)?.labId;
+	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 
-	useEffect(() => {
-		const receivedList = data?.listUserLabPracticeSessions?.items.filter(
-			(session) =>
-				!session?._deleted &&
-				!session?.LabPracticeSession?._deleted &&
-				!session?.LabPracticeSession?.LabPractice?._deleted
-		);
-		if (receivedList && receivedList.length > 0) {
-			const list: UserLabPracticeSession[] = receivedList.map((session) => ({
-				id: session ? session.id : '',
-				sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
-				sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
-				version: session?._version ? session._version : null,
-				labPracticeSession: {
-					id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
-					startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
-					endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
-					version: session?.LabPracticeSession?._version ? session.LabPracticeSession._version : null,
-					description: session?.LabPracticeSession?.description ? session.LabPracticeSession?.description : '',
+	if (labSemesterId) {
+		const {data, loading: retrievingInfo} = useListLabPracticeSessionsQuery({
+			variables: {labSemesterID: labSemesterId}
+		});
+
+		const {data: laboratoryInfo} = useGetLaboratoryQuery({variables: {id: labId}});
+
+		useEffect(() => {
+			if (laboratoryInfo?.getLaboratory != null) {
+				const lab = laboratoryInfo.getLaboratory;
+
+				setLaboratory({
+					id: lab.id,
+					name: lab.name,
+					description: lab.description ? lab.description : '',
+					organizationId: lab.organizationID,
+					version: lab._version
+				});
+			}
+		}, [laboratoryInfo]);
+
+		useEffect(() => {
+			const receivedList = data?.listLabPracticeSessions?.items.filter(
+				(session) => !session?._deleted && !session?.LabPractice?._deleted
+			);
+
+			if (receivedList && receivedList.length > 0) {
+				const list: LabPracticeSession[] = receivedList.map((session) => ({
+					id: session?.id ? session.id : '',
+					startDate: session?.startDate ? session.startDate : '',
+					endDate: session?.endDate ? session.endDate : '',
+					version: session?._version ? session._version : null,
+					description: session?.description ? session.description : '',
 					labSemesterInfo: {
-						id: session?.LabPracticeSession?.LabSemester?.id ? session.LabPracticeSession.LabSemester.id : '',
-						name: session?.LabPracticeSession?.LabSemester?.semesterName ? session.LabPracticeSession.LabSemester.semesterName : '',
-						description: session?.LabPracticeSession?.LabSemester?.description ? session.LabPracticeSession.LabSemester.description : '',
+						id: session?.LabSemester?.id ? session.LabSemester.id : '',
+						name: session?.LabSemester?.semesterName ? session.LabSemester.semesterName : '',
+						description: session?.LabSemester?.description ? session.LabSemester.description : '',
+						laboratory: session?.LabSemester?.Laboratory?.name
 					},
 					labPracticeInfo: {
-						id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
-						practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
-							? session?.LabPracticeSession?.LabPractice?.name
-							: '',
-						practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
-							? session?.LabPracticeSession?.LabPractice?.description
-							: '',
-						practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
-							? session?.LabPracticeSession?.LabPractice?.duration
-							: 0,
+						id: session?.LabPractice?.id ? session.LabPractice?.id : '',
+						practiceInfoName: session?.LabPractice?.name ? session?.LabPractice?.name : '',
+						practiceInfoDescription: session?.LabPractice?.description ? session?.LabPractice?.description : '',
+						practiceInfoDuration: session?.LabPractice?.duration ? session?.LabPractice?.duration : 0,
 						laboratory: {
-							id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
-								? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
-								: '',
-							name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
-								? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
-								: '',
-							description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
-								? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+							id: session?.LabPractice?.Laboratory?.id ? session?.LabPractice?.Laboratory?.id : '',
+							name: session?.LabPractice?.Laboratory?.name ? session?.LabPractice?.Laboratory?.name : '',
+							description: session?.LabPractice?.Laboratory?.description
+								? session?.LabPractice?.Laboratory?.description
 								: ''
 						},
-						labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDevice?.id
+						labPracticeDeviceId:
+							session?.id === '11df7731-d269-49c5-807e-53e6ae43dd8d'
+								? 'cb24b961-da14-4e80-8ce2-050feb952b77'
+								: 'b13743e4-8951-4e97-9392-d7f07c910f30'
 					}
-				}
-			}));
-			setUserLabPracticeSessionsList(list);
-		}
-		setLoading(retrievingInfo);
+				}));
+				setLabPracticeSessionsList(list);
+			}
 
-		return () => {
-			setUserLabPracticeSessionsList(undefined);
-		};
-	}, [data]);
+			setLoading(retrievingInfo);
+
+			return () => {
+				setUserLabPracticeSessionsList([]);
+			};
+		}, [data]);
+	} else {
+		const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: USER_ID}});
+
+		useEffect(() => {
+			const receivedList = data?.listUserLabPracticeSessions?.items.filter(
+				(session) =>
+					!session?._deleted &&
+					!session?.LabPracticeSession?._deleted &&
+					!session?.LabPracticeSession?.LabPractice?._deleted
+			);
+			if (receivedList && receivedList.length > 0) {
+				const list: UserLabPracticeSession[] = receivedList.map((session) => ({
+					id: session ? session.id : '',
+					sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
+					sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
+					version: session?._version ? session._version : null,
+					labPracticeSession: {
+						id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
+						startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
+						endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
+						version: session?.LabPracticeSession?._version ? session.LabPracticeSession._version : null,
+						description: session?.LabPracticeSession?.description ? session.LabPracticeSession?.description : '',
+						labSemesterInfo: {
+							id: session?.LabPracticeSession?.LabSemester?.id ? session.LabPracticeSession.LabSemester.id : '',
+							name: session?.LabPracticeSession?.LabSemester?.semesterName
+								? session.LabPracticeSession.LabSemester.semesterName
+								: '',
+							description: session?.LabPracticeSession?.LabSemester?.description
+								? session.LabPracticeSession.LabSemester.description
+								: ''
+						},
+						labPracticeInfo: {
+							id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
+							practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
+								? session?.LabPracticeSession?.LabPractice?.name
+								: '',
+							practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
+								? session?.LabPracticeSession?.LabPractice?.description
+								: '',
+							practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
+								? session?.LabPracticeSession?.LabPractice?.duration
+								: 0,
+							laboratory: {
+								id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+									? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+									: '',
+								name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+									? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+									: '',
+								description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+									? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+									: ''
+							},
+							labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDeviceId
+						}
+					}
+				}));
+				setUserLabPracticeSessionsList(list);
+			}
+
+			setLoading(retrievingInfo);
+
+			return () => {
+				setUserLabPracticeSessionsList([]);
+			};
+		}, [data]);
+	}
 
 	return (
 		<LoadingContainer loading={loading}>
 			<Row className="section">
-				<h3 className="title">Sesiones de prácticas de laboratorios</h3>
+				<h3 className="title">Sesiones de prácticas {`del laboratorio ${laboratory.name}`}</h3>
 			</Row>
 			<Row className="section">
-				<UserLabPracticeSessionsTable laboratories={userLabPracticeSessionsList} />
+				<UserLabPracticeSessionsTable
+					userLabPracticeSession={userLabPracticeSessionsList}
+					labPracticeSession={labPracticeSessionsList}
+					labSemesterId={labSemesterId}
+				/>
 			</Row>
 		</LoadingContainer>
 	);

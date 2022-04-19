@@ -13,16 +13,19 @@ interface Props {
 const COLUMNS = [
 	'Nombre del comando',
 	'Descripción del comando',
+	'Etiqueta comando',
 	'Posición'
 ];
 
 const mapOutput = ({
 	commandName,
 	commandDescription,
+	commandLabel,
 	order
 }: LabPracticeCommandInfo): string[] => [
 	commandName,
 	commandDescription,
+	commandLabel ? commandLabel : '',
 	order.toString()
 ];
 

@@ -123,12 +123,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	// const deviceId = (location.state as LocationState)?.deviceId;
 
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'}});
 	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({
-		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
+		variables: {id: '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'}
 	});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
+		variables: {id: '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'}
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
@@ -183,7 +183,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							id: command?.id as string,
 							commandName: command?.name as string,
 							commandDescription: command?.description ? command?.description : '',
-							label: (command?.labelName ?? command?.name) as string,
+							commandLabel: (command?.labelName ?? command?.labelName) as string,
 							version: command?._version,
 							action: ActionType.Nothing,
 							order: command?.order ?? 0
@@ -243,7 +243,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						});
 					}
 				});
-				return _.orderBy(outputs, 'order', 'asc');;
+				return _.orderBy(outputs, 'order', 'asc');
 			});
 		}
 	}, [practiceOutputsDb]);
@@ -274,6 +274,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					practice.command = {
 						...practiceInfo.command,
 						commandDescription: value
+					};
+					return {...previousState, command: practice.command};
+				case Params.CommandLabel:
+					practice.command = {
+						...practiceInfo.command,
+						commandLabel: value
 					};
 					return {...previousState, command: practice.command};
 				case Params.SelectedCommand:
@@ -502,7 +508,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			//Cargar guia a S3
 			if (guideFile) {
 				try {
-					console.log(guideFile);
 					await Storage.put(guideFile.name, guideFile);
 					practiceChange(guideFile.name, 'practiceGuideS3Path');
 				} catch (e) {
@@ -527,7 +532,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					}
 				});
 				practiceInfo.practiceGuideS3Path = guideFile?.name ?? '';
-				setPracticeInfo(practiceInfo)
+				setPracticeInfo(practiceInfo);
 
 				if (!labPracticeData?.updateLabPractice?.id) {
 					throw Error('');
@@ -550,7 +555,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										id: command.id ? command.id : '',
 										name: command.commandName,
 										description: command.commandDescription,
-										labelName: command.label,
+										labelName: command.commandLabel,
 										order: command.order,
 										updatedBy: '1',
 										_version: command.version
@@ -897,9 +902,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					previousState.map((obj) => {
 						if (obj.commandName === updatedCommand.commandName) {
 							obj.commandName = commandToEdit.commandName;
-							obj.label = commandToEdit.label;
+							obj.commandLabel = commandToEdit.commandLabel;
 							obj.commandDescription = commandToEdit.commandDescription;
-							obj.label = commandToEdit.label;
 							obj.updatedBy = commandToEdit.updatedBy;
 							obj.updatedAt = commandToEdit.updatedAt;
 							obj.action = ActionType.Edit;

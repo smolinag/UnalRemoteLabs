@@ -66,10 +66,6 @@ type LabPracticeParameterMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type LabPracticeDeviceMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
 type LabPracticeOutputMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -114,7 +110,7 @@ export declare class LabPractice {
   readonly Laboratory?: Laboratory | null;
   readonly LabPracticeCommands?: (LabPracticeCommand | null)[] | null;
   readonly LabPracticeParameters?: (LabPracticeParameter | null)[] | null;
-  readonly LabPracticeDevice?: LabPracticeDevice | null;
+  readonly LabPracticeDeviceId: string;
   readonly LabPracticeSessions?: (LabPracticeSession | null)[] | null;
   readonly LabPracticeOutputs?: (LabPracticeOutput | null)[] | null;
   readonly guideS3Path?: string | null;
@@ -256,20 +252,6 @@ export declare class LabPracticeParameter {
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<LabPracticeParameter, LabPracticeParameterMetaData>);
   static copyOf(source: LabPracticeParameter, mutator: (draft: MutableModel<LabPracticeParameter, LabPracticeParameterMetaData>) => MutableModel<LabPracticeParameter, LabPracticeParameterMetaData> | void): LabPracticeParameter;
-}
-
-export declare class LabPracticeDevice {
-  readonly id: string;
-  readonly name: string;
-  readonly description?: string | null;
-  readonly type?: string | null;
-  readonly LabPractice?: LabPractice | null;
-  readonly updatedBy?: string | null;
-  readonly createdBy?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  constructor(init: ModelInit<LabPracticeDevice, LabPracticeDeviceMetaData>);
-  static copyOf(source: LabPracticeDevice, mutator: (draft: MutableModel<LabPracticeDevice, LabPracticeDeviceMetaData>) => MutableModel<LabPracticeDevice, LabPracticeDeviceMetaData> | void): LabPracticeDevice;
 }
 
 export declare class LabPracticeOutput {

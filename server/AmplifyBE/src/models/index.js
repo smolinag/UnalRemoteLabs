@@ -16,7 +16,7 @@ const Role = {
   "PROFESSORS": "Professors"
 };
 
-const { LabPracticeSessionCommand, LabPracticeSession, LabPractice, Laboratory, Organization, User, UserLabPracticeSession, UserLabSemester, LabSemester, LabPracticeCommand, LabPracticeParameter, LabPracticeDevice, LabPracticeOutput, LabOutputOut } = initSchema(schema);
+const { LabPracticeSessionCommand, LabPracticeSession, LabPractice, Laboratory, Organization, User, UserLabPracticeSession, UserLabSemester, LabSemester, LabPracticeCommand, LabPracticeParameter, LabPracticeOutput, LabOutputOut } = initSchema(schema);
 
 export {
   LabPracticeSessionCommand,
@@ -30,7 +30,6 @@ export {
   LabSemester,
   LabPracticeCommand,
   LabPracticeParameter,
-  LabPracticeDevice,
   LabPracticeOutput,
   Status,
   Role,

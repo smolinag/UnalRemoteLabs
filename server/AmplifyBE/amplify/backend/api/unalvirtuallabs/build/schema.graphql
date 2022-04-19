@@ -113,22 +113,6 @@ type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   LabSemester: LabSemester @aws_api_key @aws_cognito_user_pools
 }
 
-type LabPracticeDevice @aws_api_key @aws_cognito_user_pools {
-  id: ID!
-  name: String!
-  description: String
-  type: String
-  labpracticeID: ID
-  updatedBy: String
-  createdBy: String
-  _version: Int!
-  _deleted: Boolean
-  _lastChangedAt: AWSTimestamp!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  LabPractice: LabPractice @aws_api_key @aws_cognito_user_pools
-}
-
 type LabPracticeParameter @aws_api_key @aws_cognito_user_pools {
   id: ID!
   name: String!
@@ -177,6 +161,7 @@ type LabPractice @aws_api_key @aws_cognito_user_pools {
   description: String
   duration: Int!
   laboratoryID: ID!
+  LabPracticeDeviceId: String!
   guideS3Path: String
   updatedBy: String
   createdBy: String!
@@ -187,7 +172,6 @@ type LabPractice @aws_api_key @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
   LabPracticeOutputs(filter: ModelLabPracticeOutputFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeOutputConnection @aws_api_key @aws_cognito_user_pools
   LabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
-  LabPracticeDevice: LabPracticeDevice @aws_api_key @aws_cognito_user_pools
   LabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
   LabPracticeCommands(filter: ModelLabPracticeCommandFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelLabPracticeCommandConnection @aws_api_key @aws_cognito_user_pools
   Laboratory: Laboratory @aws_api_key @aws_cognito_user_pools
@@ -301,9 +285,6 @@ type Mutation {
   createLabPracticeSession(input: CreateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession @aws_api_key @aws_cognito_user_pools
   updateLabPracticeSession(input: UpdateLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession @aws_api_key @aws_cognito_user_pools
   deleteLabPracticeSession(input: DeleteLabPracticeSessionInput!, condition: ModelLabPracticeSessionConditionInput): LabPracticeSession @aws_api_key @aws_cognito_user_pools
-  createLabPracticeDevice(input: CreateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
-  updateLabPracticeDevice(input: UpdateLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
-  deleteLabPracticeDevice(input: DeleteLabPracticeDeviceInput!, condition: ModelLabPracticeDeviceConditionInput): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
   createLabPracticeParameter(input: CreateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
   updateLabPracticeParameter(input: UpdateLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
   deleteLabPracticeParameter(input: DeleteLabPracticeParameterInput!, condition: ModelLabPracticeParameterConditionInput): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
@@ -346,9 +327,6 @@ type Subscription {
   onCreateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["createLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
   onUpdateLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["updateLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
   onDeleteLabPracticeSession: LabPracticeSession @aws_subscribe(mutations: ["deleteLabPracticeSession"]) @aws_api_key @aws_cognito_user_pools
-  onCreateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["createLabPracticeDevice"]) @aws_api_key @aws_cognito_user_pools
-  onUpdateLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["updateLabPracticeDevice"]) @aws_api_key @aws_cognito_user_pools
-  onDeleteLabPracticeDevice: LabPracticeDevice @aws_subscribe(mutations: ["deleteLabPracticeDevice"]) @aws_api_key @aws_cognito_user_pools
   onCreateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["createLabPracticeParameter"]) @aws_api_key @aws_cognito_user_pools
   onUpdateLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["updateLabPracticeParameter"]) @aws_api_key @aws_cognito_user_pools
   onDeleteLabPracticeParameter: LabPracticeParameter @aws_subscribe(mutations: ["deleteLabPracticeParameter"]) @aws_api_key @aws_cognito_user_pools
@@ -504,9 +482,6 @@ type Query {
   getLabPracticeSession(id: ID!): LabPracticeSession @aws_api_key @aws_cognito_user_pools
   listLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
   syncLabPracticeSessions(filter: ModelLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
-  getLabPracticeDevice(id: ID!): LabPracticeDevice @aws_api_key @aws_cognito_user_pools
-  listLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String): ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools
-  syncLabPracticeDevices(filter: ModelLabPracticeDeviceFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools
   getLabPracticeParameter(id: ID!): LabPracticeParameter @aws_api_key @aws_cognito_user_pools
   listLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
   syncLabPracticeParameters(filter: ModelLabPracticeParameterFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools
@@ -906,64 +881,6 @@ input ModelLabPracticeSessionConditionInput {
   not: ModelLabPracticeSessionConditionInput
 }
 
-type ModelLabPracticeDeviceConnection @aws_api_key @aws_cognito_user_pools {
-  items: [LabPracticeDevice]!
-  nextToken: String
-  startedAt: AWSTimestamp
-}
-
-input ModelLabPracticeDeviceFilterInput {
-  id: ModelIDInput
-  name: ModelStringInput
-  description: ModelStringInput
-  type: ModelStringInput
-  labpracticeID: ModelIDInput
-  updatedBy: ModelStringInput
-  createdBy: ModelStringInput
-  and: [ModelLabPracticeDeviceFilterInput]
-  or: [ModelLabPracticeDeviceFilterInput]
-  not: ModelLabPracticeDeviceFilterInput
-}
-
-input CreateLabPracticeDeviceInput {
-  id: ID
-  name: String!
-  description: String
-  type: String
-  labpracticeID: ID
-  updatedBy: String
-  createdBy: String
-  _version: Int
-}
-
-input UpdateLabPracticeDeviceInput {
-  id: ID!
-  name: String
-  description: String
-  type: String
-  labpracticeID: ID
-  updatedBy: String
-  createdBy: String
-  _version: Int
-}
-
-input DeleteLabPracticeDeviceInput {
-  id: ID!
-  _version: Int
-}
-
-input ModelLabPracticeDeviceConditionInput {
-  name: ModelStringInput
-  description: ModelStringInput
-  type: ModelStringInput
-  labpracticeID: ModelIDInput
-  updatedBy: ModelStringInput
-  createdBy: ModelStringInput
-  and: [ModelLabPracticeDeviceConditionInput]
-  or: [ModelLabPracticeDeviceConditionInput]
-  not: ModelLabPracticeDeviceConditionInput
-}
-
 type ModelLabPracticeParameterConnection @aws_api_key @aws_cognito_user_pools {
   items: [LabPracticeParameter]!
   nextToken: String
@@ -1120,6 +1037,7 @@ input ModelLabPracticeFilterInput {
   description: ModelStringInput
   duration: ModelIntInput
   laboratoryID: ModelIDInput
+  LabPracticeDeviceId: ModelStringInput
   guideS3Path: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
@@ -1134,11 +1052,11 @@ input CreateLabPracticeInput {
   description: String
   duration: Int!
   laboratoryID: ID!
+  LabPracticeDeviceId: String!
   guideS3Path: String
   updatedBy: String
   createdBy: String!
   _version: Int
-  labPracticeLabPracticeDeviceId: ID
 }
 
 input UpdateLabPracticeInput {
@@ -1147,11 +1065,11 @@ input UpdateLabPracticeInput {
   description: String
   duration: Int
   laboratoryID: ID
+  LabPracticeDeviceId: String
   guideS3Path: String
   updatedBy: String
   createdBy: String
   _version: Int
-  labPracticeLabPracticeDeviceId: ID
 }
 
 input DeleteLabPracticeInput {
@@ -1164,6 +1082,7 @@ input ModelLabPracticeConditionInput {
   description: ModelStringInput
   duration: ModelIntInput
   laboratoryID: ModelIDInput
+  LabPracticeDeviceId: ModelStringInput
   guideS3Path: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput

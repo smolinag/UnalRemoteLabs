@@ -83,17 +83,6 @@ type LabPracticeSession @model @key(name: "byLabPractice", fields: ["labpractice
   createdBy: String!
 }
 
-type LabPracticeDevice @model @key(name: "byLabPractice", fields: ["labpracticeID"]) @auth(rules: [{ allow: public },  { allow: private}]) {
-  id: ID!
-  name: String!
-  description: String
-  type: String
-  LabPractice: LabPractice @connection(fields: ["labpracticeID"])
-  labpracticeID: ID
-  updatedBy: String
-  createdBy: String
-}
-
 type LabPracticeParameter @model @key(name: "byLabPracticeCommand", fields: ["labpracticecommandID"]) @key(name: "byLabPractice", fields: ["labpracticeID"]) @auth(rules: [{ allow: public },  { allow: private}]) {
   id: ID!
   name: String!
@@ -135,7 +124,7 @@ type LabPractice @model @key(name: "byLaboratory", fields: ["laboratoryID"]) @au
   laboratoryID: ID!
   LabPracticeCommands: [LabPracticeCommand] @connection(keyName: "byLabPractice", fields: ["id"])
   LabPracticeParameters: [LabPracticeParameter] @connection(keyName: "byLabPractice", fields: ["id"])
-  LabPracticeDevice: LabPracticeDevice @connection
+  LabPracticeDeviceId: String!
   LabPracticeSessions: [LabPracticeSession] @connection(keyName: "byLabPractice", fields: ["id"])
   LabPracticeOutputs: [LabPracticeOutput] @connection(keyName: "byLabPractice", fields: ["id"])
   guideS3Path: String

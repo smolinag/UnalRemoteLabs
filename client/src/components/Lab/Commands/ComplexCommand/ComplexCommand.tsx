@@ -28,12 +28,19 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 
 	const handleParameterValueChange = (newValue: number, id: string) => {
 		setFormParametersValues((currentState) => {
+			console.log(newValue)
 			const stateCopy = cloneDeep(currentState);
 
 			const parameterToUpdate = stateCopy.find((parameter) => parameter.id === id);
 
 			if (parameterToUpdate) {
-				parameterToUpdate.value = newValue;
+				if (newValue > parameterToUpdate.maxValue) {
+					parameterToUpdate.value = parameterToUpdate.maxValue;
+				} else if (newValue < parameterToUpdate.minValue) {
+					parameterToUpdate.value = parameterToUpdate.minValue;
+				} else {
+					parameterToUpdate.value = newValue;
+				}
 			}
 
 			return stateCopy;
@@ -52,8 +59,8 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 						type="number"
 						className={classes.input}
 						value={parameter.value}
-						max={parameter.maxValue}
-						min={parameter.minValue}
+						max={+parameter.maxValue}
+						min={+parameter.minValue}
 						onChange={(evt) => handleParameterValueChange(Number(evt.target.value), parameter.id)}
 					/>
 				</InputGroup>

@@ -33,8 +33,8 @@ const mapOutput = ({
 	parameterName,
 	parameterDescription,
 	parameterDefaultValue,
-	parameterMinValue ? parameterMinValue.toString() : '',
-	parameterMaxValue ? parameterMaxValue.toString() : '',
+	parameterMinValue ? parameterMinValue.toString() : '0',
+	parameterMaxValue ? parameterMaxValue.toString() : '0',
 	parameterRegex
 ];
 

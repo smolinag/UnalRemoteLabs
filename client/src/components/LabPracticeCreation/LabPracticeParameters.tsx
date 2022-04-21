@@ -112,7 +112,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 				<Input
 					type="number"
 					placeholder="Valor mínimo"
-					value={parameter.parameterMinValue ? parameter.parameterMinValue : ''}
+					value={parameter.parameterMinValue ? parameter.parameterMinValue : '0'}
 					onValueChange={(value) =>
 						onValueChange
 							? onValueChange(value, Params.ParameterMinValue)
@@ -123,7 +123,7 @@ const LabPracticeParameters: React.FC<Props> = ({parameter, commands, onValueCha
 				<Input
 					type="number"
 					placeholder="Valor máximo"
-					value={parameter.parameterMaxValue ? parameter.parameterMaxValue : ''}
+					value={parameter.parameterMaxValue ? parameter.parameterMaxValue : '0'}
 					onValueChange={(value) =>
 						onValueChange
 							? onValueChange(value, Params.ParameterMaxValue)

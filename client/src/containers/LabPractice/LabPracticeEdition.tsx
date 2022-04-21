@@ -123,12 +123,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	// const deviceId = (location.state as LocationState)?.deviceId;
 
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}});
 	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({
-		variables: {id: '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'}
+		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
 	});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'}
+		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
@@ -216,6 +216,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						});
 					}
 				});
+				console.log(labCommandsDataDb?.listLabPracticeCommands?.items)
 				return parametersList;
 			});
 
@@ -855,6 +856,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 			});
 		} else if (parameter) {
+			console.log(typeof(value))
+			console.log(value == "0" ? parseInt("0") : parseInt(value))
 			setParameterToEdit((previousState) => {
 				switch (param) {
 					case Params.SelectedCommand:
@@ -866,9 +869,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					case Params.ParameterDefaultValue:
 						return {...previousState, parameterDefaultValue: value};
 					case Params.ParameterMinValue:
-						return {...previousState, parameterMinValue: parseInt(value)};
+						return {...previousState, parameterMinValue: (value == "0" ? 0 : parseInt(value))};
 					case Params.ParameterMaxValue:
-						return {...previousState, parameterMaxValue: parseInt(value)};
+						return {...previousState, parameterMaxValue: (value == "0" ? 0 : parseInt(value))};
 					case Params.ParameterRegex:
 						return {...previousState, parameterRegex: value};
 					default:

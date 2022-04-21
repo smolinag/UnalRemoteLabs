@@ -1,3 +1,11 @@
+.container {
+	gap: 8px;
+	margin: 8px; 
+	text-align-last: center; 
+	width: 130px;
+	word-break: keep-all;
+}
+
 .button {
 	height: fit-content;
 	min-width: 50px;

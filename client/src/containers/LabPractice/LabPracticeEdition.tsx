@@ -618,6 +618,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										labpracticeID: practiceId,
 										name: command.commandName,
 										description: command.commandDescription,
+										labelName: command.commandLabel,
 										createdBy: '1',
 										order: command.order
 									}
@@ -845,6 +846,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						return {...previousState, commandName: value};
 					case Params.CommandDescription:
 						return {...previousState, commandDescription: value};
+					case Params.CommandLabel:
+						return {...previousState, commandLabel: value};
 					case Params.Order:
 						return {...previousState, order: parseInt(value)};
 					default:

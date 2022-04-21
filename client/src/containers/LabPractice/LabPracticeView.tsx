@@ -219,8 +219,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 	useEffect(() => {
 		const updatedCommand = updatedSessionCommand?.onUpdateLabPracticeSessionCommandBySessionID;
 
-		console.log(updatedCommand)
-
 		if (updatedCommand) {
 			const commandLabel = labCommands.find((command) => command.id === updatedCommand.labpracticecommandID);
 

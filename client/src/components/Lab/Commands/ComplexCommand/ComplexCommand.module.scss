@@ -1,3 +1,13 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	margin: 8px; 
+	text-align-last: center; 
+	width: 130px;
+	word-break: keep-all;
+}
+
 .button {
 	height: fit-content;
 	min-width: 50px;
@@ -6,29 +16,19 @@
 	min-height: 60px;
 }
 
+.inputGroup {
+	place-content: center
+}
+
+.command_name {
+	width: 100px;
+	min-width: fit-content;
+	border-radius: 0.25rem !important;
+}
+
 // Override bootstrap styles
 .input {
 	width: 100px !important;
 	flex: inherit !important;
-}
-
-.title {
-	margin-bottom: 4px;
-	text-transform: uppercase;
-}
-
-.command_name {
-	width: 80px;
-	min-width: fit-content;
-}
-
-.container {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	align-items: center;
-}
-
-.inputGroup {
-	place-content: center
+	border-radius: 0.25rem !important;
 }

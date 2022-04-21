@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Col, Row} from 'react-bootstrap';
 
 import EmailsInput from '../../components/LabSemester/EmailsInput';
+import {isEmail} from '../../generalUtils/EmailUtils';
 import {Table} from '../UI';
 import {Action} from '../UI/Table/Table';
 import classes from './shared.module.scss';
@@ -99,10 +100,6 @@ const EmailsInputWithTable: React.FC<Props> = ({emails, onHandleChange}) => {
 			return false;
 		}
 		return true;
-	};
-
-	const isEmail = (email: string) => {
-		return /[\w\d.-]+@[\w\d.-]+\.[\w\d.-]+/.test(email);
 	};
 
 	const isInList = (email: string) => {

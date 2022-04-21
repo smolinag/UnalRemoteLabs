@@ -11,4 +11,7 @@ export {default as LaboratoryCreation} from './Laboratory/LaboratoryCreation';
 export {default as LaboratoryEdition} from './Laboratory/LaboratoryEdition';
 export {default as LabPracticeEdition} from './LabPractice/LabPracticeEdition';
 export {default as LabPracticeListView} from './LabPracticeList/LabPracticeListView';
+export {default as UsersList} from './Users/UsersList';
+export {default as UserCreation} from './Users/UserCreation';
+export {default as UserEdition} from './Users/UserEdition';
 export {default as HomeView} from './Home/HomeView';

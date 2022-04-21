@@ -4,10 +4,10 @@ query getUserLabPracticeSession($id: ID!) {
 		LabPracticeSession {
 			startDate
 			endDate
-         description
+			description
 			LabPractice {
 				name
-            description
+				description
 			}
 		}
 	}

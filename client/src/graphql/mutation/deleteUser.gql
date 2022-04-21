@@ -1,0 +1,20 @@
+mutation deleteUser($input: DeleteUserInput!) {
+	deleteUser(input: $input) {
+		id
+		organizationID
+		name
+		identificationNumber
+		email
+		phone
+		userName
+		s3AvatarPath
+		role
+		createdAt
+		createdBy
+		updatedAt
+		updatedBy
+		_version
+		_lastChangedAt
+		_deleted
+	}
+}

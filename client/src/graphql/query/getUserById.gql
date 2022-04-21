@@ -1,0 +1,19 @@
+query getUserById($id: ID!) {
+	getUser(id: $id) {
+		id
+		organizationID
+		email
+		name
+		identificationNumber
+		phone
+		role
+		s3AvatarPath
+		createdAt
+		createdBy
+		updatedAt
+		updatedBy
+		_version
+		_deleted
+		_lastChangedAt
+	}
+}

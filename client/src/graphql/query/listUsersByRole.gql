@@ -1,0 +1,22 @@
+query listUsersByRoleAndOrganizationId($role: Role!, $organizationID: ID!) {
+	listUsers(filter: {role: {eq: $role}, and: {organizationID: {eq: $organizationID}}}) {
+		items {
+			id
+			organizationID
+			name
+			identificationNumber
+			email
+			phone
+			userName
+			s3AvatarPath
+			role
+			updatedBy
+			updatedAt
+			createdBy
+			createdAt
+			_lastChangedAt
+			_deleted
+			_version
+		}
+	}
+}

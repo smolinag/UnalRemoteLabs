@@ -8,23 +8,19 @@ import {LoadingContainer} from '../../components/UI';
 import classes from './Home.module.scss';
 
 const HomeView: React.FC<unknown> = () => {
-  const navigate = useNavigate();
-
-  const navigateToLaboratories = (path: string) => {
-		navigate(path);
-	};
+	const navigate = useNavigate();
 
 	return (
 		<Container fluid>
 			<LoadingContainer loading={false}>
-				<Row style={{display: "flex", flexDirection:"row", justifyContent:"center"}}>
-          <div className={'col-md-4 ' + classes.cardItem}>
-            <span className={classes.cardTitle}>LABORATORIOS</span>
-						<Image className={classes.cardImage} src={labsImage} onClick={() => navigateToLaboratories('/labs')}/>
+				<Row style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+					<div className={'col-md-4 ' + classes.cardItem}>
+						<span className={classes.cardTitle}>LABORATORIOS</span>
+						<Image className={classes.cardImage} src={labsImage} onClick={() => navigate('/labs')} />
 					</div>
-          <div className={'col-md-4 ' + classes.cardItem}>
-            <span className={classes.cardTitle}>USUARIOS</span>
-						<Image className={classes.cardImage} src={usersImage}/>
+					<div className={'col-md-4 ' + classes.cardItem}>
+						<span className={classes.cardTitle}>USUARIOS</span>
+						<Image className={classes.cardImage} src={usersImage} onClick={() => navigate('/users')} />
 					</div>
 				</Row>
 			</LoadingContainer>

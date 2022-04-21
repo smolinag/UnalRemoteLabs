@@ -16,13 +16,23 @@ interface Props {
 	text: string;
 	options: Option[];
 	required?: boolean;
+	disabled?: boolean;
 	tooltip?: string;
 	value: string;
 	onValueChange: (value: string, id: string) => void;
 	error?: boolean;
 }
 
-const DropdownComponent: React.FC<Props> = ({text, options, required, tooltip, value, onValueChange, error}) => {
+const DropdownComponent: React.FC<Props> = ({
+	text,
+	options,
+	required,
+	disabled,
+	tooltip,
+	value,
+	onValueChange,
+	error
+}) => {
 	const renderItem = (option: Option): JSX.Element => {
 		return (
 			<div key={option.id} className={classes.command}>
@@ -40,7 +50,11 @@ const DropdownComponent: React.FC<Props> = ({text, options, required, tooltip, v
 					{text}: {required && '(Requerido)'}
 				</span>
 				<div className={classes.inputSubwrapper}>
-					<DropdownButton id="dropdown-basic-button" title={`${value}`} className={classes.dropdownToggle}>
+					<DropdownButton
+						id="dropdown-basic-button"
+						title={`${value}`}
+						className={classes.dropdownToggle}
+						disabled={disabled}>
 						{options.map((option) => renderItem(option))}
 					</DropdownButton>
 

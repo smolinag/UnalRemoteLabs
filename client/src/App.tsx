@@ -22,6 +22,9 @@ import {
 	LabSessionProgrammingView,
 	LabPracticeEdition,
 	LabPracticeListView,
+	UsersList,
+	UserCreation,
+	UserEdition,
 	HomeView
 } from './containers';
 import {useAuthContext} from './GroupProvider';
@@ -54,15 +57,19 @@ const App = (): JSX.Element => {
 					<Route path="/lab-practice-session-creation" element={<LabSessionProgrammingView />} />
 
 					<Route path="/user-labs-sessions" element={<UserLabPracticeSessionsList />} />
-					<Route path="/labs" element={<LaboratoriesList />} />
 
 					<Route path="/lab-practice" element={<LabPracticeView />} />
 					<Route path="/lab-practices" element={<LabPracticeListView />} />
 					<Route path="/lab-practice-edition" element={<LabPracticeEdition />} />
 					<Route path="/lab-practice-creation" element={<LabPracticeCreation />} />
 
+					<Route path="/labs" element={<LaboratoriesList />} />
 					<Route path="/lab-creation" element={<LaboratoryCreation />} />
 					<Route path="/lab-edition" element={<LaboratoryEdition />} />
+
+					<Route path="/users" element={<UsersList />} />
+					<Route path="/user-creation" element={<UserCreation />} />
+					<Route path="/user-edition" element={<UserEdition />} />
 
 					{/* Crear componente para rutas no existentes */}
 					<Route path="*" element={<div> La página solicitada no existe </div>} />

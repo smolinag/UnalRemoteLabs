@@ -1,0 +1,8 @@
+query listUsersByEmail($email: String!) {
+	listUsers(filter: {email: {eq: $email}}) {
+		items {
+			id
+			email
+		}
+	}
+}

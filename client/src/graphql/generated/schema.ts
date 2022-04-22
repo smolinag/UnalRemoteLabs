@@ -2197,7 +2197,7 @@ export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 	getLabPractice?: Maybe<
 		{__typename?: 'LabPractice'} & Pick<
 			LabPractice,
-			'id' | 'name' | 'description' | 'duration' | 'guideS3Path' | '_version'
+			'id' | 'name' | 'description' | 'duration' | 'guideS3Path' | 'LabPracticeDeviceId' | '_version'
 		> & {
 				LabPracticeSessions?: Maybe<
 					{__typename?: 'ModelLabPracticeSessionConnection'} & {
@@ -3853,6 +3853,7 @@ export const GetLabPracticeDocument = gql`
 			description
 			duration
 			guideS3Path
+			LabPracticeDeviceId
 			_version
 			LabPracticeSessions {
 				items {

@@ -1,5 +1,3 @@
-import { Maybe } from "graphql/jsutils/Maybe";
-
 export interface LaboratoryInfo {
 	id: string;
 	name: string;
@@ -12,6 +10,7 @@ export interface LabPracticeInfo {
 	practiceInfoDescription: string;
 	practiceInfoDuration: string;
 	practiceGuideS3Path: string;
+	deviceId: string;
 	version?: number;
 	command: LabPracticeCommandInfo;
 	parameter: LabPracticeParameterInfo;
@@ -39,8 +38,8 @@ export interface LabPracticeParameterInfo {
 	parameterName: string;
 	parameterDescription: string;
 	parameterDefaultValue: string;
-	parameterMinValue: Maybe<number> | undefined;
-	parameterMaxValue: Maybe<number> | undefined;
+	parameterMinValue: number | undefined;
+	parameterMaxValue: number | undefined;
 	parameterRegex: string;
 	version?: number;
 	updatedBy?: string;
@@ -63,6 +62,7 @@ export interface OutputInfo {
 export enum Params {
 	Name = 'name',
 	Description = 'description',
+	DeviceId = 'deviceId',
 	Duration = 'duration',
 	CommandName = 'commandName',
 	CommandDescription = 'commandDescription',

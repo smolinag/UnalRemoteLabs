@@ -5,6 +5,7 @@ query getLabPractice($id: ID!) {
 		description
 		duration
 		guideS3Path
+		LabPracticeDeviceId
 		_version
 		LabPracticeSessions {
 			items {

@@ -13,7 +13,6 @@
 	vertical-align: top;
 	border: 1pt solid gray;
 	border-radius: 5px;
-	min-width: 250px;
 	height: 70px;
 }
 
@@ -30,7 +29,6 @@
 .input {
 	margin-right: 5px;
 	border: 0px;
-	width: 210px;
 	height: 40px;
 
 	&:focus-visible {

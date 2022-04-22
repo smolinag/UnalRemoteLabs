@@ -41,6 +41,7 @@ const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
 	practiceGuideS3Path: '',
+	deviceId: generateUuid(),
 	version: 0,
 	command: {
 		commandName: '',
@@ -369,7 +370,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 							duration: parseInt(practiceInfo.practiceInfoDuration),
 							guideS3Path: guideFile?.name,
 							createdBy: '1',
-							LabPracticeDeviceId: generateUuid()
+							LabPracticeDeviceId: practiceInfo.deviceId
 						}
 					}
 				});

@@ -39,8 +39,9 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 				<span className={classes.inputTitle}>
 					{placeholder}: {required && '(Requerido)'}
 				</span>
-				<div className={classes.inputSubwrapper}>
+				<div className={classes.inputSubwrapper} >
 					<input
+						style={type === "number" ? {"width": "100px"} : {"width": "250px"}}
 						type={type}
 						placeholder={placeholder}
 						required={required}

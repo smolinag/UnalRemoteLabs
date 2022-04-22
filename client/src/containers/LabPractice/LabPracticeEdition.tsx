@@ -57,6 +57,7 @@ const initialPracticeValue: LabPracticeInfo = {
 	practiceInfoDescription: '',
 	practiceInfoDuration: '0',
 	practiceGuideS3Path: '',
+	deviceId: '',
 	version: 0,
 	command: {
 		commandName: '',
@@ -116,19 +117,15 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [guideFile, setGuideFile] = React.useState<File | null>(null);
 
 	const location = useLocation();
-	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
+	const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const labName = (location.state as LocationState)?.labName;
 
-	// const location = useLocation();
-	// const labPracticeId = (location.state as LocationState)?.labPracticeId;
-	// const deviceId = (location.state as LocationState)?.deviceId;
-
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
 	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({
-		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
+		variables: {id: labPracticeId}
 	});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: '52698b41-6586-4fa8-b024-a134892a0a59'}
+		variables: {id: labPracticeId}
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
@@ -150,6 +147,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	React.useEffect(() => {
 		if (practiceInfoDb?.getLabPractice) {
 			setLoading(true);
+			console.log(practiceInfoDb.getLabPractice)
 			const practice: LabPracticeInfo = {
 				...initialPracticeValue,
 				id: practiceInfoDb.getLabPractice.id,
@@ -162,7 +160,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					? practiceInfoDb?.getLabPractice.duration.toString()
 					: '0',
 				practiceGuideS3Path: practiceInfoDb?.getLabPractice.guideS3Path ?? '',
-				version: practiceInfoDb.getLabPractice._version
+				version: practiceInfoDb.getLabPractice._version,
+				deviceId: practiceInfoDb.getLabPractice.LabPracticeDeviceId
 			};
 			setLoading(false);
 			setPracticeInfo(practice);
@@ -206,8 +205,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 									parameterName: parameter?.name ? parameter?.name : '',
 									parameterDescription: parameter?.description ? parameter?.description : '',
 									parameterDefaultValue: parameter?.defaultValue ? parameter?.defaultValue : '',
-									parameterMaxValue: parameter?.maxValue,
-									parameterMinValue: parameter?.minValue,
+									parameterMaxValue: parameter?.maxValue ? parameter?.maxValue : 9999,
+									parameterMinValue: parameter?.minValue ? parameter?.minValue : -9999,
 									parameterRegex: parameter?.regex ? parameter?.regex : '',
 									version: parameter._version,
 									action: ActionType.Nothing
@@ -216,7 +215,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						});
 					}
 				});
-				console.log(labCommandsDataDb?.listLabPracticeCommands?.items)
 				return parametersList;
 			});
 
@@ -261,6 +259,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					return {...previousState, practiceInfoName: value};
 				case Params.Description:
 					return {...previousState, practiceInfoDescription: value};
+				case Params.DeviceId:
+					return {...previousState, deviceId: value};
 				case Params.Duration:
 					return {...previousState, practiceInfoDuration: value.length > 0 && parseInt(value) > 0 ? value : '0'};
 				case Params.PracticeGuideS3Path:
@@ -526,6 +526,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 							name: practiceInfo.practiceInfoName,
 							description: practiceInfo.practiceInfoDescription,
 							duration: parseInt(practiceInfo.practiceInfoDuration),
+							LabPracticeDeviceId: practiceInfo.deviceId,
 							guideS3Path: guideFile?.name,
 							createdBy: '1',
 							_version: practiceInfo.version
@@ -856,8 +857,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 			});
 		} else if (parameter) {
-			console.log(typeof(value))
-			console.log(value == "0" ? parseInt("0") : parseInt(value))
+			console.log(typeof value);
+			console.log(value == '0' ? parseInt('0') : parseInt(value));
 			setParameterToEdit((previousState) => {
 				switch (param) {
 					case Params.SelectedCommand:
@@ -869,9 +870,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 					case Params.ParameterDefaultValue:
 						return {...previousState, parameterDefaultValue: value};
 					case Params.ParameterMinValue:
-						return {...previousState, parameterMinValue: (value == "0" ? 0 : parseInt(value))};
+						return {...previousState, parameterMinValue: value == '0' ? 0 : parseInt(value)};
 					case Params.ParameterMaxValue:
-						return {...previousState, parameterMaxValue: (value == "0" ? 0 : parseInt(value))};
+						return {...previousState, parameterMaxValue: value == '0' ? 0 : parseInt(value)};
 					case Params.ParameterRegex:
 						return {...previousState, parameterRegex: value};
 					default:

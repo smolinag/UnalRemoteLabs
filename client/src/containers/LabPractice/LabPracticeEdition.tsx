@@ -149,7 +149,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	React.useEffect(() => {
 		if (practiceInfoDb?.getLabPractice) {
 			setLoading(true);
-			console.log(practiceInfoDb.getLabPractice);
 			const practice: LabPracticeInfo = {
 				...initialPracticeValue,
 				id: practiceInfoDb.getLabPractice.id,
@@ -179,8 +178,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			setCommandsList(() => {
 				const tempCommands: LabPracticeCommandInfo[] = [];
 				labCommandsDataDb?.listLabPracticeCommands?.items.forEach((command) => {
-					console.log(command);
-
 					if (!command?._deleted) {
 						tempCommands.push({
 							id: command?.id as string,
@@ -209,8 +206,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 									parameterName: parameter?.name ? parameter?.name : '',
 									parameterDescription: parameter?.description ? parameter?.description : '',
 									parameterDefaultValue: parameter?.defaultValue ? parameter?.defaultValue : '',
-									parameterMaxValue: parameter?.maxValue ? parameter?.maxValue : 9999,
-									parameterMinValue: parameter?.minValue ? parameter?.minValue : -9999,
+									parameterMaxValue: parameter?.maxValue !== null ? parameter?.maxValue : 9999,
+									parameterMinValue: parameter?.minValue !== null? parameter?.minValue : -9999,
 									parameterRegex: parameter?.regex ? parameter?.regex : '',
 									version: parameter._version,
 									action: ActionType.Nothing
@@ -599,6 +596,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 												}
 											});
 										} else if (parameter.id && parameter.commandName === commandName) {
+											console.log(parameter.parameterMinValue)
 											// Actualizar parámetro
 											await updateLabPracticeParameter({
 												variables: {

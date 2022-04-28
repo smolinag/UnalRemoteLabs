@@ -39,10 +39,9 @@ const mapOutput = ({
 ];
 
 const LabPracticeParametersTable: React.FC<Props> = ({data, onAction}) => {
-
 	return (
 		<Row className="section">
-			<h5>Comandos añadidos</h5>
+			<h5>Parámetros de los Comandos añadidos</h5>
 			<Table
 				headers={COLUMNS}
 				data={data.map((obj) => (obj !== undefined ? mapOutput(obj) : []))}

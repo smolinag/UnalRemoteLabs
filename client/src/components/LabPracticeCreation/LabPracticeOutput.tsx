@@ -79,6 +79,7 @@ const LabPracticeOutput: React.FC<Props> = ({onValueChange, onValueEdit, output,
 				<Input
 					type="number"
 					placeholder="Posición"
+					min={1}
 					value={output.order}
 					onValueChange={(value) =>
 						onValueChange

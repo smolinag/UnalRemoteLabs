@@ -63,7 +63,7 @@ const initialPracticeValue: LabPracticeInfo = {
 		commandName: '',
 		commandDescription: '',
 		version: 0,
-		order: 0
+		order: 1
 	},
 	parameter: {
 		commandName: '',
@@ -79,7 +79,7 @@ const initialPracticeValue: LabPracticeInfo = {
 		outputDescription: '',
 		outputUnit: null,
 		outputType: 'string',
-		order: 0
+		order: 1
 	}
 };
 
@@ -120,12 +120,14 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const labName = (location.state as LocationState)?.labName;
 
-	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
+	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}, fetchPolicy: 'network-only'});
 	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({
-		variables: {id: labPracticeId}
+		variables: {id: labPracticeId},
+		fetchPolicy: 'network-only'
 	});
 	const {data: practiceOutputsDb} = useListLabPracticeOutputsQuery({
-		variables: {id: labPracticeId}
+		variables: {id: labPracticeId},
+		fetchPolicy: 'network-only'
 	});
 
 	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
@@ -147,7 +149,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	React.useEffect(() => {
 		if (practiceInfoDb?.getLabPractice) {
 			setLoading(true);
-			console.log(practiceInfoDb.getLabPractice)
+			console.log(practiceInfoDb.getLabPractice);
 			const practice: LabPracticeInfo = {
 				...initialPracticeValue,
 				id: practiceInfoDb.getLabPractice.id,
@@ -177,6 +179,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			setCommandsList(() => {
 				const tempCommands: LabPracticeCommandInfo[] = [];
 				labCommandsDataDb?.listLabPracticeCommands?.items.forEach((command) => {
+					console.log(command);
+
 					if (!command?._deleted) {
 						tempCommands.push({
 							id: command?.id as string,
@@ -283,6 +287,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 						commandLabel: value
 					};
 					return {...previousState, command: practice.command};
+				case Params.Order:
+					practice.command = {
+						...practiceInfo.command,
+						order: parseInt(value) > 0 ? parseInt(value) : 1
+					};
+					return {...previousState, command: practice.command};
 				case Params.SelectedCommand:
 					practice.parameter = {
 						...practiceInfo.parameter,
@@ -346,7 +356,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				case Params.OutputOrder:
 					practice.output = {
 						...practiceInfo.output,
-						order: parseInt(value)
+						order: parseInt(value) > 0 ? parseInt(value) : 1
 					};
 					return {...previousState, output: practice.output};
 				default:
@@ -857,8 +867,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 			});
 		} else if (parameter) {
-			console.log(typeof value);
-			console.log(value == '0' ? parseInt('0') : parseInt(value));
 			setParameterToEdit((previousState) => {
 				switch (param) {
 					case Params.SelectedCommand:

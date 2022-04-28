@@ -81,12 +81,14 @@ const LabPracticeCommand: React.FC<Props> = ({command, onValueChange, onValueEdi
 							: onValueEdit && onValueEdit(Params.CommandLabel, value, command)
 					}
 					error={checkErrorMessage(!modal ? Params.CommandLabel : Params.ModalCommandLabel)}
+					
 				/>
 
 				<Input
 					type="number"
 					placeholder="Posición"
 					value={command.order}
+					min={1}
 					onValueChange={(value) =>
 						onValueChange
 							? onValueChange(value, Params.Order)

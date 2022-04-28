@@ -47,7 +47,7 @@ const initialPracticeValue: LabPracticeInfo = {
 		commandName: '',
 		commandDescription: '',
 		version: 0,
-		order: 0
+		order: 1
 	},
 	parameter: {
 		commandName: '',
@@ -63,7 +63,7 @@ const initialPracticeValue: LabPracticeInfo = {
 		outputDescription: '',
 		outputUnit: '',
 		outputType: 'string',
-		order: 0
+		order: 1
 	}
 };
 
@@ -139,7 +139,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				case Params.Order:
 					practice.command = {
 						...practiceInfo.command,
-						order: parseInt(value)
+						order: parseInt(value) > 0 ? parseInt(value) : 1
 					};
 					return {...previousState, command: practice.command};
 				case Params.SelectedCommand:
@@ -205,7 +205,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				case Params.OutputOrder:
 					practice.output = {
 						...practiceInfo.output,
-						order: parseInt(value)
+						order: parseInt(value) > 0 ? parseInt(value) : 1
 					};
 					return {...previousState, output: practice.output};
 				default:

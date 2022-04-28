@@ -12,11 +12,13 @@ interface Props {
 	value: string | number;
 	tooltip?: string;
 	unit?: string;
+	min?: number;
+	max?: number;
 	onValueChange: (value: string) => void;
 	error?: boolean;
 }
 
-const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, onValueChange, error}) => {
+const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, min, max, onValueChange, error}) => {
 	let unitString = '';
 
 	const valueChange = (value: string): void => {
@@ -48,6 +50,8 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 						value={value}
 						onChange={(e) => valueChange(e.target.value)}
 						className={classes.input}
+						min={min}
+						max={max}
 					/>
 					{unit && <span className={classes.input}>{unitString}</span>}
 

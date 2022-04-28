@@ -146,6 +146,13 @@
           "attributes": [
             "MonitorsGroupRole"
           ]
+        },
+        {
+          "category": "auth",
+          "resourceName": "userPoolGroups",
+          "attributes": [
+            "StudentsGroupRole"
+          ]
         }
       ]
     }

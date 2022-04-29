@@ -684,10 +684,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 				if (outputsList.length > 0) {
 					outputsList.map(async (output) => {
-						let unit = null;
-						if (output.outputUnit && output.outputUnit?.length > 0) {
-							unit = JSON.stringify(output.outputUnit);
-						}
 
 						if (!output.id) {
 							await createLabPracticeOutput({
@@ -697,7 +693,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										outputType: 'string',
 										name: output.outputName,
 										description: output.outputDescription,
-										units: unit,
+										units: output.outputUnit,
 										createdBy: '1',
 										order: output.order
 									}
@@ -712,7 +708,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 										outputType: 'string',
 										name: output.outputName,
 										description: output.outputDescription,
-										units: unit,
+										units: output.outputUnit,
 										updatedBy: '1',
 										_version: output.version,
 										order: output.order

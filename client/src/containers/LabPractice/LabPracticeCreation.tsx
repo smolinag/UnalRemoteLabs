@@ -1,7 +1,7 @@
 import {Storage} from 'aws-amplify';
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
-// import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import {
 	LabPractice,
@@ -100,9 +100,12 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
-	// const location = useLocation();
-	const labId = 'bb8d939a-b2c5-41e3-b98b-5599d931797a';
-	const labName = 'Física Electricidad y Magnetismo';
+	const location = useLocation();
+	const labId = (location.state as LocationState)?.labId;
+	const labName = (location.state as LocationState)?.labName;
+	
+	// const labId = 'bb8d939a-b2c5-41e3-b98b-5599d931797a';
+	// const labName = 'Física Electricidad y Magnetismo';
 
 	const practiceChange = (value: string, id: string) => {
 		const practice: LabPracticeInfo = {
@@ -447,7 +450,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 										outputType: 'string',
 										name: obj.outputName,
 										description: obj.outputDescription,
-										units: JSON.stringify(obj.outputUnit),
+										units: obj.outputUnit,
 										createdBy: '1',
 										order: obj.order
 									}

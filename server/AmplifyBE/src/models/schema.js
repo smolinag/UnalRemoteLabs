@@ -1736,7 +1736,7 @@ export const schema = {
                 "units": {
                     "name": "units",
                     "isArray": false,
-                    "type": "AWSJSON",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1890,5 +1890,5 @@ export const schema = {
             }
         }
     },
-    "version": "246d77629c9129ead0f2554b94d66c34"
+    "version": "af1c766d4ea55997246d62def62109d3"
 };

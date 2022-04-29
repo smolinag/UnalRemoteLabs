@@ -79,7 +79,7 @@ type LabPracticeOutput @aws_api_key @aws_cognito_user_pools {
   labelName: String
   order: Int
   description: String
-  units: AWSJSON
+  units: String
   labpracticeID: ID!
   outputType: String!
   updatedBy: String
@@ -773,7 +773,7 @@ input CreateLabPracticeOutputInput {
   labelName: String
   order: Int
   description: String
-  units: AWSJSON
+  units: String
   labpracticeID: ID!
   outputType: String!
   updatedBy: String
@@ -787,7 +787,7 @@ input UpdateLabPracticeOutputInput {
   labelName: String
   order: Int
   description: String
-  units: AWSJSON
+  units: String
   labpracticeID: ID
   outputType: String
   updatedBy: String

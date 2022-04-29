@@ -208,6 +208,7 @@ export const getUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -229,6 +230,8 @@ export const getUserLabPracticeSession = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -304,6 +307,7 @@ export const listUserLabPracticeSessions = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -367,6 +371,7 @@ export const syncUserLabPracticeSessions = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -599,6 +604,7 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -620,6 +626,8 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -673,6 +681,8 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -716,6 +726,7 @@ export const listLabPracticeSessionCommands = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -778,6 +789,7 @@ export const syncLabPracticeSessionCommands = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -831,6 +843,8 @@ export const getLabPracticeOutput = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -845,20 +859,6 @@ export const getLabPracticeOutput = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -918,6 +918,8 @@ export const listLabPracticeOutputs = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -967,6 +969,8 @@ export const syncLabPracticeOutputs = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -990,6 +994,7 @@ export const getLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      videoUrlCode
       updatedBy
       createdBy
       _version
@@ -1037,6 +1042,8 @@ export const getLabPracticeSession = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1051,20 +1058,6 @@ export const getLabPracticeSession = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1146,6 +1139,7 @@ export const listLabPracticeSessions = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -1167,6 +1161,8 @@ export const listLabPracticeSessions = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1217,6 +1213,7 @@ export const syncLabPracticeSessions = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -1238,6 +1235,8 @@ export const syncLabPracticeSessions = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1253,171 +1252,6 @@ export const syncLabPracticeSessions = /* GraphQL */ `
           professor
           monitorEmailList
           studentEmailList
-          laboratoryID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getLabPracticeDevice = /* GraphQL */ `
-  query GetLabPracticeDevice($id: ID!) {
-    getLabPracticeDevice(id: $id) {
-      id
-      name
-      description
-      type
-      labpracticeID
-      updatedBy
-      createdBy
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      LabPractice {
-        id
-        name
-        description
-        duration
-        laboratoryID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPracticeOutputs {
-          nextToken
-          startedAt
-        }
-        LabPracticeSessions {
-          nextToken
-          startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        LabPracticeParameters {
-          nextToken
-          startedAt
-        }
-        LabPracticeCommands {
-          nextToken
-          startedAt
-        }
-        Laboratory {
-          id
-          name
-          description
-          organizationID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-    }
-  }
-`;
-export const listLabPracticeDevices = /* GraphQL */ `
-  query ListLabPracticeDevices(
-    $filter: ModelLabPracticeDeviceFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listLabPracticeDevices(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        name
-        description
-        type
-        labpracticeID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPractice {
-          id
-          name
-          description
-          duration
-          laboratoryID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncLabPracticeDevices = /* GraphQL */ `
-  query SyncLabPracticeDevices(
-    $filter: ModelLabPracticeDeviceFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncLabPracticeDevices(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        description
-        type
-        labpracticeID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPractice {
-          id
-          name
-          description
-          duration
           laboratoryID
           updatedBy
           createdBy
@@ -1482,6 +1316,8 @@ export const getLabPracticeParameter = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1497,6 +1333,8 @@ export const getLabPracticeParameter = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1511,20 +1349,6 @@ export const getLabPracticeParameter = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1602,6 +1426,8 @@ export const listLabPracticeParameters = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1669,6 +1495,8 @@ export const syncLabPracticeParameters = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1747,6 +1575,8 @@ export const getLabPracticeCommand = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1761,20 +1591,6 @@ export const getLabPracticeCommand = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1840,6 +1656,8 @@ export const listLabPracticeCommands = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1895,6 +1713,8 @@ export const syncLabPracticeCommands = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1917,6 +1737,8 @@ export const getLabPractice = /* GraphQL */ `
       description
       duration
       laboratoryID
+      LabPracticeDeviceId
+      guideS3Path
       updatedBy
       createdBy
       _version
@@ -1953,6 +1775,7 @@ export const getLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -1963,34 +1786,6 @@ export const getLabPractice = /* GraphQL */ `
         }
         nextToken
         startedAt
-      }
-      LabPracticeDevice {
-        id
-        name
-        description
-        type
-        labpracticeID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPractice {
-          id
-          name
-          description
-          duration
-          laboratoryID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       LabPracticeParameters {
         items {
@@ -2090,6 +1885,8 @@ export const listLabPractices = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2104,20 +1901,6 @@ export const listLabPractices = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2165,6 +1948,8 @@ export const syncLabPractices = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2179,20 +1964,6 @@ export const syncLabPractices = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2246,6 +2017,7 @@ export const getLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -2464,6 +2236,8 @@ export const getLaboratory = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version

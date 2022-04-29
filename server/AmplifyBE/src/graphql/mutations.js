@@ -260,6 +260,7 @@ export const createUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -281,6 +282,8 @@ export const createUserLabPracticeSession = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -376,6 +379,7 @@ export const updateUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -397,6 +401,8 @@ export const updateUserLabPracticeSession = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -492,6 +498,7 @@ export const deleteUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -513,6 +520,8 @@ export const deleteUserLabPracticeSession = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -809,6 +818,7 @@ export const createLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -830,6 +840,8 @@ export const createLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -883,6 +895,8 @@ export const createLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -920,6 +934,7 @@ export const updateLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -941,6 +956,8 @@ export const updateLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -994,6 +1011,8 @@ export const updateLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1031,6 +1050,7 @@ export const deleteLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        videoUrlCode
         updatedBy
         createdBy
         _version
@@ -1052,6 +1072,8 @@ export const deleteLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1105,6 +1127,8 @@ export const deleteLabPracticeSessionCommand = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -1144,6 +1168,8 @@ export const createLabPracticeOutput = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1158,20 +1184,6 @@ export const createLabPracticeOutput = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1225,6 +1237,8 @@ export const updateLabPracticeOutput = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1239,20 +1253,6 @@ export const updateLabPracticeOutput = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1306,6 +1306,8 @@ export const deleteLabPracticeOutput = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1320,20 +1322,6 @@ export const deleteLabPracticeOutput = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1372,6 +1360,7 @@ export const createLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      videoUrlCode
       updatedBy
       createdBy
       _version
@@ -1419,6 +1408,8 @@ export const createLabPracticeSession = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1433,20 +1424,6 @@ export const createLabPracticeSession = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1522,6 +1499,7 @@ export const updateLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      videoUrlCode
       updatedBy
       createdBy
       _version
@@ -1569,6 +1547,8 @@ export const updateLabPracticeSession = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1583,20 +1563,6 @@ export const updateLabPracticeSession = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1672,6 +1638,7 @@ export const deleteLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      videoUrlCode
       updatedBy
       createdBy
       _version
@@ -1719,6 +1686,8 @@ export const deleteLabPracticeSession = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -1733,20 +1702,6 @@ export const deleteLabPracticeSession = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -1810,240 +1765,6 @@ export const deleteLabPracticeSession = /* GraphQL */ `
     }
   }
 `;
-export const createLabPracticeDevice = /* GraphQL */ `
-  mutation CreateLabPracticeDevice(
-    $input: CreateLabPracticeDeviceInput!
-    $condition: ModelLabPracticeDeviceConditionInput
-  ) {
-    createLabPracticeDevice(input: $input, condition: $condition) {
-      id
-      name
-      description
-      type
-      labpracticeID
-      updatedBy
-      createdBy
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      LabPractice {
-        id
-        name
-        description
-        duration
-        laboratoryID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPracticeOutputs {
-          nextToken
-          startedAt
-        }
-        LabPracticeSessions {
-          nextToken
-          startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        LabPracticeParameters {
-          nextToken
-          startedAt
-        }
-        LabPracticeCommands {
-          nextToken
-          startedAt
-        }
-        Laboratory {
-          id
-          name
-          description
-          organizationID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-    }
-  }
-`;
-export const updateLabPracticeDevice = /* GraphQL */ `
-  mutation UpdateLabPracticeDevice(
-    $input: UpdateLabPracticeDeviceInput!
-    $condition: ModelLabPracticeDeviceConditionInput
-  ) {
-    updateLabPracticeDevice(input: $input, condition: $condition) {
-      id
-      name
-      description
-      type
-      labpracticeID
-      updatedBy
-      createdBy
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      LabPractice {
-        id
-        name
-        description
-        duration
-        laboratoryID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPracticeOutputs {
-          nextToken
-          startedAt
-        }
-        LabPracticeSessions {
-          nextToken
-          startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        LabPracticeParameters {
-          nextToken
-          startedAt
-        }
-        LabPracticeCommands {
-          nextToken
-          startedAt
-        }
-        Laboratory {
-          id
-          name
-          description
-          organizationID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-    }
-  }
-`;
-export const deleteLabPracticeDevice = /* GraphQL */ `
-  mutation DeleteLabPracticeDevice(
-    $input: DeleteLabPracticeDeviceInput!
-    $condition: ModelLabPracticeDeviceConditionInput
-  ) {
-    deleteLabPracticeDevice(input: $input, condition: $condition) {
-      id
-      name
-      description
-      type
-      labpracticeID
-      updatedBy
-      createdBy
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-      LabPractice {
-        id
-        name
-        description
-        duration
-        laboratoryID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPracticeOutputs {
-          nextToken
-          startedAt
-        }
-        LabPracticeSessions {
-          nextToken
-          startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-        LabPracticeParameters {
-          nextToken
-          startedAt
-        }
-        LabPracticeCommands {
-          nextToken
-          startedAt
-        }
-        Laboratory {
-          id
-          name
-          description
-          organizationID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
-      }
-    }
-  }
-`;
 export const createLabPracticeParameter = /* GraphQL */ `
   mutation CreateLabPracticeParameter(
     $input: CreateLabPracticeParameterInput!
@@ -2096,6 +1817,8 @@ export const createLabPracticeParameter = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -2111,6 +1834,8 @@ export const createLabPracticeParameter = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2125,20 +1850,6 @@ export const createLabPracticeParameter = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2217,6 +1928,8 @@ export const updateLabPracticeParameter = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -2232,6 +1945,8 @@ export const updateLabPracticeParameter = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2246,20 +1961,6 @@ export const updateLabPracticeParameter = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2338,6 +2039,8 @@ export const deleteLabPracticeParameter = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -2353,6 +2056,8 @@ export const deleteLabPracticeParameter = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2367,20 +2072,6 @@ export const deleteLabPracticeParameter = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2474,6 +2165,8 @@ export const createLabPracticeCommand = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2488,20 +2181,6 @@ export const createLabPracticeCommand = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2595,6 +2274,8 @@ export const updateLabPracticeCommand = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2609,20 +2290,6 @@ export const updateLabPracticeCommand = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2716,6 +2383,8 @@ export const deleteLabPracticeCommand = /* GraphQL */ `
         description
         duration
         laboratoryID
+        LabPracticeDeviceId
+        guideS3Path
         updatedBy
         createdBy
         _version
@@ -2730,20 +2399,6 @@ export const deleteLabPracticeCommand = /* GraphQL */ `
         LabPracticeSessions {
           nextToken
           startedAt
-        }
-        LabPracticeDevice {
-          id
-          name
-          description
-          type
-          labpracticeID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
         }
         LabPracticeParameters {
           nextToken
@@ -2781,6 +2436,8 @@ export const createLabPractice = /* GraphQL */ `
       description
       duration
       laboratoryID
+      LabPracticeDeviceId
+      guideS3Path
       updatedBy
       createdBy
       _version
@@ -2817,6 +2474,7 @@ export const createLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -2827,34 +2485,6 @@ export const createLabPractice = /* GraphQL */ `
         }
         nextToken
         startedAt
-      }
-      LabPracticeDevice {
-        id
-        name
-        description
-        type
-        labpracticeID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPractice {
-          id
-          name
-          description
-          duration
-          laboratoryID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       LabPracticeParameters {
         items {
@@ -2952,6 +2582,8 @@ export const updateLabPractice = /* GraphQL */ `
       description
       duration
       laboratoryID
+      LabPracticeDeviceId
+      guideS3Path
       updatedBy
       createdBy
       _version
@@ -2988,6 +2620,7 @@ export const updateLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -2998,34 +2631,6 @@ export const updateLabPractice = /* GraphQL */ `
         }
         nextToken
         startedAt
-      }
-      LabPracticeDevice {
-        id
-        name
-        description
-        type
-        labpracticeID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPractice {
-          id
-          name
-          description
-          duration
-          laboratoryID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       LabPracticeParameters {
         items {
@@ -3123,6 +2728,8 @@ export const deleteLabPractice = /* GraphQL */ `
       description
       duration
       laboratoryID
+      LabPracticeDeviceId
+      guideS3Path
       updatedBy
       createdBy
       _version
@@ -3159,6 +2766,7 @@ export const deleteLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -3169,34 +2777,6 @@ export const deleteLabPractice = /* GraphQL */ `
         }
         nextToken
         startedAt
-      }
-      LabPracticeDevice {
-        id
-        name
-        description
-        type
-        labpracticeID
-        updatedBy
-        createdBy
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-        LabPractice {
-          id
-          name
-          description
-          duration
-          laboratoryID
-          updatedBy
-          createdBy
-          _version
-          _deleted
-          _lastChangedAt
-          createdAt
-          updatedAt
-        }
       }
       LabPracticeParameters {
         items {
@@ -3311,6 +2891,7 @@ export const createLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -3406,6 +2987,7 @@ export const updateLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -3501,6 +3083,7 @@ export const deleteLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          videoUrlCode
           updatedBy
           createdBy
           _version
@@ -3618,6 +3201,8 @@ export const createLaboratory = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -3702,6 +3287,8 @@ export const updateLaboratory = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version
@@ -3786,6 +3373,8 @@ export const deleteLaboratory = /* GraphQL */ `
           description
           duration
           laboratoryID
+          LabPracticeDeviceId
+          guideS3Path
           updatedBy
           createdBy
           _version

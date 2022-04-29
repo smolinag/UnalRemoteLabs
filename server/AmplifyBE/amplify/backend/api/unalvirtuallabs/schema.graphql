@@ -59,7 +59,7 @@ type LabPracticeOutput @model @key(name: "byLabPractice", fields: ["labpracticeI
   labelName: String
   order: Int
   description: String
-  units: AWSJSON
+  units: String
   LabPractice: LabPractice @connection(fields: ["labpracticeID"])
   labpracticeID: ID!
   outputType: String!

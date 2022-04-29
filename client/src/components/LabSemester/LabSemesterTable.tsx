@@ -11,7 +11,7 @@ interface Props {
 	onAction?: (rowIndex: number, action: Action) => void;
 }
 
-const COLUMNS = ['Semestre', 'Descripción', 'Profesor', 'Prácticas', 'Sesiones'];
+const COLUMNS = ['Semestre', 'Descripción', 'Profesor', 'Programar', 'Sesiones'];
 
 const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 	const navigate = useNavigate();
@@ -39,7 +39,7 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 						state: {labId, labSemesterId}
 					})
 				}>
-				Prácticas
+				Programar Prácticas
 			</p>
 		);
 	};

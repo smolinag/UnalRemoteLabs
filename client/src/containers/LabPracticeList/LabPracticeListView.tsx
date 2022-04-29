@@ -121,7 +121,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 						data={mapLabpracticesForTable(labPractices)}
 						onAction={handleTableAction}
 						removable={!labSemesterId}
-						hasRemoveAll={!labSemesterId}
 						editable={!labSemesterId}
 						overflow
 						stickyHeader

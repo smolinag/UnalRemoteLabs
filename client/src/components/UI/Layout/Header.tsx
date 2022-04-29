@@ -45,6 +45,7 @@ const Header: React.FC<unknown> = () => {
 					<Nav className={classes.title}>
 						<Navbar.Text>
 							<h4>Laboratorios remotos Universidad Nacional de Colombia</h4>
+							<h5>(En construcción &#128679;)</h5>
 						</Navbar.Text>
 					</Nav>
 					<Nav className={classes.optionNavbar}>

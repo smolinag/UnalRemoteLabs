@@ -1967,7 +1967,6 @@ export type CreateUserMutation = {__typename?: 'Mutation'} & {
 			| 'identificationNumber'
 			| 'email'
 			| 'phone'
-			| 'userName'
 			| 's3AvatarPath'
 			| 'role'
 			| 'createdAt'
@@ -2080,7 +2079,6 @@ export type DeleteUserMutation = {__typename?: 'Mutation'} & {
 			| 'identificationNumber'
 			| 'email'
 			| 'phone'
-			| 'userName'
 			| 's3AvatarPath'
 			| 'role'
 			| 'createdAt'
@@ -2263,7 +2261,6 @@ export type UpdateUserMutation = {__typename?: 'Mutation'} & {
 			| 'identificationNumber'
 			| 'email'
 			| 'phone'
-			| 'userName'
 			| 's3AvatarPath'
 			| 'role'
 			| 'createdAt'
@@ -2372,6 +2369,39 @@ export type GetLaboratoryQuery = {__typename?: 'Query'} & {
 			| 'createdAt'
 			| '_version'
 		>
+	>;
+};
+
+export type GetUserByEmailQueryVariables = Exact<{
+	email: Scalars['String'];
+}>;
+
+export type GetUserByEmailQuery = {__typename?: 'Query'} & {
+	getUserByEmail?: Maybe<
+		{__typename?: 'ModelUserConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'User'} & Pick<
+						User,
+						| 'id'
+						| 'organizationID'
+						| 'email'
+						| 'name'
+						| 'identificationNumber'
+						| 'phone'
+						| 'role'
+						| 's3AvatarPath'
+						| 'createdAt'
+						| 'createdBy'
+						| 'updatedAt'
+						| 'updatedBy'
+						| '_version'
+						| '_deleted'
+						| '_lastChangedAt'
+					>
+				>
+			>;
+		}
 	>;
 };
 
@@ -2705,7 +2735,6 @@ export type ListUsersByRoleAndOrganizationIdQuery = {__typename?: 'Query'} & {
 						| 'identificationNumber'
 						| 'email'
 						| 'phone'
-						| 'userName'
 						| 's3AvatarPath'
 						| 'role'
 						| 'updatedBy'
@@ -3167,7 +3196,6 @@ export const CreateUserDocument = gql`
 			identificationNumber
 			email
 			phone
-			userName
 			s3AvatarPath
 			role
 			createdAt
@@ -3560,7 +3588,6 @@ export const DeleteUserDocument = gql`
 			identificationNumber
 			email
 			phone
-			userName
 			s3AvatarPath
 			role
 			createdAt
@@ -4114,7 +4141,6 @@ export const UpdateUserDocument = gql`
 			identificationNumber
 			email
 			phone
-			userName
 			s3AvatarPath
 			role
 			createdAt
@@ -4419,6 +4445,61 @@ export function useGetLaboratoryLazyQuery(
 export type GetLaboratoryQueryHookResult = ReturnType<typeof useGetLaboratoryQuery>;
 export type GetLaboratoryLazyQueryHookResult = ReturnType<typeof useGetLaboratoryLazyQuery>;
 export type GetLaboratoryQueryResult = Apollo.QueryResult<GetLaboratoryQuery, GetLaboratoryQueryVariables>;
+export const GetUserByEmailDocument = gql`
+	query getUserByEmail($email: String!) {
+		getUserByEmail(email: $email) {
+			items {
+				id
+				organizationID
+				email
+				name
+				identificationNumber
+				phone
+				role
+				s3AvatarPath
+				createdAt
+				createdBy
+				updatedAt
+				updatedBy
+				_version
+				_deleted
+				_lastChangedAt
+			}
+		}
+	}
+`;
+
+/**
+ * __useGetUserByEmailQuery__
+ *
+ * To run a query within a React component, call `useGetUserByEmailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserByEmailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserByEmailQuery({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useGetUserByEmailQuery(
+	baseOptions: Apollo.QueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+}
+export function useGetUserByEmailLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<GetUserByEmailQuery, GetUserByEmailQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, options);
+}
+export type GetUserByEmailQueryHookResult = ReturnType<typeof useGetUserByEmailQuery>;
+export type GetUserByEmailLazyQueryHookResult = ReturnType<typeof useGetUserByEmailLazyQuery>;
+export type GetUserByEmailQueryResult = Apollo.QueryResult<GetUserByEmailQuery, GetUserByEmailQueryVariables>;
 export const GetUserByIdDocument = gql`
 	query getUserById($id: ID!) {
 		getUser(id: $id) {
@@ -5199,7 +5280,6 @@ export const ListUsersByRoleAndOrganizationIdDocument = gql`
 				identificationNumber
 				email
 				phone
-				userName
 				s3AvatarPath
 				role
 				updatedBy

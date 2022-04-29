@@ -1,0 +1,21 @@
+query getUserByEmail($email: String!) {
+	getUserByEmail(email: $email) {
+		items {
+			id
+			organizationID
+			email
+			name
+			identificationNumber
+			phone
+			role
+			s3AvatarPath
+			createdAt
+			createdBy
+			updatedAt
+			updatedBy
+			_version
+			_deleted
+			_lastChangedAt
+		}
+	}
+}

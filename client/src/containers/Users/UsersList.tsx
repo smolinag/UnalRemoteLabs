@@ -64,7 +64,6 @@ const UsersList: React.FC<unknown> = () => {
 						name: obj?.name ?? '',
 						identificationNumber: obj?.identificationNumber ?? '',
 						email: obj?.email ?? '',
-						userName: obj?.userName ?? '',
 						phone: obj?.phone ?? '',
 						role: obj?.role ?? Role.Students,
 						version: obj?._version,

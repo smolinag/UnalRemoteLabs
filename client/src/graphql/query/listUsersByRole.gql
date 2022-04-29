@@ -7,7 +7,6 @@ query listUsersByRoleAndOrganizationId($role: Role!, $organizationID: ID!) {
 			identificationNumber
 			email
 			phone
-			userName
 			s3AvatarPath
 			role
 			updatedBy

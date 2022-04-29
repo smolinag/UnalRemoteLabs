@@ -6,7 +6,6 @@ mutation createUser($input: CreateUserInput!) {
 		identificationNumber
 		email
 		phone
-		userName
 		s3AvatarPath
 		role
 		createdAt

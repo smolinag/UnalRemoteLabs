@@ -6,7 +6,6 @@ mutation deleteUser($input: DeleteUserInput!) {
 		identificationNumber
 		email
 		phone
-		userName
 		s3AvatarPath
 		role
 		createdAt

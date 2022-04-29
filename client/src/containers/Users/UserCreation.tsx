@@ -5,7 +5,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {Button, LoadingContainer} from '../../components/UI';
 import {UserData} from '../../components/Users/index';
 import {isEmail} from '../../generalUtils/EmailUtils';
-import {useCreateUserMutation} from '../../graphql/generated/schema';
+import {useCreateUserMutation, useGetUserByEmailQuery} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {User, ErrorIdentifier, Params, LocationUserStateCreation, Role} from './types';
 
@@ -31,6 +31,8 @@ const UserCreation: React.FC<unknown> = () => {
 	const [errors, setErrors] = useState<ErrorIdentifier[]>([]);
 
 	const [createUser] = useCreateUserMutation();
+
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
 
 	const navigate = useNavigate();
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
@@ -58,12 +60,35 @@ const UserCreation: React.FC<unknown> = () => {
 		return hasError;
 	};
 
+	const validateEmail = async () => {
+		let isEmailValid = true;
+		if (user.email && !isEmail(user.email)) {
+			isEmailValid = false;
+			showErrorBanner(
+				`Email ${user.email} no valido. Recuerde que debe ser un email de la universidad con el dominio @unal.edu.co`
+			);
+		} else {
+			const {data} = await getUserByEmail({
+				email: user.email
+			});
+			if (data?.getUserByEmail) {
+				const items = data?.getUserByEmail?.items?.filter((item) => item !== null && item._deleted !== true);
+				if (items.length > 0) {
+					isEmailValid = false;
+					showErrorBanner(`El usuario con el email ${user.email} ya existe`);
+				}
+			}
+		}
+
+		return isEmailValid;
+	};
+
 	const handleOnCreateUser = async () => {
 		const hasError = checkErrorMessage();
 
 		let isEmailValid = false;
-		if (user.email) {
-			isEmailValid = isEmail(user.email);
+		if (!hasError) {
+			isEmailValid = await validateEmail();
 		}
 
 		if (!hasError && isEmailValid) {

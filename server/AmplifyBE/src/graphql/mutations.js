@@ -30,7 +30,6 @@ export const createOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -94,7 +93,6 @@ export const updateOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -158,7 +156,6 @@ export const deleteOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -215,7 +212,6 @@ export const createUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -334,7 +330,6 @@ export const updateUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -453,7 +448,6 @@ export const deleteUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -561,7 +555,6 @@ export const createUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -642,7 +635,6 @@ export const updateUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -723,7 +715,6 @@ export const deleteUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -3429,7 +3420,6 @@ export const createUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -3527,7 +3517,6 @@ export const updateUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -3625,7 +3614,6 @@ export const deleteUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID

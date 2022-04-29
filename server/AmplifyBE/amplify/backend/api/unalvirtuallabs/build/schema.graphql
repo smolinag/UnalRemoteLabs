@@ -40,7 +40,6 @@ type User @aws_api_key @aws_cognito_user_pools {
   identificationNumber: String
   email: String!
   phone: String
-  userName: String
   s3AvatarPath: String
   role: Role!
   organizationID: ID!
@@ -472,6 +471,7 @@ type Query {
   syncUserLabPracticeSessions(filter: ModelUserLabPracticeSessionFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserLabPracticeSessionConnection @aws_api_key @aws_cognito_user_pools
   getUser(id: ID!): User @aws_api_key @aws_cognito_user_pools
   listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_api_key @aws_cognito_user_pools
+  getUserByEmail(email: String, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection @aws_api_key @aws_cognito_user_pools
   syncUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String, lastSync: AWSTimestamp): ModelUserConnection @aws_api_key @aws_cognito_user_pools
   getLabPracticeSessionCommand(id: ID!): LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools
   listLabPracticeSessionCommands(filter: ModelLabPracticeSessionCommandFilterInput, limit: Int, nextToken: String): ModelLabPracticeSessionCommandConnection @aws_api_key @aws_cognito_user_pools
@@ -620,7 +620,6 @@ input ModelUserFilterInput {
   identificationNumber: ModelStringInput
   email: ModelStringInput
   phone: ModelStringInput
-  userName: ModelStringInput
   s3AvatarPath: ModelStringInput
   role: ModelRoleInput
   organizationID: ModelIDInput
@@ -637,7 +636,6 @@ input CreateUserInput {
   identificationNumber: String
   email: String!
   phone: String
-  userName: String
   s3AvatarPath: String
   role: Role!
   organizationID: ID!
@@ -652,7 +650,6 @@ input UpdateUserInput {
   identificationNumber: String
   email: String
   phone: String
-  userName: String
   s3AvatarPath: String
   role: Role
   organizationID: ID
@@ -671,7 +668,6 @@ input ModelUserConditionInput {
   identificationNumber: ModelStringInput
   email: ModelStringInput
   phone: ModelStringInput
-  userName: ModelStringInput
   s3AvatarPath: ModelStringInput
   role: ModelRoleInput
   organizationID: ModelIDInput

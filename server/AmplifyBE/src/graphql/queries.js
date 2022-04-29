@@ -27,7 +27,6 @@ export const getOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -163,7 +162,6 @@ export const getUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -288,7 +286,6 @@ export const listUserLabPracticeSessions = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -352,7 +349,6 @@ export const syncUserLabPracticeSessions = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -394,7 +390,6 @@ export const getUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -477,7 +472,69 @@ export const listUsers = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
+        s3AvatarPath
+        role
+        organizationID
+        updatedBy
+        createdBy
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        Organization {
+          id
+          country
+          region
+          city
+          type
+          name
+          description
+          phone
+          address
+          updatedBy
+          createdBy
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        UserLabPracticeSessions {
+          nextToken
+          startedAt
+        }
+        UserLabSemesters {
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getUserByEmail = /* GraphQL */ `
+  query GetUserByEmail(
+    $email: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    getUserByEmail(
+      email: $email
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        identificationNumber
+        email
+        phone
         s3AvatarPath
         role
         organizationID
@@ -539,7 +596,6 @@ export const syncUsers = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -2397,7 +2453,6 @@ export const getUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -2501,7 +2556,6 @@ export const listUserLabSemesters = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -2563,7 +2617,6 @@ export const syncUserLabSemesters = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID

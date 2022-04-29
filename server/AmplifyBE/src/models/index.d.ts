@@ -163,7 +163,6 @@ export declare class User {
   readonly identificationNumber?: string | null;
   readonly email: string;
   readonly phone?: string | null;
-  readonly userName?: string | null;
   readonly s3AvatarPath?: string | null;
   readonly role: Role | keyof typeof Role;
   readonly Organization?: Organization | null;

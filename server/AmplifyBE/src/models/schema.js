@@ -834,13 +834,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "userName": {
-                    "name": "userName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "s3AvatarPath": {
                     "name": "s3AvatarPath",
                     "isArray": false,
@@ -942,7 +935,8 @@ export const schema = {
                         "name": "byEmail",
                         "fields": [
                             "email"
-                        ]
+                        ],
+                        "queryField": "getUserByEmail"
                     }
                 },
                 {
@@ -1890,5 +1884,5 @@ export const schema = {
             }
         }
     },
-    "version": "af1c766d4ea55997246d62def62109d3"
+    "version": "36cd20d7be01b1367c5a1de827866744"
 };

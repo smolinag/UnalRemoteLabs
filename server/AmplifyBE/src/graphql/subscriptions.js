@@ -27,7 +27,6 @@ export const onCreateOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -88,7 +87,6 @@ export const onUpdateOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -149,7 +147,6 @@ export const onDeleteOrganization = /* GraphQL */ `
           identificationNumber
           email
           phone
-          userName
           s3AvatarPath
           role
           organizationID
@@ -203,7 +200,6 @@ export const onCreateUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -319,7 +315,6 @@ export const onUpdateUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -435,7 +430,6 @@ export const onDeleteUserLabPracticeSession = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -540,7 +534,6 @@ export const onCreateUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -618,7 +611,6 @@ export const onUpdateUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -696,7 +688,6 @@ export const onDeleteUser = /* GraphQL */ `
       identificationNumber
       email
       phone
-      userName
       s3AvatarPath
       role
       organizationID
@@ -3327,7 +3318,6 @@ export const onCreateUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -3422,7 +3412,6 @@ export const onUpdateUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID
@@ -3517,7 +3506,6 @@ export const onDeleteUserLabSemester = /* GraphQL */ `
         identificationNumber
         email
         phone
-        userName
         s3AvatarPath
         role
         organizationID

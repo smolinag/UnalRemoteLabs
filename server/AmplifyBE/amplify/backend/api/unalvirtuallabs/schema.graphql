@@ -24,13 +24,12 @@ type UserLabPracticeSession @model @key(name: "byUser", fields: ["userID"]) @key
   labpracticesessionID: ID!
 }
 
-type User @model @key(name: "byEmail", fields: ["email"])  @key(name: "byOrganization", fields: ["organizationID"]) @auth(rules: [{ allow: public },  { allow: private}]) {
+type User @model @key(name: "byEmail", fields: ["email"], queryField: "getUserByEmail")  @key(name: "byOrganization", fields: ["organizationID"]) @auth(rules: [{ allow: public },  { allow: private}]) {
   id: ID!
   name: String!
   identificationNumber: String
   email: String!
   phone: String
-  userName: String
   s3AvatarPath: String
   role: Role!
   organizationID: ID!

@@ -52,7 +52,7 @@ export type CreateLabPracticeOutputInput = {
 	labelName?: Maybe<Scalars['String']>;
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
-	units?: Maybe<Scalars['AWSJSON']>;
+	units?: Maybe<Scalars['String']>;
 	labpracticeID: Scalars['ID'];
 	outputType: Scalars['String'];
 	updatedBy?: Maybe<Scalars['String']>;
@@ -145,7 +145,6 @@ export type CreateUserInput = {
 	identificationNumber?: Maybe<Scalars['String']>;
 	email: Scalars['String'];
 	phone?: Maybe<Scalars['String']>;
-	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
 	role: Role;
 	organizationID: Scalars['ID'];
@@ -343,7 +342,7 @@ export type LabPracticeOutput = {
 	labelName?: Maybe<Scalars['String']>;
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
-	units?: Maybe<Scalars['AWSJSON']>;
+	units?: Maybe<Scalars['String']>;
 	labpracticeID: Scalars['ID'];
 	outputType: Scalars['String'];
 	updatedBy?: Maybe<Scalars['String']>;
@@ -949,7 +948,6 @@ export type ModelUserConditionInput = {
 	identificationNumber?: Maybe<ModelStringInput>;
 	email?: Maybe<ModelStringInput>;
 	phone?: Maybe<ModelStringInput>;
-	userName?: Maybe<ModelStringInput>;
 	s3AvatarPath?: Maybe<ModelStringInput>;
 	role?: Maybe<ModelRoleInput>;
 	organizationID?: Maybe<ModelIdInput>;
@@ -973,7 +971,6 @@ export type ModelUserFilterInput = {
 	identificationNumber?: Maybe<ModelStringInput>;
 	email?: Maybe<ModelStringInput>;
 	phone?: Maybe<ModelStringInput>;
-	userName?: Maybe<ModelStringInput>;
 	s3AvatarPath?: Maybe<ModelStringInput>;
 	role?: Maybe<ModelRoleInput>;
 	organizationID?: Maybe<ModelIdInput>;
@@ -1317,6 +1314,7 @@ export type Query = {
 	syncUserLabPracticeSessions?: Maybe<ModelUserLabPracticeSessionConnection>;
 	getUser?: Maybe<User>;
 	listUsers?: Maybe<ModelUserConnection>;
+	getUserByEmail?: Maybe<ModelUserConnection>;
 	syncUsers?: Maybe<ModelUserConnection>;
 	getLabPracticeSessionCommand?: Maybe<LabPracticeSessionCommand>;
 	listLabPracticeSessionCommands?: Maybe<ModelLabPracticeSessionCommandConnection>;
@@ -1386,6 +1384,14 @@ export type QueryGetUserArgs = {
 };
 
 export type QueryListUsersArgs = {
+	filter?: Maybe<ModelUserFilterInput>;
+	limit?: Maybe<Scalars['Int']>;
+	nextToken?: Maybe<Scalars['String']>;
+};
+
+export type QueryGetUserByEmailArgs = {
+	email?: Maybe<Scalars['String']>;
+	sortDirection?: Maybe<ModelSortDirection>;
 	filter?: Maybe<ModelUserFilterInput>;
 	limit?: Maybe<Scalars['Int']>;
 	nextToken?: Maybe<Scalars['String']>;
@@ -1646,7 +1652,7 @@ export type UpdateLabPracticeOutputInput = {
 	labelName?: Maybe<Scalars['String']>;
 	order?: Maybe<Scalars['Int']>;
 	description?: Maybe<Scalars['String']>;
-	units?: Maybe<Scalars['AWSJSON']>;
+	units?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	outputType?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
@@ -1739,7 +1745,6 @@ export type UpdateUserInput = {
 	identificationNumber?: Maybe<Scalars['String']>;
 	email?: Maybe<Scalars['String']>;
 	phone?: Maybe<Scalars['String']>;
-	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
 	role?: Maybe<Role>;
 	organizationID?: Maybe<Scalars['ID']>;
@@ -1771,7 +1776,6 @@ export type User = {
 	identificationNumber?: Maybe<Scalars['String']>;
 	email: Scalars['String'];
 	phone?: Maybe<Scalars['String']>;
-	userName?: Maybe<Scalars['String']>;
 	s3AvatarPath?: Maybe<Scalars['String']>;
 	role: Role;
 	organizationID: Scalars['ID'];

@@ -1,6 +1,6 @@
 import orderBy from 'lodash/orderBy';
 import React, {useState, useEffect, useContext} from 'react';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 // import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
@@ -8,7 +8,7 @@ import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
 import {Session} from '../../components/Lab/LabTitle';
 import {LoadingContainer} from '../../components/UI';
-import { TimeConvert } from '../../generalUtils/ConvertTypes';
+import {TimeConvert} from '../../generalUtils/ConvertTypes';
 import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
@@ -182,12 +182,14 @@ const LabPracticeView: React.FC<unknown> = () => {
 		const receivedOutputs = practiceOutputs?.listLabPracticeOutputs?.items;
 		if (receivedOutputs) {
 			let outputsIndex = 0;
-			const outputsArray: OutputListDto[] = receivedOutputs.map((output) => ({
-				id: output?.id as string,
-				name: output?.name as string,
-				value: '-',
-				order: output?.order ?? outputsIndex++
-			}));
+			const outputsArray: OutputListDto[] = receivedOutputs
+				.filter((output) => !output?._deleted)
+				.map((output) => ({
+					id: output?.id as string,
+					name: output?.name as string,
+					value: '-',
+					order: output?.order ?? outputsIndex++
+				}));
 			setOutputs(orderBy(outputsArray, 'order', 'asc'));
 		}
 	}, [practiceOutputs]);

@@ -28,7 +28,6 @@ const ComplexCommand: React.FC<Props> = ({onExecute, label, parameters, commandI
 
 	const handleParameterValueChange = (newValue: number, id: string) => {
 		setFormParametersValues((currentState) => {
-			console.log(newValue)
 			const stateCopy = cloneDeep(currentState);
 
 			const parameterToUpdate = stateCopy.find((parameter) => parameter.id === id);

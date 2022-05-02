@@ -596,7 +596,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 												}
 											});
 										} else if (parameter.id && parameter.commandName === commandName) {
-											console.log(parameter.parameterMinValue)
 											// Actualizar parámetro
 											await updateLabPracticeParameter({
 												variables: {

@@ -115,6 +115,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		// 			)
 		// 		)
 		// ) {
+			console.log(labPracticeSession)
 		return (
 			<IoEnter
 				key={labPracticeSession.labPracticeInfo.laboratory.id}

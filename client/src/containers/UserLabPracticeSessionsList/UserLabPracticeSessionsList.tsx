@@ -53,6 +53,7 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 			);
 
 			if (receivedList && receivedList.length > 0) {
+				console.log(receivedList)
 				const list: LabPracticeSession[] = receivedList.map((session) => ({
 					id: session?.id ? session.id : '',
 					startDate: session?.startDate ? session.startDate : '',
@@ -77,12 +78,10 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 								? session?.LabPractice?.Laboratory?.description
 								: ''
 						},
-						labPracticeDeviceId:
-							session?.id === '11df7731-d269-49c5-807e-53e6ae43dd8d'
-								? 'cb24b961-da14-4e80-8ce2-050feb952b77'
-								: 'b13743e4-8951-4e97-9392-d7f07c910f30'
+						labPracticeDeviceId: session?.LabPractice?.LabPracticeDeviceId ? session.LabPractice.LabPracticeDeviceId : ''
 					}
 				}));
+				console.log(list)
 				setLabPracticeSessionsList(list);
 			}
 

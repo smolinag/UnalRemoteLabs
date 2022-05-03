@@ -95,6 +95,8 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: sessionId}
 	});
+	console.log("deviceId")
+	console.log(deviceId)
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
 
 	useEffect(() => {

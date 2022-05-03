@@ -89,6 +89,7 @@ async function listLabPracticeOutputs(filter) {
     let outputs = queryAns.data.listLabPracticeOutputs.items;
     if (outputs.length > 0) {
       console.log("Output id: " + outputs[0].id);
+      outputs = outputs.filter(item => item._deleted != true);
       return outputs[0].id;
     } else {
       console.log("Output not found");

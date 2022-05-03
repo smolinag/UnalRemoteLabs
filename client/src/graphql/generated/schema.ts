@@ -2418,7 +2418,7 @@ export type ListLabPracticeSessionsQuery = {__typename?: 'Query'} & {
 							LabPractice?: Maybe<
 								{__typename?: 'LabPractice'} & Pick<
 									LabPractice,
-									'_deleted' | 'id' | 'name' | 'description' | 'duration'
+									'_deleted' | 'id' | 'name' | 'description' | 'duration' | 'LabPracticeDeviceId'
 								> & {Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'description'>>}
 							>;
 						}
@@ -4393,6 +4393,7 @@ export const ListLabPracticeSessionsDocument = gql`
 					name
 					description
 					duration
+					LabPracticeDeviceId
 					Laboratory {
 						id
 						name

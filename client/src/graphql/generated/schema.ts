@@ -1870,7 +1870,16 @@ export type CreateLabPracticeOutputMutation = {__typename?: 'Mutation'} & {
 	createLabPracticeOutput?: Maybe<
 		{__typename?: 'LabPracticeOutput'} & Pick<
 			LabPracticeOutput,
-			'id' | 'labpracticeID' | 'name' | 'description' | 'units' | 'updatedBy' | 'createdBy'
+			| 'id'
+			| 'labpracticeID'
+			| 'name'
+			| 'description'
+			| 'units'
+			| 'updatedBy'
+			| 'createdBy'
+			| '_version'
+			| 'order'
+			| 'outputType'
 		>
 	>;
 };
@@ -2883,6 +2892,9 @@ export const CreateLabPracticeOutputDocument = gql`
 			units
 			updatedBy
 			createdBy
+			_version
+			order
+			outputType
 		}
 	}
 `;

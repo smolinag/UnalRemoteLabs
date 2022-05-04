@@ -141,7 +141,32 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 
 	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
 	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
-	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({});
+	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({
+		onCompleted: (data) => {
+			setOutputsList(() => {
+				outputsList.forEach((output) => {
+					if (data?.createLabPracticeOutput?.name === output?.outputName && !output.id) {
+						outputsList.push({
+							id: data?.createLabPracticeOutput?.id,
+							outputName: data?.createLabPracticeOutput?.name,
+							outputDescription: data?.createLabPracticeOutput?.description
+								? data?.createLabPracticeOutput?.description
+								: '',
+							outputUnit: data?.createLabPracticeOutput?.units ? data?.createLabPracticeOutput?.units : null,
+							outputType: data?.createLabPracticeOutput?.outputType ? data?.createLabPracticeOutput?.outputType : '',
+							version: data?.createLabPracticeOutput?._version,
+							order: data?.createLabPracticeOutput?.order ?? 0
+						});
+						_.remove(
+							outputsList,
+							(obj) => obj.id === undefined && obj.outputName === data?.createLabPracticeOutput?.name
+						);
+					}
+				});
+				return _.orderBy(outputsList, 'order', 'asc');
+			});
+		}
+	});
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
@@ -207,7 +232,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 									parameterDescription: parameter?.description ? parameter?.description : '',
 									parameterDefaultValue: parameter?.defaultValue ? parameter?.defaultValue : '',
 									parameterMaxValue: parameter?.maxValue !== null ? parameter?.maxValue : 9999,
-									parameterMinValue: parameter?.minValue !== null? parameter?.minValue : -9999,
+									parameterMinValue: parameter?.minValue !== null ? parameter?.minValue : -9999,
 									parameterRegex: parameter?.regex ? parameter?.regex : '',
 									version: parameter._version,
 									action: ActionType.Nothing
@@ -472,6 +497,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 		if (output.outputName.length > 0) {
 			setOutputsList((previousState) => {
 				const newOutput: OutputInfo = {
+					id: undefined,
 					outputName: output.outputName,
 					outputDescription: output.outputDescription,
 					outputUnit: output.outputUnit,
@@ -683,7 +709,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				}
 				if (outputsList.length > 0) {
 					outputsList.map(async (output) => {
-
 						if (!output.id) {
 							await createLabPracticeOutput({
 								variables: {

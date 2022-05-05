@@ -80,7 +80,6 @@ const UserLabPracticeSessionsList: React.FC<unknown> = () => {
 						labPracticeDeviceId: session?.LabPractice?.LabPracticeDeviceId ? session.LabPractice.LabPracticeDeviceId : ''
 					}
 				}));
-				console.log(list)
 				setLabPracticeSessionsList(list);
 			}
 

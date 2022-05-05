@@ -4,7 +4,16 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LoadingContainer, Table, Button} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
-import {useListLabPracticesQuery, useGetLaboratoryQuery} from '../../graphql/generated/schema';
+import {
+	useListLabPracticesQuery,
+	useGetLaboratoryQuery,
+	useDeleteLabPracticeMutation,
+	useDeleteLabPracticeCommandMutation,
+	useDeleteLabPracticeOutputMutation,
+	useDeleteLabPracticeParameterMutation,
+	useListLabPracticeCommandsLazyQuery,
+	useListLabPracticeOutputsLazyQuery
+} from '../../graphql/generated/schema';
 import classes from './LabPracticeListView.module.scss';
 import {LabPracticeData} from './types';
 
@@ -26,6 +35,14 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	const {data: labData} = useGetLaboratoryQuery({variables: {id: labId}});
 	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}});
 
+	const [listLabPracticeCommands] = useListLabPracticeCommandsLazyQuery({});
+	const [listLabPracticeOutputs] = useListLabPracticeOutputsLazyQuery({});
+
+	const [deleteLabPractice] = useDeleteLabPracticeMutation({});
+	const [deleteLabPracticeCommand] = useDeleteLabPracticeCommandMutation({});
+	const [deleteLabPracticeParameter] = useDeleteLabPracticeParameterMutation({});
+	const [deleteLabPracticeOutput] = useDeleteLabPracticeOutputMutation({});
+
 	useEffect(() => {
 		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : '');
 	}, [labData]);
@@ -40,7 +57,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 						name: item?.name ? item.name : '',
 						description: item?.description ? item?.description : '',
 						duration: item?.duration ? item.duration : 0,
-						version: item?._version ? item._version : 0,
+						version: item?._version ? item._version : 0
 					};
 				});
 			setLabPractices(labpractices);
@@ -87,10 +104,76 @@ const LabPracticeListView: React.FC<unknown> = () => {
 		);
 	};
 
-	const handleTableAction = (index: number, action: Action, row: React.ReactNode[] = []) => {
+	const deleteLabPracticeFunc = async (labPracticeId: string, labPracticeVersion: number | null) => {
+		try {
+			const delPracticeAns = await deleteLabPractice({
+				variables: {
+					input: {
+						id: labPracticeId,
+						_version: labPracticeVersion
+					}
+				}
+			});
+			if (delPracticeAns.errors || !delPracticeAns.data?.deleteLabPractice?._deleted) {
+				console.log('Error deleting labPractice with Id:' + labPracticeId);
+			} else {
+				//Query linked Elements to delete them
+				//LabPracticeCommands
+				const {data: commandsData, error: commandsErrors} = await listLabPracticeCommands({
+					variables: {id: labPracticeId}
+				});
+				//LabPracticeOutputs
+				const {data: outputsData, error: outputsErrors} = await listLabPracticeOutputs({
+					variables: {id: labPracticeId}
+				});
+
+				//Delete linked elements
+				//LabPracticeOutput
+				let outputPromises;
+				if (outputsData && outputsData.listLabPracticeOutputs && !outputsErrors) {					
+					outputPromises = outputsData.listLabPracticeOutputs.items.map(async (item) => {
+						if (item) {
+							return await deleteLabPracticeOutput({variables: {input: {id: item.id, _version: item._version}}});
+						}
+					});
+				} else {
+					console.log(outputsErrors)
+				}
+
+				//LabPracticeCommand and LabPracticeParameter
+				let commandPromises;
+				let parameterPromises;
+				if (commandsData && commandsData.listLabPracticeCommands && !commandsErrors) {					
+					commandPromises = commandsData.listLabPracticeCommands.items.map(async (item) => {
+						if (item) {
+							return await deleteLabPracticeCommand({variables: {input: {id: item.id, _version: item._version}}});
+						}
+					});
+					parameterPromises = commandsData.listLabPracticeCommands.items.map((command) => {
+						if (command && command.LabPracticeParameters) {
+							return command.LabPracticeParameters.items.map(async(param) => {
+								if(param){
+									return await deleteLabPracticeParameter({variables:{input: {id: param.id, _version: param._version}}});
+								}
+							})
+						}
+					});
+					await Promise.all([commandPromises, parameterPromises, outputPromises]).then((ans) => {
+						console.log(ans);
+					});
+				} else {
+					console.log(commandsErrors)
+				}
+			}
+		} catch (e) {
+			console.log('Error deleting labPractice with Id:' + labPracticeId);
+		}
+	};
+
+	const handleTableAction = async (index: number, action: Action, row: React.ReactNode[] = []) => {
 		switch (action) {
 			case Action.Delete:
-				console.warn('DELETE');
+				deleteLabPracticeFunc(labPractices[index].id, labPractices[index].version);
 				break;
 			case Action.DeleteAll:
 				console.warn('DELETE ALL');

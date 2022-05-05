@@ -1,7 +1,7 @@
 import {Storage} from 'aws-amplify';
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {
 	LabPractice,
@@ -103,9 +103,12 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 	const location = useLocation();
 	const labId = (location.state as LocationState)?.labId;
 	const labName = (location.state as LocationState)?.labName;
-	
-	// const labId = 'bb8d939a-b2c5-41e3-b98b-5599d931797a';
-	// const labName = 'Física Electricidad y Magnetismo';
+
+	useEffect(() => {
+		setPracticeInfo((previousState) => {
+			return {...previousState, laboratoryId: labId};
+		});
+	}, [labId]);
 
 	const practiceChange = (value: string, id: string) => {
 		const practice: LabPracticeInfo = {
@@ -362,7 +365,6 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 					console.error('Error uploading guide to S3', e);
 				}
 			}
-
 			try {
 				const {data: labPracticeData} = await createLabPractice({
 					variables: {
@@ -389,7 +391,6 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				if (!practiceId) {
 					return;
 				}
-
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const creationPromises: Promise<any>[] = [];
 				if (commandsList.length > 0) {

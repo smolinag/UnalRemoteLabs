@@ -139,30 +139,93 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const [updateLabPracticeParameter] = useUpdateLabPracticeParameterMutation({});
 	const [updateLabPracticeOutput] = useUpdateLabPracticeOutputMutation({});
 
-	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({});
-	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({});
+	const [createLabPracticeCommand] = useCreateLabPracticeCommandMutation({
+		onCompleted: (data) => {
+			setParametersList(() => {
+				const savedCommand = data?.createLabPracticeCommand;
+
+				commandsList.map((command) => {
+					if (savedCommand?.name === command.commandName && !command.id) {
+						commandsList.push({
+							id: savedCommand?.id as string,
+							commandName: savedCommand?.name as string,
+							commandDescription: savedCommand?.description ? savedCommand?.description : '',
+							commandLabel: (savedCommand?.labelName ?? savedCommand?.labelName) as string,
+							version: savedCommand?._version,
+							action: ActionType.Nothing,
+							order: savedCommand?.order ?? 0
+						});
+					}
+				});
+				_.remove(
+					commandsList,
+					(command) =>
+						!command.id &&
+						command.commandName === savedCommand?.name
+				);
+
+				return parametersList;
+			});
+		}
+	});
+	const [createLabPracticeParameter] = useCreateLabPracticeParameterMutation({
+		onCompleted: (data) => {
+			setParametersList(() => {
+				const savedParameter = data?.createLabPracticeParameter;
+
+				parametersList.map((parameter) => {
+					if (
+						savedParameter?.name === parameter.parameterName &&
+						!parameter.id &&
+						parameter.commandName === savedParameter?.name
+					) {
+						parametersList.push({
+							commandId: savedParameter?.LabPracticeCommand?.id,
+							commandName: savedParameter?.LabPracticeCommand?.name ? savedParameter?.LabPracticeCommand.name : '',
+							id: savedParameter?.id,
+							parameterName: savedParameter?.name ? savedParameter?.name : '',
+							parameterDescription: savedParameter?.description ? savedParameter?.description : '',
+							parameterDefaultValue: savedParameter?.defaultValue ? savedParameter?.defaultValue : '',
+							parameterMaxValue: savedParameter?.maxValue !== null ? savedParameter?.maxValue : 9999,
+							parameterMinValue: savedParameter?.minValue !== null ? savedParameter?.minValue : -9999,
+							parameterRegex: savedParameter?.regex ? savedParameter?.regex : '',
+							version: savedParameter?._version,
+							action: ActionType.Nothing
+						});
+					}
+				});
+				_.remove(
+					parametersList,
+					(parameter) =>
+						parameter.id === undefined &&
+						parameter.parameterName === savedParameter?.name &&
+						parameter.commandName === savedParameter.LabPracticeCommand?.name
+				);
+
+				return parametersList;
+			});
+		}
+	});
 	const [createLabPracticeOutput] = useCreateLabPracticeOutputMutation({
 		onCompleted: (data) => {
 			setOutputsList(() => {
+				const savedOutput = data?.createLabPracticeOutput;
+
 				outputsList.forEach((output) => {
-					if (data?.createLabPracticeOutput?.name === output?.outputName && !output.id) {
+					if (savedOutput?.name === output?.outputName && !output.id) {
 						outputsList.push({
-							id: data?.createLabPracticeOutput?.id,
-							outputName: data?.createLabPracticeOutput?.name,
-							outputDescription: data?.createLabPracticeOutput?.description
-								? data?.createLabPracticeOutput?.description
-								: '',
-							outputUnit: data?.createLabPracticeOutput?.units ? data?.createLabPracticeOutput?.units : null,
-							outputType: data?.createLabPracticeOutput?.outputType ? data?.createLabPracticeOutput?.outputType : '',
-							version: data?.createLabPracticeOutput?._version,
-							order: data?.createLabPracticeOutput?.order ?? 0
+							id: savedOutput?.id,
+							outputName: savedOutput?.name,
+							outputDescription: savedOutput?.description ? savedOutput?.description : '',
+							outputUnit: savedOutput?.units ? savedOutput?.units : null,
+							outputType: savedOutput?.outputType ? savedOutput?.outputType : '',
+							version: savedOutput?._version,
+							order: savedOutput?.order ?? 0
 						});
-						_.remove(
-							outputsList,
-							(obj) => obj.id === undefined && obj.outputName === data?.createLabPracticeOutput?.name
-						);
 					}
 				});
+				_.remove(outputsList, (output) => output.id === undefined && output.outputName === savedOutput?.name);
+
 				return _.orderBy(outputsList, 'order', 'asc');
 			});
 		}
@@ -453,6 +516,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 			setParametersList((previousState) => {
 				const newParameter: LabPracticeParameterInfo = {
 					commandName: parameter.commandName,
+					id: undefined,
 					parameterName: parameter.parameterName,
 					parameterDescription: parameter.parameterDescription,
 					parameterDefaultValue: parameter.parameterDefaultValue,

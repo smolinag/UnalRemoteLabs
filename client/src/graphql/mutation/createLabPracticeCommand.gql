@@ -6,5 +6,8 @@ mutation createLabPracticeCommand($input: CreateLabPracticeCommandInput!) {
 		description
 		updatedBy
 		createdBy
+		labelName
+		order
+		_version
 	}
 }

@@ -1857,7 +1857,7 @@ export type CreateLabPracticeCommandMutation = {__typename?: 'Mutation'} & {
 	createLabPracticeCommand?: Maybe<
 		{__typename?: 'LabPracticeCommand'} & Pick<
 			LabPracticeCommand,
-			'id' | 'labpracticeID' | 'name' | 'description' | 'updatedBy' | 'createdBy'
+			'id' | 'labpracticeID' | 'name' | 'description' | 'updatedBy' | 'createdBy' | 'labelName' | 'order' | '_version'
 		>
 	>;
 };
@@ -2842,6 +2842,9 @@ export const CreateLabPracticeCommandDocument = gql`
 			description
 			updatedBy
 			createdBy
+			labelName
+			order
+			_version
 		}
 	}
 `;

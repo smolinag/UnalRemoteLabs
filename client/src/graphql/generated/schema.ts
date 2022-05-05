@@ -2303,7 +2303,7 @@ export type GetLabPracticeQuery = {__typename?: 'Query'} & {
 		> & {
 				LabPracticeSessions?: Maybe<
 					{__typename?: 'ModelLabPracticeSessionConnection'} & {
-						items: Array<Maybe<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id'>>>;
+						items: Array<Maybe<{__typename?: 'LabPracticeSession'} & Pick<LabPracticeSession, 'id' | '_deleted'>>>;
 					}
 				>;
 				Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id'>>;
@@ -4264,6 +4264,7 @@ export const GetLabPracticeDocument = gql`
 			LabPracticeSessions {
 				items {
 					id
+					_deleted
 				}
 			}
 			Laboratory {

@@ -10,6 +10,7 @@ query getLabPractice($id: ID!) {
 		LabPracticeSessions {
 			items {
 				id
+				_deleted
 			}
 		}
 		Laboratory {

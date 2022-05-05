@@ -19,7 +19,7 @@ import {
 	useUpdateLabPracticeSessionCommandMutation,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription,
-	useGetLabPracticeSessionQuery
+	useGetLabPracticeSessionQuery,
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
@@ -80,7 +80,6 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const sessionId = (location.state as LocationState)?.sessionId;
 
 	// TODO Deberíamos pasar esto a context?
-	const [labPracticeSessionId, setLabPracticeSessionId] = useState<string>(sessionId);
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
@@ -95,16 +94,8 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
 		variables: {id: sessionId}
 	});
-	console.log("deviceId")
-	console.log(deviceId)
-	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
 
-	useEffect(() => {
-		const sessionData = practiceInfo?.getLabPractice?.LabPracticeSessions?.items?.[0];
-		if (sessionData) {
-			setLabPracticeSessionId(sessionData.id);
-		}
-	}, [practiceInfo]);
+	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
 
 	useEffect(() => {
 		const sessionInfo = labSessionData?.getLabPracticeSession;
@@ -272,7 +263,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 			const {data} = await createLabPracticeSessionCommand({
 				variables: {
 					input: {
-						labpracticesessionID: labPracticeSessionId,
+						labpracticesessionID: sessionId,
 						labpracticecommandID: id,
 						parameters: JSON.stringify(parameters[0]),
 						status: Status.Pending,
@@ -293,7 +284,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 				id: data?.createLabPracticeSessionCommand?.id ? data?.createLabPracticeSessionCommand?.id : '',
 				executionDate: '',
 				labpracticeCommandID: id,
-				labpracticeSessionID: labPracticeSessionId,
+				labpracticeSessionID: sessionId,
 				parameters: JSON.stringify(parameters[0]),
 				status: Status.Pending,
 				command: name
@@ -321,7 +312,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 						input: {
 							id: sessionCommandId ? sessionCommandId : '',
 							labpracticecommandID: id,
-							labpracticesessionID: labPracticeSessionId,
+							labpracticesessionID: sessionId,
 							parameters: JSON.stringify(parameters[0]),
 							status: Status.Failure,
 							requestDate: new Date().toISOString(),

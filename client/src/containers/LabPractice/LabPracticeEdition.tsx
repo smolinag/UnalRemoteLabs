@@ -33,6 +33,7 @@ import {
 	useCreateLabPracticeOutputMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
+import { validateErrorMessage } from './InputsValidation';
 import {
 	Params,
 	OutputInfo,
@@ -598,9 +599,9 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	};
 
 	const createUpdatePractice = async () => {
-		checkErrorMessage(Section.PracticeInfo);
+		const errorsArray = checkErrorMessage(Section.PracticeInfo);
 
-		if (errors.length === 0) {
+		if (errorsArray.length === 0) {
 			setLoading(true);
 
 			//Cargar guia a S3
@@ -817,108 +818,12 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	};
 
 	const checkErrorMessage = (section: string) => {
-		setErrors((previousState: ErrorIdentifier[]) => {
-			const notAddedLab = errors.filter((error) => error.identifier === Params.Laboratory).length === 1;
-			const notAddedName = errors.filter((error) => error.identifier === Params.Name).length === 1;
-			const notAddedDuration = errors.filter((error) => error.identifier === Params.Duration).length === 1;
-			const notCommandName = errors.filter((error) => error.identifier === Params.CommandName).length === 1;
-			const notCommandSelected = errors.filter((error) => error.identifier === Params.SelectedCommand).length === 1;
-			const notParameterName = errors.filter((error) => error.identifier === Params.ParameterName).length === 1;
-			const notParameterDefaultValue =
-				errors.filter((error) => error.identifier === Params.ParameterDefaultValue).length === 1;
-			const notOutputName = errors.filter((error) => error.identifier === Params.OutputName).length === 1;
-			const notModalCommandName = errors.filter((error) => error.identifier === Params.ModalCommandName).length >= 1;
-
-			if (section === Section.PracticeInfo) {
-				if (!notAddedLab && practiceInfo.laboratoryId.length === 0) {
-					previousState.push({
-						identifier: Params.Laboratory
-					});
-				} else if (notAddedLab && practiceInfo.laboratoryId.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.Laboratory);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-
-				if (!notAddedName && practiceInfo.practiceInfoName.length === 0) {
-					previousState.push({
-						identifier: Params.Name
-					});
-				} else if (notAddedName && practiceInfo.practiceInfoName.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.Name);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-
-				if (!notAddedDuration && parseInt(practiceInfo.practiceInfoDuration) === 0) {
-					previousState.push({
-						identifier: Params.Duration
-					});
-				} else if (notAddedDuration && parseInt(practiceInfo.practiceInfoDuration) > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.Duration);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-			}
-			if (section === Section.CommandInfo) {
-				if (!notCommandName && practiceInfo.command.commandName.length === 0) {
-					previousState.push({
-						identifier: Params.CommandName
-					});
-				} else if (notCommandName && practiceInfo.command.commandName.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.CommandName);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-			}
-			if (section === Section.ModalCommandInfo) {
-				if (!notModalCommandName && commandToEdit.commandName.length === 0) {
-					previousState.push({
-						identifier: Params.ModalCommandName
-					});
-				} else if (notModalCommandName && commandToEdit.commandName.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.ModalCommandName);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-			}
-			if (section === Section.ParameterInfo) {
-				if (!notCommandSelected && practiceInfo.parameter.commandName.length === 0) {
-					previousState.push({
-						identifier: Params.SelectedCommand
-					});
-				} else if (notCommandSelected && practiceInfo.parameter.commandName.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.SelectedCommand);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-
-				if (!notParameterName && practiceInfo.parameter.parameterName.length === 0) {
-					previousState.push({
-						identifier: Params.ParameterName
-					});
-				} else if (notParameterName && practiceInfo.parameter.parameterName.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.ParameterName);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-
-				if (!notParameterDefaultValue && practiceInfo.parameter.parameterDefaultValue.length === 0) {
-					previousState.push({
-						identifier: Params.ParameterDefaultValue
-					});
-				} else if (notParameterDefaultValue && practiceInfo.parameter.parameterDefaultValue.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.ParameterDefaultValue);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-			}
-
-			if (section === Section.OutputInfo) {
-				if (!notOutputName && practiceInfo.output.outputName.length === 0) {
-					previousState.push({
-						identifier: Params.OutputName
-					});
-				} else if (notOutputName && practiceInfo.output.outputName.length > 0) {
-					const index = errors.findIndex((error) => error.identifier === Params.OutputName);
-					return previousState.slice(0, index).concat(previousState.slice(index + 1, errors.length + 1));
-				}
-			}
-
-			return [...previousState];
+		const errorsArray = validateErrorMessage(section, errors, practiceInfo);
+		
+		setErrors(() => {
+			return [...errorsArray];
 		});
+		return errorsArray;
 	};
 
 	const handleDisplayModal = (display: boolean) => {

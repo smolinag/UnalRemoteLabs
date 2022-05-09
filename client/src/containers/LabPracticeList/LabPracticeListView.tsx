@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, {useState, useEffect} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import {useLocation, useNavigate} from 'react-router-dom';
@@ -47,11 +48,12 @@ const LabPracticeListView: React.FC<unknown> = () => {
 		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : '');
 	}, [labData]);
 
+	//eslint-disable-next-line
 	useEffect(() => {
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
-				.filter((item) => !item?._deleted)
-				.map((item) => {
+				.filter((item: any) => !item?._deleted)
+				.map((item: any) => {
 					return {
 						id: item?.id ? item.id : '',
 						name: item?.name ? item.name : '',
@@ -131,7 +133,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 				//LabPracticeOutput
 				let outputPromises;
 				if (outputsData && outputsData.listLabPracticeOutputs && !outputsErrors) {					
-					outputPromises = outputsData.listLabPracticeOutputs.items.map(async (item) => {
+					outputPromises = outputsData.listLabPracticeOutputs.items.map(async (item: any) => {
 						if (item) {
 							return await deleteLabPracticeOutput({variables: {input: {id: item.id, _version: item._version}}});
 						}
@@ -144,14 +146,14 @@ const LabPracticeListView: React.FC<unknown> = () => {
 				let commandPromises;
 				let parameterPromises;
 				if (commandsData && commandsData.listLabPracticeCommands && !commandsErrors) {					
-					commandPromises = commandsData.listLabPracticeCommands.items.map(async (item) => {
+					commandPromises = commandsData.listLabPracticeCommands.items.map(async (item: any) => {
 						if (item) {
 							return await deleteLabPracticeCommand({variables: {input: {id: item.id, _version: item._version}}});
 						}
 					});
-					parameterPromises = commandsData.listLabPracticeCommands.items.map((command) => {
+					parameterPromises = commandsData.listLabPracticeCommands.items.map((command: any) => {
 						if (command && command.LabPracticeParameters) {
-							return command.LabPracticeParameters.items.map(async(param) => {
+							return command.LabPracticeParameters.items.map(async(param: any) => {
 								if(param){
 									return await deleteLabPracticeParameter({variables:{input: {id: param.id, _version: param._version}}});
 								}

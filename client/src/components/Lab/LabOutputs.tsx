@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 
 import {Maybe} from '../../graphql/generated/schema';
 import {Table} from '../UI';
-import { CommandSession } from './Commands/Commands';
+import {CommandSession} from './Commands/Commands';
 
 type Data = [string, string | number][];
 
@@ -17,6 +17,7 @@ export interface Output {
 interface Props {
 	dataOutput: Data;
 	dataCommands: CommandSession[];
+	outputTransition: boolean;
 }
 
 const COLUMNS_OUTPUTS = ['Salida', 'Valores'];
@@ -30,13 +31,13 @@ const mapOutput = ({status, executionDate, command, parameters}: CommandSession)
 
 const COLUMNS_COMMANDS = ['Fecha de ejecución', 'Comando', 'Estado', 'Parámetro'];
 
-const LabOutputs: React.FC<Props> = ({dataOutput, dataCommands}) => {
+const LabOutputs: React.FC<Props> = ({dataOutput, dataCommands, outputTransition}) => {
 	return (
 		<Row className="section">
 			<Col md={6}>
 				<h4 className="title">Datos de salida</h4>
 				<Row>
-					<Table headers={COLUMNS_OUTPUTS} data={dataOutput} overflow stickyHeader maxHeight={'400px'} />
+					<Table headers={COLUMNS_OUTPUTS} data={dataOutput} overflow stickyHeader maxHeight={'400px'} transition={outputTransition} />
 				</Row>
 			</Col>
 			<Col md={6}>

@@ -19,6 +19,7 @@ interface Props {
 	removable?: boolean;
 	hasRemoveAll?: boolean;
 	editable?: boolean;
+	transition?: boolean;
 	onAction?: (rowIndex: number, action: Action) => void;
 }
 
@@ -31,14 +32,18 @@ const Table: React.FC<Props> = ({
 	editable = false,
 	removable = false,
 	hasRemoveAll = false,
-	onAction
+	onAction,
+	transition
 }) => {
+	const transitionAnimation = transition ? classes.rowTransition : '';
 	const renderRows = () => {
 		if (data.length > 0) {
 			return data.map((row, i) => (
 				<tr key={`row_${i}`}>
 					{row.map((cell, j) => (
-						<td key={`cell_${i}_${j}`} style={{fontSize: 'smaller'}}>{cell}</td>
+						<td key={`cell_${i}_${j}`} style={{fontSize: 'smaller'}} className={transitionAnimation} >
+							{cell}
+						</td>
 					))}
 					{(editable || removable) && (
 						<td style={{width: editable && removable && removable ? '70px' : '30px'}}>

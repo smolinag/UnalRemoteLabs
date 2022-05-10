@@ -19,7 +19,7 @@ import {
 	useUpdateLabPracticeSessionCommandMutation,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription,
-	useGetLabPracticeSessionQuery,
+	useGetLabPracticeSessionQuery
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
@@ -78,6 +78,9 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const deviceId = (location.state as LocationState)?.deviceId;
 	const sessionId = (location.state as LocationState)?.sessionId;
+
+	const [outputTransition, setOutputTransition] = useState<boolean>(false);
+	let outputIndex = 1;
 
 	// TODO Deberíamos pasar esto a context?
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
@@ -180,7 +183,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 		if (receivedOutputs) {
 			let outputsIndex = 0;
 			const outputsArray: OutputListDto[] = receivedOutputs
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				.filter((output: any) => !output?._deleted)
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				.map((output: any) => ({
@@ -206,6 +209,15 @@ const LabPracticeView: React.FC<unknown> = () => {
 		if (outputToUpdateIndex < 0) {
 			return;
 		}
+
+		// Get outputs amount
+		if (outputIndex % outputs.length) {
+			setOutputTransition(true);
+		} else {
+			setOutputTransition(false);
+		}
+
+		outputIndex++;
 
 		setOutputs((oldOutputs) => {
 			oldOutputs[outputToUpdateIndex] = {
@@ -380,7 +392,11 @@ const LabPracticeView: React.FC<unknown> = () => {
 				onVideoUrlRefresh={handleVideoUrlRefresh}
 				isExecutingCommand={isExecutingCommand}
 			/>
-			<LabOutputs dataOutput={outputs.map(mapOutput)} dataCommands={executedCommands} />
+			<LabOutputs
+				dataOutput={outputs.map(mapOutput)}
+				dataCommands={executedCommands}
+				outputTransition={outputTransition}
+			/>
 		</LoadingContainer>
 	);
 };

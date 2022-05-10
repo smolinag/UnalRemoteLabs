@@ -24,3 +24,13 @@
 		fill: $red-dark;
 	}
 }
+
+.rowTransition {
+	animation-name: example;
+	animation-duration: 4s;
+ }
+ 
+ @keyframes example {
+	from {color: white;}
+	to {color: black;}
+ }

@@ -52,6 +52,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : '');
 	}, [labData]);
 
+	//eslint-disable-next-line
 	useEffect(() => {
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
@@ -158,7 +159,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 					});
 					parameterPromises = commandsData.listLabPracticeCommands.items.map((command) => {
 						if (command && command.LabPracticeParameters) {
-							return command.LabPracticeParameters.items.map(async (param) => {
+							return command.LabPracticeParameters.items.map(async(param) => {
 								if (param) {
 									return await deleteLabPracticeParameter({
 										variables: {input: {id: param.id, _version: param._version}}

@@ -115,12 +115,16 @@ const LabPracticeView: React.FC<unknown> = () => {
 		if (labCommandsData?.listLabPracticeCommands?.items != null) {
 			let commandIndex = 0;
 			let labCommands: Command[] = labCommandsData?.listLabPracticeCommands?.items
-				.filter((command) => !command?._deleted)
-				.map((command): Command => {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				.filter((command: any) => !command?._deleted)
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				.map((command: any): Command => {
 					let parameterIndex = 0;
 					let parameters = command?.LabPracticeParameters?.items
-						?.filter((parameter) => !parameter?._deleted)
-						.map((parameter): Parameter => {
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						?.filter((parameter: any) => !parameter?._deleted)
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						.map((parameter: any): Parameter => {
 							return {
 								id: parameter?.id as string,
 								name: parameter?.name as string,
@@ -176,8 +180,10 @@ const LabPracticeView: React.FC<unknown> = () => {
 		if (receivedOutputs) {
 			let outputsIndex = 0;
 			const outputsArray: OutputListDto[] = receivedOutputs
-				.filter((output) => !output?._deleted)
-				.map((output) => ({
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				.filter((output: any) => !output?._deleted)
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				.map((output: any) => ({
 					id: output?.id as string,
 					name: output?.name as string,
 					value: '-',
@@ -352,7 +358,8 @@ const LabPracticeView: React.FC<unknown> = () => {
 	};
 
 	const handleVideoUrlRefresh = () => {
-		refetch().then((response) => console.log(response));
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		refetch().then((response: any) => console.log(response));
 	};
 
 	return (

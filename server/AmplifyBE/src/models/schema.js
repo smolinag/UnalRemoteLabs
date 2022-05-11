@@ -810,7 +810,7 @@ export const schema = {
                     "name": "name",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "identificationNumber": {
@@ -1884,5 +1884,5 @@ export const schema = {
             }
         }
     },
-    "version": "36cd20d7be01b1367c5a1de827866744"
+    "version": "b4dd7378ef624ea6c9d7bef2625ca09c"
 };

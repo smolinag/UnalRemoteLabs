@@ -21,6 +21,11 @@ export type Scalars = {
 	AWSTimestamp: any;
 };
 
+export type CreateCognitoUserInput = {
+	email: Scalars['String'];
+	password: Scalars['String'];
+};
+
 export type CreateLabPracticeCommandInput = {
 	id?: Maybe<Scalars['ID']>;
 	name: Scalars['String'];
@@ -141,7 +146,7 @@ export type CreateOrganizationInput = {
 
 export type CreateUserInput = {
 	id?: Maybe<Scalars['ID']>;
-	name: Scalars['String'];
+	name?: Maybe<Scalars['String']>;
 	identificationNumber?: Maybe<Scalars['String']>;
 	email: Scalars['String'];
 	phone?: Maybe<Scalars['String']>;
@@ -1074,6 +1079,8 @@ export type Mutation = {
 	publishMqttMessage?: Maybe<Scalars['String']>;
 	labOutputListen?: Maybe<LabOutputOut>;
 	sendEmail?: Maybe<Scalars['String']>;
+	createCognitoUser?: Maybe<Scalars['String']>;
+	removeCognitoUser?: Maybe<Scalars['String']>;
 };
 
 export type MutationCreateOrganizationArgs = {
@@ -1266,6 +1273,14 @@ export type MutationLabOutputListenArgs = {
 
 export type MutationSendEmailArgs = {
 	input: EmailInput;
+};
+
+export type MutationCreateCognitoUserArgs = {
+	input: CreateCognitoUserInput;
+};
+
+export type MutationRemoveCognitoUserArgs = {
+	email: Scalars['String'];
 };
 
 export type Organization = {
@@ -1772,7 +1787,7 @@ export type UpdateUserLabSemesterInput = {
 export type User = {
 	__typename?: 'User';
 	id: Scalars['ID'];
-	name: Scalars['String'];
+	name?: Maybe<Scalars['String']>;
 	identificationNumber?: Maybe<Scalars['String']>;
 	email: Scalars['String'];
 	phone?: Maybe<Scalars['String']>;

@@ -3711,3 +3711,13 @@ export const sendEmail = /* GraphQL */ `
     sendEmail(input: $input)
   }
 `;
+export const createCognitoUser = /* GraphQL */ `
+  mutation CreateCognitoUser($input: CreateCognitoUserInput!) {
+    createCognitoUser(input: $input)
+  }
+`;
+export const removeCognitoUser = /* GraphQL */ `
+  mutation RemoveCognitoUser($email: String!) {
+    removeCognitoUser(email: $email)
+  }
+`;

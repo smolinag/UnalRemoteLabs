@@ -159,7 +159,7 @@ export declare class Organization {
 
 export declare class User {
   readonly id: string;
-  readonly name: string;
+  readonly name?: string | null;
   readonly identificationNumber?: string | null;
   readonly email: string;
   readonly phone?: string | null;

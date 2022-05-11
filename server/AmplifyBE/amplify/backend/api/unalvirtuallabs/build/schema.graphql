@@ -36,7 +36,7 @@ type UserLabPracticeSession @aws_api_key @aws_cognito_user_pools {
 
 type User @aws_api_key @aws_cognito_user_pools {
   id: ID!
-  name: String!
+  name: String
   identificationNumber: String
   email: String!
   phone: String
@@ -251,6 +251,11 @@ input EmailInput {
   emailList: String!
 }
 
+input CreateCognitoUserInput {
+  email: String!
+  password: String!
+}
+
 enum Role {
   Admins
   Monitors
@@ -305,6 +310,8 @@ type Mutation {
   publishMqttMessage(input: LambdaInput!): String @aws_api_key @aws_cognito_user_pools
   labOutputListen(input: LabOutputIn!): LabOutputOut @aws_api_key @aws_cognito_user_pools
   sendEmail(input: EmailInput!): String @aws_api_key @aws_cognito_user_pools
+  createCognitoUser(input: CreateCognitoUserInput!): String @aws_api_key @aws_cognito_user_pools
+  removeCognitoUser(email: String!): String @aws_api_key @aws_cognito_user_pools
 }
 
 type Subscription {
@@ -632,7 +639,7 @@ input ModelUserFilterInput {
 
 input CreateUserInput {
   id: ID
-  name: String!
+  name: String
   identificationNumber: String
   email: String!
   phone: String

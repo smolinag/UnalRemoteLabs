@@ -55,7 +55,7 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
 		if (semesterUserList) {
 			const data = semesterUserList.map((item) => {
-				return {name: item ? item.user.name : '', id: item ? item.user.id : '', email: item ? item.user.email : ''};
+				return {name: item?.user?.name ?? '', id: item ? item.user.id : '', email: item ? item.user.email : ''};
 			});
 
 			setStudentList(data);
@@ -111,7 +111,9 @@ const LabSessionProgrammingView: React.FC<unknown> = () => {
 									emailList: JSON.stringify(studentList.map((item) => item.email)),
 									message:
 										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
-										labPracticeInfo.name + ' para la fecha: ' + labSessionInfo.startDate.toLocaleString() + 
+										labPracticeInfo.name +
+										' para la fecha: ' +
+										labSessionInfo.startDate.toLocaleString() +
 										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
 								}
 							}

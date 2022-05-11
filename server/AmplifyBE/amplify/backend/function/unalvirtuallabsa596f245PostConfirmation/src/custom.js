@@ -36,10 +36,14 @@ writeItem = async (id, userName, email) => {
     Item: {
       id: { S: id },
       __typename: { S: "User" },
-      userName: { S: userName },
+      organizationID: { S: "d80b954b-9477-4061-aa8a-c14c5711143b" },
+      role: { S: "Students" },
       email: { S: email },
       createdAt: { S: date.toISOString() },
+      createdBy: { S: "1" },
       updatedAt: { S: date.toISOString() },
+      _lastChangedAt: { N: date.getTime().toString() },
+      _version: { N: "1" },
     },
     // TableName: process.env.USERTABLE,
     TableName: TABLE_NAME,
@@ -95,10 +99,14 @@ exports.handler = async (event, context) => {
   if (cognitoUserId) {
     const data = await readItem(email);
     if (data.Count == 0) {
-      await writeItem(cognitoUserId, userName, email);
-      console.log(
-        "Success: User with id " + cognitoUserId + " Inserted correctly"
-      );
+      const ans = await writeItem(cognitoUserId, userName, email);
+      if (ans === null) {
+        console.log("Error: Nothing was written to DynamoDB");
+      } else {
+        console.log(
+          "Success: User with id " + cognitoUserId + " Inserted correctly"
+        );
+      }
     } else {
       console.log("User with id " + cognitoUserId + " already exist");
     }

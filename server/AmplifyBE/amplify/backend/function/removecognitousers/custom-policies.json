@@ -1,0 +1,7 @@
+[
+  {
+    "Effect": "Allow",
+    "Action": ["cognito-idp:*"],
+    "Resource": ["arn:aws:cognito-idp:us-east-2:119135969665:userpool/*"]
+  }
+]

@@ -26,7 +26,7 @@ type UserLabPracticeSession @model @key(name: "byUser", fields: ["userID"]) @key
 
 type User @model @key(name: "byEmail", fields: ["email"], queryField: "getUserByEmail")  @key(name: "byOrganization", fields: ["organizationID"]) @auth(rules: [{ allow: public },  { allow: private}]) {
   id: ID!
-  name: String!
+  name: String
   identificationNumber: String
   email: String!
   phone: String
@@ -191,6 +191,11 @@ input EmailInput{
   emailList: String!
 }
 
+input CreateCognitoUserInput{
+  email: String!
+  password: String!
+}
+
 enum Role {
     Admins
     Monitors
@@ -209,6 +214,8 @@ type Mutation {
   publishMqttMessage(input: LambdaInput!): String @function(name: "iotpub-${env}") @auth(rules: [{ allow: public },  { allow: private}])
   labOutputListen(input: LabOutputIn!): LabOutputOut @function(name: "laboutputlogger-${env}") @auth(rules: [{ allow: public },  { allow: private}])
   sendEmail(input: EmailInput!): String @function(name: "emaildelivery-${env}") @auth(rules: [{ allow: public },  { allow: private}])
+  createCognitoUser(input: CreateCognitoUserInput!): String @function(name: "createcognitouser-${env}") @auth(rules: [{ allow: public },  { allow: private}])
+  removeCognitoUser(email: String!): String @function(name: "removecognitousers-${env}") @auth(rules: [{ allow: public },  { allow: private}])
 }
 
 type Subscription {

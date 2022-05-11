@@ -41,7 +41,7 @@ const UserEdition: React.FC<unknown> = () => {
 			setUser({
 				id: user.id,
 				organizationID: user.organizationID,
-				name: user.name,
+				name: user.name ?? '',
 				email: user.email,
 				identificationNumber: user.identificationNumber ?? '',
 				phone: user.phone ?? '',

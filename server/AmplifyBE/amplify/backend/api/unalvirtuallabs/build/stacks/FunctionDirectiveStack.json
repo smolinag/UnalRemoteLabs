@@ -841,6 +841,510 @@
                 }
             },
             "DependsOn": "InvokeEmaildeliveryLambdaDataSource"
+        },
+        "CreatecognitouserLambdaDataSourceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "HasEnvironmentParameter",
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Createcognitouserf778",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    },
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Createcognitouserf778",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "InvokeLambdaFunction",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": {
+                                        "Fn::If": [
+                                            "HasEnvironmentParameter",
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createcognitouser-${env}",
+                                                    {
+                                                        "env": {
+                                                            "Ref": "env"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createcognitouser",
+                                                    {}
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "CreatecognitouserLambdaDataSource": {
+            "Type": "AWS::AppSync::DataSource",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "CreatecognitouserLambdaDataSource",
+                "Type": "AWS_LAMBDA",
+                "ServiceRoleArn": {
+                    "Fn::GetAtt": [
+                        "CreatecognitouserLambdaDataSourceRole",
+                        "Arn"
+                    ]
+                },
+                "LambdaConfig": {
+                    "LambdaFunctionArn": {
+                        "Fn::If": [
+                            "HasEnvironmentParameter",
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createcognitouser-${env}",
+                                    {
+                                        "env": {
+                                            "Ref": "env"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:createcognitouser",
+                                    {}
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "DependsOn": "CreatecognitouserLambdaDataSourceRole"
+        },
+        "InvokeCreatecognitouserLambdaDataSource": {
+            "Type": "AWS::AppSync::FunctionConfiguration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "InvokeCreatecognitouserLambdaDataSource",
+                "DataSourceName": "CreatecognitouserLambdaDataSource",
+                "FunctionVersion": "2018-05-29",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeCreatecognitouserLambdaDataSource",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeCreatecognitouserLambdaDataSource",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "CreatecognitouserLambdaDataSource"
+        },
+        "MutationcreateCognitoUserResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "Mutation",
+                "FieldName": "createCognitoUser",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeCreatecognitouserLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Mutation",
+                                        "createCognitoUser",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Mutation",
+                                        "createCognitoUser",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeCreatecognitouserLambdaDataSource"
+        },
+        "RemovecognitousersLambdaDataSourceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "RoleName": {
+                    "Fn::If": [
+                        "HasEnvironmentParameter",
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Removecognitousers161b",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    },
+                                    {
+                                        "Ref": "env"
+                                    }
+                                ]
+                            ]
+                        },
+                        {
+                            "Fn::Join": [
+                                "-",
+                                [
+                                    "Removecognitousers161b",
+                                    {
+                                        "Ref": "GetAttGraphQLAPIApiId"
+                                    }
+                                ]
+                            ]
+                        }
+                    ]
+                },
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": "appsync.amazonaws.com"
+                            },
+                            "Action": "sts:AssumeRole"
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": "InvokeLambdaFunction",
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "lambda:InvokeFunction"
+                                    ],
+                                    "Resource": {
+                                        "Fn::If": [
+                                            "HasEnvironmentParameter",
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:removecognitousers-${env}",
+                                                    {
+                                                        "env": {
+                                                            "Ref": "env"
+                                                        }
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "Fn::Sub": [
+                                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:removecognitousers",
+                                                    {}
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "RemovecognitousersLambdaDataSource": {
+            "Type": "AWS::AppSync::DataSource",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "RemovecognitousersLambdaDataSource",
+                "Type": "AWS_LAMBDA",
+                "ServiceRoleArn": {
+                    "Fn::GetAtt": [
+                        "RemovecognitousersLambdaDataSourceRole",
+                        "Arn"
+                    ]
+                },
+                "LambdaConfig": {
+                    "LambdaFunctionArn": {
+                        "Fn::If": [
+                            "HasEnvironmentParameter",
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:removecognitousers-${env}",
+                                    {
+                                        "env": {
+                                            "Ref": "env"
+                                        }
+                                    }
+                                ]
+                            },
+                            {
+                                "Fn::Sub": [
+                                    "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:removecognitousers",
+                                    {}
+                                ]
+                            }
+                        ]
+                    }
+                }
+            },
+            "DependsOn": "RemovecognitousersLambdaDataSourceRole"
+        },
+        "InvokeRemovecognitousersLambdaDataSource": {
+            "Type": "AWS::AppSync::FunctionConfiguration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "Name": "InvokeRemovecognitousersLambdaDataSource",
+                "DataSourceName": "RemovecognitousersLambdaDataSource",
+                "FunctionVersion": "2018-05-29",
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeRemovecognitousersLambdaDataSource",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/pipelineFunctions/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "InvokeRemovecognitousersLambdaDataSource",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "RemovecognitousersLambdaDataSource"
+        },
+        "MutationremoveCognitoUserResolver": {
+            "Type": "AWS::AppSync::Resolver",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AppSyncApiId"
+                },
+                "TypeName": "Mutation",
+                "FieldName": "removeCognitoUser",
+                "Kind": "PIPELINE",
+                "PipelineConfig": {
+                    "Functions": [
+                        {
+                            "Fn::GetAtt": [
+                                "InvokeRemovecognitousersLambdaDataSource",
+                                "FunctionId"
+                            ]
+                        }
+                    ]
+                },
+                "RequestMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Mutation",
+                                        "removeCognitoUser",
+                                        "req",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                },
+                "ResponseMappingTemplateS3Location": {
+                    "Fn::Sub": [
+                        "s3://${S3DeploymentBucket}/${S3DeploymentRootKey}/resolvers/${ResolverFileName}",
+                        {
+                            "S3DeploymentBucket": {
+                                "Ref": "S3DeploymentBucket"
+                            },
+                            "S3DeploymentRootKey": {
+                                "Ref": "S3DeploymentRootKey"
+                            },
+                            "ResolverFileName": {
+                                "Fn::Join": [
+                                    ".",
+                                    [
+                                        "Mutation",
+                                        "removeCognitoUser",
+                                        "res",
+                                        "vtl"
+                                    ]
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "DependsOn": "InvokeRemovecognitousersLambdaDataSource"
         }
     },
     "Outputs": {},

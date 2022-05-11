@@ -55,12 +55,20 @@
         },
         "unalvirtuallabsa596f245PostConfirmation": {
           "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
-          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-51754c63444e56425347-build.zip",
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-7048744b5550346b4734-build.zip",
           "userTable": "User-glgsgvfuj5c3rgtir6lz5gpqdi-develop"
         },
         "emaildelivery": {
           "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
           "s3Key": "amplify-builds/emaildelivery-76346a48754c59324564-build.zip"
+        },
+        "createcognitouser": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/createcognitouser-704653746f4a53754638-build.zip"
+        },
+        "removecognitousers": {
+          "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
+          "s3Key": "amplify-builds/removecognitousers-304955416135694e7a41-build.zip"
         }
       },
       "auth": {

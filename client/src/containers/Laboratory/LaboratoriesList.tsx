@@ -17,11 +17,9 @@ const LaboratoriesList: React.FC<unknown> = () => {
 	const [lab, setLab] = React.useState<Laboratory>();
 
 	const [labs, setLabs] = React.useState<Laboratory[]>([]);
-	const {data, loading: retrievingInfo} = useListLaboratoriesQuery();
+	const {data, loading: retrievingInfo} = useListLaboratoriesQuery({fetchPolicy: 'network-only'});
 	const [deleteLaboratory] = useDeleteLaboratoryMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
-
-	let selectedIndex = 0;
 
 	useEffect(() => {
 		if (data && data.listLaboratorys?.items) {
@@ -52,12 +50,11 @@ const LaboratoriesList: React.FC<unknown> = () => {
 			case Action.Delete:
 				setDisplayModal(true);
 				setLab(labs[index]);
-				selectedIndex = index;
 				break;
 		}
 	};
 
-	const handleDisplayModal = (display: boolean) => {
+	const handleDisplayDeleteModal = (display: boolean) => {
 		setDisplayModal(display);
 		setLab({
 			id: '',
@@ -68,7 +65,7 @@ const LaboratoriesList: React.FC<unknown> = () => {
 		});
 	};
 
-	const handleSaveEdit = () => {
+	const handleAcceptDelete = () => {
 		if (lab?.id) {
 			deleteLaboratory({
 				variables: {
@@ -80,14 +77,9 @@ const LaboratoriesList: React.FC<unknown> = () => {
 			})
 				.then((response) => {
 					if (response.data?.deleteLaboratory?._deleted) {
-						setLabs((previousState) => {
-							return previousState
-								.slice(0, selectedIndex)
-								.concat(previousState.slice(selectedIndex + 1, labs.length + 1));
-						});
+						setDisplayModal(false);
+						showSuccessBanner(`El laboratorio ${lab.name} fue eliminado exitosamente`);
 					}
-					setDisplayModal(false);
-					showSuccessBanner(`El laboratorio ${lab.name} fue eliminado exitosamente`);
 				})
 				.catch((error) => {
 					setDisplayModal(false);
@@ -101,8 +93,8 @@ const LaboratoriesList: React.FC<unknown> = () => {
 			{
 				<ModalComponent
 					display={displayModal}
-					onDisplay={handleDisplayModal}
-					onSave={handleSaveEdit}
+					onDisplay={handleDisplayDeleteModal}
+					onSave={handleAcceptDelete}
 					title={lab?.name ? lab?.name : ''}>
 					<div>Está seguro de borrar el laboratorio {lab?.name}?</div>
 				</ModalComponent>

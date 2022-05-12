@@ -105,18 +105,12 @@ const LaboratoryCreation: React.FC<unknown> = () => {
 				if (!laboratoryData?.createLaboratory?.id) {
 					throw Error('');
 				}
-				showSuccessBanner(`El laboratorio ${laboratory.name} fue creado exitosamente`);
-				setLaboratory({
-					name: laboratoryData.createLaboratory?.name,
-					description: laboratoryData.createLaboratory?.description ? laboratoryData.createLaboratory?.description : '',
-					organizationId: laboratoryData.createLaboratory?.organizationID,
-					version: laboratoryData.createLaboratory?._version
-				});
-				navigate('/lab-edition', {state: {laboratoryId: laboratoryData.createLaboratory?.id}});
+				showSuccessBanner(`El laboratorio ${laboratory.name} fue creado exitosamente`);		
 			} catch (error) {
 				showErrorBanner(`Error en la creación del laboratorio ${laboratory.name}`);
 			} finally {
 				setLoading(false);
+				navigate('/labs');
 			}
 		}
 	};

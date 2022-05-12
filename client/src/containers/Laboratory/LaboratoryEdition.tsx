@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import {Container} from 'react-bootstrap';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LaboratoryInfo} from '../../components/Laboratory/index';
 import {Button, LoadingContainer} from '../../components/UI';
@@ -21,6 +21,8 @@ export const initialLaboratoryValue: Laboratory = {
 };
 
 const LaboratoryEdition: React.FC<unknown> = () => {
+	const navigate = useNavigate();
+	
 	const [laboratory, setLaboratory] = React.useState<Laboratory>(initialLaboratoryValue);
 	const [organizations, setOrganizations] = React.useState<Organization[]>([]);
 	const location = useLocation();
@@ -129,17 +131,11 @@ const LaboratoryEdition: React.FC<unknown> = () => {
 					throw Error('');
 				}
 				showSuccessBanner(`El laboratorio ${laboratoryData.updateLaboratory.name} fue editado exitosamente`);
-				setLaboratory({
-					id: laboratoryData.updateLaboratory?.id,
-					name: laboratoryData.updateLaboratory?.name,
-					description: laboratoryData.updateLaboratory?.description ? laboratoryData.updateLaboratory?.description : '',
-					organizationId: laboratoryData.updateLaboratory?.organizationID,
-					version: laboratoryData.updateLaboratory?._version
-				});
 			} catch (error) {
 				showErrorBanner(`Error en la creación del laboratorio ${laboratory.name}`);
 			} finally {
 				setLoading(false);
+				navigate('/labs');
 			}
 		}
 	};

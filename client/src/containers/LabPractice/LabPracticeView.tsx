@@ -80,7 +80,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 	const sessionId = (location.state as LocationState)?.sessionId;
 
 	const [outputTransition, setOutputTransition] = useState<boolean>(false);
-	let outputIndex = 1;
+	const [outputIndex, setOutputIndex] = useState<number>(1);
 
 	// TODO Deberíamos pasar esto a context?
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
@@ -210,14 +210,13 @@ const LabPracticeView: React.FC<unknown> = () => {
 			return;
 		}
 
-		// Get outputs amount
-		if (outputIndex % outputs.length) {
+		if (outputIndex % outputs.length === 0) {
 			setOutputTransition(true);
 		} else {
 			setOutputTransition(false);
 		}
 
-		outputIndex++;
+		setOutputIndex(outputIndex + 1);
 
 		setOutputs((oldOutputs) => {
 			oldOutputs[outputToUpdateIndex] = {

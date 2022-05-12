@@ -36,7 +36,7 @@ const LabPracticeListView: React.FC<unknown> = () => {
 	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 
 	const {data: labData} = useGetLaboratoryQuery({variables: {id: labId}});
-	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}});
+	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}, fetchPolicy: 'network-only'});
 
 	const [listLabPracticeCommands] = useListLabPracticeCommandsLazyQuery({});
 	const [listLabPracticeOutputs] = useListLabPracticeOutputsLazyQuery({});
@@ -52,7 +52,6 @@ const LabPracticeListView: React.FC<unknown> = () => {
 		setLaboratoryName(labData?.getLaboratory?.name ? labData.getLaboratory.name : '');
 	}, [labData]);
 
-	//eslint-disable-next-line
 	useEffect(() => {
 		if (labPracticesData?.listLabPractices) {
 			const labpractices: LabPracticeData[] = labPracticesData.listLabPractices.items
@@ -194,9 +193,9 @@ const LabPracticeListView: React.FC<unknown> = () => {
 			case Action.DeleteAll:
 				console.warn('DELETE ALL');
 				break;
-			case Action.Edit:
+			case Action.Edit:				
 				navigate('/lab-practice-edition', {
-					state: {labPracticeId: labPractices[index].id, labName: laboratoryName}
+					state: {labPracticeId: labPractices[index].id, labName: laboratoryName, labId: labId}
 				});
 				break;
 		}

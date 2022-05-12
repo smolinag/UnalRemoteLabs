@@ -1,7 +1,7 @@
 import {Storage} from 'aws-amplify';
 import React, {useContext, useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import {
 	LabPractice,
@@ -76,6 +76,8 @@ export interface LocationState {
 }
 
 const LabPracticeCreation: React.FC<unknown> = () => {
+	const navigate = useNavigate();
+
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);
 	const [commandsList, setCommandsList] = React.useState<LabPracticeCommandInfo[]>([]);
 	const [parametersList, setParametersList] = React.useState<LabPracticeParameterInfo[]>([]);
@@ -468,6 +470,7 @@ const LabPracticeCreation: React.FC<unknown> = () => {
 				showErrorBanner(`Error en la creación de la práctica ${practiceInfo.practiceInfoName}`);
 			} finally {
 				setLoading(false);
+				navigate("/lab-practices", {state: {labId}});
 			}
 		}
 	};

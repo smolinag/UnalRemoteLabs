@@ -2,7 +2,7 @@ import {Storage} from 'aws-amplify';
 import _ from 'lodash';
 import React, {useContext} from 'react';
 import Row from 'react-bootstrap/Row';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 // import { useLocation } from 'react-router-dom';
 
 import {
@@ -87,6 +87,8 @@ const initialPracticeValue: LabPracticeInfo = {
 let rowIndex = -1;
 
 const LabPracticeEdition: React.FC<unknown> = () => {
+	const navigate = useNavigate();
+
 	const [paramsAlreadyIn, setParamsAlreadyIn] = React.useState<boolean>(false);
 	const [outputsAlreadyIn, setOutputsAlreadyIn] = React.useState<boolean>(false);
 
@@ -120,6 +122,7 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 	const location = useLocation();
 	const labPracticeId = (location.state as LocationState)?.labPracticeId;
 	const labName = (location.state as LocationState)?.labName;
+	const labId = (location.state as LocationState)?.labId;
 
 	const {data: practiceInfoDb} = useGetLabPracticeQuery({variables: {id: labPracticeId}, fetchPolicy: 'network-only'});
 	const {data: labCommandsDataDb} = useListLabPracticeCommandsQuery({
@@ -813,6 +816,8 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				showErrorBanner(`Error en la actualización de la práctica ${practiceInfo.practiceInfoName}`);
 			} finally {
 				setLoading(false);
+				console.log(labId)
+				navigate("/lab-practices", {state: {labId}});
 			}
 		}
 	};

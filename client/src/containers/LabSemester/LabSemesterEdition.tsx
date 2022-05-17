@@ -24,7 +24,7 @@ const initialLaboratory: Laboratory = {
 	name: null
 };
 
-const LabSemesterEdition: React.FC<unknown> = () => {
+const LabSemesterEdition: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = useState<boolean>(false);

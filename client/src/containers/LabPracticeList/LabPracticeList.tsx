@@ -23,7 +23,7 @@ export interface LocationState {
 	labSemesterId?: string;
 }
 
-const LabPracticeListView: React.FC<unknown> = () => {
+const LabPracticeList: React.FC<unknown> = () => {
 	const [labPractices, setLabPractices] = useState<LabPracticeData[]>([]);
 	const [laboratoryName, setLaboratoryName] = useState<string>('');
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
@@ -265,4 +265,4 @@ const LabPracticeListView: React.FC<unknown> = () => {
 		</LoadingContainer>
 	);
 };
-export default LabPracticeListView;
+export default LabPracticeList;

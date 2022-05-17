@@ -21,7 +21,7 @@ import {
 	LaboratoryCreation,
 	LabSessionProgrammingView,
 	LabPracticeEdition,
-	LabPracticeListView,
+	LabPracticeList,
 	UsersList,
 	UserCreation,
 	UserEdition,
@@ -59,7 +59,7 @@ const App = (): JSX.Element => {
 					<Route path="/user-labs-sessions" element={<UserLabPracticeSessionsList />} />
 
 					<Route path="/lab-practice" element={<LabPracticeView />} />
-					<Route path="/lab-practices" element={<LabPracticeListView />} />
+					<Route path="/lab-practices" element={<LabPracticeList />} />
 					<Route path="/lab-practice-edition" element={<LabPracticeEdition />} />
 					<Route path="/lab-practice-creation" element={<LabPracticeCreation />} />
 

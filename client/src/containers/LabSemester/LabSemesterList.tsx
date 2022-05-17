@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useNavigate, useLocation} from 'react-router-dom';
 
@@ -8,7 +8,8 @@ import {Action} from '../../components/UI/Table/Table';
 import {
 	useListLabSemestersByLaboratoryIdQuery,
 	useDeleteLabSemesterMutation,
-	useGetLaboratoryQuery
+	useGetLaboratoryQuery,
+	useSendEmailMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {LabSemester, Laboratory, LocationStateList} from './types';
@@ -31,7 +32,8 @@ const LabSemesterList: React.FC<unknown> = () => {
 	const location = useLocation();
 	const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
 	const {data: LabSemesterData, loading: loadingLabSemesterData} = useListLabSemestersByLaboratoryIdQuery({
-		variables: {laboratoryID}
+		variables: {laboratoryID},
+		fetchPolicy: 'network-only'
 	});
 
 	const [labSemesters, setLabSemesters] = useState<Array<LabSemester>>([]);
@@ -42,6 +44,7 @@ const LabSemesterList: React.FC<unknown> = () => {
 	const [labSemesterToDelete, setLabSemesterToDelete] = useState<LabSemester>(initialLabSemester);
 	const [deleteLabSemester] = useDeleteLabSemesterMutation();
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+	const [sendEmail] = useSendEmailMutation();
 
 	useEffect(() => {
 		if (laboratoryData?.getLaboratory != null) {
@@ -68,7 +71,6 @@ const LabSemesterList: React.FC<unknown> = () => {
 						laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''
 					};
 				});
-
 			setLabSemesters(labsList);
 		}
 
@@ -92,9 +94,9 @@ const LabSemesterList: React.FC<unknown> = () => {
 		setLabSemesterToDelete(initialLabSemester);
 	};
 
-	const onDeleteOk = () => {
+	const handleDelete = async () => {
 		if (labSemesterToDelete && labSemesterToDelete?.id) {
-			deleteLabSemester({
+			await deleteLabSemester({
 				variables: {
 					input: {
 						id: labSemesterToDelete?.id,
@@ -102,7 +104,7 @@ const LabSemesterList: React.FC<unknown> = () => {
 					}
 				}
 			})
-				.then((response) => {
+				.then(async (response) => {
 					const deletedLabSemester = response.data?.deleteLabSemester;
 					if (deletedLabSemester?._deleted) {
 						setLabSemesters(labSemesters.filter((obj) => obj.id !== deletedLabSemester?.id));
@@ -111,9 +113,20 @@ const LabSemesterList: React.FC<unknown> = () => {
 					showSuccessBanner(
 						`El semestre de laboratorio ${deletedLabSemester?.semesterName} fue eliminado exitosamente`
 					);
+
+					const labSemester = labSemesters.filter((labSemester) => labSemester.id === labSemesterToDelete?.id)[0];
+
+					await sendEmail({
+						variables: {
+							input: {
+								topic: `Eliminación del semestre ${labSemesterToDelete?.semesterName}`,
+								emailList: labSemester.studentEmailList.toString(),
+								message: `Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha eliminado el semestre: ${labSemesterToDelete?.semesterName}.`
+							}
+						}
+					});
 				})
 				.catch((error) => {
-					console.error(error);
 					setDisplayModal(false);
 					showErrorBanner(`No se pudo eliminar el semestre de laboratorio ${labSemesterToDelete.semesterName}`);
 				});
@@ -125,7 +138,7 @@ const LabSemesterList: React.FC<unknown> = () => {
 			<ModalComponent
 				display={displayModal}
 				onDisplay={handleDisplayModal}
-				onSave={onDeleteOk}
+				onSave={handleDelete}
 				title={labSemesterToDelete?.semesterName ? labSemesterToDelete?.semesterName : ''}>
 				<div>Está seguro de borrar el semestre de laboratorio {labSemesterToDelete?.semesterName}?</div>
 			</ModalComponent>

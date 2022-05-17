@@ -11,7 +11,7 @@ import {
 } from '../../graphql/generated/schema';
 import {initialLaboratoryValue} from '../Laboratory/LaboratoryEdition';
 import {Laboratory} from '../Laboratory/types';
-import {LocationState} from '../LabPracticeList/LabPracticeListView';
+import {LocationState} from '../LabPracticeList/LabPracticeList';
 import {LabPracticeSession, UserLabPracticeSession} from './types';
 
 const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';

@@ -1,0 +1,3 @@
+mutation createCognitoUser($input: CreateCognitoUserInput!) {
+	createCognitoUser(input: $input)
+}

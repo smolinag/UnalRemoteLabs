@@ -1851,6 +1851,12 @@ export type UserLabSemester = {
 	labsemester: LabSemester;
 };
 
+export type CreateCognitoUserMutationVariables = Exact<{
+	input: CreateCognitoUserInput;
+}>;
+
+export type CreateCognitoUserMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'createCognitoUser'>;
+
 export type CreateLabPracticeMutationVariables = Exact<{
 	input: CreateLabPracticeInput;
 }>;
@@ -2129,6 +2135,12 @@ export type PublishMqttMessageMutationVariables = Exact<{
 }>;
 
 export type PublishMqttMessageMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'publishMqttMessage'>;
+
+export type RemoveCognitoUserMutationVariables = Exact<{
+	email: Scalars['String'];
+}>;
+
+export type RemoveCognitoUserMutation = {__typename?: 'Mutation'} & Pick<Mutation, 'removeCognitoUser'>;
 
 export type SendEmailMutationVariables = Exact<{
 	input: EmailInput;
@@ -2806,6 +2818,48 @@ export type OnUpdateLabPracticeSessionCommandBySessionIdSubscription = {__typena
 	>;
 };
 
+export const CreateCognitoUserDocument = gql`
+	mutation createCognitoUser($input: CreateCognitoUserInput!) {
+		createCognitoUser(input: $input)
+	}
+`;
+export type CreateCognitoUserMutationFn = Apollo.MutationFunction<
+	CreateCognitoUserMutation,
+	CreateCognitoUserMutationVariables
+>;
+
+/**
+ * __useCreateCognitoUserMutation__
+ *
+ * To run a mutation, you first call `useCreateCognitoUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCognitoUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCognitoUserMutation, { data, loading, error }] = useCreateCognitoUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCognitoUserMutation(
+	baseOptions?: Apollo.MutationHookOptions<CreateCognitoUserMutation, CreateCognitoUserMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateCognitoUserMutation, CreateCognitoUserMutationVariables>(
+		CreateCognitoUserDocument,
+		options
+	);
+}
+export type CreateCognitoUserMutationHookResult = ReturnType<typeof useCreateCognitoUserMutation>;
+export type CreateCognitoUserMutationResult = Apollo.MutationResult<CreateCognitoUserMutation>;
+export type CreateCognitoUserMutationOptions = Apollo.BaseMutationOptions<
+	CreateCognitoUserMutation,
+	CreateCognitoUserMutationVariables
+>;
 export const CreateLabPracticeDocument = gql`
 	mutation createLabPractice($input: CreateLabPracticeInput!) {
 		createLabPractice(input: $input) {
@@ -3754,6 +3808,48 @@ export type PublishMqttMessageMutationResult = Apollo.MutationResult<PublishMqtt
 export type PublishMqttMessageMutationOptions = Apollo.BaseMutationOptions<
 	PublishMqttMessageMutation,
 	PublishMqttMessageMutationVariables
+>;
+export const RemoveCognitoUserDocument = gql`
+	mutation removeCognitoUser($email: String!) {
+		removeCognitoUser(email: $email)
+	}
+`;
+export type RemoveCognitoUserMutationFn = Apollo.MutationFunction<
+	RemoveCognitoUserMutation,
+	RemoveCognitoUserMutationVariables
+>;
+
+/**
+ * __useRemoveCognitoUserMutation__
+ *
+ * To run a mutation, you first call `useRemoveCognitoUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveCognitoUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeCognitoUserMutation, { data, loading, error }] = useRemoveCognitoUserMutation({
+ *   variables: {
+ *      email: // value for 'email'
+ *   },
+ * });
+ */
+export function useRemoveCognitoUserMutation(
+	baseOptions?: Apollo.MutationHookOptions<RemoveCognitoUserMutation, RemoveCognitoUserMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<RemoveCognitoUserMutation, RemoveCognitoUserMutationVariables>(
+		RemoveCognitoUserDocument,
+		options
+	);
+}
+export type RemoveCognitoUserMutationHookResult = ReturnType<typeof useRemoveCognitoUserMutation>;
+export type RemoveCognitoUserMutationResult = Apollo.MutationResult<RemoveCognitoUserMutation>;
+export type RemoveCognitoUserMutationOptions = Apollo.BaseMutationOptions<
+	RemoveCognitoUserMutation,
+	RemoveCognitoUserMutationVariables
 >;
 export const SendEmailDocument = gql`
 	mutation sendEmail($input: EmailInput!) {

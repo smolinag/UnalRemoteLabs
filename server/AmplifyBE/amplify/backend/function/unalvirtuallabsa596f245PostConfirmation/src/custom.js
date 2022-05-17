@@ -45,7 +45,6 @@ writeItem = async (id, userName, email) => {
       _lastChangedAt: { N: date.getTime().toString() },
       _version: { N: "1" },
     },
-    // TableName: process.env.USERTABLE,
     TableName: TABLE_NAME,
   };
 

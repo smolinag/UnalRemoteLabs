@@ -5,7 +5,11 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {Button, LoadingContainer} from '../../components/UI';
 import {UserData} from '../../components/Users/index';
 import {isEmail} from '../../generalUtils/EmailUtils';
-import {useCreateUserMutation, useGetUserByEmailQuery} from '../../graphql/generated/schema';
+import {
+	useCreateUserMutation,
+	useGetUserByEmailQuery,
+	useCreateCognitoUserMutation
+} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {User, ErrorIdentifier, Params, LocationUserStateCreation, Role} from './types';
 
@@ -31,6 +35,7 @@ const UserCreation: React.FC<unknown> = () => {
 	const [errors, setErrors] = useState<ErrorIdentifier[]>([]);
 
 	const [createUser] = useCreateUserMutation();
+	const [createCognitoUser] = useCreateCognitoUserMutation();
 
 	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
 
@@ -111,6 +116,17 @@ const UserCreation: React.FC<unknown> = () => {
 
 				if (!userData?.createUser?.id) {
 					throw Error('Error insertando Usuario');
+				} else {
+					const randomstring = Math.random().toString(36).slice(-8);
+					console.log(randomstring);
+					await createCognitoUser({
+						variables: {
+							input: {
+								email: user?.email ?? '',
+								password: randomstring
+							}
+						}
+					});
 				}
 
 				showSuccessBanner(`El usuario ${user.email} fue creado exitosamente`);

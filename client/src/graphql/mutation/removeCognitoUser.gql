@@ -1,0 +1,3 @@
+mutation removeCognitoUser($email: String!) {
+	removeCognitoUser(email: $email)
+}

@@ -16,7 +16,7 @@ import {LabPracticeSession, UserLabPracticeSession} from './types';
 
 const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
 
-const UserLabPracticeSessionsList: React.FC<unknown> = () => {
+const UserLabPracticeSessionsList: React.FC = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [userLabPracticeSessionsList, setUserLabPracticeSessionsList] = React.useState<UserLabPracticeSession[]>([]);
 	const [labPracticeSessionsList, setLabPracticeSessionsList] = React.useState<LabPracticeSession[]>([]);

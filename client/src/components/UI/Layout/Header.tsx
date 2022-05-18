@@ -12,7 +12,7 @@ import logosimbolo from '../../../assets/images/logosimbolo.png';
 import {useAuthContext} from '../../../GroupProvider';
 import classes from './Header.module.scss';
 
-const Header: React.FC<unknown> = () => {
+const Header: React.FC = () => {
 	const navigate = useNavigate();
 	const [loggedUser, setLoggedUser] = useState<string>('');
 	const {signOut} = useAuthenticator();

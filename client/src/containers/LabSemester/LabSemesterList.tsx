@@ -23,7 +23,7 @@ const initialLabSemester: LabSemester = {
 	studentEmailList: []
 };
 
-const LabSemesterList: React.FC<unknown> = () => {
+const LabSemesterList: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = useState<boolean>(true);

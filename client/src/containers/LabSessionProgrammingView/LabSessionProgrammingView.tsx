@@ -21,7 +21,7 @@ export interface LocationState {
 	labSemesterId: string;
 }
 
-const LabSessionProgrammingView: React.FC<unknown> = () => {
+const LabSessionProgrammingView: React.FC = () => {
 	const location = useLocation();
 	const labSession = location.state as LabSessionInfo;
 	const labPracticeId = (location.state as LocationState)?.labPracticeId;

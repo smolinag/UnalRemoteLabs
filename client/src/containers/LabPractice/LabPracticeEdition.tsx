@@ -86,7 +86,7 @@ const initialPracticeValue: LabPracticeInfo = {
 
 let rowIndex = -1;
 
-const LabPracticeEdition: React.FC<unknown> = () => {
+const LabPracticeEdition: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [paramsAlreadyIn, setParamsAlreadyIn] = React.useState<boolean>(false);

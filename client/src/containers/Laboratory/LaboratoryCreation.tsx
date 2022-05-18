@@ -15,7 +15,7 @@ const initialLaboratoryValue: Laboratory = {
 	version: null
 };
 
-const LaboratoryCreation: React.FC<unknown> = () => {
+const LaboratoryCreation: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [laboratory, setLaboratory] = React.useState<Laboratory>(initialLaboratoryValue);

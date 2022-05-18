@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import logoUNAL from '../../../assets/images/logoUNAL.png';
 import classes from './Footer.module.scss';
 
-const Footer: React.FC<unknown> = () => {
+const Footer: React.FC = () => {
 	return (
 		<footer>
 			<Row className={classes.footer}>

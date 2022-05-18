@@ -23,7 +23,7 @@ let initialUser: User = {
 	role: Role.Students
 };
 
-const UserCreation: React.FC<unknown> = () => {
+const UserCreation: React.FC = () => {
 	const location = useLocation();
 	const organizationId = (location.state as LocationUserStateCreation)?.selectedOrganizationId;
 	const userRole = (location.state as LocationUserStateCreation)?.selectedRole;

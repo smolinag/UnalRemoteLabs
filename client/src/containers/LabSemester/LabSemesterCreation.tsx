@@ -24,7 +24,7 @@ const initialLaboratory: Laboratory = {
 	name: null
 };
 
-const LabSemesterCreation: React.FC<unknown> = () => {
+const LabSemesterCreation: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [labSemester, setLabSemester] = useState<LabSemester>(initialLabSemester);

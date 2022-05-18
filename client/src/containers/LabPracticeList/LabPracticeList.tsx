@@ -23,7 +23,7 @@ export interface LocationState {
 	labSemesterId?: string;
 }
 
-const LabPracticeList: React.FC<unknown> = () => {
+const LabPracticeList: React.FC = () => {
 	const [labPractices, setLabPractices] = useState<LabPracticeData[]>([]);
 	const [laboratoryName, setLaboratoryName] = useState<string>('');
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);

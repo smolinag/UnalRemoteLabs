@@ -75,7 +75,7 @@ export interface LocationState {
 	labName: string;
 }
 
-const LabPracticeCreation: React.FC<unknown> = () => {
+const LabPracticeCreation: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [practiceInfo, setPracticeInfo] = React.useState<LabPracticeInfo>(initialPracticeValue);

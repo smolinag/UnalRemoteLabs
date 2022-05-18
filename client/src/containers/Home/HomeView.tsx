@@ -7,7 +7,7 @@ import usersImage from '../../assets/images/users.jpg';
 import {LoadingContainer} from '../../components/UI';
 import classes from './Home.module.scss';
 
-const HomeView: React.FC<unknown> = () => {
+const HomeView: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (

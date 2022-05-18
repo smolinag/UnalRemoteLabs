@@ -34,7 +34,7 @@ const initialUser: User = {
 	role: Role.Students
 };
 
-const UsersList: React.FC<unknown> = () => {
+const UsersList: React.FC = () => {
 	const navigate = useNavigate();
 	const [users, setUsers] = useState<Array<User>>([]);
 	const [selectedOrganization, setSelectedOrganization] = useState<Option>(intial_org);

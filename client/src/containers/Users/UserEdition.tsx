@@ -19,7 +19,7 @@ const initialUser: User = {
 	role: Role.Students
 };
 
-const UserEdition: React.FC<unknown> = () => {
+const UserEdition: React.FC = () => {
 	const [user, setUser] = useState<User>(initialUser);
 	const [errors, setErrors] = useState<ErrorIdentifier[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);

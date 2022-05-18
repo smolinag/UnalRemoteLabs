@@ -66,7 +66,7 @@ const initSessionInformation: Session = {
 	professor: ''
 };
 
-const LabPracticeView: React.FC<unknown> = () => {
+const LabPracticeView: React.FC = () => {
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [executedCommands, setExecutedCommands] = useState<CommandSession[]>([]);

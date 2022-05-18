@@ -9,7 +9,7 @@ import {Laboratory} from '../../containers/Laboratory/types';
 import {useListLaboratoriesQuery, useDeleteLaboratoryMutation} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
-const LaboratoriesList: React.FC<unknown> = () => {
+const LaboratoriesList: React.FC = () => {
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = React.useState<boolean>(true);

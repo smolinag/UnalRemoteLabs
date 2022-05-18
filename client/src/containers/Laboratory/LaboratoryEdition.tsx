@@ -20,7 +20,7 @@ export const initialLaboratoryValue: Laboratory = {
 	version: null
 };
 
-const LaboratoryEdition: React.FC<unknown> = () => {
+const LaboratoryEdition: React.FC = () => {
 	const navigate = useNavigate();
 	
 	const [laboratory, setLaboratory] = React.useState<Laboratory>(initialLaboratoryValue);

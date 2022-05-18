@@ -816,7 +816,6 @@ const LabPracticeEdition: React.FC<unknown> = () => {
 				showErrorBanner(`Error en la actualización de la práctica ${practiceInfo.practiceInfoName}`);
 			} finally {
 				setLoading(false);
-				console.log(labId)
 				navigate("/lab-practices", {state: {labId}});
 			}
 		}

@@ -119,7 +119,6 @@ const UserCreation: React.FC<unknown> = () => {
 					throw Error('Error insertando Usuario');
 				} else {
 					const randomstring = Math.random().toString(36).slice(-8);
-					console.log(randomstring);
 					await createCognitoUser({
 						variables: {
 							input: {

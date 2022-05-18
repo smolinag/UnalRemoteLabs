@@ -120,7 +120,7 @@ const LabPracticeList: React.FC<unknown> = () => {
 				}
 			});
 			if (delPracticeAns.errors || !delPracticeAns.data?.deleteLabPractice?._deleted) {
-				console.log('Error deleting labPractice with Id:' + labPracticeId);
+				console.error('Error deleting labPractice with Id:' + labPracticeId);
 				return false;
 			} else {
 				//Query linked Elements to delete them
@@ -143,7 +143,6 @@ const LabPracticeList: React.FC<unknown> = () => {
 						}
 					});
 				} else {
-					console.log(outputsErrors);
 					return false;
 				}
 
@@ -158,7 +157,7 @@ const LabPracticeList: React.FC<unknown> = () => {
 					});
 					parameterPromises = commandsData.listLabPracticeCommands.items.map((command) => {
 						if (command && command.LabPracticeParameters) {
-							return command.LabPracticeParameters.items.map(async(param) => {
+							return command.LabPracticeParameters.items.map(async (param) => {
 								if (param) {
 									return await deleteLabPracticeParameter({
 										variables: {input: {id: param.id, _version: param._version}}
@@ -167,17 +166,14 @@ const LabPracticeList: React.FC<unknown> = () => {
 							});
 						}
 					});
-					await Promise.all([commandPromises, parameterPromises, outputPromises]).then((ans) => {
-						console.log(ans);
-					});
+					await Promise.all([commandPromises, parameterPromises, outputPromises]);
 					return true;
 				} else {
-					console.log(commandsErrors);
 					return false;
 				}
 			}
 		} catch (e) {
-			console.log('Error deleting labPractice with Id:' + labPracticeId);
+			console.error('Error deleting labPractice with Id:' + labPracticeId);
 			return false;
 		}
 	};
@@ -193,7 +189,7 @@ const LabPracticeList: React.FC<unknown> = () => {
 			case Action.DeleteAll:
 				console.warn('DELETE ALL');
 				break;
-			case Action.Edit:				
+			case Action.Edit:
 				navigate('/lab-practice-edition', {
 					state: {labPracticeId: labPractices[index].id, labName: laboratoryName, labId: labId}
 				});
@@ -208,19 +204,19 @@ const LabPracticeList: React.FC<unknown> = () => {
 	};
 
 	const handleDisplayModal = () => {
-		setDisplayModal(false)
+		setDisplayModal(false);
 	};
 
-	const handleAcceptModal = async() => {
-		if(selLabPractice){
+	const handleAcceptModal = async () => {
+		if (selLabPractice) {
 			const delAns = await deleteLabPracticeFunc(selLabPractice.id, selLabPractice.version);
 			if (delAns) {
 				showSuccessBanner(`La práctica ${selLabPractice.name} fue eliminada exitosamente`);
 			} else {
 				showErrorBanner(`La práctica ${selLabPractice.name} no pudo ser eliminada de manera exitosa`);
 			}
-			setDisplayModal(false)
-		}		
+			setDisplayModal(false);
+		}
 	};
 
 	return (

@@ -14,7 +14,6 @@ import {
 	LabSemesterList,
 	LabSemesterCreation,
 	LabSemesterEdition,
-	LabTemp,
 	UserLabPracticeSessionsList,
 	LaboratoriesList,
 	LaboratoryEdition,
@@ -49,7 +48,6 @@ const App = (): JSX.Element => {
 			<div className={classes.content}>
 				<Routes>
 					<Route path="/" element={<HomeView />} />
-					<Route path="/temp" element={<LabTemp />} />
 					<Route path="/lab-semesters" element={<LabSemesterList />} />
 					<Route path="/lab-semester-creation" element={<LabSemesterCreation />} />
 					<Route path="/lab-semester-edition" element={<LabSemesterEdition />} />

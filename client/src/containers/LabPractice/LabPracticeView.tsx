@@ -370,7 +370,7 @@ const LabPracticeView: React.FC<unknown> = () => {
 
 	const handleVideoUrlRefresh = () => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		refetch().then((response: any) => console.log(response));
+		refetch();
 	};
 
 	return (

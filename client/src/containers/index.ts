@@ -4,7 +4,6 @@ export {default as UserLabPracticeSessionsList} from './UserLabPracticeSessionsL
 export {default as LabSemesterList} from './LabSemester/LabSemesterList';
 export {default as LabSemesterCreation} from './LabSemester/LabSemesterCreation';
 export {default as LabSemesterEdition} from './LabSemester/LabSemesterEdition';
-export {default as LabTemp} from './LabTemp';
 export {default as LabSessionProgrammingView} from './LabSessionProgrammingView/LabSessionProgrammingView';
 export {default as LaboratoriesList} from './Laboratory/LaboratoriesList';
 export {default as LaboratoryCreation} from './Laboratory/LaboratoryCreation';

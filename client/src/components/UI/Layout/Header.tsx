@@ -30,7 +30,7 @@ const Header: React.FC<unknown> = () => {
 		signOut;
 		clearGroup();
 		setLoggedUser('');
-		Auth.signOut()
+		Auth.signOut();
 		// window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
 	};
 
@@ -55,7 +55,7 @@ const Header: React.FC<unknown> = () => {
 						</div>
 
 						<div className={classes.option}>
-							<BiExit className={classes.icon} />
+							<BiExit className={classes.icon} onClick={signOutFunction} />
 							<span onClick={signOutFunction}>Salir</span>
 						</div>
 					</Nav>

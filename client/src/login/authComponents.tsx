@@ -3,6 +3,8 @@ import {View, useTheme, Image, Text, Button, useAuthenticator} from '@aws-amplif
 import {I18n} from 'aws-amplify';
 import React from 'react';
 
+import logosimbolo from '../assets/images/logosimbolo.png';
+
 I18n.putVocabularies(translations);
 I18n.setLanguage('es');
 
@@ -21,7 +23,7 @@ const authComponents = {
 
 		return (
 			<View textAlign="center" padding={tokens.space.large}>
-				<Image alt="Amplify logo" src="/static/media/logosimbolo.c51f8526.png" />
+				<Image alt="Unal logo" src={logosimbolo} />
 			</View>
 		);
 	},

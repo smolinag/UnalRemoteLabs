@@ -11,11 +11,14 @@ readItem = async (email) => {
     TableName: TABLE_NAME,
     IndexName: "byEmail",
     KeyConditionExpression: "#email = :email",
+    FilterExpression: "#_deleted <> :_deleted",
     ExpressionAttributeNames: {
       "#email": "email",
+      "#_deleted": "_deleted",
     },
     ExpressionAttributeValues: {
       ":email": { S: email },
+      ":_deleted": { BOOL: true },
     },
   };
 
@@ -24,7 +27,7 @@ readItem = async (email) => {
     const data = await ddb.query(params).promise();
     return data;
   } catch (err) {
-    console.log("Error", err);
+    console.log(`Error: ${JSON.stringify(err)}`);
     return null;
   }
 };
@@ -39,9 +42,8 @@ writeItem = async (id, userName, email) => {
       organizationID: { S: "d80b954b-9477-4061-aa8a-c14c5711143b" },
       role: { S: "Students" },
       email: { S: email },
-      createdAt: { S: date.toISOString() },
       createdBy: { S: "1" },
-      updatedAt: { S: date.toISOString() },
+      updatedBy: { S: "1" },
       _lastChangedAt: { N: date.getTime().toString() },
       _version: { N: "1" },
     },
@@ -52,7 +54,7 @@ writeItem = async (id, userName, email) => {
     const data = await ddb.putItem(params).promise();
     return data;
   } catch (err) {
-    console.log("Error", err);
+    console.log(`Error: ${JSON.stringify(err)}`);
     return null;
   }
 };
@@ -74,9 +76,9 @@ addUserToStudentsGroup = async (userPoolId, userName) => {
    */
   try {
     const data = await cognito.getGroup(groupParams).promise();
-    console.log(JSON.stringify(data));
+    console.log(`Data: ${JSON.stringify(data)}`);
   } catch (err) {
-    console.log("Error", err);
+    console.log(`Error: ${JSON.stringify(err)}`);
     await cognito.createGroup(groupParams).promise();
   }
   /**
@@ -85,7 +87,7 @@ addUserToStudentsGroup = async (userPoolId, userName) => {
   try {
     await cognito.adminAddUserToGroup(addUserParams).promise();
   } catch (err) {
-    console.log("Error", err);
+    console.log(`Error: ${JSON.stringify(err)}`);
   }
   return "Ok";
 };
@@ -97,6 +99,7 @@ exports.handler = async (event, context) => {
   const userPoolId = event.userPoolId;
   if (cognitoUserId) {
     const data = await readItem(email);
+    console.log(`DATA: ${JSON.stringify(data)}`);
     if (data.Count == 0) {
       const ans = await writeItem(cognitoUserId, userName, email);
       if (ans === null) {

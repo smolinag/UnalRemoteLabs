@@ -109,7 +109,8 @@ const UserCreation: React.FC<unknown> = () => {
 							identificationNumber: user?.identificationNumber,
 							email: user?.email ?? '',
 							phone: user?.phone,
-							createdBy: '1'
+							createdBy: '1',
+							updatedBy: '1'
 						}
 					}
 				});

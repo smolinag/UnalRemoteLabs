@@ -5,7 +5,11 @@ import {useNavigate} from 'react-router-dom';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {UserTypeSelector, OrganizationSelector, UsersTable} from '../../components/Users';
-import {useListUsersByRoleAndOrganizationIdQuery, useDeleteUserMutation} from '../../graphql/generated/schema';
+import {
+	useListUsersByRoleAndOrganizationIdQuery,
+	useDeleteUserMutation,
+	useRemoveCognitoUserMutation
+} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {User, Option, UserType, Role} from './types';
 
@@ -37,6 +41,7 @@ const UsersList: React.FC<unknown> = () => {
 
 	const [selectedUserType, setSelectedUserType] = useState<UserType>(intial_role);
 
+	const [loading, setLoading] = useState<boolean>(false);
 	const [displayModal, setDisplayModal] = useState<boolean>(false);
 
 	const {
@@ -50,6 +55,7 @@ const UsersList: React.FC<unknown> = () => {
 
 	const [userToDelete, setUserToDelete] = useState<User>(initialUser);
 	const [deleteUser] = useDeleteUserMutation();
+	const [removeCognitoUserMutation] = useRemoveCognitoUserMutation();
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	useEffect(() => {
@@ -93,6 +99,7 @@ const UsersList: React.FC<unknown> = () => {
 
 	const onDeleteOk = () => {
 		if (userToDelete && userToDelete?.id) {
+			setLoading(true);
 			deleteUser({
 				variables: {
 					input: {
@@ -101,10 +108,15 @@ const UsersList: React.FC<unknown> = () => {
 					}
 				}
 			})
-				.then((response) => {
+				.then(async (response) => {
 					const deletedUser = response.data?.deleteUser;
 					if (deletedUser?._deleted) {
 						setUsers(users.filter((obj) => obj.id !== deletedUser?.id));
+						await removeCognitoUserMutation({
+							variables: {
+								email: deletedUser.email
+							}
+						});
 					}
 					setDisplayModal(false);
 					showSuccessBanner(`El usuario ${deletedUser?.email} fue eliminado exitosamente`);
@@ -113,6 +125,9 @@ const UsersList: React.FC<unknown> = () => {
 					console.error(error);
 					setDisplayModal(false);
 					showErrorBanner(`No se pudo eliminar el usuario ${userToDelete.email}`);
+				})
+				.finally(() => {
+					setLoading(false);
 				});
 		}
 	};
@@ -133,7 +148,8 @@ const UsersList: React.FC<unknown> = () => {
 				display={displayModal}
 				onDisplay={handleDisplayModal}
 				onSave={onDeleteOk}
-				title={userToDelete?.email ?? ''}>
+				title={userToDelete?.email ?? ''}
+				loadingAccept={loading}>
 				<div>Está seguro de borrar el usuario {userToDelete?.email}?</div>
 			</ModalComponent>
 			<Row className="section">

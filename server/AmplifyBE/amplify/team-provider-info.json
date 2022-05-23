@@ -51,11 +51,11 @@
         },
         "unalvirtuallabsa596f245PreSignup": {
           "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
-          "s3Key": "amplify-builds/unalvirtuallabsa596f245PreSignup-4d5a7975335a42354f56-build.zip"
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PreSignup-4258784e61636a632b76-build.zip"
         },
         "unalvirtuallabsa596f245PostConfirmation": {
           "deploymentBucketName": "amplify-unalvirtuallabs-develop-222622-deployment",
-          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-74755639563735346e66-build.zip",
+          "s3Key": "amplify-builds/unalvirtuallabsa596f245PostConfirmation-325678433033386a316b-build.zip",
           "userTable": "User-glgsgvfuj5c3rgtir6lz5gpqdi-develop"
         },
         "emaildelivery": {
@@ -75,7 +75,9 @@
         "unalvirtuallabsa596f245": {
           "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com"
         },
-        "userPoolGroups": {}
+        "true": {
+          "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com"
+        }
       }
     }
   }

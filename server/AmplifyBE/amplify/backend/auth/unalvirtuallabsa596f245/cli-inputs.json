@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "unalvirtuallabsa596f245_identitypool_a596f245",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "unalvia596f245",
     "userPoolName": "unalvirtuallabsa596f245_userpool_a596f245",
     "autoVerifiedAttributes": [
@@ -38,12 +38,7 @@
     "serviceName": "Cognito",
     "useDefault": "manual",
     "sharedId": "a596f245",
-    "userPoolGroupList": [
-      "Admins",
-      "Professors",
-      "Monitors",
-      "Students"
-    ],
+    "userPoolGroupList": [],
     "usernameAttributes": [
       "email"
     ],
@@ -97,7 +92,10 @@
     "permissions": [],
     "userPoolGroups": true,
     "adminQueries": false,
-    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"unalvirtuallabsa596f245PostConfirmation\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"unalvirtuallabsa596f245PreSignup\"\n  }\n]",
+    "authTriggerConnections": [
+      "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"unalvirtuallabsa596f245PostConfirmation\"}",
+      "{\"triggerType\":\"PreSignUp\",\"lambdaFunctionName\":\"unalvirtuallabsa596f245PreSignup\"}"
+    ],
     "authProviders": [
       "accounts.google.com"
     ],
@@ -107,8 +105,6 @@
       "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "googleClientId": "673127242587-h85nbt8mkv93056s8pk58as7p28co9dr.apps.googleusercontent.com",
-    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\",\"client_id\":\"673127242587-hdr06rtgl3kf62v2bmugtdfdqilnkva7.apps.googleusercontent.com\",\"client_secret\":\"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\"}]",
     "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://d1p0lxk2wvxo6e.cloudfront.net/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://d1p0lxk2wvxo6e.cloudfront.net/\"]}"
   }
 }

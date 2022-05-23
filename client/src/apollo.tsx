@@ -15,9 +15,9 @@ const auth: AuthOptions = {
 		try {
 			const token = (await Auth.currentSession()).getAccessToken().getJwtToken();
 			if(token.length > 0) {
-				decodeToken(token);
+				// decodeToken(token);
 			}
-			window.sessionStorage.setItem('token', token);
+			// window.sessionStorage.setItem('token', token);
 			return token;
 		} catch (e) {
 			console.error(e);

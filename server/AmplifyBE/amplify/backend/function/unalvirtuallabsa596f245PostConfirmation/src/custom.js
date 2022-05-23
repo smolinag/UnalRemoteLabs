@@ -1,8 +1,5 @@
 var aws = require("aws-sdk");
 var ddb = new aws.DynamoDB();
-const cognito = new aws.CognitoIdentityServiceProvider({
-  apiVersion: "2016-04-18",
-});
 
 const TABLE_NAME = process.env.USER_TABLE;
 
@@ -61,44 +58,11 @@ writeItem = async (id, userName, email) => {
   }
 };
 
-addUserToStudentsGroup = async (userPoolId, userName) => {
-  const GROUP = "Students";
-
-  const groupParams = {
-    GroupName: GROUP,
-    UserPoolId: userPoolId,
-  };
-  const addUserParams = {
-    GroupName: GROUP,
-    UserPoolId: userPoolId,
-    Username: userName,
-  };
-  /**
-   * Check if the group exists; if it doesn't, create it.
-   */
-  try {
-    const data = await cognito.getGroup(groupParams).promise();
-    console.log(`Data: ${JSON.stringify(data)}`);
-  } catch (err) {
-    console.log(`Error: ${JSON.stringify(err)}`);
-    await cognito.createGroup(groupParams).promise();
-  }
-  /**
-   * Then, add the user to the group.
-   */
-  try {
-    await cognito.adminAddUserToGroup(addUserParams).promise();
-  } catch (err) {
-    console.log(`Error: ${JSON.stringify(err)}`);
-  }
-  return "Ok";
-};
-
 exports.handler = async (event, context) => {
   const cognitoUserId = event.request.userAttributes.sub;
   const userName = event.userName;
   const email = event.request.userAttributes.email;
-  const userPoolId = event.userPoolId;
+
   if (cognitoUserId) {
     const data = await readItem(email);
     console.log(`DATA: ${JSON.stringify(data)}`);
@@ -114,8 +78,6 @@ exports.handler = async (event, context) => {
     } else {
       console.log("User with id " + cognitoUserId + " already exist");
     }
-
-    await addUserToStudentsGroup(userPoolId, userName);
 
     return event;
   } else {

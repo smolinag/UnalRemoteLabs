@@ -4,26 +4,10 @@
   "bucketName": "unal-labs-files-dev",
   "storageAccess": "auth",
   "guestAccess": [],
-  "authAccess": [],
-  "groupAccess": {
-    "Admins": [
-      "CREATE_AND_UPDATE",
-      "READ",
-      "DELETE"
-    ],
-    "Professors": [
-      "CREATE_AND_UPDATE",
-      "READ",
-      "DELETE"
-    ],
-    "Monitors": [
-      "CREATE_AND_UPDATE",
-      "READ",
-      "DELETE"
-    ],
-    "Students": [
-      "CREATE_AND_UPDATE",
-      "READ"
-    ]
-  }
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "groupAccess": {}
 }

@@ -162,14 +162,15 @@
     "hostedUIProviderMeta": {
       "Type": "String"
     },
+    "oAuthMetadata": {
+      "Type": "String"
+    },
     "googleClientId": {
       "Type": "String"
     },
     "hostedUIProviderCreds": {
-      "Type": "String"
-    },
-    "oAuthMetadata": {
-      "Type": "String"
+      "Type": "String",
+      "Default": "[]"
     }
   },
   "Conditions": {

@@ -1,20 +1,19 @@
 import React from 'react';
 
-import {LabSessionInfo, LabPracticeInfo} from '../../containers/LabSessionProgrammingView/types';
+import {LabSessionInfo} from '../../containers/LabSessionProgrammingView/types';
 import {Input, DateTimePickerComponent, TextLabel} from '../UI';
 import classes from './shared.module.scss';
 
 interface Props {
-	practiceInfo: LabPracticeInfo;
 	sessionInfo: LabSessionInfo;
 	onDescriptionChange: (value: string) => void;
 	onStartDateChange: (value: Date) => void;
 }
 
-const LabSessionData: React.FC<Props> = ({practiceInfo, sessionInfo, onDescriptionChange, onStartDateChange}) => {
+const LabSessionData: React.FC<Props> = ({sessionInfo, onDescriptionChange, onStartDateChange}) => {
 	return (
 		<>
-			<h3 className="title">Programación sesión Laboratorio de {practiceInfo.name}</h3>
+			<h3 className="title">Programación sesión Laboratorio de {sessionInfo.labPractice?.name}</h3>
 			<div className={classes.options}>
 				<Input
 					type="text"
@@ -30,7 +29,7 @@ const LabSessionData: React.FC<Props> = ({practiceInfo, sessionInfo, onDescripti
 				/>
         <TextLabel
 					placeholder="Duración"
-					value={practiceInfo.duration ?? ''}
+					value={sessionInfo.labPractice?.duration ?? ''}
           unit={"minutos"}
 				/>
 			</div>

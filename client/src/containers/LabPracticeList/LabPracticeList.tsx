@@ -74,12 +74,7 @@ const LabPracticeList: React.FC = () => {
 		labpractices.forEach((item) => {
 			//If there is a semester selected show program button
 			if (labSemesterId) {
-				data.push([
-					item.name,
-					item.description,
-					item.duration.toString(),
-					redirectToLabPracticeSessionProgram(item.id)
-				]);
+				data.push([item.name, item.description, item.duration.toString(), redirectToLabPracticeSessionProgram(item)]);
 			} else {
 				data.push([item.name, item.description, item.duration.toString()]);
 			}
@@ -95,13 +90,18 @@ const LabPracticeList: React.FC = () => {
 		return headers;
 	};
 
-	const redirectToLabPracticeSessionProgram = (labPracticeId: string) => {
+	const redirectToLabPracticeSessionProgram = (labPractice: LabPracticeData) => {
 		return (
 			<p
 				className="links"
 				onClick={() =>
 					navigate('/lab-practice-session-creation', {
-						state: {labPracticeId, labSemesterId}
+						state: {
+							startDate: new Date(),
+							endDate: new Date(),
+							semesterId: labSemesterId,
+							labPractice: {id: labPractice.id, name: labPractice.name, duration: labPractice.duration}
+						}
 					})
 				}>
 				Programar

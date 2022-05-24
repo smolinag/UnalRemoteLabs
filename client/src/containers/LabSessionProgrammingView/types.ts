@@ -1,15 +1,16 @@
 export interface LabSessionInfo {
-  id?: String,
+  id?: string,
   _versionId?: number,
   startDate: Date,
   endDate: Date,
-  description: string,
-  semesterId: string
+  description?: string,
+  semesterId: string,
+  labPractice?: LabPracticeInfo
 }
 
 export interface LabPracticeInfo {
-  id: String, 
-  name: String,
+  id: string, 
+  name: string,
   description?: string,
   duration: number,
 }

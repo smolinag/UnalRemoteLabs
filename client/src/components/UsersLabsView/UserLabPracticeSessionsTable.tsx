@@ -37,7 +37,7 @@ const COLUMNS_SESSIONS = [
 	'Duración',
 	'Inicio de la práctica',
 	'Fin de la práctica',
-	'Ingresar',
+	'Ingresar'
 ];
 
 // const TIME_TO_ENTER_TO_PRACTICE = 15;
@@ -88,18 +88,20 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		showDate(labPracticeSession.endDate),
 		showDate(sessionStartDate),
 		showDate(sessionEndDate),
-		redirectToSession(labPracticeSession),
-		redirectEdit(labPracticeSession),
-		warnDelete(labPracticeSession)
+		redirectToSession(labPracticeSession)
 	];
 
-	const mapOutputLabSessions = (labPracticeSession: LabPracticeSession): (boolean | string | React.ReactNode | number)[] => [
+	const mapOutputLabSessions = (
+		labPracticeSession: LabPracticeSession
+	): (boolean | string | React.ReactNode | number)[] => [
 		labPracticeSession.labPracticeInfo.practiceInfoName,
 		labPracticeSession.labPracticeInfo.practiceInfoDescription,
 		`${labPracticeSession.labPracticeInfo.practiceInfoDuration} minutos`,
 		showDate(labPracticeSession.startDate),
 		showDate(labPracticeSession.endDate),
 		redirectToSession(labPracticeSession),
+		redirectEdit(labPracticeSession),
+		warnDelete(labPracticeSession)
 	];
 
 	const redirectToSession = (labPracticeSession: LabPracticeSession) => {
@@ -141,19 +143,18 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 				key={labPracticeSession.labPracticeInfo.laboratory.name}
 				className={classes.actionIcon}
 				onClick={() =>
-					navigate('/create-lab-practice-session', {
+					navigate('/lab-practice-session-creation', {
 						state: {
 							id: labPracticeSession.id,
 							_version: labPracticeSession.version,
 							startDate: labPracticeSession.startDate,
 							endDate: labPracticeSession.endDate,
 							description: labPracticeSession.description,
-							labPracticeName: labPracticeSession.labPracticeInfo?.practiceInfoName
-								? labPracticeSession.labPracticeInfo.practiceInfoName
-								: '--',
-							duration: labPracticeSession.labPracticeInfo?.practiceInfoDuration
-								? labPracticeSession.labPracticeInfo.practiceInfoDuration
-								: '--',
+							labPractice: {
+								id: labPracticeSession.labPracticeInfo.id,
+								name: labPracticeSession.labPracticeInfo?.practiceInfoName,
+								duration: labPracticeSession.labPracticeInfo.practiceInfoDuration
+							},
 							semesterId: labPracticeSession.labSemesterInfo?.id ? labPracticeSession.labSemesterInfo.id : '--'
 						}
 					})
@@ -194,6 +195,8 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 				});
 				if (!labSessionDelete?.deleteLabPracticeSession?.id) {
 					throw Error('');
+				} else {
+					console.log(labSession)
 				}
 				showSuccessBanner(
 					`La sesión del laboratorio ${labSession.labPracticeInfo.practiceInfoName} fue eliminada exitosamente`
@@ -221,7 +224,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 			<Table
 				headers={labSemesterId ? COLUMNS_SESSIONS : COLUMNS_USER_SESSIONS}
 				data={
-					labSemesterId
+					labSemesterId //TODO filter by role
 						? labPracticeSession.map(mapOutputLabSessions)
 						: userLabPracticeSession.map(mapOutputUserSessions)
 				}

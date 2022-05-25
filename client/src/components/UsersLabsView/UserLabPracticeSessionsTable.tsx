@@ -7,13 +7,12 @@ import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserL
 import {useDeleteLabPracticeSessionMutation} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Table, ModalComponent} from '../UI/index';
-import {Action} from '../UI/Table/Table';
 import classes from './UserLabPracticeSessionsTable.module.scss';
 
 interface Props {
 	userLabPracticeSession?: UserLabPracticeSession[];
 	labPracticeSession?: LabPracticeSession[];
-	onAction?: (rowIndex: number, action: Action) => void;
+	onSuccessSessionDelete: (session: LabPracticeSession) => void;
 	labSemesterId?: string;
 }
 
@@ -21,11 +20,12 @@ const COLUMNS_USER_SESSIONS = [
 	'Laboratorio',
 	'Práctica',
 	'Descripción',
+	'Sesión',
 	'Duración',
-	'Inicio de la práctica',
-	'Fin de la práctica',
-	'Ingreso a la práctica',
-	'Finalización de la práctica',
+	'Inicio',
+	'Finalización',
+	'Ingreso',
+	'Salida',
 	'Ingresar',
 	'Editar',
 	'Eliminar'
@@ -34,9 +34,10 @@ const COLUMNS_USER_SESSIONS = [
 const COLUMNS_SESSIONS = [
 	'Práctica',
 	'Descripción',
+	'Sesión',
 	'Duración',
-	'Inicio de la práctica',
-	'Fin de la práctica',
+	'Inicio',
+	'Finalización',
 	'Ingresar'
 ];
 
@@ -58,7 +59,7 @@ const showDate = (date: string) => {
 const UserLabPracticeSessionsTable: React.FC<Props> = ({
 	userLabPracticeSession,
 	labPracticeSession,
-	onAction,
+	onSuccessSessionDelete,
 	labSemesterId
 }) => {
 	const navigate = useNavigate();
@@ -83,6 +84,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		</span>,
 		labPracticeSession.labPracticeInfo.practiceInfoName,
 		labPracticeSession.labPracticeInfo.practiceInfoDescription,
+		labPracticeSession.description,
 		`${labPracticeSession.labPracticeInfo.practiceInfoDuration} minutos`,
 		showDate(labPracticeSession.startDate),
 		showDate(labPracticeSession.endDate),
@@ -96,6 +98,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 	): (boolean | string | React.ReactNode | number)[] => [
 		labPracticeSession.labPracticeInfo.practiceInfoName,
 		labPracticeSession.labPracticeInfo.practiceInfoDescription,
+		labPracticeSession.description,
 		`${labPracticeSession.labPracticeInfo.practiceInfoDuration} minutos`,
 		showDate(labPracticeSession.startDate),
 		showDate(labPracticeSession.endDate),
@@ -196,7 +199,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 				if (!labSessionDelete?.deleteLabPracticeSession?.id) {
 					throw Error('');
 				} else {
-					console.log(labSession)
+					onSuccessSessionDelete(labSession);
 				}
 				showSuccessBanner(
 					`La sesión del laboratorio ${labSession.labPracticeInfo.practiceInfoName} fue eliminada exitosamente`
@@ -230,7 +233,6 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 				}
 				overflow
 				stickyHeader
-				onAction={onAction}
 			/>
 		</Row>
 	);

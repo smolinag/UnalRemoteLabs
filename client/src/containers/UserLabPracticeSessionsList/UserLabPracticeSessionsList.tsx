@@ -28,8 +28,10 @@ const UserLabPracticeSessionsList: React.FC = () => {
 
 	if (labSemesterId) {
 		const {data, loading: retrievingInfo} = useListLabPracticeSessionsQuery({
-			variables: {labSemesterID: labSemesterId}
+			variables: {labSemesterID: labSemesterId},
+			fetchPolicy: 'network-only'
 		});
+		console.log(data)
 
 		const {data: laboratoryInfo} = useGetLaboratoryQuery({variables: {id: labId}});
 
@@ -77,7 +79,9 @@ const UserLabPracticeSessionsList: React.FC = () => {
 								? session?.LabPractice?.Laboratory?.description
 								: ''
 						},
-						labPracticeDeviceId: session?.LabPractice?.LabPracticeDeviceId ? session.LabPractice.LabPracticeDeviceId : ''
+						labPracticeDeviceId: session?.LabPractice?.LabPracticeDeviceId
+							? session.LabPractice.LabPracticeDeviceId
+							: ''
 					}
 				}));
 				setLabPracticeSessionsList(list);
@@ -157,6 +161,12 @@ const UserLabPracticeSessionsList: React.FC = () => {
 		}, [data]);
 	}
 
+	const handleSuccessSessionDelete = (session: LabPracticeSession) => {
+		//Remove deleted session from labPracticeSessionsList state
+		console.log(session)
+		setLabPracticeSessionsList(labPracticeSessionsList.filter(item => item.id !== session.id));		
+	};
+
 	return (
 		<LoadingContainer loading={loading}>
 			<Row className="section">
@@ -167,6 +177,7 @@ const UserLabPracticeSessionsList: React.FC = () => {
 					userLabPracticeSession={userLabPracticeSessionsList}
 					labPracticeSession={labPracticeSessionsList}
 					labSemesterId={labSemesterId}
+					onSuccessSessionDelete={handleSuccessSessionDelete}
 				/>
 			</Row>
 		</LoadingContainer>

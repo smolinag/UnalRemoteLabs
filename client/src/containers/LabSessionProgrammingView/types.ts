@@ -1,6 +1,6 @@
 export interface LabSessionInfo {
   id?: string,
-  _versionId?: number,
+  _version?: number,
   startDate: Date,
   endDate: Date,
   description?: string,

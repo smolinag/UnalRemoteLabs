@@ -100,6 +100,7 @@ const LabPracticeList: React.FC = () => {
 							startDate: new Date(),
 							endDate: new Date(),
 							semesterId: labSemesterId,
+							description: "",
 							labPractice: {id: labPractice.id, name: labPractice.name, duration: labPractice.duration}
 						}
 					})

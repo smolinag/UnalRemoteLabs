@@ -1,12 +1,13 @@
 import React, {useState, useContext, useEffect} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 
 import LabSessionData from '../../components/LabSessionProgramming/LabSessionData';
 import {LoadingContainer, Button, Table} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {
 	useCreateLabPracticeSessionMutation,
+	useUpdateLabPracticeSessionMutation,
 	useListUsersBySemesterQuery,
 	useCreateUserLabPracticeSessionMutation,
 	useSendEmailMutation
@@ -23,7 +24,8 @@ export interface LocationState {
 const LabSessionProgrammingView: React.FC = () => {
 	const location = useLocation();
 	const labSession = location.state as LabSessionInfo;
-	console.log(labSession);
+
+	const navigate = useNavigate();
 
 	const [labSessionInfo, setSessionInfo] = useState<LabSessionInfo>(labSession);
 	const [loading, setLoading] = useState<boolean>(false);
@@ -32,6 +34,7 @@ const LabSessionProgrammingView: React.FC = () => {
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const [createLabPracticeSession] = useCreateLabPracticeSessionMutation({});
+	const [updateLabPracticeSession] = useUpdateLabPracticeSessionMutation({});
 	const [createUserLabPracticeSession] = useCreateUserLabPracticeSessionMutation({});
 	const {data: semesterUsers} = useListUsersBySemesterQuery({variables: {id: labSession.semesterId}});
 	const [sendEmail] = useSendEmailMutation();
@@ -80,42 +83,99 @@ const LabSessionProgrammingView: React.FC = () => {
 				if (!labPracticeSessionData?.createLabPracticeSession?.id) {
 					throw Error('');
 				} else {
-					for (const student of studentList) {
-						const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
-							variables: {
-								input: {
-									userID: student.id,
-									labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
-								}
-							}
-						});
-						if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
-							throw Error('');
-						} else {
-							await sendEmail({
+					if (studentList.length > 0) {
+						for (const student of studentList) {
+							const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
 								variables: {
 									input: {
-										topic: 'Registro a sesión de laboratorio ' + labSession.labPractice?.name,
-										emailList: JSON.stringify(studentList.map((item) => item.email)),
-										message:
-											'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
-											labSession.labPractice?.name +
-											' para la fecha: ' +
-											labSessionInfo.startDate.toLocaleString() +
-											'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+										userID: student.id,
+										labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
 									}
 								}
 							});
+							if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
+								throw Error('');
+							}
 						}
+						await sendEmail({
+							variables: {
+								input: {
+									topic: 'Registro a sesión de laboratorio ' + labSession.labPractice?.name,
+									emailList: JSON.stringify(studentList.map((item) => item.email)),
+									message:
+										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
+										labSession.labPractice?.name +
+										' para la fecha: ' +
+										labSessionInfo.startDate.toLocaleString() +
+										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+								}
+							}
+						});
+					} else {
+						//TODO Deal with sessions with no students
 					}
 				}
-
 				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue creada exitosamente`);
 			} catch (ex) {
 				console.error(ex);
 				showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSession.labPractice?.name}`);
 			} finally {
 				setLoading(false);
+				console.log(labSessionInfo.semesterId);
+				navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
+			}
+		}
+	};
+
+	const updateLabSession = async () => {
+		if (labSessionInfo.id) {
+			setLoading(true);
+			try {
+				const {data: labPracticeSessionData} = await updateLabPracticeSession({
+					variables: {
+						input: {
+							id: labSessionInfo.id,
+							_version: labSessionInfo._version,
+							description: labSessionInfo.description,
+							startDate: labSessionInfo.startDate,
+							endDate: labSession.labPractice?.duration
+								? new Date(new Date(labSessionInfo.startDate).getTime() + labSession.labPractice.duration * 60000)
+								: labSessionInfo.startDate,
+							createdBy: '1'
+						}
+					}
+				});
+				console.log(labPracticeSessionData);
+				if (!labPracticeSessionData?.updateLabPracticeSession?.id) {
+					throw Error('');
+				} else {
+					if (studentList.length > 0) {
+						await sendEmail({
+							variables: {
+								input: {
+									topic: 'Actualización de sesión de laboratorio ' + labSession.labPractice?.name,
+									emailList: JSON.stringify(studentList.map((item) => item.email)),
+									message:
+										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha actualizado una sesión de laboratorio para la práctica ' +
+										labSession.labPractice?.name +
+										' para la fecha: ' +
+										labSessionInfo.startDate.toLocaleString() +
+										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+								}
+							}
+						});
+					} else {
+						//TODO Deal with sessions with no students
+					}
+				}
+				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue creada exitosamente`);
+			} catch (ex) {
+				console.error(ex);
+				showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSession.labPractice?.name}`);
+			} finally {
+				setLoading(false);
+				console.log(labSessionInfo.semesterId);
+				navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
 			}
 		}
 	};
@@ -144,7 +204,7 @@ const LabSessionProgrammingView: React.FC = () => {
 			<LoadingContainer loading={loading}>
 				<Row className="section">
 					<LabSessionData
-						sessionInfo={labSession}
+						sessionInfo={labSessionInfo}
 						onDescriptionChange={onSessionDescriptionChange}
 						onStartDateChange={onSessionStartDateChange}
 					/>
@@ -169,7 +229,7 @@ const LabSessionProgrammingView: React.FC = () => {
 				<Row className="section">
 					<h3 className="title" />
 					<Col className={classes.justifyEnd}>
-						<Button loading={loading} onClick={createLabSession}>
+						<Button loading={loading} onClick={labSessionInfo.id ? updateLabSession : createLabSession}>
 							Guardar
 						</Button>
 					</Col>

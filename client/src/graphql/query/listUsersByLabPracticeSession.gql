@@ -1,0 +1,13 @@
+query listUsersByLabPracticeSession($id: ID!) {
+	getLabPracticeSession(id: $id) {
+		UserLabPracticeSessions {
+			items {
+				User {
+					email
+					id
+					name
+				}
+			}
+		}
+	}
+}

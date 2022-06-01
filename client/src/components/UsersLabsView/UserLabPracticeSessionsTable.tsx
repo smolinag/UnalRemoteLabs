@@ -4,7 +4,11 @@ import {IoEnter, IoPencil, IoTrash} from 'react-icons/io5';
 import {useNavigate} from 'react-router-dom';
 
 import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserLabPracticeSessionsList/types';
-import {useDeleteLabPracticeSessionMutation} from '../../graphql/generated/schema';
+import {
+	useDeleteLabPracticeSessionMutation,
+	useListUsersByLabPracticeSessionLazyQuery,
+	useSendEmailMutation
+} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Table, ModalComponent} from '../UI/index';
 import classes from './UserLabPracticeSessionsTable.module.scss';
@@ -31,15 +35,7 @@ const COLUMNS_USER_SESSIONS = [
 	'Eliminar'
 ];
 
-const COLUMNS_SESSIONS = [
-	'Práctica',
-	'Descripción',
-	'Sesión',
-	'Duración',
-	'Inicio',
-	'Finalización',
-	'Ingresar'
-];
+const COLUMNS_SESSIONS = ['Práctica', 'Descripción', 'Sesión', 'Duración', 'Inicio', 'Finalización', 'Ingresar'];
 
 // const TIME_TO_ENTER_TO_PRACTICE = 15;
 
@@ -69,6 +65,8 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	const [deleteLabPracticeSession] = useDeleteLabPracticeSessionMutation({});
+	const [listUsersBySession] = useListUsersByLabPracticeSessionLazyQuery({});
+	const [sendEmail] = useSendEmailMutation();
 
 	if (!userLabPracticeSession || !labPracticeSession) {
 		return null;
@@ -199,11 +197,41 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 				if (!labSessionDelete?.deleteLabPracticeSession?.id) {
 					throw Error('');
 				} else {
-					onSuccessSessionDelete(labSession);
+					const {data: usersData, error: usersErrors} = await listUsersBySession({
+						variables: {id: labSession.id}
+					});
+					if (usersErrors) {
+						console.log(usersErrors);
+					} else {
+						if (usersData?.getLabPracticeSession?.UserLabPracticeSessions?.items) {
+							const users = usersData.getLabPracticeSession.UserLabPracticeSessions.items;
+							const emails = users.map(item => item?.User?.email).filter(item1 => item1);
+							if (users.length > 0) {
+								//Send email to users
+								await sendEmail({
+									variables: {
+										input: {
+											topic: 'Cancelación de sesión de laboratorio ' + labSession.labPracticeInfo?.practiceInfoName,
+											emailList: JSON.stringify(emails),
+											message:
+												'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha cancelado una sesión de laboratorio para la práctica ' +
+												labSession.labPracticeInfo?.practiceInfoName +
+												' con fecha: ' +
+												labSession.startDate.toLocaleString() +
+												'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+										}
+									}
+								});
+							} else {
+								console.log('No users to send email');
+							}
+							onSuccessSessionDelete(labSession);
+							showSuccessBanner(
+								`La sesión del laboratorio ${labSession.labPracticeInfo.practiceInfoName} fue eliminada exitosamente`
+							);
+						}
+					}
 				}
-				showSuccessBanner(
-					`La sesión del laboratorio ${labSession.labPracticeInfo.practiceInfoName} fue eliminada exitosamente`
-				);
 			} catch (ex) {
 				showErrorBanner(
 					`Error en la eliminación de la sesión del laboratorio ${labSession.labPracticeInfo.practiceInfoName}`

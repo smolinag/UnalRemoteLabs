@@ -31,7 +31,6 @@ const UserLabPracticeSessionsList: React.FC = () => {
 			variables: {labSemesterID: labSemesterId},
 			fetchPolicy: 'network-only'
 		});
-		console.log(data)
 
 		const {data: laboratoryInfo} = useGetLaboratoryQuery({variables: {id: labId}});
 
@@ -163,7 +162,6 @@ const UserLabPracticeSessionsList: React.FC = () => {
 
 	const handleSuccessSessionDelete = (session: LabPracticeSession) => {
 		//Remove deleted session from labPracticeSessionsList state
-		console.log(session)
 		setLabPracticeSessionsList(labPracticeSessionsList.filter(item => item.id !== session.id));		
 	};
 

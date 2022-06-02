@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-unresolved
 import '@aws-amplify/ui-react/styles.css';
 import {Amplify} from 'aws-amplify';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Route, Routes} from 'react-router-dom';
 
 import {decodeToken} from './apollo';
@@ -26,20 +26,30 @@ import {
 	UserEdition,
 	HomeView
 } from './containers';
+// import ValidateGroup from './generalUtils/ValidateGroup';
+import {useGetUserByIdLazyQuery} from './graphql/generated/schema';
 import {useAuthContext} from './GroupProvider';
 
 Amplify.configure(awsmobile);
 
 const App = (): JSX.Element => {
-	const {defineGroup, clearGroup} = useAuthContext();
+	const {defineGroup, clearGroup, setUserInfo} = useAuthContext();
+	const [getUserById, {data}] = useGetUserByIdLazyQuery({});
 
-	const token = window.sessionStorage.getItem('token');
-	if (token) {
-		defineGroup(decodeToken(token ? token : ''));
-	} else {
-		clearGroup();
-		// window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
-	}
+	useEffect(() => {
+		if (data && data?.getUser && data.getUser.role.length > 0) {
+			defineGroup(data.getUser.role);
+			setUserInfo(data.getUser.id);
+		} else {
+			clearGroup();
+		}
+	}, [data]);
+
+	useEffect(() => {
+		getUserById({
+			variables: {id: decodeToken(window.sessionStorage.getItem('token'))}
+		});
+	}, [window.sessionStorage.getItem('token')]);
 
 	return (
 		<div className={classes.wrapper}>

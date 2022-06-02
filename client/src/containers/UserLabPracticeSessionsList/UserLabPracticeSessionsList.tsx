@@ -14,7 +14,7 @@ import {Laboratory} from '../Laboratory/types';
 import {LocationState} from '../LabPracticeList/LabPracticeList';
 import {LabPracticeSession, UserLabPracticeSession} from './types';
 
-const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
+// const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
 
 const UserLabPracticeSessionsList: React.FC = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
@@ -25,6 +25,7 @@ const UserLabPracticeSessionsList: React.FC = () => {
 	const location = useLocation();
 	const labId = (location.state as LocationState)?.labId;
 	const labSemesterId = (location.state as LocationState)?.labSemesterId;
+	const userId = (location.state as LocationState)?.userId;
 
 	if (labSemesterId) {
 		const {data, loading: retrievingInfo} = useListLabPracticeSessionsQuery({
@@ -93,7 +94,7 @@ const UserLabPracticeSessionsList: React.FC = () => {
 			};
 		}, [data]);
 	} else {
-		const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: USER_ID}});
+		const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: userId ? userId : ''}});
 
 		useEffect(() => {
 			const receivedList = data?.listUserLabPracticeSessions?.items.filter(

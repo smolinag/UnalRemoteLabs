@@ -21,6 +21,7 @@ import {LabPracticeData} from './types';
 export interface LocationState {
 	labId: string;
 	labSemesterId?: string;
+	userId?: string;
 }
 
 const LabPracticeList: React.FC = () => {

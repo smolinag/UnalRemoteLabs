@@ -146,19 +146,20 @@ const LabTitle: React.FC<Props> = ({
 					</Col>
 				</Row>
 			</Col>
+			{/* <ValidateGroup groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}> */}
 				{isVideoUrlInputEnabled ? (
-				<Col sm={5}>
+					<Col sm={5}>
 						<Row>
 							<span>Código de vídeo: </span>
 						</Row>
-					<Row style={{display: 'flex', alignItems: 'center'}}>
+						<Row style={{display: 'flex', alignItems: 'center'}}>
 							<Col xs={6}>
 								<input
 									type="text"
 									placeholder="Código"
 									value={videoUrl}
 									onChange={(e) => handleVideoUrlChange(e.target.value)}
-									style={{width: "-webkit-fill-available"}}
+									style={{width: '-webkit-fill-available'}}
 								/>
 							</Col>
 							<Col xs={3}>
@@ -168,9 +169,7 @@ const LabTitle: React.FC<Props> = ({
 							</Col>
 						</Row>
 					</Col>
-				) : (
-					<></>
-				)}
+				) : null}
 			{/* </ValidateGroup> */}
 		</Row>
 	);

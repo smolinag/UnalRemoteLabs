@@ -12,6 +12,7 @@ import {notificationBannerContext} from '../../state/NotificationBannerProvider'
 const LaboratoriesList: React.FC = () => {
 	const navigate = useNavigate();
 
+
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
 	const [lab, setLab] = React.useState<Laboratory>();
@@ -20,6 +21,9 @@ const LaboratoriesList: React.FC = () => {
 	const {data, loading: retrievingInfo} = useListLaboratoriesQuery({fetchPolicy: 'network-only'});
 	const [deleteLaboratory] = useDeleteLaboratoryMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+
+
+
 
 	useEffect(() => {
 		if (data && data.listLaboratorys?.items) {

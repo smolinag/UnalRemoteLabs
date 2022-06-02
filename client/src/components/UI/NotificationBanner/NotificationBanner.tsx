@@ -12,8 +12,8 @@ const NotificationBanner: React.FC = () => {
 	return (
 		<Alert
 			className={classes.banner}
-			variant={state.type === 'success' ? 'success' : 'danger'}
-			dismissible={state.type === 'error'}
+			variant={state.type}
+			dismissible={state.type === 'danger'}
 			onClose={clearBanner}>
 			{state.message}
 		</Alert>

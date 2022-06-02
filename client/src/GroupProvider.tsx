@@ -4,6 +4,8 @@ export interface AuthContext {
 	group: string;
 	defineGroup: (jwt: string) => void;
 	clearGroup: () => void;
+	userId: string;
+	setUserInfo: (userId: string) => void;
 }
 
 const authContext = createContext<AuthContext>({
@@ -13,11 +15,16 @@ const authContext = createContext<AuthContext>({
 	},
 	clearGroup() {
 		/*  */
+	},
+	userId: '',
+	setUserInfo() {
+		/*  */
 	}
 });
 
 const GroupProvider: React.FC = ({children}) => {
 	const [group, setGroup] = useState<string>('');
+	const [userId, setUserId] = useState<string>('');
 
 	function clearGroup() {
 		setGroup('');
@@ -28,12 +35,18 @@ const GroupProvider: React.FC = ({children}) => {
 		setGroup(group);
 	}
 
+	function setUserInfo(userId: string) {
+		setUserId(userId);
+	}
+
 	return (
 		<authContext.Provider
 			value={{
 				group,
 				defineGroup,
-				clearGroup
+				clearGroup,
+				userId,
+				setUserInfo
 			}}>
 			{children}
 		</authContext.Provider>

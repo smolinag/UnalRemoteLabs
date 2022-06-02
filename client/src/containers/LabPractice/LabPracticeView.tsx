@@ -83,7 +83,7 @@ const LabPracticeView: React.FC = () => {
 	const [outputIndex, setOutputIndex] = useState<number>(1);
 
 	// TODO Deberíamos pasar esto a context?
-	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+	const {showErrorBanner, showSuccessBanner, showWarningBanner} = useContext(notificationBannerContext);
 
 	const {data: practiceInfo, loading} = useGetLabPracticeQuery({variables: {id: labPracticeId}});
 	const {data: labSessionData, refetch} = useGetLabPracticeSessionQuery({variables: {id: sessionId}});
@@ -268,8 +268,11 @@ const LabPracticeView: React.FC = () => {
 				exeCommands.unshift(commandUpdated);
 				setExecutedCommands(exeCommands);
 			}
+
 			if (updatedCommand.status === Status.Success) {
 				showSuccessBanner(`El comando ${commandLabel?.label ?? ''} fue correctamente ejecutado`);
+			} else if (updatedCommand.status === Status.Pending) {
+				showWarningBanner(`El práctica ${practiceInfo?.getLabPractice?.name ?? ''} se encuentra ocupada ejecutando un comando`);
 			}
 		}
 	}, [updatedSessionCommand]);

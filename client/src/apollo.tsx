@@ -14,10 +14,9 @@ const auth: AuthOptions = {
 	jwtToken: async () => {
 		try {
 			const token = (await Auth.currentSession()).getAccessToken().getJwtToken();
-			if(token.length > 0) {
-				// decodeToken(token);
+			if (token.length > 0) {
+				window.sessionStorage.setItem('token', token);
 			}
-			// window.sessionStorage.setItem('token', token);
 			return token;
 		} catch (e) {
 			console.error(e);
@@ -41,29 +40,22 @@ export const apolloClient = new ApolloClient({
 
 // let chroneTime = 0;
 
-export const decodeToken = (token: string): string => {
+export const decodeToken = (token: string | null): string => {
+	if (token) {
+		const base64Url = token.split('.')[1];
+		const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+		const jsonPayload = decodeURIComponent(
+			atob(base64)
+				.split('')
+				.map(function (c) {
+					return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+				})
+				.join('')
+		);
 
-	const base64Url = token.split('.')[1];
-	const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-	const jsonPayload = decodeURIComponent(
-		atob(base64)
-			.split('')
-			.map(function (c) {
-				return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-			})
-			.join('')
-	);
-
-	const payload = JSON.parse(jsonPayload);
-	return payload["cognito:groups"][0]
+		const payload = JSON.parse(jsonPayload);
+		return payload['username'];
+	} else {
+		return '';
+	}
 };
-
-// const getNewToken = () => {
-// 	setInterval(() => {
-// 		getRefreshTokenFunction();
-// 	}, chroneTime);
-// };
-
-// const getRefreshTokenFunction = async () => {
-// 	const response = await refreshToken();
-// };

@@ -31,7 +31,8 @@ const Header: React.FC = () => {
 		clearGroup();
 		setLoggedUser('');
 		Auth.signOut();
-		// window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
+		// navigate('/')
+		window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
 	};
 
 	return (

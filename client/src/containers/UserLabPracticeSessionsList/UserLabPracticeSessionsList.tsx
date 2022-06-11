@@ -94,7 +94,9 @@ const UserLabPracticeSessionsList: React.FC = () => {
 			};
 		}, [data]);
 	} else {
-		const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({variables: {id: userId ? userId : ''}});
+		const {data, loading: retrievingInfo} = useListUserLabPracticeSessionsQuery({
+			variables: {id: userId ? userId : ''}
+		});
 
 		useEffect(() => {
 			const receivedList = data?.listUserLabPracticeSessions?.items.filter(
@@ -103,6 +105,7 @@ const UserLabPracticeSessionsList: React.FC = () => {
 					!session?.LabPracticeSession?._deleted &&
 					!session?.LabPracticeSession?.LabPractice?._deleted
 			);
+
 			if (receivedList && receivedList.length > 0) {
 				const list: UserLabPracticeSession[] = receivedList.map((session) => ({
 					id: session ? session.id : '',
@@ -163,7 +166,7 @@ const UserLabPracticeSessionsList: React.FC = () => {
 
 	const handleSuccessSessionDelete = (session: LabPracticeSession) => {
 		//Remove deleted session from labPracticeSessionsList state
-		setLabPracticeSessionsList(labPracticeSessionsList.filter(item => item.id !== session.id));		
+		setLabPracticeSessionsList(labPracticeSessionsList.filter((item) => item.id !== session.id));
 	};
 
 	return (

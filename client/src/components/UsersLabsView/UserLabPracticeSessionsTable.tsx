@@ -30,12 +30,20 @@ const COLUMNS_USER_SESSIONS = [
 	'Finalización',
 	'Ingreso',
 	'Salida',
+	'Ingresar'
+];
+
+const COLUMNS_SESSIONS = [
+	'Práctica',
+	'Descripción',
+	'Sesión',
+	'Duración',
+	'Inicio',
+	'Finalización',
 	'Ingresar',
 	'Editar',
 	'Eliminar'
 ];
-
-const COLUMNS_SESSIONS = ['Práctica', 'Descripción', 'Sesión', 'Duración', 'Inicio', 'Finalización', 'Ingresar'];
 
 // const TIME_TO_ENTER_TO_PRACTICE = 15;
 
@@ -205,7 +213,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 					} else {
 						if (usersData?.getLabPracticeSession?.UserLabPracticeSessions?.items) {
 							const users = usersData.getLabPracticeSession.UserLabPracticeSessions.items;
-							const emails = users.map(item => item?.User?.email).filter(item1 => item1);
+							const emails = users.map((item) => item?.User?.email).filter((item1) => item1);
 							if (users.length > 0) {
 								//Send email to users
 								await sendEmail({

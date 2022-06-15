@@ -2018,6 +2018,14 @@ export type CreateUserLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
 	createUserLabPracticeSession?: Maybe<{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'id'>>;
 };
 
+export type CreateUserLabSemesterMutationVariables = Exact<{
+	input: CreateUserLabSemesterInput;
+}>;
+
+export type CreateUserLabSemesterMutation = {__typename?: 'Mutation'} & {
+	createUserLabSemester?: Maybe<{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, 'id'>>;
+};
+
 export type DeleteLabPracticeMutationVariables = Exact<{
 	input: DeleteLabPracticeInput;
 }>;
@@ -3396,6 +3404,50 @@ export type CreateUserLabPracticeSessionMutationResult = Apollo.MutationResult<C
 export type CreateUserLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
 	CreateUserLabPracticeSessionMutation,
 	CreateUserLabPracticeSessionMutationVariables
+>;
+export const CreateUserLabSemesterDocument = gql`
+	mutation createUserLabSemester($input: CreateUserLabSemesterInput!) {
+		createUserLabSemester(input: $input) {
+			id
+		}
+	}
+`;
+export type CreateUserLabSemesterMutationFn = Apollo.MutationFunction<
+	CreateUserLabSemesterMutation,
+	CreateUserLabSemesterMutationVariables
+>;
+
+/**
+ * __useCreateUserLabSemesterMutation__
+ *
+ * To run a mutation, you first call `useCreateUserLabSemesterMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserLabSemesterMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserLabSemesterMutation, { data, loading, error }] = useCreateUserLabSemesterMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserLabSemesterMutation(
+	baseOptions?: Apollo.MutationHookOptions<CreateUserLabSemesterMutation, CreateUserLabSemesterMutationVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<CreateUserLabSemesterMutation, CreateUserLabSemesterMutationVariables>(
+		CreateUserLabSemesterDocument,
+		options
+	);
+}
+export type CreateUserLabSemesterMutationHookResult = ReturnType<typeof useCreateUserLabSemesterMutation>;
+export type CreateUserLabSemesterMutationResult = Apollo.MutationResult<CreateUserLabSemesterMutation>;
+export type CreateUserLabSemesterMutationOptions = Apollo.BaseMutationOptions<
+	CreateUserLabSemesterMutation,
+	CreateUserLabSemesterMutationVariables
 >;
 export const DeleteLabPracticeDocument = gql`
 	mutation deleteLabPractice($input: DeleteLabPracticeInput!) {

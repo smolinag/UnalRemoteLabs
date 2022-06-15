@@ -49,7 +49,7 @@ const LabSemesterList: React.FC = () => {
 	useEffect(() => {
 		if (laboratoryData?.getLaboratory != null) {
 			const lab = laboratoryData.getLaboratory;
-			setLaboratory({id: lab.id, name: lab.name});
+			setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
 		}
 		setLoading(loadingLaboratoryData);
 	}, [laboratoryData]);

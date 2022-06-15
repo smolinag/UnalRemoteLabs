@@ -13,6 +13,7 @@ export interface LabSemester {
 export interface Laboratory {
 	id?: string;
 	name: string | null;
+	organizationID: string;
 }
 
 export interface LocationStateList {
@@ -30,7 +31,7 @@ export interface LocationStateEdition {
 export enum Params {
 	Name = 'name',
 	Description = 'description',
-	professor = 'profesor',
+	professor = 'profesor'
 }
 
 export interface ErrorIdentifier {

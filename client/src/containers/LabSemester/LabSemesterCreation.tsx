@@ -7,9 +7,13 @@ import {Button, LoadingContainer} from '../../components/UI';
 import {
 	useGetLaboratoryQuery,
 	useCreateLabSemesterMutation,
-	useSendEmailMutation
+	useSendEmailMutation,
+	useCreateUserMutation,
+	useCreateUserLabSemesterMutation,
+	useGetUserByEmailQuery
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
+import {Role} from '../Users/types';
 import {LabSemester, Laboratory, Params, ErrorIdentifier, LocationStateCreation} from './types';
 
 const initialLabSemester: LabSemester = {
@@ -21,7 +25,8 @@ const initialLabSemester: LabSemester = {
 };
 
 const initialLaboratory: Laboratory = {
-	name: null
+	name: null,
+	organizationID: ''
 };
 
 const LabSemesterCreation: React.FC = () => {
@@ -39,12 +44,17 @@ const LabSemesterCreation: React.FC = () => {
 	const [createLabSemester] = useCreateLabSemesterMutation();
 	const [sendEmail] = useSendEmailMutation();
 
+	const [createUser] = useCreateUserMutation();
+	const [createUserLabSemester] = useCreateUserLabSemesterMutation();
+
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
+
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 
 	useEffect(() => {
 		if (laboratoryData?.getLaboratory != null) {
 			const lab = laboratoryData.getLaboratory;
-			setLaboratory({id: lab.id, name: lab.name});
+			setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
 		}
 		setLoading(loadingLaboratoryData);
 	}, [laboratoryData]);
@@ -86,6 +96,65 @@ const LabSemesterCreation: React.FC = () => {
 		return hasError;
 	};
 
+	const createLabSemesterUser = async (email: string, role: Role, labSemesterId: string) => {
+		const {data} = await getUserByEmail({email});
+		let userId;
+		if (data?.getUserByEmail) {
+			const items = data?.getUserByEmail?.items?.filter((item) => item !== null && item._deleted !== true);
+			if (items.length > 0) {
+				userId = items[0]?.id;
+			} else {
+				await createUser({
+					variables: {
+						input: {
+							organizationID: laboratory.organizationID,
+							role: role,
+							email,
+							createdBy: '1',
+							updatedBy: '1'
+						}
+					}
+				})
+					.then((ans) => {
+						userId = ans.data?.createUser?.id;
+					})
+					.catch((error) => console.error(error));
+			}
+
+			if (userId !== undefined && userId !== null && userId !== '')
+				await createUserLabSemester({
+					variables: {
+						input: {
+							userID: userId ?? '',
+							labsemesterID: labSemesterId
+						}
+					}
+				}).catch((error) => console.error(error));
+		}
+	};
+
+	const createLabSemesterUsers = async (
+		labsemesterID: string,
+		proffesor: string,
+		studentEmailList: Array<string>,
+		monitorEmailList: Array<string>
+	) => {
+		if (proffesor !== undefined && proffesor != null && proffesor != '') {
+			const a = await createLabSemesterUser(proffesor, Role.Professors, labsemesterID);
+			console.log(a);
+		}
+		if (monitorEmailList !== undefined && monitorEmailList != null && monitorEmailList.length > 0) {
+			monitorEmailList.forEach(async (email) => {
+				await createLabSemesterUser(email, Role.Monitors, labsemesterID);
+			});
+		}
+		if (studentEmailList !== undefined && studentEmailList != null && studentEmailList.length > 0) {
+			studentEmailList.forEach(async (email) => {
+				await createLabSemesterUser(email, Role.Students, labsemesterID);
+			});
+		}
+	};
+
 	const createLaboratorySemester = async () => {
 		const hasError = checkErrorMessage();
 
@@ -105,35 +174,53 @@ const LabSemesterCreation: React.FC = () => {
 							createdBy: '1'
 						}
 					}
+				}).catch((error) => {
+					throw Error('Error insertando Lab Semester');
 				});
 
-				if (!labPracticeData?.createLabSemester?.id) {
-					throw Error('Error insertando Lab Semester');
-				} else {
-					await sendEmail({
-						variables: {
-							input: {
-								topic: 'Registro a semestre de laboratorio ' + labSemester.semesterName,
-								emailList: JSON.stringify(labSemester.studentEmailList),
-								message:
-									'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que usted ha sido registrado al nuevo semestre de laboratorio ' +
-									labSemester.semesterName +
-									'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
-							}
-						}
+				if (labPracticeData?.createLabSemester?.id) {
+					await createLabSemesterUsers(
+						labPracticeData.createLabSemester.id,
+						labSemester.professor,
+						labSemester.studentEmailList,
+						labSemester.monitorEmailList
+					).catch((error) => {
+						throw Error('Error insertando Lab Semester user');
 					});
+
+					if (
+						labSemester.studentEmailList !== undefined &&
+						labSemester.studentEmailList != null &&
+						labSemester.studentEmailList.length > 0
+					) {
+						await sendEmail({
+							variables: {
+								input: {
+									topic: 'Registro a semestre de laboratorio ' + labSemester.semesterName,
+									emailList: JSON.stringify(labSemester.studentEmailList),
+									message:
+										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que usted ha sido registrado al nuevo semestre de laboratorio ' +
+										labSemester.semesterName +
+										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
+								}
+							}
+						}).catch((error) => {
+							throw Error('Error sending email');
+						});
+					}
 				}
 
 				showSuccessBanner(`El semestre de laboratorio ${labSemester.semesterName} fue creado exitosamente`);
 				setLabSemester(initialLabSemester);
 			} catch (error) {
+				console.error(error);
 				showErrorBanner(`Error en la creación del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
 				navigate('/lab-semesters', {state: {laboratoryID}});
 			}
 		}
-	};	
+	};
 
 	return (
 		<Container fluid>

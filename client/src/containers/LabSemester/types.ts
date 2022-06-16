@@ -2,7 +2,7 @@ export interface LabSemester {
 	id?: string;
 	semesterName: string;
 	description: string | null;
-	professor: string;
+	professorEmailList: Array<string>;
 	monitorEmailList: Array<string>;
 	studentEmailList: Array<string>;
 	laboratoryID?: string;

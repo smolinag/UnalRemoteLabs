@@ -19,7 +19,7 @@ import {LabSemester, Laboratory, Params, ErrorIdentifier, LocationStateCreation}
 const initialLabSemester: LabSemester = {
 	semesterName: '',
 	description: null,
-	professor: '',
+	professorEmailList: [],
 	monitorEmailList: [],
 	studentEmailList: []
 };
@@ -65,6 +65,10 @@ const LabSemesterCreation: React.FC = () => {
 
 	const onMonitorsEmailHandleChange = (emails: Array<string>) => {
 		setLabSemester({...labSemester, monitorEmailList: emails});
+	};
+
+	const onProfessorsEmailHandleChange = (emails: Array<string>) => {
+		setLabSemester({...labSemester, professorEmailList: emails});
 	};
 
 	const onLabSemesterChange = (labSemester: LabSemester) => {
@@ -168,7 +172,7 @@ const LabSemesterCreation: React.FC = () => {
 							laboratoryID,
 							semesterName: labSemester.semesterName,
 							description: labSemester.description,
-							professor: labSemester.professor,
+							professor: labSemester?.professorEmailList[0] ?? '',
 							studentEmailList: JSON.stringify(labSemester.studentEmailList),
 							monitorEmailList: JSON.stringify(labSemester.monitorEmailList),
 							createdBy: '1'
@@ -181,7 +185,7 @@ const LabSemesterCreation: React.FC = () => {
 				if (labPracticeData?.createLabSemester?.id) {
 					await createLabSemesterUsers(
 						labPracticeData.createLabSemester.id,
-						labSemester.professor,
+						labSemester?.professorEmailList[0] ?? '',
 						labSemester.studentEmailList,
 						labSemester.monitorEmailList
 					).catch((error) => {
@@ -228,6 +232,14 @@ const LabSemesterCreation: React.FC = () => {
 				<Row className="section">
 					<h3 className="title">Creación de Semestre de laboratorio de {laboratory.name}</h3>
 					<LabSemesterData labSemesterValue={labSemester} handleChange={onLabSemesterChange} errors={errors} />
+				</Row>
+				<Row className="section">
+					<h3 className="title">Profesor</h3>
+					<EmailsInputWithTable
+						emails={labSemester.professorEmailList}
+						onHandleChange={onProfessorsEmailHandleChange}
+						maxEmails={1}
+					/>
 				</Row>
 				<Row className="section">
 					<h3 className="title">Monitores</h3>

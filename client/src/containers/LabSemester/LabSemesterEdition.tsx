@@ -15,7 +15,7 @@ import {LabSemester, Laboratory, Params, ErrorIdentifier, LocationStateEdition} 
 const initialLabSemester: LabSemester = {
 	semesterName: '',
 	description: null,
-	professor: '',
+	professorEmailList: [],
 	monitorEmailList: [],
 	studentEmailList: []
 };
@@ -67,7 +67,7 @@ const LabSemesterEdition: React.FC = () => {
 				id: labSemester.id,
 				semesterName: labSemester.semesterName,
 				description: labSemester.description ? labSemester.description : null,
-				professor: labSemester.professor,
+				professorEmailList: new Array(1).fill(labSemester.professor),
 				monitorEmailList: JSON.parse(labSemester.monitorEmailList),
 				studentEmailList: JSON.parse(labSemester.studentEmailList),
 				version: labSemester._version,
@@ -76,6 +76,10 @@ const LabSemesterEdition: React.FC = () => {
 		}
 		setLoading(loadingLabSemesterData);
 	}, [labSemesterData]);
+
+	const onProfessorsEmailHandleChange = (emails: Array<string>) => {
+		setLabSemester({...labSemester, professorEmailList: emails});
+	};
 
 	const onMonitorsEmailHandleChange = (emails: Array<string>) => {
 		setLabSemester({...labSemester, monitorEmailList: emails});
@@ -127,13 +131,15 @@ const LabSemesterEdition: React.FC = () => {
 							id: labSemester.id ? labSemester.id : '',
 							semesterName: labSemester.semesterName,
 							description: labSemester.description,
-							professor: labSemester.professor,
+							professor: labSemester.professorEmailList[0],
 							monitorEmailList: JSON.stringify(labSemester.monitorEmailList),
 							studentEmailList: JSON.stringify(labSemester.studentEmailList),
 							laboratoryID: labSemester.laboratoryID,
 							_version: labSemester.version
 						}
 					}
+				}).catch((error) => {
+					throw Error('Error insertando Lab Semester');
 				});
 
 				if (!labPracticeData?.updateLabSemester?.id) {
@@ -158,6 +164,14 @@ const LabSemesterEdition: React.FC = () => {
 				<Row className="section">
 					<h3 className="title">Edición de Semestre de laboratorio de {laboratory.name}</h3>
 					<LabSemesterData labSemesterValue={labSemester} handleChange={onLabSemesterChange} errors={errors} />
+				</Row>
+				<Row className="section">
+					<h3 className="title">Profesor</h3>
+					<EmailsInputWithTable
+						emails={labSemester.professorEmailList}
+						onHandleChange={onProfessorsEmailHandleChange}
+						maxEmails={1}
+					/>
 				</Row>
 				<Row className="section">
 					<h3 className="title">Monitores</h3>

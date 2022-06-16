@@ -13,7 +13,7 @@ interface Props {
 const initialLabSemester: LabSemester = {
 	semesterName: '',
 	description: null,
-	professor: '',
+	professorEmailList: [],
 	monitorEmailList: [],
 	studentEmailList: []
 };
@@ -46,9 +46,6 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 			case Params.Description:
 				newState = {...labSemester, description: value};
 				break;
-			case Params.professor:
-				newState = {...labSemester, professor: value};
-				break;
 			default:
 				return labSemester;
 		}
@@ -73,13 +70,6 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 					placeholder="Descripción"
 					value={labSemester.description ?? ''}
 					onValueChange={(value) => onValueChange(value, Params.Description)}
-				/>
-				<Input
-					type="text"
-					placeholder="Profesor"
-					required
-					value={labSemester.professor ? labSemester.professor : ''}
-					onValueChange={(value) => onValueChange(value, Params.professor)}
 				/>
 			</div>
 		</>

@@ -18,7 +18,7 @@ const initialLabSemester: LabSemester = {
 	id: '',
 	semesterName: '',
 	description: '',
-	professor: '',
+	professorEmailList: [],
 	monitorEmailList: [],
 	studentEmailList: []
 };
@@ -63,7 +63,7 @@ const LabSemesterList: React.FC = () => {
 						id: obj ? obj.id : '',
 						semesterName: obj?.semesterName ? obj.semesterName : '',
 						description: obj?.description ? obj.description : null,
-						professor: obj?.professor ? obj.professor : '',
+						professorEmailList: new Array(1).fill(obj?.professor ? obj.professor : ''),
 						monitorEmailList: obj?.monitorEmailList ? obj.monitorEmailList : [],
 						studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
 						version: obj?._version ? obj._version : null,

@@ -10,9 +10,10 @@ import classes from './shared.module.scss';
 interface Props {
 	emails: Array<string>;
 	onHandleChange: (emails: Array<string>) => void;
+	maxEmails?: number;
 }
 
-const EmailsInputWithTable: React.FC<Props> = ({emails, onHandleChange}) => {
+const EmailsInputWithTable: React.FC<Props> = ({emails, onHandleChange, maxEmails}) => {
 	const [emailList, setEmailList] = useState<Array<string>>([]);
 	const [emailsValue, setEmailsValue] = useState<string>('');
 	const [emailError, setEmailError] = useState<string | null>(null);
@@ -94,6 +95,9 @@ const EmailsInputWithTable: React.FC<Props> = ({emails, onHandleChange}) => {
 		}
 		if (isInList(email)) {
 			error = `${email} ya ha sido agregado.`;
+		}
+		if (maxEmails !== undefined && emails.length >= maxEmails) {
+			error = `El numero máximo de correos que se puede ingresar es ${maxEmails}`;
 		}
 		if (error) {
 			setEmailError(error);

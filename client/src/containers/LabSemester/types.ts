@@ -6,6 +6,7 @@ export interface LabSemester {
 	monitorEmailList: Array<string>;
 	studentEmailList: Array<string>;
 	laboratoryID?: string;
+	laboratory?: string;
 	version?: number | null;
 	deleted?: boolean | null;
 }
@@ -18,6 +19,7 @@ export interface Laboratory {
 
 export interface LocationStateList {
 	laboratoryID: string;
+	userId: string;
 }
 
 export interface LocationStateCreation {

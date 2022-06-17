@@ -4,6 +4,7 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LoadingContainer, Table, Button, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
+import {Groups} from '../../generalUtils/groups';
 import {
 	useListLabPracticesQuery,
 	useGetLaboratoryQuery,
@@ -14,6 +15,7 @@ import {
 	useListLabPracticeCommandsLazyQuery,
 	useListLabPracticeOutputsLazyQuery
 } from '../../graphql/generated/schema';
+import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import classes from './LabPracticeListView.module.scss';
 import {LabPracticeData} from './types';
@@ -31,8 +33,9 @@ const LabPracticeList: React.FC = () => {
 	const [selLabPractice, setSelLabPractice] = useState<LabPracticeData | null>(null);
 
 	const navigate = useNavigate();
-
 	const location = useLocation();
+	const {group} = useAuthContext();
+
 	const labId = (location.state as LocationState)?.labId;
 	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 
@@ -74,7 +77,7 @@ const LabPracticeList: React.FC = () => {
 		const data: string | React.ReactNode[][] = [];
 		labpractices.forEach((item) => {
 			//If there is a semester selected show program button
-			if (labSemesterId) {
+			if (group !== Groups.StudentsGroup && labSemesterId) {
 				data.push([item.name, item.description, item.duration.toString(), redirectToLabPracticeSessionProgram(item)]);
 			} else {
 				data.push([item.name, item.description, item.duration.toString()]);
@@ -85,7 +88,7 @@ const LabPracticeList: React.FC = () => {
 
 	const getTableHeaders = () => {
 		const headers = ['Nombre', 'Descripción', 'Duración'];
-		if (labSemesterId) {
+		if (group !== Groups.StudentsGroup && labSemesterId) {
 			headers.push('Programar');
 		}
 		return headers;
@@ -101,7 +104,7 @@ const LabPracticeList: React.FC = () => {
 							startDate: new Date(),
 							endDate: new Date(),
 							semesterId: labSemesterId,
-							description: "",
+							description: '',
 							labPractice: {id: labPractice.id, name: labPractice.name, duration: labPractice.duration}
 						}
 					})

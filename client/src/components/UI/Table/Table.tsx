@@ -39,7 +39,7 @@ const Table: React.FC<Props> = ({
 	const renderRows = () => {
 		if (data.length > 0) {
 			return data.map((row, i) => (
-				<tr key={`row_${i}`}>
+				<tr key={`row_${i}`} className={classes.hoverRow}>
 					{row.map((cell, j) => (
 						<td key={`cell_${i}_${j}`} style={{fontSize: 'smaller'}} className={transitionAnimation}>
 							{cell}
@@ -75,7 +75,7 @@ const Table: React.FC<Props> = ({
 				...(overflow && {overflowY: 'auto'}),
 				...(maxHeight && {maxHeight: maxHeight})
 			}}>
-			<BootstrapTable bordered hover className={classes.table} style={{lineBreak: 'auto'}}>
+			<BootstrapTable bordered className={classes.table} style={{lineBreak: 'auto'}}>
 				<thead>
 					<tr>
 						{headers.map((header, i) => (

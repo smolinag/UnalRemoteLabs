@@ -4,6 +4,11 @@
 	position: relative;
 }
 
+.hoverRow:hover {
+	background-color: #e9ecef;
+	cursor: default;
+}
+
 .stickyHeader {
 	z-index: 98;
 	position: -webkit-sticky;

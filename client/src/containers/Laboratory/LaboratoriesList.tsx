@@ -6,12 +6,13 @@ import {LaboratoriesTable} from '../../components/Laboratory';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {Laboratory} from '../../containers/Laboratory/types';
+import {Groups} from '../../generalUtils/groups';
+import {ValidateGroupComonent} from '../../generalUtils/ValidateGroup';
 import {useListLaboratoriesQuery, useDeleteLaboratoryMutation} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
 const LaboratoriesList: React.FC = () => {
 	const navigate = useNavigate();
-
 
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [displayModal, setDisplayModal] = React.useState<boolean>(false);
@@ -21,9 +22,6 @@ const LaboratoriesList: React.FC = () => {
 	const {data, loading: retrievingInfo} = useListLaboratoriesQuery({fetchPolicy: 'network-only'});
 	const [deleteLaboratory] = useDeleteLaboratoryMutation({});
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
-
-
-
 
 	useEffect(() => {
 		if (data && data.listLaboratorys?.items) {
@@ -109,13 +107,15 @@ const LaboratoriesList: React.FC = () => {
 			<Row className="section">
 				<LaboratoriesTable data={labs} onAction={handleLaboratoryAction} />
 			</Row>
-			<Row className="section">
-				<div className="justifyEnd">
-					<Button loading={false} onClick={() => navigate('/lab-creation')}>
-						Crear
-					</Button>
-				</div>
-			</Row>
+			<ValidateGroupComonent groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}>
+				<Row className="section">
+					<div className="justifyEnd">
+						<Button loading={false} onClick={() => navigate('/lab-creation')}>
+							Crear
+						</Button>
+					</div>
+				</Row>
+			</ValidateGroupComonent>
 		</LoadingContainer>
 	);
 };

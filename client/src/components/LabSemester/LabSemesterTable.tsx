@@ -3,6 +3,8 @@ import Row from 'react-bootstrap/Row';
 import {useNavigate} from 'react-router-dom';
 
 import {LabSemester} from '../../containers/LabSemester/types';
+import {Groups} from '../../generalUtils/groups';
+import { useAuthContext } from '../../GroupProvider';
 import {Table} from '../UI/index';
 import {Action} from '../UI/Table/Table';
 
@@ -12,8 +14,11 @@ interface Props {
 }
 
 const COLUMNS = ['Semestre', 'Descripción', 'Profesor', 'Programar', 'Sesiones'];
+const COLUMNS_STUDENTS = ['Laboratorio', 'Semestre', 'Descripción', 'Profesor', 'Prácticas', 'Sesiones'];
+const COLUMNS_MONITORS = ['Laboratorio', 'Semestre', 'Descripción', 'Profesor', 'Programar', 'Sesiones'];
 
 const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
+	const {group} = useAuthContext();
 	const navigate = useNavigate();
 
 	const mapOutput = ({
@@ -30,6 +35,22 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
 	];
 
+	const mapMonitorOutput = ({
+		laboratory,
+		semesterName,
+		description,
+		professor,
+		laboratoryID,
+		id
+	}: LabSemester): (string | React.ReactNode)[] => [
+		laboratory,
+		semesterName,
+		description,
+		professor,
+		redirectToLabPractice(laboratoryID ? laboratoryID : '', id ? id : ''),
+		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
+	];
+
 	const redirectToLabPractice = (labId: string, labSemesterId: string) => {
 		return (
 			<p
@@ -39,7 +60,7 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 						state: {labId, labSemesterId}
 					})
 				}>
-				Programar Prácticas
+				Prácticas
 			</p>
 		);
 	};
@@ -58,16 +79,37 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 		);
 	};
 
+	const filterHeadersByGroup = () => {
+		switch (group) {
+			case Groups.StudentsGroup:
+				return COLUMNS_STUDENTS;
+			case Groups.MonitorsGroup:
+				return COLUMNS_MONITORS;
+			default:
+				return COLUMNS;
+		}
+	};
+
+	/* eslint-disable @typescript-eslint/no-explicit-any */
+	const filterDataByGroup = (data: any) => {
+		switch (group) {
+			case Groups.StudentsGroup || Groups.MonitorsGroup:
+				return mapMonitorOutput(data);
+			default:
+				return mapOutput(data);
+		}
+	};
+
 	return (
 		<Row className="section">
 			<Table
-				headers={COLUMNS}
-				data={data.map(mapOutput)}
+				headers={filterHeadersByGroup()}
+				data={data.map((obj) => filterDataByGroup(obj))}
 				overflow
 				stickyHeader
 				maxHeight={'400px'}
-				editable
-				removable
+				editable={group === Groups.AdminsGroup || group === Groups.ProfessorsGroup}
+				removable={group === Groups.AdminsGroup || group === Groups.ProfessorsGroup}
 				onAction={onAction}
 			/>
 		</Row>

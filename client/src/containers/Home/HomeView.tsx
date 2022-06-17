@@ -11,7 +11,25 @@ import classes from './Home.module.scss';
 
 const HomeView: React.FC = () => {
 	const navigate = useNavigate();
-	// const {group, userId} = useAuthContext();
+	// const {userId} = useAuthContext();
+
+	const redirectRol = () => {
+		// switch (group) {
+		// case Groups.StudentsGroup:
+		// navigate('/lab-semesters', {
+		// 	state: {userId: userId}
+		// });
+		// 	break;
+		// case Groups.MonitorsGroup:
+		// navigate('/lab-semesters', {
+		// 	state: {value: userId}
+		// });
+		// 	break;
+		// default:
+		navigate('/labs');
+		// 	break;
+		// }
+	};
 
 	return (
 		<Container fluid>
@@ -19,24 +37,13 @@ const HomeView: React.FC = () => {
 				<Row style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
 					<div className={'col-md-4 ' + classes.cardItem}>
 						<span className={classes.cardTitle}>LABORATORIOS</span>
-						<Image
-							className={classes.cardImage}
-							src={labsImage}
-							onClick={() =>
-								// group === Groups.StudentsGroup
-								// 	? navigate('/user-labs-sessions', {
-								// 			state: {userId: userId}
-								// 	  })
-								// 	: 
-									navigate('/labs')
-							}
-						/>
+						<Image className={classes.cardImage} src={labsImage} onClick={() => redirectRol()} />
 					</div>
 					{/* {group === Groups.StudentsGroup ?? ( */}
-						<div className={'col-md-4 ' + classes.cardItem}>
-							<span className={classes.cardTitle}>USUARIOS</span>
-							<Image className={classes.cardImage} src={usersImage} onClick={() => navigate('/users')} />
-						</div>
+					<div className={'col-md-4 ' + classes.cardItem}>
+						<span className={classes.cardTitle}>USUARIOS</span>
+						<Image className={classes.cardImage} src={usersImage} onClick={() => navigate('/users')} />
+					</div>
 					{/* )} */}
 				</Row>
 			</LoadingContainer>

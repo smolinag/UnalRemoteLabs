@@ -4,11 +4,13 @@ import {IoEnter, IoPencil, IoTrash} from 'react-icons/io5';
 import {useNavigate} from 'react-router-dom';
 
 import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserLabPracticeSessionsList/types';
+import { Groups } from '../../generalUtils/groups';
 import {
 	useDeleteLabPracticeSessionMutation,
 	useListUsersByLabPracticeSessionLazyQuery,
 	useSendEmailMutation
 } from '../../graphql/generated/schema';
+import { useAuthContext } from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Table, ModalComponent} from '../UI/index';
 import classes from './UserLabPracticeSessionsTable.module.scss';
@@ -66,6 +68,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 	onSuccessSessionDelete,
 	labSemesterId
 }) => {
+	const {group} = useAuthContext();
 	const navigate = useNavigate();
 	const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
 	const [labSession, setLabSession] = useState<LabPracticeSession>();
@@ -249,6 +252,15 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		setDeleteModalVisible(false);
 	};
 
+	const filterHeadersByGroup = () => {
+		switch (group) {
+			case Groups.StudentsGroup:
+				return COLUMNS_USER_SESSIONS;
+			default:
+				return COLUMNS_SESSIONS;
+		}
+	};
+
 	return (
 		<Row className="section">
 			<ModalComponent
@@ -261,7 +273,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 				<div>{'¿Desea eliminar la sesión de la práctica de laboratorio programada?'}</div>
 			</ModalComponent>
 			<Table
-				headers={labSemesterId ? COLUMNS_SESSIONS : COLUMNS_USER_SESSIONS}
+				headers={filterHeadersByGroup()}
 				data={
 					labSemesterId //TODO filter by role
 						? labPracticeSession.map(mapOutputLabSessions)

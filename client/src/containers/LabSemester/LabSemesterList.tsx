@@ -1,16 +1,19 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useNavigate, useLocation} from 'react-router-dom';
 
 import {LabSemesterTable} from '../../components/LabSemester';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
+import {Groups} from '../../generalUtils/groups';
 import {
 	useListLabSemestersByLaboratoryIdQuery,
 	useDeleteLabSemesterMutation,
 	useGetLaboratoryQuery,
-	useSendEmailMutation
+	useSendEmailMutation,
+	useListUserByLabSemesterQuery
 } from '../../graphql/generated/schema';
+import { useAuthContext } from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {LabSemester, Laboratory, LocationStateList} from './types';
 
@@ -25,21 +28,84 @@ const initialLabSemester: LabSemester = {
 
 const LabSemesterList: React.FC = () => {
 	const navigate = useNavigate();
+	const location = useLocation();
+	const {group} = useAuthContext();
+	
+	const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
+	const userId: string = (location.state as LocationStateList)?.userId;
 
 	const [loading, setLoading] = useState<boolean>(true);
 	const [displayModal, setDisplayModal] = useState<boolean>(false);
-
-	const location = useLocation();
-	const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
-	const {data: LabSemesterData, loading: loadingLabSemesterData} = useListLabSemestersByLaboratoryIdQuery({
-		variables: {laboratoryID},
-		fetchPolicy: 'network-only'
-	});
-
 	const [labSemesters, setLabSemesters] = useState<Array<LabSemester>>([]);
-
-	const {data: laboratoryData, loading: loadingLaboratoryData} = useGetLaboratoryQuery({variables: {id: laboratoryID}});
 	const [laboratory, setLaboratory] = useState<Laboratory>();
+
+	// const group = 'Admins';
+
+	if (group === Groups.StudentsGroup || group === Groups.MonitorsGroup) {
+		useListUserByLabSemesterQuery({
+			variables: {userId},
+			fetchPolicy: 'network-only',
+			onCompleted: (data) => {
+				if (data && data.listUserLabSemesters?.items) {
+					const labsList: Array<LabSemester> = data.listUserLabSemesters?.items
+						.filter((obj) => obj && !obj.labsemester._deleted)
+						.map((obj) => {
+							const labSemester = obj?.labsemester;
+							return {
+								id: labSemester ? labSemester.id : '',
+								semesterName: labSemester?.semesterName ? labSemester.semesterName : '',
+								description: labSemester?.description ? labSemester.description : null,
+								professor: labSemester?.professor ? labSemester.professor : '',
+								monitorEmailList: labSemester?.monitorEmailList ? labSemester.monitorEmailList : [],
+								studentEmailList: labSemester?.studentEmailList ? labSemester.studentEmailList : [],
+								version: labSemester?._version ? labSemester._version : null,
+								deleted: labSemester?._deleted ? labSemester._deleted : null,
+								laboratoryID: labSemester?.Laboratory?.id ? labSemester?.Laboratory.id : '',
+								laboratory: labSemester?.Laboratory?.name ? labSemester?.Laboratory.name : ''
+							};
+						});
+					setLabSemesters(labsList);
+				}
+				setLoading(false);
+			}
+		});
+	} else if (group === Groups.AdminsGroup) {
+		useGetLaboratoryQuery({
+			variables: {id: laboratoryID},
+			onCompleted: (data) => {
+				if (data?.getLaboratory != null) {
+					const lab = data.getLaboratory;
+					setLaboratory({id: lab.id, name: lab.name});
+				}
+			}
+		});
+
+		useListLabSemestersByLaboratoryIdQuery({
+			variables: {laboratoryID},
+			fetchPolicy: 'network-only',
+			onCompleted: (data) => {
+				if (data && data.listLabSemesters?.items) {
+					const labsList: Array<LabSemester> = data.listLabSemesters?.items
+						.filter((obj) => obj && !obj._deleted)
+						.map((obj) => {
+							return {
+								id: obj ? obj.id : '',
+								semesterName: obj?.semesterName ? obj.semesterName : '',
+								description: obj?.description ? obj.description : null,
+								professor: obj?.professor ? obj.professor : '',
+								monitorEmailList: obj?.monitorEmailList ? obj.monitorEmailList : [],
+								studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
+								version: obj?._version ? obj._version : null,
+								deleted: obj?._deleted ? obj._deleted : null,
+								laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''
+							};
+						});
+					setLabSemesters(labsList);
+				}
+				setLoading(false);
+			}
+		});
+	}
 
 	const [labSemesterToDelete, setLabSemesterToDelete] = useState<LabSemester>(initialLabSemester);
 	const [deleteLabSemester] = useDeleteLabSemesterMutation();
@@ -143,7 +209,7 @@ const LabSemesterList: React.FC = () => {
 				<div>Está seguro de borrar el semestre de laboratorio {labSemesterToDelete?.semesterName}?</div>
 			</ModalComponent>
 			<Row className="section">
-				<h3 className="title">Semestres de Laboratorio {laboratory?.name}</h3>
+				<h3 className="title">Semestres{laboratoryID ? ` de Laboratorio ${laboratory?.name}` : ''}</h3>
 			</Row>
 			<Row className="section">
 				<LabSemesterTable data={labSemesters} onAction={handleLabSemesterAction} />

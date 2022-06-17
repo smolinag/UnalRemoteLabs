@@ -324,15 +324,27 @@ const LabSemesterEdition: React.FC = () => {
 						emails={labSemester.professorEmailList}
 						onHandleChange={onProfessorsEmailHandleChange}
 						maxEmails={1}
+						role={Role.Professors}
+						setLoading={setLoading}
 					/>
 				</Row>
 				<Row className="section">
 					<h3 className="title">Monitores</h3>
-					<EmailsInputWithTable emails={labSemester.monitorEmailList} onHandleChange={onMonitorsEmailHandleChange} />
+					<EmailsInputWithTable
+						emails={labSemester.monitorEmailList}
+						onHandleChange={onMonitorsEmailHandleChange}
+						role={Role.Monitors}
+						setLoading={setLoading}
+					/>
 				</Row>
 				<Row className="section">
 					<h3 className="title">Estudiantes</h3>
-					<EmailsInputWithTable emails={labSemester.studentEmailList} onHandleChange={onStudentEmailHandleChange} />
+					<EmailsInputWithTable
+						emails={labSemester.studentEmailList}
+						onHandleChange={onStudentEmailHandleChange}
+						role={Role.Students}
+						setLoading={setLoading}
+					/>
 				</Row>
 				<Row className="section">
 					<h3 className="title" />

@@ -100,6 +100,7 @@ export type CreateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	leaderUsers?: Maybe<Scalars['String']>;
 	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
@@ -392,6 +393,7 @@ export type LabPracticeSession = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	leaderUsers?: Maybe<Scalars['String']>;
 	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy: Scalars['String'];
@@ -771,6 +773,7 @@ export type ModelLabPracticeSessionConditionInput = {
 	description?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	leaderUsers?: Maybe<ModelStringInput>;
 	videoUrlCode?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -793,6 +796,7 @@ export type ModelLabPracticeSessionFilterInput = {
 	description?: Maybe<ModelStringInput>;
 	labpracticeID?: Maybe<ModelIdInput>;
 	labSemesterID?: Maybe<ModelIdInput>;
+	leaderUsers?: Maybe<ModelStringInput>;
 	videoUrlCode?: Maybe<ModelStringInput>;
 	updatedBy?: Maybe<ModelStringInput>;
 	createdBy?: Maybe<ModelStringInput>;
@@ -1710,6 +1714,7 @@ export type UpdateLabPracticeSessionInput = {
 	description?: Maybe<Scalars['String']>;
 	labpracticeID?: Maybe<Scalars['ID']>;
 	labSemesterID?: Maybe<Scalars['ID']>;
+	leaderUsers?: Maybe<Scalars['String']>;
 	videoUrlCode?: Maybe<Scalars['String']>;
 	updatedBy?: Maybe<Scalars['String']>;
 	createdBy?: Maybe<Scalars['String']>;
@@ -2371,6 +2376,7 @@ export type GetLabPracticeSessionQuery = {__typename?: 'Query'} & {
 			| 'videoUrlCode'
 			| 'endDate'
 			| 'description'
+			| 'leaderUsers'
 			| '_deleted'
 			| 'labpracticeID'
 			| 'startDate'
@@ -4576,6 +4582,7 @@ export const GetLabPracticeSessionDocument = gql`
 			videoUrlCode
 			endDate
 			description
+			leaderUsers
 			_deleted
 			labpracticeID
 			startDate

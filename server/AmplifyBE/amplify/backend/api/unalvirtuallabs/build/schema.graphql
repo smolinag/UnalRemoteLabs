@@ -98,6 +98,7 @@ type LabPracticeSession @aws_api_key @aws_cognito_user_pools {
   description: String
   labpracticeID: ID
   labSemesterID: ID
+  leaderUsers: String
   videoUrlCode: String
   updatedBy: String
   createdBy: String!
@@ -831,6 +832,7 @@ input ModelLabPracticeSessionFilterInput {
   description: ModelStringInput
   labpracticeID: ModelIDInput
   labSemesterID: ModelIDInput
+  leaderUsers: ModelStringInput
   videoUrlCode: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
@@ -846,6 +848,7 @@ input CreateLabPracticeSessionInput {
   description: String
   labpracticeID: ID
   labSemesterID: ID
+  leaderUsers: String
   videoUrlCode: String
   updatedBy: String
   createdBy: String!
@@ -859,6 +862,7 @@ input UpdateLabPracticeSessionInput {
   description: String
   labpracticeID: ID
   labSemesterID: ID
+  leaderUsers: String
   videoUrlCode: String
   updatedBy: String
   createdBy: String
@@ -876,6 +880,7 @@ input ModelLabPracticeSessionConditionInput {
   description: ModelStringInput
   labpracticeID: ModelIDInput
   labSemesterID: ModelIDInput
+  leaderUsers: ModelStringInput
   videoUrlCode: ModelStringInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput

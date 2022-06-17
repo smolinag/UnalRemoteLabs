@@ -220,6 +220,13 @@ export const schema = {
                         "associatedWith": "LabPracticeSession"
                     }
                 },
+                "leaderUsers": {
+                    "name": "leaderUsers",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "videoUrlCode": {
                     "name": "videoUrlCode",
                     "isArray": false,
@@ -1884,5 +1891,5 @@ export const schema = {
             }
         }
     },
-    "version": "b4dd7378ef624ea6c9d7bef2625ca09c"
+    "version": "9cd49a9d7f0226d77256f888ae25746d"
 };

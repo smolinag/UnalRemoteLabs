@@ -244,6 +244,7 @@ export const onCreateUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -359,6 +360,7 @@ export const onUpdateUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -474,6 +476,7 @@ export const onDeleteUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -779,6 +782,7 @@ export const onCreateLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -892,6 +896,7 @@ export const onUpdateLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -1005,6 +1010,7 @@ export const onDeleteLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -1303,6 +1309,7 @@ export const onCreateLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -1439,6 +1446,7 @@ export const onUpdateLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -1575,6 +1583,7 @@ export const onDeleteLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -2390,6 +2399,7 @@ export const onCreateLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2533,6 +2543,7 @@ export const onUpdateLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2676,6 +2687,7 @@ export const onDeleteLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2798,6 +2810,7 @@ export const onCreateLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2891,6 +2904,7 @@ export const onUpdateLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2984,6 +2998,7 @@ export const onDeleteLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -3619,6 +3634,7 @@ export const onUpdateLabPracticeSessionCommandBySessionID = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy

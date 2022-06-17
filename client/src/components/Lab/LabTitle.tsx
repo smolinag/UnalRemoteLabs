@@ -1,13 +1,17 @@
 import {Storage} from 'aws-amplify';
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 // import { Groups } from '../../generalUtils/groups';
 // import ValidateGroup from '../../generalUtils/ValidateGroup';
-import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery} from '../../graphql/generated/schema';
+import {
+	useUpdateLabPracticeSessionMutation,
+	useGetLabPracticeSessionQuery,
+	useListUsersByLabPracticeSessionQuery
+} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
-import Button from '../UI/Button/Button';
+import {DropdownComponent, Button} from '../UI';
 
 export interface Session {
 	id: string;
@@ -18,12 +22,17 @@ export interface Session {
 	professor: string;
 }
 
+export interface User {
+	id: string;
+	name: string;
+	email: string;
+}
+
 interface Props {
 	name?: string | null;
 	description?: string | null;
 	duration?: number | null;
-	isVideoUrlInputEnabled?: boolean | null;
-	laPracticeSessionId: string;
+	labPracticeSessionId: string;
 	guideFileName?: string | null;
 	sessionInformation: Session;
 }
@@ -32,31 +41,57 @@ const LabTitle: React.FC<Props> = ({
 	description,
 	duration,
 	name,
-	isVideoUrlInputEnabled,
-	laPracticeSessionId,
+	labPracticeSessionId,
 	guideFileName,
 	sessionInformation
 }) => {
 	const [videoUrl, setVideoUrl] = useState('');
-	const [loading, setLoading] = useState(false);
-	const [downloadingGuideFile, setDownloadingGuideFile] = useState(false);
+	const [loadingVideoUrl, setLoadingVideoUrl] = useState(false);
+	const [leaderUser, setLeaderUser] = useState<User>({id: '', name: '', email: ''});
+	const [loadingLeaderUser, setLoadingLeaderUser] = useState(false);
 
-	const {data: labSessionData} = useGetLabPracticeSessionQuery({variables: {id: laPracticeSessionId}});
+	const [downloadingGuideFile, setDownloadingGuideFile] = useState(false);
+	const [users, setUsers] = useState<User[]>([]);
+
+	const {data: labSessionData} = useGetLabPracticeSessionQuery({variables: {id: labPracticeSessionId}});
+	const {data: labSessionUsers} = useListUsersByLabPracticeSessionQuery({variables: {id: labPracticeSessionId}});
 	const [updateLabPracticeSession] = useUpdateLabPracticeSessionMutation({});
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+
+	useEffect(() => {
+		const sessionUsersData = labSessionUsers?.getLabPracticeSession?.UserLabPracticeSessions?.items;
+		if (sessionUsersData) {
+			const sessionUsers = sessionUsersData.map((item) => {
+				return {
+					id: item?.User?.id ? item.User.id : '',
+					name: item?.User?.name ? item.User.name : '',
+					email: item?.User?.email ? item.User.email : ''
+				};
+			});
+			setUsers(sessionUsers);
+			if (labSessionData?.getLabPracticeSession?.leaderUsers) {
+				const leaderUsersData = labSessionData.getLabPracticeSession.leaderUsers;
+				const leaderUsers = sessionUsers.filter((item) => item.id === leaderUsersData);
+				if (leaderUsers.length > 0) {
+					setLeaderUser(leaderUsers[0]);
+				}
+			}
+			console.log(sessionUsers);
+		}
+	}, [labSessionUsers]);
 
 	const handleVideoUrlChange = (value: string) => {
 		setVideoUrl(value);
 	};
 
-	const handleLabPracticeSessionUpdate = async () => {
+	const handleLabPracticeSessionVideoUrlUpdate = async () => {
 		try {
-			setLoading(true);
+			setLoadingVideoUrl(true);
 			await updateLabPracticeSession({
 				variables: {
 					input: {
-						id: laPracticeSessionId,
+						id: labPracticeSessionId,
 						videoUrlCode: videoUrl,
 						_version: labSessionData?.getLabPracticeSession?._version
 					}
@@ -66,7 +101,29 @@ const LabTitle: React.FC<Props> = ({
 		} catch (e) {
 			showErrorBanner(`No se pudo guardar el código del video  ${videoUrl ?? ''}`);
 		} finally {
-			setLoading(false);
+			setLoadingVideoUrl(false);
+		}
+	};
+
+	const handleLabPracticeSessionLeaderUserUpdate = async () => {
+		try {
+			console.log(leaderUser)
+			setLoadingLeaderUser(true);
+			await updateLabPracticeSession({
+				variables: {
+					input: {
+						id: labPracticeSessionId,
+						leaderUsers: leaderUser.id,
+						_version: labSessionData?.getLabPracticeSession?._version
+					}
+				}
+			});
+			showSuccessBanner(`El lider de la práctica  ${leaderUser ?? ''} fue correctamente guardado`);
+		} catch (e) {
+			console.log(e)
+			showErrorBanner(`No se pudo guardar el lider de la práctica  ${leaderUser ?? ''}`);
+		} finally {
+			setLoadingLeaderUser(false);
 		}
 	};
 
@@ -101,6 +158,12 @@ const LabTitle: React.FC<Props> = ({
 		return a;
 	};
 
+	const handleLeaderUserChange = (value: string, id: string) => {
+		console.log(value);
+		console.log(id);
+		setLeaderUser({id: id, name: value, email: ''});
+	};
+
 	return (
 		<Row className="section">
 			<h3 className="title">{name ?? 'Práctica de laboratorio'}</h3>
@@ -131,7 +194,7 @@ const LabTitle: React.FC<Props> = ({
 					<span>Profesor: {sessionInformation.professor ? sessionInformation.professor : '-'}</span>
 				</Row>
 			</Col>
-			<Col sm={4}>
+			<Col sm={3}>
 				<Row>
 					<span>Guía de práctica: </span>
 				</Row>
@@ -147,29 +210,52 @@ const LabTitle: React.FC<Props> = ({
 				</Row>
 			</Col>
 			{/* <ValidateGroup groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}> */}
-				{isVideoUrlInputEnabled ? (
-					<Col sm={5}>
-						<Row>
-							<span>Código de vídeo: </span>
-						</Row>
-						<Row style={{display: 'flex', alignItems: 'center'}}>
-							<Col xs={6}>
-								<input
-									type="text"
-									placeholder="Código"
-									value={videoUrl}
-									onChange={(e) => handleVideoUrlChange(e.target.value)}
-									style={{width: '-webkit-fill-available'}}
-								/>
-							</Col>
-							<Col xs={3}>
-								<Button loading={loading} onClick={handleLabPracticeSessionUpdate}>
-									Guardar
-								</Button>
-							</Col>
-						</Row>
+
+			<Col sm={3}>
+				<Row>
+					<span>Código de vídeo: </span>
+				</Row>
+				<Row style={{display: 'flex', alignItems: 'center'}}>
+					<Col xs={6}>
+						<input
+							type="text"
+							placeholder="Código"
+							value={videoUrl}
+							onChange={(e) => handleVideoUrlChange(e.target.value)}
+							style={{width: '-webkit-fill-available'}}
+						/>
 					</Col>
-				) : null}
+					<Col xs={3}>
+						<Button loading={loadingVideoUrl} onClick={handleLabPracticeSessionVideoUrlUpdate}>
+							Guardar
+						</Button>
+					</Col>
+				</Row>
+			</Col>
+			<Col sm={3}>
+				<Row>
+					<span>Lider de práctica: </span>
+				</Row>
+				<Row>
+					<DropdownComponent
+						simple={true}
+						text="Lider de práctica"
+						options={users.map((user) => {
+							return {value: user.name, id: user.id};
+						})}
+						onValueChange={(value, id) => {
+							handleLeaderUserChange(value, id);
+						}}
+						value={leaderUser.name}
+						disabled={false}
+					/>
+				</Row>
+				<Row style={{justifyContent: 'center'}}>
+					<Button loading={loadingLeaderUser} onClick={handleLabPracticeSessionLeaderUserUpdate}>
+						Guardar
+					</Button>
+				</Row>
+			</Col>
 			{/* </ValidateGroup> */}
 		</Row>
 	);

@@ -4,6 +4,7 @@ query getLabPracticeSession($id: ID!) {
 		videoUrlCode
 		endDate
 		description
+		leaderUsers
 		_deleted
 		labpracticeID
 		startDate

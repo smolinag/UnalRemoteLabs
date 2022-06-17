@@ -256,6 +256,7 @@ export const createUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -374,6 +375,7 @@ export const updateUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -492,6 +494,7 @@ export const deleteUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -809,6 +812,7 @@ export const createLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -925,6 +929,7 @@ export const updateLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -1041,6 +1046,7 @@ export const deleteLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -1351,6 +1357,7 @@ export const createLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -1490,6 +1497,7 @@ export const updateLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -1629,6 +1637,7 @@ export const deleteLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -2465,6 +2474,7 @@ export const createLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2611,6 +2621,7 @@ export const updateLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2757,6 +2768,7 @@ export const deleteLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2882,6 +2894,7 @@ export const createLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2978,6 +2991,7 @@ export const updateLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -3074,6 +3088,7 @@ export const deleteLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy

@@ -18,6 +18,7 @@ interface Props {
 	required?: boolean;
 	disabled?: boolean;
 	tooltip?: string;
+	simple?: boolean;
 	value: string;
 	onValueChange: (value: string, id: string) => void;
 	error?: boolean;
@@ -29,6 +30,7 @@ const DropdownComponent: React.FC<Props> = ({
 	required,
 	disabled,
 	tooltip,
+	simple,
 	value,
 	onValueChange,
 	error
@@ -45,11 +47,8 @@ const DropdownComponent: React.FC<Props> = ({
 
 	return (
 		<div className={classes.wrapper}>
-			<div className={classes.inputWrapper}>
-				<span className={classes.inputTitle}>
-					{text}: {required && '(Requerido)'}
-				</span>
-				<div className={classes.inputSubwrapper}>
+			{simple ? (
+				<div className={classes.simpleInputWrapper}>
 					<DropdownButton
 						id="dropdown-basic-button"
 						title={`${value}`}
@@ -57,16 +56,31 @@ const DropdownComponent: React.FC<Props> = ({
 						disabled={disabled}>
 						{options.map((option) => renderItem(option))}
 					</DropdownButton>
-
-					{tooltip && (
-						<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={<Tooltip>{tooltip}</Tooltip>}>
-							<BsQuestionCircle />
-						</OverlayTrigger>
-					)}
-
-					{error && <p className="errorMessage">Campo requerido</p>}
 				</div>
-			</div>
+			) : (
+				<div className={classes.inputWrapper}>
+					<span className={classes.inputTitle}>
+						{text}: {required && '(Requerido)'}
+					</span>
+					<div className={classes.inputSubwrapper}>
+						<DropdownButton
+							id="dropdown-basic-button"
+							title={`${value}`}
+							className={classes.dropdownToggle}
+							disabled={disabled}>
+							{options.map((option) => renderItem(option))}
+						</DropdownButton>
+
+						{tooltip && (
+							<OverlayTrigger placement="right" delay={{show: 250, hide: 400}} overlay={<Tooltip>{tooltip}</Tooltip>}>
+								<BsQuestionCircle />
+							</OverlayTrigger>
+						)}
+
+						{error && <p className="errorMessage">Campo requerido</p>}
+					</div>
+				</div>
+			)}
 		</div>
 	);
 };

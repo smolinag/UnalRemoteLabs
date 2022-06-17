@@ -206,6 +206,7 @@ export const getUserLabPracticeSession = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -304,6 +305,7 @@ export const listUserLabPracticeSessions = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -367,6 +369,7 @@ export const syncUserLabPracticeSessions = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -660,6 +663,7 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -782,6 +786,7 @@ export const listLabPracticeSessionCommands = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -845,6 +850,7 @@ export const syncLabPracticeSessionCommands = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -1050,6 +1056,7 @@ export const getLabPracticeSession = /* GraphQL */ `
       description
       labpracticeID
       labSemesterID
+      leaderUsers
       videoUrlCode
       updatedBy
       createdBy
@@ -1195,6 +1202,7 @@ export const listLabPracticeSessions = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -1269,6 +1277,7 @@ export const syncLabPracticeSessions = /* GraphQL */ `
         description
         labpracticeID
         labSemesterID
+        leaderUsers
         videoUrlCode
         updatedBy
         createdBy
@@ -1831,6 +1840,7 @@ export const getLabPractice = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy
@@ -2073,6 +2083,7 @@ export const getLabSemester = /* GraphQL */ `
           description
           labpracticeID
           labSemesterID
+          leaderUsers
           videoUrlCode
           updatedBy
           createdBy

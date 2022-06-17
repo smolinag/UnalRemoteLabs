@@ -76,6 +76,7 @@ const LabSessionProgrammingView: React.FC = () => {
 							endDate: labSession.labPractice?.duration
 								? new Date(labSessionInfo.startDate.getTime() + labSession.labPractice.duration * 60000)
 								: labSessionInfo.startDate,
+							leaderUsers: studentList.length > 0 ? studentList[0].id : '', //Set first student as leader by default
 							createdBy: '1'
 						}
 					}
@@ -113,6 +114,7 @@ const LabSessionProgrammingView: React.FC = () => {
 						});
 					} else {
 						//TODO Deal with sessions with no students
+						console.log('Created session with no students');
 					}
 				}
 				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue creada exitosamente`);
@@ -121,7 +123,6 @@ const LabSessionProgrammingView: React.FC = () => {
 				showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSession.labPractice?.name}`);
 			} finally {
 				setLoading(false);
-				console.log(labSessionInfo.semesterId);
 				navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
 			}
 		}
@@ -141,11 +142,11 @@ const LabSessionProgrammingView: React.FC = () => {
 							endDate: labSession.labPractice?.duration
 								? new Date(new Date(labSessionInfo.startDate).getTime() + labSession.labPractice.duration * 60000)
 								: labSessionInfo.startDate,
+							leaderUsers: studentList.length > 0 ? studentList[0].id : '', //Set first student as leader by default
 							createdBy: '1'
 						}
 					}
 				});
-				console.log(labPracticeSessionData);
 				if (!labPracticeSessionData?.updateLabPracticeSession?.id) {
 					throw Error('');
 				} else {
@@ -166,15 +167,15 @@ const LabSessionProgrammingView: React.FC = () => {
 						});
 					} else {
 						//TODO Deal with sessions with no students
+						console.log('Updated session with no students');
 					}
 				}
-				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue creada exitosamente`);
+				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue actualizada exitosamente`);
 			} catch (ex) {
 				console.error(ex);
-				showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSession.labPractice?.name}`);
+				showErrorBanner(`Error en la actualización de la sesión del laboratorio ${labSession.labPractice?.name}`);
 			} finally {
 				setLoading(false);
-				console.log(labSessionInfo.semesterId);
 				navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
 			}
 		}

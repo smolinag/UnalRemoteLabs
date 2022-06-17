@@ -93,6 +93,7 @@ export declare class LabPracticeSession {
   readonly LabSemester?: LabSemester | null;
   readonly LabPracticeSessionCommands?: (LabPracticeSessionCommand | null)[] | null;
   readonly UserLabPracticeSessions?: (UserLabPracticeSession | null)[] | null;
+  readonly leaderUsers?: string | null;
   readonly videoUrlCode?: string | null;
   readonly updatedBy?: string | null;
   readonly createdBy: string;

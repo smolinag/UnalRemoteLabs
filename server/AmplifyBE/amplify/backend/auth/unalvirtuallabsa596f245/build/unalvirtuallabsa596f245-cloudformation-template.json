@@ -165,12 +165,11 @@
     "oAuthMetadata": {
       "Type": "String"
     },
-    "googleClientId": {
+    "hostedUIProviderCreds": {
       "Type": "String"
     },
-    "hostedUIProviderCreds": {
-      "Type": "String",
-      "Default": "[]"
+    "googleClientId": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -442,7 +441,7 @@
           ]
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "Timeout": 300
       },
       "DependsOn": [
@@ -558,7 +557,7 @@
           ]
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "Timeout": 300
       },
       "DependsOn": [
@@ -723,7 +722,7 @@
           ]
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "Timeout": 300
       },
       "DependsOn": [
@@ -872,7 +871,7 @@
           ]
         },
         "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
+        "Runtime": "nodejs14.x",
         "Timeout": 300
       },
       "DependsOn": [

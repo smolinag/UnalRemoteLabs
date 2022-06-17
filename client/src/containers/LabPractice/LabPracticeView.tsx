@@ -382,8 +382,7 @@ const LabPracticeView: React.FC = () => {
 				name={practiceInfo?.getLabPractice?.name}
 				description={practiceInfo?.getLabPractice?.description}
 				duration={practiceInfo?.getLabPractice?.duration}
-				isVideoUrlInputEnabled={true}
-				laPracticeSessionId={sessionId}
+				labPracticeSessionId={sessionId}
 				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 				sessionInformation={sessionInformation}
 			/>

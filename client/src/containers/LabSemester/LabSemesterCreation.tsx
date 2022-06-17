@@ -46,7 +46,6 @@ const LabSemesterCreation: React.FC = () => {
 
 	const [createUser] = useCreateUserMutation();
 	const [createUserLabSemester] = useCreateUserLabSemesterMutation();
-
 	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
@@ -139,13 +138,14 @@ const LabSemesterCreation: React.FC = () => {
 
 	const createLabSemesterUsers = async (
 		labsemesterID: string,
-		proffesor: string,
+		proffesorEmailList: Array<string>,
 		studentEmailList: Array<string>,
 		monitorEmailList: Array<string>
 	) => {
-		if (proffesor !== undefined && proffesor != null && proffesor != '') {
-			const a = await createLabSemesterUser(proffesor, Role.Professors, labsemesterID);
-			console.log(a);
+		if (proffesorEmailList !== undefined && proffesorEmailList != null && proffesorEmailList.length > 0) {
+			proffesorEmailList.forEach(async (email) => {
+				await createLabSemesterUser(email, Role.Professors, labsemesterID);
+			});
 		}
 		if (monitorEmailList !== undefined && monitorEmailList != null && monitorEmailList.length > 0) {
 			monitorEmailList.forEach(async (email) => {
@@ -185,7 +185,7 @@ const LabSemesterCreation: React.FC = () => {
 				if (labPracticeData?.createLabSemester?.id) {
 					await createLabSemesterUsers(
 						labPracticeData.createLabSemester.id,
-						labSemester?.professorEmailList[0] ?? '',
+						labSemester.professorEmailList,
 						labSemester.studentEmailList,
 						labSemester.monitorEmailList
 					).catch((error) => {

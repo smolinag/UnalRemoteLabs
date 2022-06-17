@@ -20,7 +20,7 @@ interface Props {
 	hasRemoveAll?: boolean;
 	editable?: boolean;
 	transition?: boolean;
-	onAction?: (rowIndex: number, action: Action) => void;
+	onAction?: (rowIndex: number, action: Action, row?: React.ReactNode[]) => void;
 }
 
 const Table: React.FC<Props> = ({
@@ -41,16 +41,18 @@ const Table: React.FC<Props> = ({
 			return data.map((row, i) => (
 				<tr key={`row_${i}`}>
 					{row.map((cell, j) => (
-						<td key={`cell_${i}_${j}`} style={{fontSize: 'smaller'}} className={transitionAnimation} >
+						<td key={`cell_${i}_${j}`} style={{fontSize: 'smaller'}} className={transitionAnimation}>
 							{cell}
 						</td>
 					))}
 					{(editable || removable) && (
 						<td style={{width: editable && removable && removable ? '70px' : '30px'}}>
-							{editable && <BsPencilFill onClick={() => onAction?.(i, Action.Edit)} className={classes.actionIcon} />}
+							{editable && (
+								<BsPencilFill onClick={() => onAction?.(i, Action.Edit, row)} className={classes.actionIcon} />
+							)}
 							{removable && (
 								<BsXCircleFill
-									onClick={() => onAction?.(i, Action.Delete)}
+									onClick={() => onAction?.(i, Action.Delete, row)}
 									className={`${classes.actionIcon} ${classes.delete}`}
 								/>
 							)}

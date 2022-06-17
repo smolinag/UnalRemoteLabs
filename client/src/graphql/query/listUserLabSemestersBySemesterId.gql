@@ -1,0 +1,16 @@
+query listUserLabSemestersBySemesterId($semesterID: ID!) {
+	listUserLabSemesters(filter: {labsemesterID: {eq: $semesterID}}) {
+		items {
+			id
+			user {
+				id
+				name
+				email
+				role
+				_deleted
+			}
+			_version
+			_deleted
+		}
+	}
+}

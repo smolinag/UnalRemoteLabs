@@ -1,0 +1,9 @@
+mutation deleteUserLabSemester($input: DeleteUserLabSemesterInput!) {
+	deleteUserLabSemester(input: $input) {
+		id
+		userID
+		labsemesterID
+		_version
+		_deleted
+	}
+}

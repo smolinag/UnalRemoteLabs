@@ -31,8 +31,11 @@ const Header: React.FC = () => {
 		clearGroup();
 		setLoggedUser('');
 		Auth.signOut();
-		// navigate('/')
 		window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
+	};
+
+	const redirectToAccount = () => {
+		navigate('/my-account', {state: {userEmail: loggedUser}});
 	};
 
 	return (
@@ -50,14 +53,14 @@ const Header: React.FC = () => {
 						</Navbar.Text>
 					</Nav>
 					<Nav className={classes.optionNavbar}>
-						<div className={classes.option}>
+						<div className={classes.option} onClick={redirectToAccount}>
 							<BsPersonCircle className={classes.icon} />
 							<span>{loggedUser}</span>
 						</div>
 
-						<div className={classes.option}>
-							<BiExit className={classes.icon} onClick={signOutFunction} />
-							<span onClick={signOutFunction}>Salir</span>
+						<div className={classes.option} onClick={signOutFunction}>
+							<BiExit className={classes.icon} />
+							<span>Salir</span>
 						</div>
 					</Nav>
 				</Navbar.Collapse>

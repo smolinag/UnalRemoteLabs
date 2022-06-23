@@ -11,6 +11,7 @@ interface Props {
 	errors: ErrorIdentifier[];
 	organizationDisabled?: boolean;
 	userTypeDisabled?: boolean;
+	emailDisabled?: boolean;
 }
 const initialUser: User = {
 	id: '',
@@ -26,7 +27,8 @@ const UserData: React.FC<Props> = ({
 	handleChange,
 	errors,
 	organizationDisabled = false,
-	userTypeDisabled = false
+	userTypeDisabled = false,
+	emailDisabled = false
 }) => {
 	const [user, setUser] = useState<User>(initialUser);
 
@@ -108,6 +110,7 @@ const UserData: React.FC<Props> = ({
 					value={user.email ?? ''}
 					onValueChange={(value) => onValueChange(value, Params.Email)}
 					error={checkErrorMessage(Params.Email)}
+					disabled={emailDisabled}
 				/>
 				<Input
 					type="text"

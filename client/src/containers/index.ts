@@ -14,3 +14,4 @@ export {default as UsersList} from './Users/UsersList';
 export {default as UserCreation} from './Users/UserCreation';
 export {default as UserEdition} from './Users/UserEdition';
 export {default as HomeView} from './Home/HomeView';
+export {default as Account} from './Account/Account';

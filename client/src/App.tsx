@@ -24,7 +24,8 @@ import {
 	UsersList,
 	UserCreation,
 	UserEdition,
-	HomeView
+	HomeView,
+	Account
 } from './containers';
 // import ValidateGroup from './generalUtils/ValidateGroup';
 import {useGetUserByIdLazyQuery} from './graphql/generated/schema';
@@ -78,6 +79,7 @@ const App = (): JSX.Element => {
 					<Route path="/users" element={<UsersList />} />
 					<Route path="/user-creation" element={<UserCreation />} />
 					<Route path="/user-edition" element={<UserEdition />} />
+					<Route path="/my-account" element={<Account />} />
 
 					{/* Crear componente para rutas no existentes */}
 					<Route path="*" element={<div> La página solicitada no existe </div>} />

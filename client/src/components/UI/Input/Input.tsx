@@ -8,6 +8,7 @@ import classes from './Input.module.scss';
 interface Props {
 	type: string;
 	placeholder: string;
+	disabled?: boolean;
 	required?: boolean;
 	value: string | number;
 	tooltip?: string;
@@ -16,21 +17,20 @@ interface Props {
 	max?: number;
 	onValueChange: (value: string) => void;
 	error?: boolean;
-	isDisabled?: boolean;
 }
 
 const Input: React.FC<Props> = ({
 	type,
 	placeholder,
 	required,
+	disabled,
 	value,
 	tooltip,
 	unit,
 	min,
 	max,
 	onValueChange,
-	error,
-	isDisabled = false
+	error
 }) => {
 	let unitString = '';
 
@@ -65,7 +65,7 @@ const Input: React.FC<Props> = ({
 						className={classes.input}
 						min={min}
 						max={max}
-						disabled={isDisabled}
+						disabled={disabled}
 					/>
 					{unit && <span className={classes.input}>{unitString}</span>}
 

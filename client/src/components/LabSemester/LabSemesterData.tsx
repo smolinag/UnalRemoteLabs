@@ -85,14 +85,14 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 					tooltip="Ingrese el nombre del semestre"
 					onValueChange={(value) => onValueChange(value, Params.Name)}
 					error={checkErrorMessage(Params.Name)}
-					isDisabled={group === Groups.MonitorsGroup}
+					disabled={group === Groups.MonitorsGroup}
 				/>
 				<Input
 					type="text"
 					placeholder="Descripción"
 					value={labSemester.description ?? ''}
 					onValueChange={(value) => onValueChange(value, Params.Description)}
-					isDisabled={group === Groups.MonitorsGroup}
+					disabled={group === Groups.MonitorsGroup}
 				/>
 			</div>
 		</>

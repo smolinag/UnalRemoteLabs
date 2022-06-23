@@ -1,13 +1,15 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {Container, Row, Col} from 'react-bootstrap';
+import {Container, Row, Col, Card, Image} from 'react-bootstrap';
 import {useLocation, useNavigate} from 'react-router-dom';
 
+import userLogo from '../../assets/images/userLogo.png';
 import {Button, LoadingContainer} from '../../components/UI';
 import {UserData} from '../../components/Users/index';
 import {isEmail} from '../../generalUtils/EmailUtils';
 import {useUpdateUserMutation, useGetUserByEmailQuery} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {User, ErrorIdentifier, Params, Role} from '../Users/types';
+import classes from './account.module.scss';
 import {LocationAccountState} from './types';
 
 const initialUser: User = {
@@ -126,20 +128,50 @@ const Account: React.FC = () => {
 		}
 	};
 
+	const onChangeImage = () => {
+		console.log('Hola');
+	};
+
 	return (
 		<Container fluid>
 			<LoadingContainer loading={loading}>
 				<Row className="section">
 					<h3 className="title">Mi Cuenta</h3>
-					<UserData
-						userValue={user}
-						handleChange={onUserChange}
-						errors={errors}
-						organizationDisabled
-						userTypeDisabled
-						emailDisabled
-					/>
 				</Row>
+				<Row>
+					<Col xs={12} sm={3}>
+						<div className={classes.card}>
+							<Card className="text-center">
+								<Card.Header>Mi Foto</Card.Header>
+								<Card.Body>
+									<Row className="justifyCenter">
+										<Col>
+											<Image roundedCircle thumbnail src={userLogo} />
+										</Col>
+									</Row>
+									<Row>
+										<Col className="justifyCenter">
+											<Button loading={loading} onClick={onChangeImage}>
+												Cambiar
+											</Button>
+										</Col>
+									</Row>
+								</Card.Body>
+							</Card>
+						</div>
+					</Col>
+					<Col xs={12} sm={9}>
+						<UserData
+							userValue={user}
+							handleChange={onUserChange}
+							errors={errors}
+							organizationDisabled
+							userTypeDisabled
+							emailDisabled
+						/>
+					</Col>
+				</Row>
+
 				<Row className="section">
 					<h3 className="title" />
 					<Col className="justifyEnd">

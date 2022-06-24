@@ -2,10 +2,13 @@ query listUsersBySemester($id: ID!) {
 	getLabSemester(id: $id) {
 		users {
 			items {
+				_deleted
 				user {
 					id
 					name
 					email
+					role
+					_deleted
 				}
 			}
 		}

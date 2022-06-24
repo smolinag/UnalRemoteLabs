@@ -16,7 +16,10 @@ export interface LabPracticeInfo {
 }
 
 export interface SessionUser {
-  id: string,
-  name: string,
-  email: string
+  userId: string,
+  userName: string,
+  userEmail: string,  
+  sessionUserid?: string,
+  sessionUserVersion?: number,
+  sessionUserDeleted: boolean
 }

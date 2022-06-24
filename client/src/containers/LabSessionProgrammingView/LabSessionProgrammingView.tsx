@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import {Container, Row, Col} from 'react-bootstrap';
 import {useLocation, useNavigate} from 'react-router-dom';
 
+import awsmobile from '../../aws-exports';
 import LabSessionData from '../../components/LabSessionProgramming/LabSessionData';
 import {LoadingContainer, Button, Table} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
@@ -9,7 +10,9 @@ import {
 	useCreateLabPracticeSessionMutation,
 	useUpdateLabPracticeSessionMutation,
 	useListUsersBySemesterQuery,
+	useListUsersByLabPracticeSessionQuery,
 	useCreateUserLabPracticeSessionMutation,
+	useDeleteUserLabPracticeSessionMutation,
 	useSendEmailMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -36,19 +39,51 @@ const LabSessionProgrammingView: React.FC = () => {
 	const [createLabPracticeSession] = useCreateLabPracticeSessionMutation({});
 	const [updateLabPracticeSession] = useUpdateLabPracticeSessionMutation({});
 	const [createUserLabPracticeSession] = useCreateUserLabPracticeSessionMutation({});
+	const [deleteUserLabPracticeSession] = useDeleteUserLabPracticeSessionMutation({});
 	const {data: semesterUsers} = useListUsersBySemesterQuery({variables: {id: labSession.semesterId}});
+	const {data: sessionUsers} = useListUsersByLabPracticeSessionQuery({variables: {id: labSession.id ?? ''}});
 	const [sendEmail] = useSendEmailMutation();
 
-	useEffect(() => {
-		const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
-		if (semesterUserList) {
-			const data = semesterUserList.map((item) => {
-				return {name: item?.user?.name ?? '', id: item ? item.user.id : '', email: item ? item.user.email : ''};
-			});
-
-			setStudentList(data);
-		}
-	}, [semesterUsers]);
+	if (!labSession.id) {
+		//Create lab practice session. Load semester users by default
+		useEffect(() => {
+			const semesterUserList = semesterUsers?.getLabSemester?.users?.items;
+			if (semesterUserList) {
+				const data = semesterUserList
+					.filter((item) => !item?._deleted && item?.user.role === 'Students' && !item.user._deleted)
+					.map((item) => {
+						return {
+							userName: item?.user?.name ?? '',
+							userId: item ? item.user.id : '',
+							userEmail: item ? item.user.email : '',
+							sessionUserDeleted: false
+						};
+					});
+				setStudentList(data);
+			}
+		}, [semesterUsers]);
+	} else {
+		//Update lab practice session. Load session users
+		useEffect(() => {
+			const sessionUserList = sessionUsers?.getLabPracticeSession?.UserLabPracticeSessions?.items;
+			if (sessionUserList) {
+				const data = sessionUserList
+					.filter((item) => !item?._deleted && item?.User?.role === 'Students' && !item.User._deleted)
+					.map((item) => {
+						return {
+							userName: item?.User?.name ?? '',
+							userId: item?.User?.id ?? '',
+							userEmail: item?.User?.email ?? '',
+							sessionUserid: item?.id,
+							sessionUserVersion: item?._version,
+							sessionUserDeleted: false
+						};
+					});
+				setStudentList(data);
+				console.log(data);
+			}
+		}, [sessionUsers]);
+	}
 
 	const onSessionDescriptionChange = (value: string) => {
 		setSessionInfo((previousState) => {
@@ -76,7 +111,7 @@ const LabSessionProgrammingView: React.FC = () => {
 							endDate: labSession.labPractice?.duration
 								? new Date(labSessionInfo.startDate.getTime() + labSession.labPractice.duration * 60000)
 								: labSessionInfo.startDate,
-							leaderUsers: studentList.length > 0 ? studentList[0].id : '', //Set first student as leader by default
+							leaderUsers: studentList.length > 0 ? studentList[0].userId : '', //Set first student as leader by default
 							createdBy: '1'
 						}
 					}
@@ -86,32 +121,47 @@ const LabSessionProgrammingView: React.FC = () => {
 				} else {
 					if (studentList.length > 0) {
 						for (const student of studentList) {
-							const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
+							try {
+								const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
+									variables: {
+										input: {
+											userID: student.userId,
+											labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
+										}
+									}
+								});
+								if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
+									throw Error('');
+								}
+							} catch (ex) {
+								console.error(ex);
+								showErrorBanner(
+									`Error en la asignación del usuario ${student.userName} a la sesión del laboratorio ${labSession.labPractice?.name}`
+								);
+							}
+						}
+						try {
+							await sendEmail({
 								variables: {
 									input: {
-										userID: student.id,
-										labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
+										topic: 'Registro a sesión de laboratorio ' + labSession.labPractice?.name,
+										emailList: JSON.stringify(
+											studentList.filter((student) => !student.sessionUserDeleted).map((student) => student.userEmail)
+										),
+										message:
+											'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
+											labSession.labPractice?.name +
+											' para la fecha: ' +
+											labSessionInfo.startDate.toLocaleString() +
+											'.\nPara ingresar use el siguiente link: ' +
+											awsmobile.oauth.redirectSignIn
 									}
 								}
 							});
-							if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
-								throw Error('');
-							}
+						} catch (ex) {
+							console.error(ex);
+							showErrorBanner(`Error al enviar las notificaciones por correo electrónico`);
 						}
-						await sendEmail({
-							variables: {
-								input: {
-									topic: 'Registro a sesión de laboratorio ' + labSession.labPractice?.name,
-									emailList: JSON.stringify(studentList.map((item) => item.email)),
-									message:
-										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
-										labSession.labPractice?.name +
-										' para la fecha: ' +
-										labSessionInfo.startDate.toLocaleString() +
-										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
-								}
-							}
-						});
 					} else {
 						//TODO Deal with sessions with no students
 						console.log('Created session with no students');
@@ -132,6 +182,7 @@ const LabSessionProgrammingView: React.FC = () => {
 		if (labSessionInfo.id) {
 			setLoading(true);
 			try {
+				//Update LabPracticeSession data
 				const {data: labPracticeSessionData} = await updateLabPracticeSession({
 					variables: {
 						input: {
@@ -142,7 +193,7 @@ const LabSessionProgrammingView: React.FC = () => {
 							endDate: labSession.labPractice?.duration
 								? new Date(new Date(labSessionInfo.startDate).getTime() + labSession.labPractice.duration * 60000)
 								: labSessionInfo.startDate,
-							leaderUsers: studentList.length > 0 ? studentList[0].id : '', //Set first student as leader by default
+							leaderUsers: studentList.length > 0 ? studentList[0].userId : '', //Set first student as leader by default
 							createdBy: '1'
 						}
 					}
@@ -150,21 +201,41 @@ const LabSessionProgrammingView: React.FC = () => {
 				if (!labPracticeSessionData?.updateLabPracticeSession?.id) {
 					throw Error('');
 				} else {
-					if (studentList.length > 0) {
-						await sendEmail({
-							variables: {
-								input: {
-									topic: 'Actualización de sesión de laboratorio ' + labSession.labPractice?.name,
-									emailList: JSON.stringify(studentList.map((item) => item.email)),
-									message:
-										'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha actualizado una sesión de laboratorio para la práctica ' +
-										labSession.labPractice?.name +
-										' para la fecha: ' +
-										labSessionInfo.startDate.toLocaleString() +
-										'.\nPara ingresar use el siguiente link: www.laboratoriosremotos.com'
-								}
+					//Check if students were removed from the list. If so delete them from UserLabPracticeSession
+					studentList.forEach(async (student) => {
+						try {
+							if (student.sessionUserDeleted && student.sessionUserid && student.sessionUserVersion) {
+								await deleteLabPracticeSessionUser(student.sessionUserid, student.sessionUserVersion);
 							}
-						});
+						} catch (ex) {
+							console.error(ex);
+							showErrorBanner(`Error al eliminar el usuario: ${student.userName} con id: ${student.userId}`);
+						}
+					});
+
+					if (studentList.length > 0) {
+						try {
+							await sendEmail({
+								variables: {
+									input: {
+										topic: 'Actualización de sesión de laboratorio ' + labSession.labPractice?.name,
+										emailList: JSON.stringify(
+											studentList.filter((student) => !student.sessionUserDeleted).map((item) => item.userEmail)
+										),
+										message:
+											'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha actualizado una sesión de laboratorio para la práctica ' +
+											labSession.labPractice?.name +
+											' para la fecha: ' +
+											labSessionInfo.startDate.toLocaleString() +
+											'.\nPara ingresar use el siguiente link: ' +
+											awsmobile.oauth.redirectSignIn
+									}
+								}
+							});
+						} catch (ex) {
+							console.error(ex);
+							showErrorBanner(`Error al enviar las notificaciones por correo electrónico`);
+						}
 					} else {
 						//TODO Deal with sessions with no students
 						console.log('Updated session with no students');
@@ -181,22 +252,45 @@ const LabSessionProgrammingView: React.FC = () => {
 		}
 	};
 
+	const deleteLabPracticeSessionUser = async (id: string, version: number) => {
+		if (id !== undefined && id !== null && id !== '') {
+			await deleteUserLabPracticeSession({
+				variables: {
+					input: {
+						id: id,
+						_version: version
+					}
+				}
+			});
+		}
+	};
+
 	const mapStudentsForTable = (students: Array<SessionUser>) => {
 		const data: string[][] = [];
 		students.forEach((item) => {
-			data.push([item.name, item.email]);
+			data.push([item.userName, item.userEmail]);
 		});
 		return data;
 	};
 
 	const handleTableAction = (index: number, action: Action, row: React.ReactNode[] = []) => {
+		let studentListNew;
 		switch (action) {
-			case Action.Delete:
-				setStudentList(studentList.filter((student) => student.name !== row[0]));
+			case Action.Delete: {
+				studentListNew = [...studentList];
+				const sessionStudentToDelete = {...studentListNew[index], sessionUserDeleted: true};
+				studentListNew[index] = sessionStudentToDelete;
+				setStudentList(studentListNew);
 				break;
-			case Action.DeleteAll:
-				setStudentList([]);
+			}
+			case Action.DeleteAll: {
+				setStudentList(
+					studentList.map((student) => {
+						return {...student, sessionUserDeleted: true};
+					})
+				);
 				break;
+			}
 		}
 	};
 
@@ -217,7 +311,7 @@ const LabSessionProgrammingView: React.FC = () => {
 					<Col sm={8} className={classes.table}>
 						<Table
 							headers={['Nombre', 'Correo']}
-							data={mapStudentsForTable(studentList)}
+							data={mapStudentsForTable(studentList.filter((student) => !student.sessionUserDeleted))}
 							removable
 							hasRemoveAll
 							overflow

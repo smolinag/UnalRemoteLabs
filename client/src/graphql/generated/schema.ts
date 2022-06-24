@@ -2143,6 +2143,19 @@ export type DeleteUserMutation = {__typename?: 'Mutation'} & {
 	>;
 };
 
+export type DeleteUserLabPracticeSessionMutationVariables = Exact<{
+	input: DeleteUserLabPracticeSessionInput;
+}>;
+
+export type DeleteUserLabPracticeSessionMutation = {__typename?: 'Mutation'} & {
+	deleteUserLabPracticeSession?: Maybe<
+		{__typename?: 'UserLabPracticeSession'} & Pick<
+			UserLabPracticeSession,
+			'id' | 'labpracticesessionID' | 'userID' | '_version' | '_deleted'
+		>
+	>;
+};
+
 export type DeleteUserLabSemesterMutationVariables = Exact<{
 	input: DeleteUserLabSemesterInput;
 }>;
@@ -2797,9 +2810,9 @@ export type ListUsersByLabPracticeSessionQuery = {__typename?: 'Query'} & {
 				{__typename?: 'ModelUserLabPracticeSessionConnection'} & {
 					items: Array<
 						Maybe<
-							{__typename?: 'UserLabPracticeSession'} & {
-								User?: Maybe<{__typename?: 'User'} & Pick<User, 'email' | 'id' | 'name'>>;
-							}
+							{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'id' | '_version' | '_deleted'> & {
+									User?: Maybe<{__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>>;
+								}
 						>
 					>;
 				}
@@ -2819,7 +2832,9 @@ export type ListUsersBySemesterQuery = {__typename?: 'Query'} & {
 				{__typename?: 'ModelUserLabSemesterConnection'} & {
 					items: Array<
 						Maybe<
-							{__typename?: 'UserLabSemester'} & {user: {__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email'>}
+							{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, '_deleted'> & {
+									user: {__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>;
+								}
 						>
 					>;
 				}
@@ -3878,6 +3893,57 @@ export function useDeleteUserMutation(
 export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
 export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
 export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
+export const DeleteUserLabPracticeSessionDocument = gql`
+	mutation deleteUserLabPracticeSession($input: DeleteUserLabPracticeSessionInput!) {
+		deleteUserLabPracticeSession(input: $input) {
+			id
+			labpracticesessionID
+			userID
+			_version
+			_deleted
+		}
+	}
+`;
+export type DeleteUserLabPracticeSessionMutationFn = Apollo.MutationFunction<
+	DeleteUserLabPracticeSessionMutation,
+	DeleteUserLabPracticeSessionMutationVariables
+>;
+
+/**
+ * __useDeleteUserLabPracticeSessionMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserLabPracticeSessionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserLabPracticeSessionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserLabPracticeSessionMutation, { data, loading, error }] = useDeleteUserLabPracticeSessionMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteUserLabPracticeSessionMutation(
+	baseOptions?: Apollo.MutationHookOptions<
+		DeleteUserLabPracticeSessionMutation,
+		DeleteUserLabPracticeSessionMutationVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useMutation<DeleteUserLabPracticeSessionMutation, DeleteUserLabPracticeSessionMutationVariables>(
+		DeleteUserLabPracticeSessionDocument,
+		options
+	);
+}
+export type DeleteUserLabPracticeSessionMutationHookResult = ReturnType<typeof useDeleteUserLabPracticeSessionMutation>;
+export type DeleteUserLabPracticeSessionMutationResult = Apollo.MutationResult<DeleteUserLabPracticeSessionMutation>;
+export type DeleteUserLabPracticeSessionMutationOptions = Apollo.BaseMutationOptions<
+	DeleteUserLabPracticeSessionMutation,
+	DeleteUserLabPracticeSessionMutationVariables
+>;
 export const DeleteUserLabSemesterDocument = gql`
 	mutation deleteUserLabSemester($input: DeleteUserLabSemesterInput!) {
 		deleteUserLabSemester(input: $input) {
@@ -5630,10 +5696,15 @@ export const ListUsersByLabPracticeSessionDocument = gql`
 		getLabPracticeSession(id: $id) {
 			UserLabPracticeSessions {
 				items {
+					id
+					_version
+					_deleted
 					User {
-						email
 						id
 						name
+						email
+						role
+						_deleted
 					}
 				}
 			}
@@ -5691,10 +5762,13 @@ export const ListUsersBySemesterDocument = gql`
 		getLabSemester(id: $id) {
 			users {
 				items {
+					_deleted
 					user {
 						id
 						name
 						email
+						role
+						_deleted
 					}
 				}
 			}

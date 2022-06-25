@@ -5,6 +5,7 @@ export interface User {
 	identificationNumber?: string;
 	email?: string;
 	phone?: string;
+	s3AvatarPath?: string | null;
 	role: Role;
 	version?: number;
 	deleted?: boolean | null;

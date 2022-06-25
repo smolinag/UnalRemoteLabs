@@ -10,3 +10,4 @@ export {default as ModalComponent} from './ModalComponent/ModalComponent';
 export {default as DateTimePickerComponent} from './DateTimePicker/DateTimePickerComponent';
 export {default as TextLabel} from './TextLabel/TextLabel';
 export {default as FileInput} from './FileInput/FileInput';
+export {default as ImageInput} from './ImageInput/ImageInput';

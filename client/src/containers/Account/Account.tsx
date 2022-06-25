@@ -1,9 +1,10 @@
+import {Storage} from 'aws-amplify';
 import React, {useContext, useState, useEffect} from 'react';
 import {Container, Row, Col, Card, Image} from 'react-bootstrap';
 import {useLocation, useNavigate} from 'react-router-dom';
 
 import userLogo from '../../assets/images/userLogo.png';
-import {Button, LoadingContainer} from '../../components/UI';
+import {Button, LoadingContainer, ImageInput} from '../../components/UI';
 import {UserData} from '../../components/Users/index';
 import {isEmail} from '../../generalUtils/EmailUtils';
 import {useUpdateUserMutation, useGetUserByEmailQuery} from '../../graphql/generated/schema';
@@ -19,6 +20,7 @@ const initialUser: User = {
 	identificationNumber: '',
 	email: '',
 	phone: '',
+	s3AvatarPath: null,
 	role: Role.Students
 };
 
@@ -26,6 +28,8 @@ const Account: React.FC = () => {
 	const [user, setUser] = useState<User>(initialUser);
 	const [errors, setErrors] = useState<ErrorIdentifier[]>([]);
 	const [loading, setLoading] = useState<boolean>(false);
+	const [userImage, setUserImage] = React.useState<string>(userLogo);
+	const [userImageFile, setUserImageFile] = React.useState<File | null>(null);
 
 	const [updateUser] = useUpdateUserMutation();
 
@@ -52,9 +56,17 @@ const Account: React.FC = () => {
 						identificationNumber: user.identificationNumber ?? '',
 						phone: user.phone ?? '',
 						role: user.role,
+						s3AvatarPath: user.s3AvatarPath,
 						version: user._version,
 						deleted: user._deleted ?? false
 					});
+					const setImages = async () => {
+						if (user.s3AvatarPath && user.s3AvatarPath !== null) {
+							const userImage = await Storage.get(user.s3AvatarPath);
+							setUserImage(userImage);
+						}
+					};
+					setImages();
 				}
 			}
 		}
@@ -106,6 +118,7 @@ const Account: React.FC = () => {
 							identificationNumber: user?.identificationNumber,
 							email: user?.email ? user.email : '',
 							phone: user?.phone,
+							s3AvatarPath: user.s3AvatarPath,
 							createdBy: '1',
 							_version: user.version
 						}
@@ -114,6 +127,14 @@ const Account: React.FC = () => {
 
 				if (!userData?.updateUser?.id) {
 					throw Error('Error Actualizando Usuario');
+				} else {
+					try {
+						if (userImageFile && userImageFile !== null && user.s3AvatarPath && user.s3AvatarPath !== null) {
+							await Storage.put(user.s3AvatarPath, userImageFile);
+						}
+					} catch (e) {
+						console.error('Error uploading guide to S3', e);
+					}
 				}
 
 				showSuccessBanner(`El usuario ${user.email} fue actualizado exitosamente`);
@@ -128,8 +149,18 @@ const Account: React.FC = () => {
 		}
 	};
 
-	const onChangeImage = () => {
-		console.log('Hola');
+	const onChangeImage = async (file: File) => {
+		if (file && file !== null) {
+			if (file.type === 'image/jpeg' || file.type === 'image/png') {
+				const extension = file.name.split('.').pop();
+				setUser({...user, s3AvatarPath: `profile-pictures/${user.id}.${extension}`});
+				setUserImageFile(file);
+				const userImage = URL.createObjectURL(file);
+				setUserImage(userImage);
+			} else {
+				showErrorBanner('El archivo seleccionado debe ser jpg o png');
+			}
+		}
 	};
 
 	return (
@@ -146,14 +177,12 @@ const Account: React.FC = () => {
 								<Card.Body>
 									<Row className="justifyCenter">
 										<Col>
-											<Image roundedCircle thumbnail src={userLogo} />
+											<Image roundedCircle thumbnail src={userImage} />
 										</Col>
 									</Row>
 									<Row>
 										<Col className="justifyCenter">
-											<Button loading={loading} onClick={onChangeImage}>
-												Cambiar
-											</Button>
+											<ImageInput onFileSelected={(file) => onChangeImage(file)} />
 										</Col>
 									</Row>
 								</Card.Body>

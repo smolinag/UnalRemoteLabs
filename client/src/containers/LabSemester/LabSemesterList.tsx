@@ -6,6 +6,7 @@ import {LabSemesterTable} from '../../components/LabSemester';
 import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {Groups} from '../../generalUtils/groups';
+import { ValidateGroupComponent } from '../../generalUtils/ValidateGroup';
 import {
 	useListLabSemestersByLaboratoryIdQuery,
 	useDeleteLabSemesterMutation,
@@ -13,9 +14,10 @@ import {
 	useSendEmailMutation,
 	useListUserByLabSemesterQuery
 } from '../../graphql/generated/schema';
-import { useAuthContext } from '../../GroupProvider';
+import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {LabSemester, Laboratory, LocationStateList} from './types';
+
 
 const initialLabSemester: LabSemester = {
 	id: '',
@@ -30,7 +32,7 @@ const LabSemesterList: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const {group} = useAuthContext();
-	
+
 	const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
 	const userId: string = (location.state as LocationStateList)?.userId;
 
@@ -41,7 +43,7 @@ const LabSemesterList: React.FC = () => {
 
 	// const group = 'Admins';
 
-	if (group === Groups.StudentsGroup || group === Groups.MonitorsGroup) {
+	if (group === Groups.StudentsGroup || group === Groups.MonitorsGroup || group === Groups.ProfessorsGroup) {
 		useListUserByLabSemesterQuery({
 			variables: {userId},
 			fetchPolicy: 'network-only',
@@ -212,15 +214,17 @@ const LabSemesterList: React.FC = () => {
 				<h3 className="title">Semestres{laboratoryID ? ` de Laboratorio ${laboratory?.name}` : ''}</h3>
 			</Row>
 			<Row className="section">
-				<LabSemesterTable data={labSemesters} onAction={handleLabSemesterAction} />
+				<LabSemesterTable data={labSemesters} onAction={handleLabSemesterAction} userId={userId} />
 			</Row>
-			<Row className="section">
-				<div className="justifyEnd">
-					<Button loading={false} onClick={() => navigate('/lab-semester-creation', {state: {laboratoryID}})}>
-						Crear
-					</Button>
-				</div>
-			</Row>
+			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.ProfessorsGroup]}>
+				<Row className="section">
+					<div className="justifyEnd">
+						<Button loading={false} onClick={() => navigate('/lab-semester-creation', {state: {laboratoryID}})}>
+							Crear
+						</Button>
+					</div>
+				</Row>
+			</ValidateGroupComponent>
 		</LoadingContainer>
 	);
 };

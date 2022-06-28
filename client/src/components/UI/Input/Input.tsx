@@ -16,9 +16,22 @@ interface Props {
 	max?: number;
 	onValueChange: (value: string) => void;
 	error?: boolean;
+	isDisabled?: boolean;
 }
 
-const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, unit, min, max, onValueChange, error}) => {
+const Input: React.FC<Props> = ({
+	type,
+	placeholder,
+	required,
+	value,
+	tooltip,
+	unit,
+	min,
+	max,
+	onValueChange,
+	error,
+	isDisabled = false
+}) => {
 	let unitString = '';
 
 	const valueChange = (value: string): void => {
@@ -41,9 +54,9 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 				<span className={classes.inputTitle}>
 					{placeholder}: {required && '(Requerido)'}
 				</span>
-				<div className={classes.inputSubwrapper} >
+				<div className={classes.inputSubwrapper}>
 					<input
-						style={type === "number" ? {"width": "100px"} : {"width": "250px"}}
+						style={type === 'number' ? {width: '100px'} : {width: '250px'}}
 						type={type}
 						placeholder={placeholder}
 						required={required}
@@ -52,6 +65,7 @@ const Input: React.FC<Props> = ({type, placeholder, required, value, tooltip, un
 						className={classes.input}
 						min={min}
 						max={max}
+						disabled={isDisabled}
 					/>
 					{unit && <span className={classes.input}>{unitString}</span>}
 

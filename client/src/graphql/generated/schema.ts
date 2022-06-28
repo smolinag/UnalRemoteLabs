@@ -2721,6 +2721,24 @@ export type ListLaboratoriesQuery = {__typename?: 'Query'} & {
 	>;
 };
 
+export type ListLaboratoriesByUserQueryVariables = Exact<{[key: string]: never}>;
+
+export type ListLaboratoriesByUserQuery = {__typename?: 'Query'} & {
+	listUserLabSemesters?: Maybe<
+		{__typename?: 'ModelUserLabSemesterConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'UserLabSemester'} & {
+						labsemester: {__typename?: 'LabSemester'} & {
+							Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name'>>;
+						};
+					}
+				>
+			>;
+		}
+	>;
+};
+
 export type ListOrganizationsQueryVariables = Exact<{[key: string]: never}>;
 
 export type ListOrganizationsQuery = {__typename?: 'Query'} & {
@@ -5488,6 +5506,60 @@ export function useListLaboratoriesLazyQuery(
 export type ListLaboratoriesQueryHookResult = ReturnType<typeof useListLaboratoriesQuery>;
 export type ListLaboratoriesLazyQueryHookResult = ReturnType<typeof useListLaboratoriesLazyQuery>;
 export type ListLaboratoriesQueryResult = Apollo.QueryResult<ListLaboratoriesQuery, ListLaboratoriesQueryVariables>;
+export const ListLaboratoriesByUserDocument = gql`
+	query listLaboratoriesByUser {
+		listUserLabSemesters(filter: {userID: {eq: "16295a0d-7ea0-4452-95a1-7e45068f4191"}}) {
+			items {
+				labsemester {
+					Laboratory {
+						id
+						name
+					}
+				}
+			}
+		}
+	}
+`;
+
+/**
+ * __useListLaboratoriesByUserQuery__
+ *
+ * To run a query within a React component, call `useListLaboratoriesByUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListLaboratoriesByUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListLaboratoriesByUserQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useListLaboratoriesByUserQuery(
+	baseOptions?: Apollo.QueryHookOptions<ListLaboratoriesByUserQuery, ListLaboratoriesByUserQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListLaboratoriesByUserQuery, ListLaboratoriesByUserQueryVariables>(
+		ListLaboratoriesByUserDocument,
+		options
+	);
+}
+export function useListLaboratoriesByUserLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<ListLaboratoriesByUserQuery, ListLaboratoriesByUserQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListLaboratoriesByUserQuery, ListLaboratoriesByUserQueryVariables>(
+		ListLaboratoriesByUserDocument,
+		options
+	);
+}
+export type ListLaboratoriesByUserQueryHookResult = ReturnType<typeof useListLaboratoriesByUserQuery>;
+export type ListLaboratoriesByUserLazyQueryHookResult = ReturnType<typeof useListLaboratoriesByUserLazyQuery>;
+export type ListLaboratoriesByUserQueryResult = Apollo.QueryResult<
+	ListLaboratoriesByUserQuery,
+	ListLaboratoriesByUserQueryVariables
+>;
 export const ListOrganizationsDocument = gql`
 	query listOrganizations {
 		listOrganizations {

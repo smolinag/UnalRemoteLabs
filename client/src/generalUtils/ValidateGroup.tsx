@@ -6,7 +6,7 @@ interface Props {
 	groups: string[];
 }
 
-export const ValidateGroupComonent: React.FC<Props> = ({children, groups}) => {
+export const ValidateGroupComponent: React.FC<Props> = ({children, groups}) => {
 	const {group} = useAuthContext();
 
 	const validateGroup = () => {
@@ -21,7 +21,7 @@ export const ValidateGroupComonent: React.FC<Props> = ({children, groups}) => {
 	return <>{validateGroup() ? children : null}</>;
 };
 
-export const ValidateGroupFunction = (groups: string[]) => {
+export const validateGroupFunction = (groups: string[]) => {
 	const {group} = useAuthContext();
 
 	let isAllowed = false;

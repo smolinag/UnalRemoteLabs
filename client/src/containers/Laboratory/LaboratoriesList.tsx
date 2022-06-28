@@ -7,7 +7,7 @@ import {Button, LoadingContainer, ModalComponent} from '../../components/UI';
 import {Action} from '../../components/UI/Table/Table';
 import {Laboratory} from '../../containers/Laboratory/types';
 import {Groups} from '../../generalUtils/groups';
-import {ValidateGroupComonent} from '../../generalUtils/ValidateGroup';
+import {ValidateGroupComponent} from '../../generalUtils/ValidateGroup';
 import {useListLaboratoriesQuery, useDeleteLaboratoryMutation} from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
@@ -107,7 +107,7 @@ const LaboratoriesList: React.FC = () => {
 			<Row className="section">
 				<LaboratoriesTable data={labs} onAction={handleLaboratoryAction} />
 			</Row>
-			<ValidateGroupComonent groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}>
+			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}>
 				<Row className="section">
 					<div className="justifyEnd">
 						<Button loading={false} onClick={() => navigate('/lab-creation')}>
@@ -115,7 +115,7 @@ const LaboratoriesList: React.FC = () => {
 						</Button>
 					</div>
 				</Row>
-			</ValidateGroupComonent>
+			</ValidateGroupComponent>
 		</LoadingContainer>
 	);
 };

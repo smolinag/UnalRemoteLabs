@@ -3,6 +3,7 @@ import React, {useState, useContext, useEffect} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+<<<<<<< HEAD
 // import { Groups } from '../../generalUtils/groups';
 // import ValidateGroup from '../../generalUtils/ValidateGroup';
 import {
@@ -10,6 +11,11 @@ import {
 	useGetLabPracticeSessionQuery,
 	useListUsersByLabPracticeSessionQuery
 } from '../../graphql/generated/schema';
+=======
+import { Groups } from '../../generalUtils/groups';
+import { ValidateGroupComponent } from '../../generalUtils/ValidateGroup';
+import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery} from '../../graphql/generated/schema';
+>>>>>>> f0b380e... Restringir módulos según grupo
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {DropdownComponent, Button} from '../UI';
 
@@ -209,6 +215,7 @@ const LabTitle: React.FC<Props> = ({
 					</Col>
 				</Row>
 			</Col>
+<<<<<<< HEAD
 			{/* <ValidateGroup groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}> */}
 
 			<Col sm={3}>
@@ -257,6 +264,33 @@ const LabTitle: React.FC<Props> = ({
 				</Row>
 			</Col>
 			{/* </ValidateGroup> */}
+=======
+			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}>
+				{isVideoUrlInputEnabled ? (
+					<Col sm={5}>
+						<Row>
+							<span>Código de vídeo: </span>
+						</Row>
+						<Row style={{display: 'flex', alignItems: 'center'}}>
+							<Col xs={6}>
+								<input
+									type="text"
+									placeholder="Código"
+									value={videoUrl}
+									onChange={(e) => handleVideoUrlChange(e.target.value)}
+									style={{width: '-webkit-fill-available'}}
+								/>
+							</Col>
+							<Col xs={3}>
+								<Button loading={loading} onClick={handleLabPracticeSessionUpdate}>
+									Guardar
+								</Button>
+							</Col>
+						</Row>
+					</Col>
+				) : null}
+			</ValidateGroupComponent>
+>>>>>>> f0b380e... Restringir módulos según grupo
 		</Row>
 	);
 };

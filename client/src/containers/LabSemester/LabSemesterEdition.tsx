@@ -316,7 +316,7 @@ const LabSemesterEdition: React.FC = () => {
 			<LoadingContainer loading={loading}>
 				<Row className="section">
 					<h3 className="title">Edición de Semestre de laboratorio de {laboratory.name}</h3>
-					<LabSemesterData labSemesterValue={labSemester} handleChange={onLabSemesterChange} errors={errors} />
+					<LabSemesterData labSemesterValue={labSemester} handleChange={onLabSemesterChange} errors={errors} laboratories={[]} />
 				</Row>
 				<Row className="section">
 					<h3 className="title">Profesor</h3>
@@ -339,12 +339,16 @@ const LabSemesterEdition: React.FC = () => {
 				</Row>
 				<Row className="section">
 					<h3 className="title">Estudiantes</h3>
+<<<<<<< HEAD
 					<EmailsInputWithTable
 						emails={labSemester.studentEmailList}
 						onHandleChange={onStudentEmailHandleChange}
 						role={Role.Students}
 						setLoading={setLoading}
 					/>
+=======
+					<EmailsInputWithTable emails={labSemester.studentEmailList} onHandleChange={onStudentEmailHandleChange} students/>
+>>>>>>> f0b380e... Restringir módulos según grupo
 				</Row>
 				<Row className="section">
 					<h3 className="title" />

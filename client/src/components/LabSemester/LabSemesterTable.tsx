@@ -4,24 +4,25 @@ import {useNavigate} from 'react-router-dom';
 
 import {LabSemester} from '../../containers/LabSemester/types';
 import {Groups} from '../../generalUtils/groups';
-import { useAuthContext } from '../../GroupProvider';
+import {useAuthContext} from '../../GroupProvider';
 import {Table} from '../UI/index';
 import {Action} from '../UI/Table/Table';
 
 interface Props {
 	data: LabSemester[];
 	onAction?: (rowIndex: number, action: Action) => void;
+	userId?: string;
 }
 
 const COLUMNS = ['Semestre', 'Descripción', 'Profesor', 'Programar', 'Sesiones'];
 const COLUMNS_STUDENTS = ['Laboratorio', 'Semestre', 'Descripción', 'Profesor', 'Prácticas', 'Sesiones'];
 const COLUMNS_MONITORS = ['Laboratorio', 'Semestre', 'Descripción', 'Profesor', 'Programar', 'Sesiones'];
 
-const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
+const LabSemesterTable: React.FC<Props> = ({data, onAction, userId}) => {
 	const {group} = useAuthContext();
 	const navigate = useNavigate();
 
-	const mapOutput = ({
+	const mapAdminOutput = ({
 		semesterName,
 		description,
 		professorEmailList,
@@ -35,7 +36,7 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
 	];
 
-	const mapMonitorOutput = ({
+	const mapOutput = ({
 		laboratory,
 		semesterName,
 		description,
@@ -71,7 +72,7 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 				className="links"
 				onClick={() =>
 					navigate('/user-labs-sessions', {
-						state: {labId, labSemesterId}
+						state: {labId, labSemesterId, userId}
 					})
 				}>
 				Sesiones
@@ -85,6 +86,8 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 				return COLUMNS_STUDENTS;
 			case Groups.MonitorsGroup:
 				return COLUMNS_MONITORS;
+			case Groups.ProfessorsGroup:
+				return COLUMNS_MONITORS;
 			default:
 				return COLUMNS;
 		}
@@ -93,10 +96,14 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 	/* eslint-disable @typescript-eslint/no-explicit-any */
 	const filterDataByGroup = (data: any) => {
 		switch (group) {
-			case Groups.StudentsGroup || Groups.MonitorsGroup:
-				return mapMonitorOutput(data);
-			default:
+			case Groups.StudentsGroup:
 				return mapOutput(data);
+			case Groups.MonitorsGroup:
+				return mapOutput(data);
+			case Groups.ProfessorsGroup:
+				return mapOutput(data);
+			default:
+				return mapAdminOutput(data);
 		}
 	};
 
@@ -108,7 +115,7 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction}) => {
 				overflow
 				stickyHeader
 				maxHeight={'400px'}
-				editable={group === Groups.AdminsGroup || group === Groups.ProfessorsGroup}
+				editable={group === Groups.AdminsGroup || group === Groups.ProfessorsGroup || group === Groups.MonitorsGroup}
 				removable={group === Groups.AdminsGroup || group === Groups.ProfessorsGroup}
 				onAction={onAction}
 			/>

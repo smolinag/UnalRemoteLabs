@@ -33,7 +33,12 @@ export interface LocationStateEdition {
 export enum Params {
 	Name = 'name',
 	Description = 'description',
+<<<<<<< HEAD
 	professor = 'profesor'
+=======
+	professor = 'profesor',
+	Laboratory = 'Laboratory'
+>>>>>>> f0b380e... Restringir módulos según grupo
 }
 
 export interface ErrorIdentifier {

@@ -4,7 +4,12 @@ import {Col, Row} from 'react-bootstrap';
 import EmailsInput from '../../components/LabSemester/EmailsInput';
 import {UserType} from '../../containers/Users/types';
 import {isEmail} from '../../generalUtils/EmailUtils';
+<<<<<<< HEAD
 import {useGetUserByEmailQuery, Role} from '../../graphql/generated/schema';
+=======
+import {Groups} from '../../generalUtils/groups';
+import {useAuthContext} from '../../GroupProvider';
+>>>>>>> f0b380e... Restringir módulos según grupo
 import {Table} from '../UI';
 import {Action} from '../UI/Table/Table';
 import classes from './shared.module.scss';
@@ -14,6 +19,7 @@ interface Props {
 	maxEmails?: number;
 	role: Role;
 	onHandleChange: (emails: Array<string>) => void;
+<<<<<<< HEAD
 	setLoading?: (isLoading: boolean) => void;
 }
 
@@ -24,6 +30,13 @@ const USER_TYPES: UserType[] = [
 ];
 
 const EmailsInputWithTable: React.FC<Props> = ({emails, maxEmails, role, onHandleChange, setLoading}) => {
+=======
+	students?: boolean;
+}
+
+const EmailsInputWithTable: React.FC<Props> = ({emails, onHandleChange, students}) => {
+	const {group} = useAuthContext();
+>>>>>>> f0b380e... Restringir módulos según grupo
 	const [emailList, setEmailList] = useState<Array<string>>([]);
 	const [emailsValue, setEmailsValue] = useState<string>('');
 	const [emailError, setEmailError] = useState<string | null>(null);
@@ -171,14 +184,16 @@ const EmailsInputWithTable: React.FC<Props> = ({emails, maxEmails, role, onHandl
 	return (
 		<>
 			<Row>
-				<EmailsInput
-					value={emailsValue}
-					error={emailError}
-					handleKeyDown={handleKeyDown}
-					handlePaste={handlePaste}
-					handleEmailChange={handleEmailChange}
-					handleOnClick={handleOnClick}
-				/>
+				{students && (group === Groups.AdminsGroup || group === Groups.ProfessorsGroup || group === Groups.MonitorsGroup) ? (
+					<EmailsInput
+						value={emailsValue}
+						error={emailError}
+						handleKeyDown={handleKeyDown}
+						handlePaste={handlePaste}
+						handleEmailChange={handleEmailChange}
+						handleOnClick={handleOnClick}
+					/>
+				) : null}
 			</Row>
 			<Row>
 				<Col sm={8} className={classes.table}>
@@ -187,7 +202,7 @@ const EmailsInputWithTable: React.FC<Props> = ({emails, maxEmails, role, onHandl
 							headers={['']}
 							data={mapEmails(emailList)}
 							onAction={handleTableAction}
-							removable
+							removable={group === Groups.AdminsGroup}
 							hasRemoveAll
 							overflow
 							stickyHeader

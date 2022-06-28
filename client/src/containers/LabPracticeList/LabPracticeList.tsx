@@ -40,7 +40,7 @@ const LabPracticeList: React.FC = () => {
 	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 
 	const {data: labData} = useGetLaboratoryQuery({variables: {id: labId}});
-	const {data: labPracticesData} = useListLabPracticesQuery({variables: {id: labId}, fetchPolicy: 'network-only'});
+	const {data: labPracticesData, loading} = useListLabPracticesQuery({variables: {id: labId}, fetchPolicy: 'network-only'});
 
 	const [listLabPracticeCommands] = useListLabPracticeCommandsLazyQuery({});
 	const [listLabPracticeOutputs] = useListLabPracticeOutputsLazyQuery({});
@@ -225,7 +225,7 @@ const LabPracticeList: React.FC = () => {
 	};
 
 	return (
-		<LoadingContainer loading={false}>
+		<LoadingContainer loading={loading}>
 			{
 				<ModalComponent
 					display={displayModal}

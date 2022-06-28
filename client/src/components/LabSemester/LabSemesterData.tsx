@@ -51,15 +51,9 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 			case Params.Description:
 				newState = {...labSemester, description: value};
 				break;
-<<<<<<< HEAD
-=======
-			case Params.professor:
-				newState = {...labSemester, professor: value};
-				break;
 			case Params.Laboratory:
 				newState = {...labSemester, laboratoryID: labId, laboratory: value};
 				break;
->>>>>>> f0b380e... Restringir módulos según grupo
 			default:
 				return labSemester;
 		}
@@ -100,17 +94,6 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 					onValueChange={(value) => onValueChange(value, Params.Description)}
 					isDisabled={group === Groups.MonitorsGroup}
 				/>
-<<<<<<< HEAD
-=======
-				<Input
-					type="text"
-					placeholder="Profesor"
-					required
-					value={labSemester.professor ? labSemester.professor : ''}
-					onValueChange={(value) => onValueChange(value, Params.professor)}
-					isDisabled={group === Groups.MonitorsGroup}
-				/>
->>>>>>> f0b380e... Restringir módulos según grupo
 			</div>
 		</>
 	);

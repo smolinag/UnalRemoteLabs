@@ -57,7 +57,7 @@ const LabSemesterList: React.FC = () => {
 								id: labSemester ? labSemester.id : '',
 								semesterName: labSemester?.semesterName ? labSemester.semesterName : '',
 								description: labSemester?.description ? labSemester.description : null,
-								professor: labSemester?.professor ? labSemester.professor : '',
+								professorEmailList: new Array(1).fill(labSemester?.professor ? labSemester.professor : ''),
 								monitorEmailList: labSemester?.monitorEmailList ? labSemester.monitorEmailList : [],
 								studentEmailList: labSemester?.studentEmailList ? labSemester.studentEmailList : [],
 								version: labSemester?._version ? labSemester._version : null,
@@ -77,7 +77,7 @@ const LabSemesterList: React.FC = () => {
 			onCompleted: (data) => {
 				if (data?.getLaboratory != null) {
 					const lab = data.getLaboratory;
-					setLaboratory({id: lab.id, name: lab.name});
+					setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
 				}
 			}
 		});
@@ -94,7 +94,7 @@ const LabSemesterList: React.FC = () => {
 								id: obj ? obj.id : '',
 								semesterName: obj?.semesterName ? obj.semesterName : '',
 								description: obj?.description ? obj.description : null,
-								professor: obj?.professor ? obj.professor : '',
+								professorEmailList: new Array(1).fill(obj?.professor ? obj.professor : ''),
 								monitorEmailList: obj?.monitorEmailList ? obj.monitorEmailList : [],
 								studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
 								version: obj?._version ? obj._version : null,
@@ -113,37 +113,6 @@ const LabSemesterList: React.FC = () => {
 	const [deleteLabSemester] = useDeleteLabSemesterMutation();
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
 	const [sendEmail] = useSendEmailMutation();
-
-	useEffect(() => {
-		if (laboratoryData?.getLaboratory != null) {
-			const lab = laboratoryData.getLaboratory;
-			setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
-		}
-		setLoading(loadingLaboratoryData);
-	}, [laboratoryData]);
-
-	useEffect(() => {
-		if (LabSemesterData && LabSemesterData.listLabSemesters?.items) {
-			const labsList: Array<LabSemester> = LabSemesterData.listLabSemesters?.items
-				.filter((obj) => obj && !obj._deleted)
-				.map((obj) => {
-					return {
-						id: obj ? obj.id : '',
-						semesterName: obj?.semesterName ? obj.semesterName : '',
-						description: obj?.description ? obj.description : null,
-						professorEmailList: new Array(1).fill(obj?.professor ? obj.professor : ''),
-						monitorEmailList: obj?.monitorEmailList ? obj.monitorEmailList : [],
-						studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
-						version: obj?._version ? obj._version : null,
-						deleted: obj?._deleted ? obj._deleted : null,
-						laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''
-					};
-				});
-			setLabSemesters(labsList);
-		}
-
-		setLoading(loadingLabSemesterData);
-	}, [LabSemesterData]);
 
 	const handleLabSemesterAction = (index: number, action: Action) => {
 		switch (action) {

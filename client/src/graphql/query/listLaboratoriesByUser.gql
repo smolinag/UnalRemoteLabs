@@ -5,6 +5,7 @@ query listLaboratoriesByUser {
 				Laboratory {
 					id
 					name
+					organizationID
 				}
 			}
 		}

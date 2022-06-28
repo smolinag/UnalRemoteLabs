@@ -40,14 +40,14 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction, userId}) => {
 		laboratory,
 		semesterName,
 		description,
-		professor,
+		professorEmailList,
 		laboratoryID,
 		id
 	}: LabSemester): (string | React.ReactNode)[] => [
 		laboratory,
 		semesterName,
 		description,
-		professor,
+		professorEmailList,
 		redirectToLabPractice(laboratoryID ? laboratoryID : '', id ? id : ''),
 		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
 	];

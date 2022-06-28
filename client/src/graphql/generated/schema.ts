@@ -2730,7 +2730,7 @@ export type ListLaboratoriesByUserQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'UserLabSemester'} & {
 						labsemester: {__typename?: 'LabSemester'} & {
-							Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name'>>;
+							Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name' | 'organizationID'>>;
 						};
 					}
 				>
@@ -5514,6 +5514,7 @@ export const ListLaboratoriesByUserDocument = gql`
 					Laboratory {
 						id
 						name
+						organizationID
 					}
 				}
 			}

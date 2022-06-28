@@ -5,18 +5,15 @@ import {useLocation, useNavigate} from 'react-router-dom';
 import {LabSemesterData, EmailsInputWithTable} from '../../components/LabSemester/index';
 import {Button, LoadingContainer} from '../../components/UI';
 import {Groups} from '../../generalUtils/groups';
-import { validateGroupFunction } from '../../generalUtils/ValidateGroup';
+import {validateGroupFunction} from '../../generalUtils/ValidateGroup';
 import {
 	useGetLaboratoryQuery,
 	useCreateLabSemesterMutation,
 	useSendEmailMutation,
-<<<<<<< HEAD
 	useCreateUserMutation,
 	useCreateUserLabSemesterMutation,
-	useGetUserByEmailQuery
-=======
-	useListLaboratoriesByUserQuery
->>>>>>> f0b380e... Restringir módulos según grupo
+	useGetUserByEmailQuery,
+	useListLaboratoriesByUserQuery,
 } from '../../graphql/generated/schema';
 import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -28,17 +25,10 @@ const initialLabSemester: LabSemester = {
 	description: null,
 	professorEmailList: [],
 	monitorEmailList: [],
-	studentEmailList: []
+	studentEmailList: [],
+	organizationId: ''
 };
 
-<<<<<<< HEAD
-const initialLaboratory: Laboratory = {
-	name: null,
-	organizationID: ''
-};
-
-=======
->>>>>>> f0b380e... Restringir módulos según grupo
 const LabSemesterCreation: React.FC = () => {
 	const {group} = useAuthContext();
 	const navigate = useNavigate();
@@ -53,6 +43,10 @@ const LabSemesterCreation: React.FC = () => {
 	const location = useLocation();
 	const laboratoryID = (location.state as LocationStateCreation)?.laboratoryID;
 
+	const [createUser] = useCreateUserMutation();
+	const [createUserLabSemester] = useCreateUserLabSemesterMutation();
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
+
 	if (group === Groups.ProfessorsGroup) {
 		useListLaboratoriesByUserQuery({
 			onCompleted: (data) => {
@@ -65,30 +59,19 @@ const LabSemesterCreation: React.FC = () => {
 						return tempLabs.map((lab) => {
 							return {
 								id: lab?.labsemester.Laboratory?.id ? lab?.labsemester.Laboratory?.id : '',
-								name: lab?.labsemester.Laboratory?.name ? lab?.labsemester.Laboratory?.name : ''
+								name: lab?.labsemester.Laboratory?.name ? lab?.labsemester.Laboratory?.name : '',
+								organizationID: lab?.labsemester.Laboratory?.organizationID
+									? lab?.labsemester.Laboratory?.organizationID
+									: ''
 							};
 						});
 					});
 
-<<<<<<< HEAD
-	const [createUser] = useCreateUserMutation();
-	const [createUserLabSemester] = useCreateUserLabSemesterMutation();
-	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
-
-	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
-
-	useEffect(() => {
-		if (laboratoryData?.getLaboratory != null) {
-			const lab = laboratoryData.getLaboratory;
-			setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
-		}
-		setLoading(loadingLaboratoryData);
-	}, [laboratoryData]);
-=======
 					setLabSemester({
 						...labSemester,
 						laboratory: tempLabs[0]?.labsemester.Laboratory?.name ? tempLabs[0]?.labsemester.Laboratory?.name : '',
-						laboratoryID: tempLabs[0]?.labsemester.Laboratory?.id ? tempLabs[0]?.labsemester.Laboratory?.id : ''
+						laboratoryID: tempLabs[0]?.labsemester.Laboratory?.id ? tempLabs[0]?.labsemester.Laboratory?.id : '',
+						organizationId: tempLabs[0]?.labsemester.Laboratory?.organizationID ? tempLabs[0]?.labsemester.Laboratory?.organizationID : ''
 					});
 				}
 			}
@@ -112,7 +95,6 @@ const LabSemesterCreation: React.FC = () => {
 
 	const [createLabSemester] = useCreateLabSemesterMutation();
 	const [sendEmail] = useSendEmailMutation();
->>>>>>> f0b380e... Restringir módulos según grupo
 
 	const onStudentEmailHandleChange = (emails: Array<string>) => {
 		setLabSemester({...labSemester, studentEmailList: emails});
@@ -127,7 +109,6 @@ const LabSemesterCreation: React.FC = () => {
 	};
 
 	const onLabSemesterChange = (labSemester: LabSemester) => {
-		
 		setLabSemester(labSemester);
 	};
 
@@ -167,7 +148,7 @@ const LabSemesterCreation: React.FC = () => {
 				await createUser({
 					variables: {
 						input: {
-							organizationID: laboratory.organizationID,
+							organizationID: labSemester.organizationId ? labSemester.organizationId : '',
 							role: role,
 							email,
 							createdBy: '1',
@@ -287,7 +268,10 @@ const LabSemesterCreation: React.FC = () => {
 		<Container fluid>
 			<LoadingContainer loading={loading}>
 				<Row className="section">
-					<h3 className="title">Creación de Semestre {validateGroupFunction([Groups.AdminsGroup]) ? `de laboratorio de ${labSemester.laboratory}` : ''}</h3>
+					<h3 className="title">
+						Creación de Semestre{' '}
+						{validateGroupFunction([Groups.AdminsGroup]) ? `de laboratorio de ${labSemester.laboratory}` : ''}
+					</h3>
 					<LabSemesterData
 						labSemesterValue={labSemester}
 						handleChange={onLabSemesterChange}

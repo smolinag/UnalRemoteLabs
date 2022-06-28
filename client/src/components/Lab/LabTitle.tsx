@@ -3,19 +3,13 @@ import React, {useState, useContext, useEffect} from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
-<<<<<<< HEAD
-// import { Groups } from '../../generalUtils/groups';
-// import ValidateGroup from '../../generalUtils/ValidateGroup';
+import {Groups} from '../../generalUtils/groups';
+import {ValidateGroupComponent} from '../../generalUtils/ValidateGroup';
 import {
 	useUpdateLabPracticeSessionMutation,
 	useGetLabPracticeSessionQuery,
 	useListUsersByLabPracticeSessionQuery
 } from '../../graphql/generated/schema';
-=======
-import { Groups } from '../../generalUtils/groups';
-import { ValidateGroupComponent } from '../../generalUtils/ValidateGroup';
-import {useUpdateLabPracticeSessionMutation, useGetLabPracticeSessionQuery} from '../../graphql/generated/schema';
->>>>>>> f0b380e... Restringir módulos según grupo
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {DropdownComponent, Button} from '../UI';
 
@@ -113,7 +107,7 @@ const LabTitle: React.FC<Props> = ({
 
 	const handleLabPracticeSessionLeaderUserUpdate = async () => {
 		try {
-			console.log(leaderUser)
+			console.log(leaderUser);
 			setLoadingLeaderUser(true);
 			await updateLabPracticeSession({
 				variables: {
@@ -126,7 +120,7 @@ const LabTitle: React.FC<Props> = ({
 			});
 			showSuccessBanner(`El lider de la práctica  ${leaderUser ?? ''} fue correctamente guardado`);
 		} catch (e) {
-			console.log(e)
+			console.log(e);
 			showErrorBanner(`No se pudo guardar el lider de la práctica  ${leaderUser ?? ''}`);
 		} finally {
 			setLoadingLeaderUser(false);
@@ -215,59 +209,10 @@ const LabTitle: React.FC<Props> = ({
 					</Col>
 				</Row>
 			</Col>
-<<<<<<< HEAD
-			{/* <ValidateGroup groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}> */}
-
-			<Col sm={3}>
-				<Row>
-					<span>Código de vídeo: </span>
-				</Row>
-				<Row style={{display: 'flex', alignItems: 'center'}}>
-					<Col xs={6}>
-						<input
-							type="text"
-							placeholder="Código"
-							value={videoUrl}
-							onChange={(e) => handleVideoUrlChange(e.target.value)}
-							style={{width: '-webkit-fill-available'}}
-						/>
-					</Col>
-					<Col xs={3}>
-						<Button loading={loadingVideoUrl} onClick={handleLabPracticeSessionVideoUrlUpdate}>
-							Guardar
-						</Button>
-					</Col>
-				</Row>
-			</Col>
-			<Col sm={3}>
-				<Row>
-					<span>Lider de práctica: </span>
-				</Row>
-				<Row>
-					<DropdownComponent
-						simple={true}
-						text="Lider de práctica"
-						options={users.map((user) => {
-							return {value: user.name, id: user.id};
-						})}
-						onValueChange={(value, id) => {
-							handleLeaderUserChange(value, id);
-						}}
-						value={leaderUser.name}
-						disabled={false}
-					/>
-				</Row>
-				<Row style={{justifyContent: 'center'}}>
-					<Button loading={loadingLeaderUser} onClick={handleLabPracticeSessionLeaderUserUpdate}>
-						Guardar
-					</Button>
-				</Row>
-			</Col>
-			{/* </ValidateGroup> */}
-=======
 			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}>
-				{isVideoUrlInputEnabled ? (
-					<Col sm={5}>
+				<>
+					{' '}
+					<Col sm={3}>
 						<Row>
 							<span>Código de vídeo: </span>
 						</Row>
@@ -282,15 +227,38 @@ const LabTitle: React.FC<Props> = ({
 								/>
 							</Col>
 							<Col xs={3}>
-								<Button loading={loading} onClick={handleLabPracticeSessionUpdate}>
+								<Button loading={loadingVideoUrl} onClick={handleLabPracticeSessionVideoUrlUpdate}>
 									Guardar
 								</Button>
 							</Col>
 						</Row>
 					</Col>
-				) : null}
+					<Col sm={3}>
+						<Row>
+							<span>Lider de práctica: </span>
+						</Row>
+						<Row>
+							<DropdownComponent
+								simple={true}
+								text="Lider de práctica"
+								options={users.map((user) => {
+									return {value: user.name, id: user.id};
+								})}
+								onValueChange={(value, id) => {
+									handleLeaderUserChange(value, id);
+								}}
+								value={leaderUser.name}
+								disabled={false}
+							/>
+						</Row>
+						<Row style={{justifyContent: 'center'}}>
+							<Button loading={loadingLeaderUser} onClick={handleLabPracticeSessionLeaderUserUpdate}>
+								Guardar
+							</Button>
+						</Row>
+					</Col>
+				</>
 			</ValidateGroupComponent>
->>>>>>> f0b380e... Restringir módulos según grupo
 		</Row>
 	);
 };

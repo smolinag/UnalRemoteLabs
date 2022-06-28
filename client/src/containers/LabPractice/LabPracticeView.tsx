@@ -6,7 +6,7 @@ import {useLocation} from 'react-router-dom';
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
-import {Session} from '../../components/Lab/LabTitle';
+import { Session } from '../../components/Lab/LabTitle';
 import {LoadingContainer} from '../../components/UI';
 import {TimeConvert} from '../../generalUtils/ConvertTypes';
 import {

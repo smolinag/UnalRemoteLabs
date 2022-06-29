@@ -6,9 +6,11 @@ import {useLocation} from 'react-router-dom';
 import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
 import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
-import { Session } from '../../components/Lab/LabTitle';
+import {Session} from '../../components/Lab/LabTitle';
 import {LoadingContainer} from '../../components/UI';
 import {TimeConvert} from '../../generalUtils/ConvertTypes';
+import {Groups} from '../../generalUtils/groups';
+import {ValidateGroupComponent} from '../../generalUtils/ValidateGroup';
 import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
@@ -21,6 +23,7 @@ import {
 	useOnLabOutputListenSubscription,
 	useGetLabPracticeSessionQuery
 } from '../../graphql/generated/schema';
+import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 
 //const PRACTICE_ID = '52698b41-6586-4fa8-b024-a134892a0a59'; //Lineas
@@ -63,7 +66,8 @@ const initSessionInformation: Session = {
 	startDate: '',
 	endDate: '',
 	description: '',
-	professor: ''
+	professor: '',
+	leaderStudent: ''
 };
 
 const LabPracticeView: React.FC = () => {
@@ -81,6 +85,8 @@ const LabPracticeView: React.FC = () => {
 
 	const [outputTransition, setOutputTransition] = useState<boolean>(false);
 	const [outputIndex, setOutputIndex] = useState<number>(1);
+
+	const {userId} = useAuthContext(); //Get it to check if it is the leader student
 
 	// TODO Deberíamos pasar esto a context?
 	const {showErrorBanner, showSuccessBanner, showWarningBanner} = useContext(notificationBannerContext);
@@ -109,7 +115,8 @@ const LabPracticeView: React.FC = () => {
 				startDate: sessionInfo?.startDate,
 				endDate: sessionInfo?.endDate,
 				professor: sessionInfo?.LabSemester?.professor ?? '',
-				videoUrlCode: sessionInfo?.videoUrlCode ?? ''
+				videoUrlCode: sessionInfo?.videoUrlCode ?? '',
+				leaderStudent: sessionInfo?.leaderUsers ?? ''
 			};
 		});
 	}, [labSessionData]);
@@ -272,7 +279,9 @@ const LabPracticeView: React.FC = () => {
 			if (updatedCommand.status === Status.Success) {
 				showSuccessBanner(`El comando ${commandLabel?.label ?? ''} fue correctamente ejecutado`);
 			} else if (updatedCommand.status === Status.Pending) {
-				showWarningBanner(`El práctica ${practiceInfo?.getLabPractice?.name ?? ''} se encuentra ocupada ejecutando un comando`);
+				showWarningBanner(
+					`El práctica ${practiceInfo?.getLabPractice?.name ?? ''} se encuentra ocupada ejecutando un comando`
+				);
 			}
 		}
 	}, [updatedSessionCommand]);
@@ -386,13 +395,26 @@ const LabPracticeView: React.FC = () => {
 				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 				sessionInformation={sessionInformation}
 			/>
-			<Commands
-				commands={labCommands}
-				onCommandChange={handleCommandChange}
-				videoUrl={sessionInformation.videoUrlCode}
-				onVideoUrlRefresh={handleVideoUrlRefresh}
-				isExecutingCommand={isExecutingCommand}
-			/>
+			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup]}>
+				<Commands
+					commands={labCommands}
+					onCommandChange={handleCommandChange}
+					videoUrl={sessionInformation.videoUrlCode}
+					onVideoUrlRefresh={handleVideoUrlRefresh}
+					isExecutingCommand={isExecutingCommand}
+				/>
+			</ValidateGroupComponent>
+			{userId === sessionInformation.leaderStudent ? (
+				<Commands
+					commands={labCommands}
+					onCommandChange={handleCommandChange}
+					videoUrl={sessionInformation.videoUrlCode}
+					onVideoUrlRefresh={handleVideoUrlRefresh}
+					isExecutingCommand={isExecutingCommand}
+				/>
+			) : (
+				<></>
+			)}
 			<LabOutputs
 				dataOutput={outputs.map(mapOutput)}
 				dataCommands={executedCommands}

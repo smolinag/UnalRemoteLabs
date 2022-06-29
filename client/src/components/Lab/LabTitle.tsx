@@ -20,6 +20,7 @@ export interface Session {
 	endDate: string;
 	description: string;
 	professor: string;
+	leaderStudent: string;
 }
 
 export interface User {
@@ -209,7 +210,7 @@ const LabTitle: React.FC<Props> = ({
 					</Col>
 				</Row>
 			</Col>
-			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.MonitorsGroup, Groups.MonitorsGroup]}>
+			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup]}>
 				<>
 					{' '}
 					<Col sm={3}>

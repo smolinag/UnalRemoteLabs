@@ -12,7 +12,8 @@ interface Props {
 const USER_TYPES: UserType[] = [
 	{id: '0', value: 'Profesores', role: Role.Professors},
 	{id: '1', value: 'Monitores', role: Role.Monitors},
-	{id: '2', value: 'Estudiantes', role: Role.Students}
+	{id: '2', value: 'Estudiantes', role: Role.Students},
+	{id: '3', value: 'Administradores', role: Role.Admins}
 ];
 
 const UserTypeSelector: React.FC<Props> = ({value, onSelect, disabled = false}) => {

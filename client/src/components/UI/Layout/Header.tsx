@@ -1,5 +1,4 @@
 import {Auth} from '@aws-amplify/auth';
-import {useAuthenticator} from '@aws-amplify/ui-react';
 import React, {useState, useEffect} from 'react';
 import Image from 'react-bootstrap/Image';
 import Nav from 'react-bootstrap/Nav';
@@ -15,7 +14,6 @@ import classes from './Header.module.scss';
 const Header: React.FC = () => {
 	const navigate = useNavigate();
 	const [loggedUser, setLoggedUser] = useState<string>('');
-	const {signOut} = useAuthenticator();
 	const {clearGroup} = useAuthContext();
 
 	useEffect(() => {
@@ -27,11 +25,9 @@ const Header: React.FC = () => {
 	}, [loggedUser]);
 
 	const signOutFunction = () => {
-		signOut;
 		clearGroup();
 		setLoggedUser('');
 		Auth.signOut();
-		window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
 	};
 
 	const redirectToAccount = () => {

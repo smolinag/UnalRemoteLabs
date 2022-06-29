@@ -9,6 +9,7 @@ import {BsPersonCircle} from 'react-icons/bs';
 import {useNavigate} from 'react-router-dom';
 
 import logosimbolo from '../../../assets/images/logosimbolo.png';
+import {useGetUserByEmailLazyQuery} from '../../../graphql/generated/schema';
 import {useAuthContext} from '../../../GroupProvider';
 import classes from './Header.module.scss';
 
@@ -16,12 +17,26 @@ const Header: React.FC = () => {
 	const navigate = useNavigate();
 	const [loggedUser, setLoggedUser] = useState<string>('');
 	const {signOut} = useAuthenticator();
-	const {clearGroup} = useAuthContext();
+	const {defineGroup, clearGroup, setUserInfo} = useAuthContext();
+
+	const [getUserByEmail] = useGetUserByEmailLazyQuery({
+		onCompleted: (data) => {
+			const items = data?.getUserByEmail?.items?.filter((item) => item !== null && item._deleted !== true);
+			if (items && items.length > 0) {
+				defineGroup(items[0]?.role ? items[0]?.role : '');
+				setUserInfo(items[0]?.id ? items[0]?.id : '');
+			}
+		}
+	});
 
 	useEffect(() => {
 		(async () => {
 			let response = (await Auth.currentUserInfo())?.attributes?.email;
 			response = await response;
+
+			getUserByEmail({
+				variables: {email: response}
+			});
 			setLoggedUser(response);
 		})();
 	}, [loggedUser]);
@@ -31,7 +46,8 @@ const Header: React.FC = () => {
 		clearGroup();
 		setLoggedUser('');
 		Auth.signOut();
-		// navigate('/')
+		setUserInfo('')
+		window.sessionStorage.getItem('token')
 		window.location.href = 'https://d1p0lxk2wvxo6e.cloudfront.net';
 	};
 

@@ -2782,6 +2782,25 @@ export type ListUserByLabSemesterQuery = {__typename?: 'Query'} & {
 	>;
 };
 
+export type ListUserLabPracticeSessionsByUserIdQueryVariables = Exact<{
+	userID: Scalars['ID'];
+}>;
+
+export type ListUserLabPracticeSessionsByUserIdQuery = {__typename?: 'Query'} & {
+	listUserLabPracticeSessions?: Maybe<
+		{__typename?: 'ModelUserLabPracticeSessionConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'UserLabPracticeSession'} & Pick<
+						UserLabPracticeSession,
+						'id' | 'labpracticesessionID' | '_version' | '_deleted'
+					> & {User?: Maybe<{__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>>}
+				>
+			>;
+		}
+	>;
+};
+
 export type ListUserLabPracticeSessionsQueryVariables = Exact<{
 	id: Scalars['ID'];
 }>;
@@ -2833,6 +2852,26 @@ export type ListUserLabSemestersBySemesterIdQuery = {__typename?: 'Query'} & {
 				Maybe<
 					{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, 'id' | '_version' | '_deleted'> & {
 							user: {__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>;
+							labsemester: {__typename?: 'LabSemester'} & Pick<LabSemester, 'id' | 'semesterName'>;
+						}
+				>
+			>;
+		}
+	>;
+};
+
+export type ListUserLabSemestersByUserIdQueryVariables = Exact<{
+	userID: Scalars['ID'];
+}>;
+
+export type ListUserLabSemestersByUserIdQuery = {__typename?: 'Query'} & {
+	listUserLabSemesters?: Maybe<
+		{__typename?: 'ModelUserLabSemesterConnection'} & {
+			items: Array<
+				Maybe<
+					{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, 'id' | '_version' | '_deleted'> & {
+							user: {__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>;
+							labsemester: {__typename?: 'LabSemester'} & Pick<LabSemester, 'id' | 'semesterName'>;
 						}
 				>
 			>;
@@ -5676,6 +5715,76 @@ export type ListUserByLabSemesterQueryResult = Apollo.QueryResult<
 	ListUserByLabSemesterQuery,
 	ListUserByLabSemesterQueryVariables
 >;
+export const ListUserLabPracticeSessionsByUserIdDocument = gql`
+	query listUserLabPracticeSessionsByUserId($userID: ID!) {
+		listUserLabPracticeSessions(filter: {userID: {eq: $userID}}) {
+			items {
+				id
+				labpracticesessionID
+				User {
+					id
+					name
+					email
+					role
+					_deleted
+				}
+				_version
+				_deleted
+			}
+		}
+	}
+`;
+
+/**
+ * __useListUserLabPracticeSessionsByUserIdQuery__
+ *
+ * To run a query within a React component, call `useListUserLabPracticeSessionsByUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUserLabPracticeSessionsByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUserLabPracticeSessionsByUserIdQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *   },
+ * });
+ */
+export function useListUserLabPracticeSessionsByUserIdQuery(
+	baseOptions: Apollo.QueryHookOptions<
+		ListUserLabPracticeSessionsByUserIdQuery,
+		ListUserLabPracticeSessionsByUserIdQueryVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListUserLabPracticeSessionsByUserIdQuery, ListUserLabPracticeSessionsByUserIdQueryVariables>(
+		ListUserLabPracticeSessionsByUserIdDocument,
+		options
+	);
+}
+export function useListUserLabPracticeSessionsByUserIdLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		ListUserLabPracticeSessionsByUserIdQuery,
+		ListUserLabPracticeSessionsByUserIdQueryVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<
+		ListUserLabPracticeSessionsByUserIdQuery,
+		ListUserLabPracticeSessionsByUserIdQueryVariables
+	>(ListUserLabPracticeSessionsByUserIdDocument, options);
+}
+export type ListUserLabPracticeSessionsByUserIdQueryHookResult = ReturnType<
+	typeof useListUserLabPracticeSessionsByUserIdQuery
+>;
+export type ListUserLabPracticeSessionsByUserIdLazyQueryHookResult = ReturnType<
+	typeof useListUserLabPracticeSessionsByUserIdLazyQuery
+>;
+export type ListUserLabPracticeSessionsByUserIdQueryResult = Apollo.QueryResult<
+	ListUserLabPracticeSessionsByUserIdQuery,
+	ListUserLabPracticeSessionsByUserIdQueryVariables
+>;
 export const ListUserLabPracticeSessionsDocument = gql`
 	query listUserLabPracticeSessions($id: ID!) {
 		listUserLabPracticeSessions(filter: {userID: {eq: $id}}) {
@@ -5768,6 +5877,10 @@ export const ListUserLabSemestersBySemesterIdDocument = gql`
 					role
 					_deleted
 				}
+				labsemester {
+					id
+					semesterName
+				}
 				_version
 				_deleted
 			}
@@ -5824,6 +5937,74 @@ export type ListUserLabSemestersBySemesterIdLazyQueryHookResult = ReturnType<
 export type ListUserLabSemestersBySemesterIdQueryResult = Apollo.QueryResult<
 	ListUserLabSemestersBySemesterIdQuery,
 	ListUserLabSemestersBySemesterIdQueryVariables
+>;
+export const ListUserLabSemestersByUserIdDocument = gql`
+	query listUserLabSemestersByUserId($userID: ID!) {
+		listUserLabSemesters(filter: {userID: {eq: $userID}}) {
+			items {
+				id
+				user {
+					id
+					name
+					email
+					role
+					_deleted
+				}
+				labsemester {
+					id
+					semesterName
+				}
+				_version
+				_deleted
+			}
+		}
+	}
+`;
+
+/**
+ * __useListUserLabSemestersByUserIdQuery__
+ *
+ * To run a query within a React component, call `useListUserLabSemestersByUserIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListUserLabSemestersByUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListUserLabSemestersByUserIdQuery({
+ *   variables: {
+ *      userID: // value for 'userID'
+ *   },
+ * });
+ */
+export function useListUserLabSemestersByUserIdQuery(
+	baseOptions: Apollo.QueryHookOptions<ListUserLabSemestersByUserIdQuery, ListUserLabSemestersByUserIdQueryVariables>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useQuery<ListUserLabSemestersByUserIdQuery, ListUserLabSemestersByUserIdQueryVariables>(
+		ListUserLabSemestersByUserIdDocument,
+		options
+	);
+}
+export function useListUserLabSemestersByUserIdLazyQuery(
+	baseOptions?: Apollo.LazyQueryHookOptions<
+		ListUserLabSemestersByUserIdQuery,
+		ListUserLabSemestersByUserIdQueryVariables
+	>
+) {
+	const options = {...defaultOptions, ...baseOptions};
+	return Apollo.useLazyQuery<ListUserLabSemestersByUserIdQuery, ListUserLabSemestersByUserIdQueryVariables>(
+		ListUserLabSemestersByUserIdDocument,
+		options
+	);
+}
+export type ListUserLabSemestersByUserIdQueryHookResult = ReturnType<typeof useListUserLabSemestersByUserIdQuery>;
+export type ListUserLabSemestersByUserIdLazyQueryHookResult = ReturnType<
+	typeof useListUserLabSemestersByUserIdLazyQuery
+>;
+export type ListUserLabSemestersByUserIdQueryResult = Apollo.QueryResult<
+	ListUserLabSemestersByUserIdQuery,
+	ListUserLabSemestersByUserIdQueryVariables
 >;
 export const ListUsersByEmailDocument = gql`
 	query listUsersByEmail($email: String!) {

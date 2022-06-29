@@ -1,3 +1,4 @@
+import {Storage} from 'aws-amplify';
 import React, {useState, useEffect, useContext} from 'react';
 import {Row, Col} from 'react-bootstrap';
 import {useNavigate} from 'react-router-dom';
@@ -8,7 +9,11 @@ import {UserTypeSelector, OrganizationSelector, UsersTable} from '../../componen
 import {
 	useListUsersByRoleAndOrganizationIdQuery,
 	useDeleteUserMutation,
-	useRemoveCognitoUserMutation
+	useRemoveCognitoUserMutation,
+	useListUserLabSemestersByUserIdQuery,
+	useDeleteUserLabSemesterMutation,
+	useListUserLabPracticeSessionsByUserIdQuery,
+	useDeleteUserLabPracticeSessionMutation
 } from '../../graphql/generated/schema';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {User, Option, UserType, Role} from './types';
@@ -43,6 +48,18 @@ const UsersList: React.FC = () => {
 
 	const [loading, setLoading] = useState<boolean>(false);
 	const [displayModal, setDisplayModal] = useState<boolean>(false);
+
+	const {refetch: getUserLabSemesterByUserId} = useListUserLabSemestersByUserIdQuery({
+		skip: true,
+		notifyOnNetworkStatusChange: true
+	});
+	const [deleteUserLabSemester] = useDeleteUserLabSemesterMutation();
+
+	const {refetch: getUserLabPracticeSessionByUserId} = useListUserLabPracticeSessionsByUserIdQuery({
+		skip: true,
+		notifyOnNetworkStatusChange: true
+	});
+	const [deleteUserLabPracticeSession] = useDeleteUserLabPracticeSessionMutation();
 
 	const {
 		data: usersData,
@@ -117,6 +134,10 @@ const UsersList: React.FC = () => {
 								email: deletedUser.email
 							}
 						});
+
+						await deleteUserLabSemesters(deletedUser.id);
+						await deleteUserLabPracticeSessions(deletedUser.id);
+						if (deletedUser.s3AvatarPath) await Storage.remove(deletedUser.s3AvatarPath);
 					}
 					setDisplayModal(false);
 					showSuccessBanner(`El usuario ${deletedUser?.email} fue eliminado exitosamente`);
@@ -129,6 +150,52 @@ const UsersList: React.FC = () => {
 				.finally(() => {
 					setLoading(false);
 				});
+		}
+	};
+
+	const deleteUserLabSemesters = async (userId: string) => {
+		const {data: userLabSemester} = await getUserLabSemesterByUserId({
+			userID: userId
+		});
+
+		userLabSemester.listUserLabSemesters?.items?.forEach(async (obj) => {
+			if (obj) await deleteLabSemesterUser(obj?.id, obj?._version);
+		});
+	};
+
+	const deleteLabSemesterUser = async (id: string, version: number) => {
+		if (id !== undefined && id !== null && id !== '') {
+			await deleteUserLabSemester({
+				variables: {
+					input: {
+						id: id,
+						_version: version
+					}
+				}
+			});
+		}
+	};
+
+	const deleteUserLabPracticeSessions = async (userId: string) => {
+		const {data: userLabPracticeSession} = await getUserLabPracticeSessionByUserId({
+			userID: userId
+		});
+
+		userLabPracticeSession.listUserLabPracticeSessions?.items?.forEach(async (obj) => {
+			if (obj) await deleteLabPracticeSessionUser(obj?.id, obj?._version);
+		});
+	};
+
+	const deleteLabPracticeSessionUser = async (id: string, version: number) => {
+		if (id !== undefined && id !== null && id !== '') {
+			await deleteUserLabPracticeSession({
+				variables: {
+					input: {
+						id: id,
+						_version: version
+					}
+				}
+			});
 		}
 	};
 

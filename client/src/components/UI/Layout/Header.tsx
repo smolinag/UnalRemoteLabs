@@ -15,7 +15,7 @@ import classes from './Header.module.scss';
 const Header: React.FC = () => {
 	const navigate = useNavigate();
 	const [loggedUser, setLoggedUser] = useState<string>('');
-	const {defineGroup, clearGroup, setUserInfo} = useAuthContext();
+	const {defineGroup, setUserInfo} = useAuthContext();
 
 	const [getUserByEmail] = useGetUserByEmailLazyQuery({
 		onCompleted: (data) => {
@@ -40,16 +40,17 @@ const Header: React.FC = () => {
 	}, [loggedUser]);
 
 	const signOutFunction = () => {
-		clearGroup();
+		// clearGroup();
 		setLoggedUser('');
+		navigate('/')
 		Auth.signOut();
 		setUserInfo('')
 		window.sessionStorage.getItem('token')
+		
 	};
 
 	const redirectToAccount = () => {
 		navigate('/my-account', {state: {userEmail: loggedUser}});
-
 	};
 
 	return (

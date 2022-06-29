@@ -27,8 +27,6 @@ const UserLabPracticeSessionsList: React.FC = () => {
 	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 	const userId = (location.state as LocationState)?.userId;
 
-	console.log(location)
-
 	if (!userId && labSemesterId) {
 		useListLabPracticeSessionsQuery({
 			variables: {labSemesterID: labSemesterId},
@@ -105,6 +103,7 @@ const UserLabPracticeSessionsList: React.FC = () => {
 
 
 				if (receivedList && receivedList.length > 0) {
+					console.log(receivedList)
 					const list: UserLabPracticeSession[] = receivedList.map((session) => ({
 						id: session ? session.id : '',
 						sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',

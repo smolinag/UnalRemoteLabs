@@ -1,6 +1,5 @@
 import React from 'react';
-import {Col, Row} from 'react-bootstrap';
-import {IoRefreshOutline} from 'react-icons/io5';
+import {Row} from 'react-bootstrap';
 
 import {LoadingContainer} from '../../UI';
 import classes from './Commands.module.scss';
@@ -28,12 +27,10 @@ export interface CommandSession {
 interface Props {
 	commands: Command[];
 	onCommandChange: (command: Command, id: string) => void;
-	videoUrl: string;
-	onVideoUrlRefresh: () => void;
 	isExecutingCommand: boolean;
 }
 
-const Commands: React.FC<Props> = ({commands, onCommandChange, videoUrl, onVideoUrlRefresh, isExecutingCommand}) => {
+const Commands: React.FC<Props> = ({commands, onCommandChange, isExecutingCommand}) => {
 	const handleCommandChange = (commandId: string) => {
 		const command = commands.find(({id}) => id === commandId);
 
@@ -51,52 +48,26 @@ const Commands: React.FC<Props> = ({commands, onCommandChange, videoUrl, onVideo
 	};
 
 	return (
-		<Row className="section">
-			<Col md={7}>
-				<h4 className="title">Comandos de entrada</h4>
-				<LoadingContainer loading={isExecutingCommand}>
-					<Row className={`${classes.margin}`} style={{justifyContent: 'center'}}>
-						{commands.map(({label, id, parameters}, index) =>
-							parameters && parameters?.length > 0 ? (
-								<ComplexCommand
-									label={label}
-									parameters={parameters}
-									onExecute={handleParameterChange}
-									key={index}
-									commandId={id}
-								/>
-							) : (
-								<SimpleCommand label={label} onExecute={() => handleCommandChange(id)} key={index} />
-							)
-						)}
-					</Row>
-				</LoadingContainer>
-			</Col>
-			<Col md={5}>
-				<h4 className="title row" style={{display: 'flex', flexDirection: 'row'}}>
-					<Col xs={3}>
-						<div>Video</div>
-					</Col>
-					<Col xs={3}>
-						<IoRefreshOutline key={'RefreshVideo'} className={classes.icon} onClick={() => onVideoUrlRefresh()} />
-					</Col>
-				</h4>
-
-				<Row>
-					<div className="video-responsive">
-						<iframe
-							width="100%"
-							height="380"
-							src={`https://www.youtube.com/embed/` + videoUrl}
-							frameBorder="0"
-							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-							allowFullScreen
-							title="Video práctica de laboratorio"
-						/>
-					</div>
+		<div>
+			<h4 className="title">Comandos de entrada</h4>
+			<LoadingContainer loading={isExecutingCommand}>
+				<Row className={`${classes.margin}`} style={{justifyContent: 'center'}}>
+					{commands.map(({label, id, parameters}, index) =>
+						parameters && parameters?.length > 0 ? (
+							<ComplexCommand
+								label={label}
+								parameters={parameters}
+								onExecute={handleParameterChange}
+								key={index}
+								commandId={id}
+							/>
+						) : (
+							<SimpleCommand label={label} onExecute={() => handleCommandChange(id)} key={index} />
+						)
+					)}
 				</Row>
-			</Col>
-		</Row>
+			</LoadingContainer>
+		</div>
 	);
 };
 

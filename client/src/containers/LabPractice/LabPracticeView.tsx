@@ -1,16 +1,16 @@
 import orderBy from 'lodash/orderBy';
 import React, {useState, useEffect, useContext} from 'react';
+import {Col, Row} from 'react-bootstrap';
 import {useLocation} from 'react-router-dom';
 // import {useLocation} from 'react-router-dom';
 
-import {LabTitle, Commands, LabOutputs} from '../../components/Lab';
+import {LabTitle, Commands, LabOutputs, LabVideo} from '../../components/Lab';
 import {Command, CommandSession} from '../../components/Lab/Commands/Commands';
 import {Parameter} from '../../components/Lab/Commands/ComplexCommand/ComplexCommand';
 import {Session} from '../../components/Lab/LabTitle';
 import {LoadingContainer} from '../../components/UI';
 import {TimeConvert} from '../../generalUtils/ConvertTypes';
-import {Groups} from '../../generalUtils/groups';
-import {ValidateGroupComponent} from '../../generalUtils/ValidateGroup';
+import {validateGroupFunction} from '../../generalUtils/ValidateGroup';
 import {
 	useGetLabPracticeQuery,
 	useListLabPracticeCommandsQuery,
@@ -25,15 +25,6 @@ import {
 } from '../../graphql/generated/schema';
 import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
-
-//const PRACTICE_ID = '52698b41-6586-4fa8-b024-a134892a0a59'; //Lineas
-//const SESSION_ID = '2974b73d-dbc3-4bd4-b3c9-8c7d3e6b343d'; //Lineas TODO despues debemos crear un context, y pedir toda esta informacion antes de renderizar la app (getInitialData o algo asi)
-//const DEVICE_ID = 'b13743e4-8951-4e97-9392-d7f07c910f30'; //Lineas
-
-// const PRACTICE_ID = '6f7ca4d5-c4b2-417d-9e68-0b45e69c6eb9'; //Motores
-// const SESSION_ID = '11df7731-d269-49c5-807e-53e6ae43dd8d'; //Motores
-// const DEVICE_ID = 'cb24b961-da14-4e80-8ce2-050feb952b77'; //Motores
-// const COMMAND_NAME_PREFIX = 'cmd';
 
 interface OutputListDto {
 	id: string;
@@ -86,7 +77,7 @@ const LabPracticeView: React.FC = () => {
 	const [outputTransition, setOutputTransition] = useState<boolean>(false);
 	const [outputIndex, setOutputIndex] = useState<number>(1);
 
-	const {userId} = useAuthContext(); //Get it to check if it is the leader student
+	const {userId, group} = useAuthContext(); //Get userId to check if it is the leader student, and group(role)
 
 	// TODO Deberíamos pasar esto a context?
 	const {showErrorBanner, showSuccessBanner, showWarningBanner} = useContext(notificationBannerContext);
@@ -395,25 +386,24 @@ const LabPracticeView: React.FC = () => {
 				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 				sessionInformation={sessionInformation}
 			/>
-			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup]}>
-				<Commands
-					commands={labCommands}
-					onCommandChange={handleCommandChange}
-					videoUrl={sessionInformation.videoUrlCode}
-					onVideoUrlRefresh={handleVideoUrlRefresh}
-					isExecutingCommand={isExecutingCommand}
-				/>
-			</ValidateGroupComponent>
-			{userId === sessionInformation.leaderStudent ? (
-				<Commands
-					commands={labCommands}
-					onCommandChange={handleCommandChange}
-					videoUrl={sessionInformation.videoUrlCode}
-					onVideoUrlRefresh={handleVideoUrlRefresh}
-					isExecutingCommand={isExecutingCommand}
-				/>
+			{userId === sessionInformation.leaderStudent ||
+			validateGroupFunction(['Admins', 'Professors', 'Monitors'], group) ? (
+				<Row className="section">
+					<Col md={7}>
+						<Commands
+							commands={labCommands}
+							onCommandChange={handleCommandChange}
+							isExecutingCommand={isExecutingCommand}
+						/>
+					</Col>
+					<Col md={5}>
+						<LabVideo videoUrl={sessionInformation.videoUrlCode} onVideoUrlRefresh={handleVideoUrlRefresh} />
+					</Col>
+				</Row>
 			) : (
-				<></>
+				<Row className="section">
+					<LabVideo videoUrl={sessionInformation.videoUrlCode} onVideoUrlRefresh={handleVideoUrlRefresh} />
+				</Row>
 			)}
 			<LabOutputs
 				dataOutput={outputs.map(mapOutput)}

@@ -270,7 +270,7 @@ const LabSemesterCreation: React.FC = () => {
 				<Row className="section">
 					<h3 className="title">
 						Creación de Semestre{' '}
-						{validateGroupFunction([Groups.AdminsGroup]) ? `de laboratorio de ${labSemester.laboratory}` : ''}
+						{validateGroupFunction([Groups.AdminsGroup], group) ? `de laboratorio de ${labSemester.laboratory}` : ''}
 					</h3>
 					<LabSemesterData
 						labSemesterValue={labSemester}

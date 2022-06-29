@@ -21,14 +21,13 @@ export const ValidateGroupComponent: React.FC<Props> = ({children, groups}) => {
 	return <>{validateGroup() ? children : null}</>;
 };
 
-export const validateGroupFunction = (groups: string[]) => {
-	const {group} = useAuthContext();
-
+export const validateGroupFunction = (groups: string[], group:string) => {
 	let isAllowed = false;
 	const groupMatch = groups.filter((groupElement) => groupElement === group);
 
 	if (groupMatch.length > 0) {
 		isAllowed = true;
-		return isAllowed;
 	}
+
+	return isAllowed;
 };

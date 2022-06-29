@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 
 import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserLabPracticeSessionsList/types';
 import { Groups } from '../../generalUtils/groups';
+import { validateGroupFunction } from '../../generalUtils/ValidateGroup';
 import {
 	useDeleteLabPracticeSessionMutation,
 	useListUsersByLabPracticeSessionLazyQuery,
@@ -68,6 +69,8 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 	onSuccessSessionDelete,
 	labSemesterId
 }) => {
+	console.log(userLabPracticeSession)
+	console.log(labSemesterId)
 	const {group} = useAuthContext();
 	const navigate = useNavigate();
 	const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
@@ -275,7 +278,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 			<Table
 				headers={filterHeadersByGroup()}
 				data={
-					labSemesterId //TODO filter by role
+					validateGroupFunction([Groups.AdminsGroup], group)
 						? labPracticeSession.map(mapOutputLabSessions)
 						: userLabPracticeSession.map(mapOutputUserSessions)
 				}

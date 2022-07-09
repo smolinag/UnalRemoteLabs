@@ -80,7 +80,6 @@ const LabSessionProgrammingView: React.FC = () => {
 						};
 					});
 				setStudentList(data);
-				console.log(data);
 			}
 		}, [sessionUsers]);
 	}

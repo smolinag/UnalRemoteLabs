@@ -4,11 +4,16 @@
 	cursor: pointer;
 	user-select: none;
 	fill: $gray-700;
+	font-size: 1.2rem;
 	&:first-child {
 		margin-right: 5px;
 	}
 	&.delete {
 		fill: $red-dark;
 	}
+}
+
+.actionIconDont {
+	cursor: default;
 }
 

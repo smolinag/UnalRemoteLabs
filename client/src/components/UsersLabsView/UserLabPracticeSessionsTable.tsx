@@ -1,17 +1,18 @@
 import React, {useState, useContext} from 'react';
 import Row from 'react-bootstrap/Row';
 import {IoEnter, IoPencil, IoTrash} from 'react-icons/io5';
+import {TiCancel} from 'react-icons/ti';
 import {useNavigate} from 'react-router-dom';
 
 import {UserLabPracticeSession, LabPracticeSession} from '../../containers/UserLabPracticeSessionsList/types';
-import { Groups } from '../../generalUtils/groups';
-import { validateGroupFunction } from '../../generalUtils/ValidateGroup';
+import {Groups} from '../../generalUtils/groups';
+import {validateGroupFunction} from '../../generalUtils/ValidateGroup';
 import {
 	useDeleteLabPracticeSessionMutation,
 	useListUsersByLabPracticeSessionLazyQuery,
 	useSendEmailMutation
 } from '../../graphql/generated/schema';
-import { useAuthContext } from '../../GroupProvider';
+import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Table, ModalComponent} from '../UI/index';
 import classes from './UserLabPracticeSessionsTable.module.scss';
@@ -20,7 +21,6 @@ interface Props {
 	userLabPracticeSession?: UserLabPracticeSession[];
 	labPracticeSession?: LabPracticeSession[];
 	onSuccessSessionDelete: (session: LabPracticeSession) => void;
-	labSemesterId?: string;
 }
 
 const COLUMNS_USER_SESSIONS = [
@@ -59,18 +59,15 @@ const showDate = (date: string) => {
 		}
 		return `${new Date(date).toDateString()} - ${new Date(date).getHours()}:${minutes}`;
 	} else {
-		return '';
+		return '-';
 	}
 };
 
 const UserLabPracticeSessionsTable: React.FC<Props> = ({
 	userLabPracticeSession,
 	labPracticeSession,
-	onSuccessSessionDelete,
-	labSemesterId
+	onSuccessSessionDelete
 }) => {
-	console.log(userLabPracticeSession)
-	console.log(labSemesterId)
 	const {group} = useAuthContext();
 	const navigate = useNavigate();
 	const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
@@ -123,33 +120,34 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		/* Verificar que el usuario ingrese entre el lapsus de tiempo, el usuario puede 
 		ingresar hasta 15 minutos después de la hora de inicio de la práctica*/
 
-		// if (
-		// 	new Date() > new Date(labPracticeSession.startDate) &&
-		// 	new Date() <
-		// 		new Date(
-		// 			new Date(labPracticeSession.startDate).setMinutes(
-		// 				new Date(labPracticeSession.startDate).getMinutes() + TIME_TO_ENTER_TO_PRACTICE
-		// 			)
-		// 		)
-		// ) {
-		return (
-			<IoEnter
-				key={labPracticeSession.labPracticeInfo.laboratory.id}
-				className={classes.actionIcon}
-				onClick={() =>
-					navigate('/lab-practice', {
-						state: {
-							labPracticeId: labPracticeSession.labPracticeInfo.id,
-							deviceId: labPracticeSession.labPracticeInfo.labPracticeDeviceId,
-							sessionId: labPracticeSession.id
-						}
-					})
-				}
-			/>
-		);
-		// } else {
-		// 	return null;
-		// }
+		if (
+			new Date() < new Date(labPracticeSession.endDate)
+			// &&
+			// 	new Date() <
+			// 		new Date(
+			// 			new Date(labPracticeSession.startDate).setMinutes(
+			// 				new Date(labPracticeSession.startDate).getMinutes() + TIME_TO_ENTER_TO_PRACTICE
+			// 			)
+			// 		)
+		) {
+			return (
+				<IoEnter
+					key={labPracticeSession.labPracticeInfo.laboratory.id}
+					className={classes.actionIcon}
+					onClick={() =>
+						navigate('/lab-practice', {
+							state: {
+								labPracticeId: labPracticeSession.labPracticeInfo.id,
+								deviceId: labPracticeSession.labPracticeInfo.labPracticeDeviceId,
+								sessionId: labPracticeSession.id
+							}
+						})
+					}
+				/>
+			);
+		} else {
+			return <TiCancel className={`${classes.actionIcon} ${classes.actionIconDont}`} />;
+		}
 	};
 
 	const redirectEdit = (labPracticeSession: LabPracticeSession) => {
@@ -257,10 +255,10 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 
 	const filterHeadersByGroup = () => {
 		switch (group) {
-			case Groups.StudentsGroup:
-				return COLUMNS_USER_SESSIONS;
-			default:
+			case Groups.AdminsGroup:
 				return COLUMNS_SESSIONS;
+			default:
+				return COLUMNS_USER_SESSIONS;
 		}
 	};
 

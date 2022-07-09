@@ -1,7 +1,7 @@
 import orderBy from 'lodash/orderBy';
 import React, {useState, useEffect, useContext} from 'react';
 import {Col, Row} from 'react-bootstrap';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 // import {useLocation} from 'react-router-dom';
 
 import {LabTitle, Commands, LabOutputs, LabVideo} from '../../components/Lab';
@@ -62,6 +62,8 @@ const initSessionInformation: Session = {
 };
 
 const LabPracticeView: React.FC = () => {
+	const navigate = useNavigate();
+
 	const [labCommands, setLabCommands] = useState<Command[]>([]);
 	const [isExecutingCommand, setIsExecutingCommand] = useState<boolean>(false);
 	const [executedCommands, setExecutedCommands] = useState<CommandSession[]>([]);
@@ -96,6 +98,24 @@ const LabPracticeView: React.FC = () => {
 	});
 
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
+
+	useEffect(() => {
+		let interval: NodeJS.Timeout;
+
+		if (labSessionData) {
+			const endDate: number = new Date(labSessionData.getLabPracticeSession?.endDate).getTime();
+			const today: number = new Date().getTime();
+
+			if (endDate - today > 0) {
+				interval = setInterval(() => {
+					navigate(-1);
+				}, endDate - today);
+			} else {
+				navigate(-1);
+			}
+		}
+		return () => clearInterval(interval);
+	}, [labSessionData]);
 
 	useEffect(() => {
 		const sessionInfo = labSessionData?.getLabPracticeSession;

@@ -269,7 +269,6 @@ const LabSemesterEdition: React.FC = () => {
 
 		if (!hasError) {
 			setLoading(true);
-			console.log(labSemester.professorEmailList.length > 0 ? labSemester.professorEmailList[0] : '');
 			try {
 				const {data: labPracticeData} = await updateLabSemester({
 					variables: {

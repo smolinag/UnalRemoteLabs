@@ -72,14 +72,12 @@ const LabTitle: React.FC<Props> = ({
 			});
 			setUsers(sessionUsers);
 			if (labSessionData?.getLabPracticeSession?.leaderUsers) {
-				console.log(labSessionData.getLabPracticeSession.leaderUsers);
 				const leaderUsersData = labSessionData.getLabPracticeSession.leaderUsers;
 				const leaderUsers = sessionUsers.filter((item) => item.id === leaderUsersData);
 				if (leaderUsers.length > 0) {
 					setLeaderUser(leaderUsers[0]);
 				}
 			}
-			console.log(sessionUsers);
 		}
 	}, [labSessionUsers]);
 
@@ -109,7 +107,6 @@ const LabTitle: React.FC<Props> = ({
 
 	const handleLabPracticeSessionLeaderUserUpdate = async () => {
 		try {
-			console.log(leaderUser);
 			setLoadingLeaderUser(true);
 			await updateLabPracticeSession({
 				variables: {
@@ -122,7 +119,6 @@ const LabTitle: React.FC<Props> = ({
 			});
 			showSuccessBanner(`El lider de la práctica  ${leaderUser.name ?? ''} fue correctamente guardado`);
 		} catch (e) {
-			console.log(e);
 			showErrorBanner(`No se pudo guardar el lider de la práctica  ${leaderUser.name ?? ''}`);
 		} finally {
 			setLoadingLeaderUser(false);
@@ -161,8 +157,6 @@ const LabTitle: React.FC<Props> = ({
 	};
 
 	const handleLeaderUserChange = (value: string, id: string) => {
-		console.log(value);
-		console.log(id);
 		setLeaderUser({id: id, name: value, email: ''});
 	};
 

@@ -14,8 +14,6 @@ import {Laboratory} from '../Laboratory/types';
 import {LocationState} from '../LabPracticeList/LabPracticeList';
 import {LabPracticeSession, UserLabPracticeSession} from './types';
 
-// const USER_ID = 'a0a202e4-10c9-4c51-bbc3-905ee73818ac';
-
 const UserLabPracticeSessionsList: React.FC = () => {
 	const [loading, setLoading] = React.useState<boolean>(true);
 	const [userLabPracticeSessionsList, setUserLabPracticeSessionsList] = React.useState<UserLabPracticeSession[]>([]);
@@ -101,7 +99,6 @@ const UserLabPracticeSessionsList: React.FC = () => {
 						!session?.LabPracticeSession?.LabPractice?._deleted
 				);
 
-
 				if (receivedList && receivedList.length > 0) {
 					console.log(receivedList)
 					const list: UserLabPracticeSession[] = receivedList.map((session) => ({
@@ -173,7 +170,6 @@ const UserLabPracticeSessionsList: React.FC = () => {
 				<UserLabPracticeSessionsTable
 					userLabPracticeSession={userLabPracticeSessionsList}
 					labPracticeSession={labPracticeSessionsList}
-					labSemesterId={labSemesterId}
 					onSuccessSessionDelete={handleSuccessSessionDelete}
 				/>
 			</Row>

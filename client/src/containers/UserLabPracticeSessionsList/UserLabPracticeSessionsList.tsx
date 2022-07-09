@@ -100,7 +100,6 @@ const UserLabPracticeSessionsList: React.FC = () => {
 				);
 
 				if (receivedList && receivedList.length > 0) {
-					console.log(receivedList)
 					const list: UserLabPracticeSession[] = receivedList.map((session) => ({
 						id: session ? session.id : '',
 						sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',

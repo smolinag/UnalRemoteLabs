@@ -118,17 +118,14 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 
 	const redirectToSession = (labPracticeSession: LabPracticeSession) => {
 		/* Verificar que el usuario ingrese entre el lapsus de tiempo, el usuario puede 
-		ingresar hasta 15 minutos después de la hora de inicio de la práctica*/
+		ingresar hasta el 1/4 inicial de la duración de la práctica*/
+		const duration: number = labPracticeSession.labPracticeInfo.practiceInfoDuration;
+		const quarter = Math.round(duration / 4);
 
 		if (
-			new Date() < new Date(labPracticeSession.endDate)
-			// &&
-			// 	new Date() <
-			// 		new Date(
-			// 			new Date(labPracticeSession.startDate).setMinutes(
-			// 				new Date(labPracticeSession.startDate).getMinutes() + TIME_TO_ENTER_TO_PRACTICE
-			// 			)
-			// 		)
+			new Date() < new Date(labPracticeSession.endDate) &&
+			new Date() >= new Date(labPracticeSession.startDate) && 
+			new Date().getMinutes() < quarter
 		) {
 			return (
 				<IoEnter

@@ -13,7 +13,7 @@ import {
 	useCreateUserMutation,
 	useCreateUserLabSemesterMutation,
 	useGetUserByEmailQuery,
-	useListLaboratoriesByUserQuery,
+	useListLaboratoriesByUserQuery
 } from '../../graphql/generated/schema';
 import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -71,7 +71,9 @@ const LabSemesterCreation: React.FC = () => {
 						...labSemester,
 						laboratory: tempLabs[0]?.labsemester.Laboratory?.name ? tempLabs[0]?.labsemester.Laboratory?.name : '',
 						laboratoryID: tempLabs[0]?.labsemester.Laboratory?.id ? tempLabs[0]?.labsemester.Laboratory?.id : '',
-						organizationId: tempLabs[0]?.labsemester.Laboratory?.organizationID ? tempLabs[0]?.labsemester.Laboratory?.organizationID : ''
+						organizationId: tempLabs[0]?.labsemester.Laboratory?.organizationID
+							? tempLabs[0]?.labsemester.Laboratory?.organizationID
+							: ''
 					});
 				}
 			}
@@ -268,10 +270,7 @@ const LabSemesterCreation: React.FC = () => {
 		<Container fluid>
 			<LoadingContainer loading={loading}>
 				<Row className="section">
-					<h3 className="title">
-						Creación de Semestre{' '}
-						{validateGroupFunction([Groups.AdminsGroup], group) ? `de laboratorio de ${labSemester.laboratory}` : ''}
-					</h3>
+					<h3 className="title">{`Creación de Semestre de laboratorio de ${labSemester.laboratory}`}</h3>
 					<LabSemesterData
 						labSemesterValue={labSemester}
 						handleChange={onLabSemesterChange}
@@ -287,6 +286,7 @@ const LabSemesterCreation: React.FC = () => {
 						maxEmails={1}
 						role={Role.Professors}
 						setLoading={setLoading}
+						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">
@@ -296,6 +296,7 @@ const LabSemesterCreation: React.FC = () => {
 						onHandleChange={onMonitorsEmailHandleChange}
 						role={Role.Monitors}
 						setLoading={setLoading}
+						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">
@@ -305,6 +306,10 @@ const LabSemesterCreation: React.FC = () => {
 						onHandleChange={onStudentEmailHandleChange}
 						role={Role.Students}
 						setLoading={setLoading}
+						isEmailInputVisible={validateGroupFunction(
+							[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup],
+							group
+						)}
 					/>
 				</Row>
 				<Row className="section">

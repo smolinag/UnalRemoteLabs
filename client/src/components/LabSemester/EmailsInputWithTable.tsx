@@ -17,7 +17,7 @@ interface Props {
 	role: Role;
 	onHandleChange: (emails: Array<string>) => void;
 	setLoading?: (isLoading: boolean) => void;
-	students?: boolean;
+	isEmailInputVisible: boolean;
 }
 
 const USER_TYPES: UserType[] = [
@@ -26,7 +26,14 @@ const USER_TYPES: UserType[] = [
 	{id: '2', value: 'Estudiantes', role: Role.Students}
 ];
 
-const EmailsInputWithTable: React.FC<Props> = ({emails, maxEmails, role, onHandleChange, setLoading, students}) => {
+const EmailsInputWithTable: React.FC<Props> = ({
+	emails,
+	maxEmails,
+	role,
+	onHandleChange,
+	setLoading,
+	isEmailInputVisible = true
+}) => {
 	const {group} = useAuthContext();
 	const [emailList, setEmailList] = useState<Array<string>>([]);
 	const [emailsValue, setEmailsValue] = useState<string>('');
@@ -175,7 +182,7 @@ const EmailsInputWithTable: React.FC<Props> = ({emails, maxEmails, role, onHandl
 	return (
 		<>
 			<Row>
-				{students && (group === Groups.AdminsGroup || group === Groups.ProfessorsGroup || group === Groups.MonitorsGroup) ? (
+				{isEmailInputVisible ? (
 					<EmailsInput
 						value={emailsValue}
 						error={emailError}

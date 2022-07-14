@@ -2869,9 +2869,18 @@ export type ListUserLabSemestersByUserIdQuery = {__typename?: 'Query'} & {
 		{__typename?: 'ModelUserLabSemesterConnection'} & {
 			items: Array<
 				Maybe<
-					{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, 'id' | '_version' | '_deleted'> & {
-							user: {__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>;
-							labsemester: {__typename?: 'LabSemester'} & Pick<LabSemester, 'id' | 'semesterName'>;
+					{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, 'id' | 'userID' | '_version' | '_deleted'> & {
+							labsemester: {__typename?: 'LabSemester'} & Pick<
+								LabSemester,
+								| 'id'
+								| 'description'
+								| 'professor'
+								| 'monitorEmailList'
+								| 'studentEmailList'
+								| 'semesterName'
+								| '_version'
+								| '_deleted'
+							> & {Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name'>>};
 						}
 				>
 			>;
@@ -5943,16 +5952,20 @@ export const ListUserLabSemestersByUserIdDocument = gql`
 		listUserLabSemesters(filter: {userID: {eq: $userID}}) {
 			items {
 				id
-				user {
-					id
-					name
-					email
-					role
-					_deleted
-				}
+				userID
 				labsemester {
 					id
+					description
+					professor
+					monitorEmailList
+					studentEmailList
 					semesterName
+					Laboratory {
+						id
+						name
+					}
+					_version
+					_deleted
 				}
 				_version
 				_deleted

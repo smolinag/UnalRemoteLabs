@@ -4,6 +4,8 @@ import {useLocation, useNavigate} from 'react-router-dom';
 
 import {LabSemesterData, EmailsInputWithTable} from '../../components/LabSemester/index';
 import {Button, LoadingContainer} from '../../components/UI';
+import {Groups} from '../../generalUtils/groups';
+import {validateGroupFunction} from '../../generalUtils/ValidateGroup';
 import {
 	useGetLaboratoryQuery,
 	useGetLabSemesterQuery,
@@ -15,6 +17,7 @@ import {
 	useGetUserByEmailQuery,
 	ListUserLabSemestersBySemesterIdQuery
 } from '../../graphql/generated/schema';
+import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Role} from '../Users/types';
 import {LabSemester, Laboratory, Params, ErrorIdentifier, LocationStateEdition} from './types';
@@ -33,6 +36,7 @@ const initialLaboratory: Laboratory = {
 };
 
 const LabSemesterEdition: React.FC = () => {
+	const {group} = useAuthContext();
 	const navigate = useNavigate();
 
 	const [loading, setLoading] = useState<boolean>(false);
@@ -330,6 +334,7 @@ const LabSemesterEdition: React.FC = () => {
 						maxEmails={1}
 						role={Role.Professors}
 						setLoading={setLoading}
+						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">
@@ -339,6 +344,7 @@ const LabSemesterEdition: React.FC = () => {
 						onHandleChange={onMonitorsEmailHandleChange}
 						role={Role.Monitors}
 						setLoading={setLoading}
+						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">
@@ -348,6 +354,10 @@ const LabSemesterEdition: React.FC = () => {
 						onHandleChange={onStudentEmailHandleChange}
 						role={Role.Students}
 						setLoading={setLoading}
+						isEmailInputVisible={validateGroupFunction(
+							[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup],
+							group
+						)}
 					/>
 				</Row>
 				<Row className="section">

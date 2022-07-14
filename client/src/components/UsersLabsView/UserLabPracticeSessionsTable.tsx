@@ -121,11 +121,14 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		ingresar hasta el 1/4 inicial de la duración de la práctica*/
 		const duration: number = labPracticeSession.labPracticeInfo.practiceInfoDuration;
 		const quarter = Math.round(duration / 4);
+		const quarteMilisec = quarter * 60 * 1000;
+
+		const quarterTime = new Date(labPracticeSession.startDate).getTime() + quarteMilisec
 
 		if (
 			new Date() < new Date(labPracticeSession.endDate) &&
 			new Date() >= new Date(labPracticeSession.startDate) && 
-			new Date().getMinutes() < quarter
+			new Date().getTime() < quarterTime 
 		) {
 			return (
 				<IoEnter

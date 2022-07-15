@@ -4,9 +4,7 @@ import {Col, Row} from 'react-bootstrap';
 import EmailsInput from '../../components/LabSemester/EmailsInput';
 import {UserType} from '../../containers/Users/types';
 import {isEmail} from '../../generalUtils/EmailUtils';
-import {Groups} from '../../generalUtils/groups';
 import {useGetUserByEmailQuery, Role} from '../../graphql/generated/schema';
-import {useAuthContext} from '../../GroupProvider';
 import {Table} from '../UI';
 import {Action} from '../UI/Table/Table';
 import classes from './shared.module.scss';
@@ -18,6 +16,7 @@ interface Props {
 	onHandleChange: (emails: Array<string>) => void;
 	setLoading?: (isLoading: boolean) => void;
 	isEmailInputVisible: boolean;
+	isRemovableEnabled: boolean;
 }
 
 const USER_TYPES: UserType[] = [
@@ -32,9 +31,9 @@ const EmailsInputWithTable: React.FC<Props> = ({
 	role,
 	onHandleChange,
 	setLoading,
-	isEmailInputVisible = true
+	isEmailInputVisible = true,
+	isRemovableEnabled = true
 }) => {
-	const {group} = useAuthContext();
 	const [emailList, setEmailList] = useState<Array<string>>([]);
 	const [emailsValue, setEmailsValue] = useState<string>('');
 	const [emailError, setEmailError] = useState<string | null>(null);
@@ -200,7 +199,7 @@ const EmailsInputWithTable: React.FC<Props> = ({
 							headers={['']}
 							data={mapEmails(emailList)}
 							onAction={handleTableAction}
-							removable={group === Groups.AdminsGroup}
+							removable={isRemovableEnabled}
 							hasRemoveAll
 							overflow
 							stickyHeader

@@ -10,8 +10,5 @@ query getLabPracticeSession($id: ID!) {
 		startDate
 		labSemesterID
 		_version
-		LabSemester {
-			professor
-		}
 	}
 }

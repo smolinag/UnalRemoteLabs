@@ -26,30 +26,30 @@ const LabSemesterTable: React.FC<Props> = ({data, onAction, userId}) => {
 		semesterName,
 		description,
 		professorEmailList,
-		laboratoryID,
+		laboratoryId,
 		id
 	}: LabSemester): (string | React.ReactNode)[] => [
 		semesterName,
 		description,
 		professorEmailList,
-		redirectToLabPractice(laboratoryID ? laboratoryID : '', id ? id : ''),
-		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
+		redirectToLabPractice(laboratoryId ? laboratoryId : '', id ? id : ''),
+		redirectToLabPracticeSession(laboratoryId ? laboratoryId : '', id ? id : '')
 	];
 
 	const mapOutput = ({
-		laboratory,
+		laboratoryName,
 		semesterName,
 		description,
 		professorEmailList,
-		laboratoryID,
+		laboratoryId,
 		id
 	}: LabSemester): (string | React.ReactNode)[] => [
-		laboratory,
+		laboratoryName,
 		semesterName,
 		description,
 		professorEmailList,
-		redirectToLabPractice(laboratoryID ? laboratoryID : '', id ? id : ''),
-		redirectToLabPracticeSession(laboratoryID ? laboratoryID : '', id ? id : '')
+		redirectToLabPractice(laboratoryId ? laboratoryId : '', id ? id : ''),
+		redirectToLabPracticeSession(laboratoryId ? laboratoryId : '', id ? id : '')
 	];
 
 	const redirectToLabPractice = (labId: string, labSemesterId: string) => {

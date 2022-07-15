@@ -22,7 +22,7 @@ const Header: React.FC = () => {
 			const items = data?.getUserByEmail?.items?.filter((item) => item !== null && item._deleted !== true);
 			if (items && items.length > 0) {
 				defineGroup(items[0]?.role ? items[0]?.role : '');
-				setUserInfo(items[0]?.id ? items[0]?.id : '');
+				setUserInfo(items[0]?.id ? items[0]?.id : '', items[0]?.email ? items[0]?.email : '');
 			}
 		}
 	});
@@ -42,11 +42,10 @@ const Header: React.FC = () => {
 	const signOutFunction = () => {
 		// clearGroup();
 		setLoggedUser('');
-		navigate('/')
+		navigate('/');
 		Auth.signOut();
-		setUserInfo('')
-		window.sessionStorage.getItem('token')
-		
+		setUserInfo('', '');
+		window.sessionStorage.getItem('token');
 	};
 
 	const redirectToAccount = () => {

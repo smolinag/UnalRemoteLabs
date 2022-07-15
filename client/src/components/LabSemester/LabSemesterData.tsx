@@ -12,6 +12,7 @@ interface Props {
 	handleChange: (labSemester: LabSemester) => void;
 	errors: ErrorIdentifier[];
 	laboratories: Laboratory[];
+	isLabSelectVisible: boolean;
 }
 
 const initialLabSemester: LabSemester = {
@@ -22,7 +23,13 @@ const initialLabSemester: LabSemester = {
 	studentEmailList: []
 };
 
-const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, errors, laboratories}) => {
+const LabSemesterData: React.FC<Props> = ({
+	labSemesterValue,
+	handleChange,
+	errors,
+	laboratories,
+	isLabSelectVisible = false
+}) => {
 	const {group} = useAuthContext();
 	const [labSemester, setLabSemester] = useState<LabSemester>(initialLabSemester);
 
@@ -52,7 +59,7 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 				newState = {...labSemester, description: value};
 				break;
 			case Params.Laboratory:
-				newState = {...labSemester, laboratoryID: labId, laboratory: value};
+				newState = {...labSemester, laboratoryId: labId, laboratoryName: value};
 				break;
 			default:
 				return labSemester;
@@ -61,9 +68,10 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 		handleChange(newState);
 	};
 
-	return (
-		<>
-			<div className={classes.options}>
+	const renderLaboratorySelector = (isVisible: boolean) => {
+		let render = null;
+		if (isVisible) {
+			render = (
 				<ValidateGroupComponent groups={[Groups.ProfessorsGroup]}>
 					<DropdownComponent
 						text="Laboratorio"
@@ -73,16 +81,23 @@ const LabSemesterData: React.FC<Props> = ({labSemesterValue, handleChange, error
 						onValueChange={(value, id) => {
 							onValueChange(value, Params.Laboratory, id);
 						}}
-						value={labSemester.laboratory ? labSemester.laboratory : ''}
-						// error={checkErrorMessage(Params.)}
+						value={labSemester.laboratoryName ? labSemester.laboratoryName : ''}
 					/>
 				</ValidateGroupComponent>
+			);
+		}
+		return render;
+	};
+
+	return (
+		<>
+			<div className={classes.options}>
+				{renderLaboratorySelector(isLabSelectVisible)}
 				<Input
 					type="text"
 					placeholder="Nombre"
 					required
 					value={labSemester.semesterName}
-					tooltip="Ingrese el nombre del semestre"
 					onValueChange={(value) => onValueChange(value, Params.Name)}
 					error={checkErrorMessage(Params.Name)}
 					disabled={group === Groups.MonitorsGroup}

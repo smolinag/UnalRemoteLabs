@@ -5,14 +5,19 @@ query listUserLabSemestersByUserId($userID: ID!) {
 			userID
 			labsemester {
 				id
-				description
 				semesterName
+				description
 				Laboratory {
 					id
 					name
 				}
-				_version
+				updatedAt
+				updatedBy
+				createdBy
+				createdAt
+				_lastChangedAt
 				_deleted
+				_version
 			}
 			_version
 			_deleted

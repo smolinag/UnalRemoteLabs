@@ -125,7 +125,7 @@ const LabPracticeView: React.FC = () => {
 				description: sessionInfo?.description ?? '',
 				startDate: sessionInfo?.startDate,
 				endDate: sessionInfo?.endDate,
-				professor: sessionInfo?.LabSemester?.professor ?? '',
+				professor: 'Pendiente',
 				videoUrlCode: sessionInfo?.videoUrlCode ?? '',
 				leaderStudent: sessionInfo?.leaderUsers ?? ''
 			};

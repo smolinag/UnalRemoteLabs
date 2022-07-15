@@ -20,19 +20,17 @@ import {
 import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
 import {Role} from '../Users/types';
-import {LabSemester, Laboratory, Params, ErrorIdentifier, LocationStateEdition} from './types';
+import {LabSemester, Params, ErrorIdentifier, LocationStateEdition} from './types';
 
 const initialLabSemester: LabSemester = {
 	semesterName: '',
 	description: null,
 	professorEmailList: [],
 	monitorEmailList: [],
-	studentEmailList: []
-};
-
-const initialLaboratory: Laboratory = {
-	name: null,
-	organizationID: ''
+	studentEmailList: [],
+	laboratoryId: '',
+	laboratoryName: '',
+	laboratoryOrganizationId: ''
 };
 
 const LabSemesterEdition: React.FC = () => {
@@ -42,7 +40,6 @@ const LabSemesterEdition: React.FC = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [errors, setErrors] = useState<ErrorIdentifier[]>([]);
 
-	const [laboratory, setLaboratory] = useState<Laboratory>(initialLaboratory);
 	const [labSemester, setLabSemester] = useState<LabSemester>(initialLabSemester);
 
 	const location = useLocation();
@@ -95,14 +92,24 @@ const LabSemesterEdition: React.FC = () => {
 	}, [labSemesterData]);
 
 	useEffect(() => {
-		console.log(userLabSemesterData);
+		if (laboratoryData && laboratoryData?.getLaboratory != null) {
+			const lab = laboratoryData.getLaboratory;
+			setLabSemester((prevState) => ({
+				...prevState,
+				laboratoryId: lab.id,
+				laboratoryName: lab.name,
+				laboratoryOrganizationId: lab.organizationID
+			}));
+		}
+		setLoading(loadingLaboratoryData);
+	}, [laboratoryData]);
+
+	useEffect(() => {
 		if (userLabSemesterData && userLabSemesterData?.listUserLabSemesters != null) {
 			const professorEmailList = getEmailListByRole(userLabSemesterData, Role.Professors);
 			const monitorEmailList = getEmailListByRole(userLabSemesterData, Role.Monitors);
 			const studentEmailList = getEmailListByRole(userLabSemesterData, Role.Students);
-			console.log(professorEmailList);
-			console.log(monitorEmailList);
-			console.log(studentEmailList);
+
 			setLabSemester((prevState) => ({
 				...prevState,
 				professorEmailList,
@@ -112,14 +119,6 @@ const LabSemesterEdition: React.FC = () => {
 		}
 		setLoading(loadingUserLabSemesterData);
 	}, [userLabSemesterData]);
-
-	useEffect(() => {
-		if (laboratoryData?.getLaboratory != null) {
-			const lab = laboratoryData.getLaboratory;
-			setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
-		}
-		setLoading(loadingLaboratoryData);
-	}, [laboratoryData]);
 
 	const onProfessorsEmailHandleChange = (emails: Array<string>) => {
 		setLabSemester({...labSemester, professorEmailList: emails});
@@ -186,7 +185,7 @@ const LabSemesterEdition: React.FC = () => {
 				await createUser({
 					variables: {
 						input: {
-							organizationID: laboratory.organizationID,
+							organizationID: labSemester.laboratoryOrganizationId ?? '',
 							role: role,
 							email,
 							createdBy: '1',
@@ -310,10 +309,7 @@ const LabSemesterEdition: React.FC = () => {
 							id: labSemester.id ? labSemester.id : '',
 							semesterName: labSemester.semesterName,
 							description: labSemester.description,
-							professor: labSemester.professorEmailList.length > 0 ? labSemester.professorEmailList[0] : '',
-							monitorEmailList: JSON.stringify(labSemester.monitorEmailList),
-							studentEmailList: JSON.stringify(labSemester.studentEmailList),
-							laboratoryID: labSemester.laboratoryID,
+							laboratoryID: labSemester.laboratoryId,
 							_version: labSemester.version
 						}
 					}
@@ -339,7 +335,8 @@ const LabSemesterEdition: React.FC = () => {
 				showErrorBanner(`Error en la actualización del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
-				navigate('/lab-semesters', {state: {laboratoryID}});
+				console.log(labSemester.laboratoryId);
+				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryId}});
 			}
 		}
 	};
@@ -348,12 +345,13 @@ const LabSemesterEdition: React.FC = () => {
 		<Container fluid>
 			<LoadingContainer loading={loading}>
 				<Row className="section">
-					<h3 className="title">Edición de Semestre de laboratorio de {laboratory.name}</h3>
+					<h3 className="title">Edición de Semestre de laboratorio de {labSemester.laboratoryName}</h3>
 					<LabSemesterData
 						labSemesterValue={labSemester}
 						handleChange={onLabSemesterChange}
 						errors={errors}
 						laboratories={[]}
+						isLabSelectVisible={false}
 					/>
 				</Row>
 				<Row className="section">
@@ -364,7 +362,8 @@ const LabSemesterEdition: React.FC = () => {
 						maxEmails={1}
 						role={Role.Professors}
 						setLoading={setLoading}
-						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
+						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup], group)}
+						isRemovableEnabled={validateGroupFunction([Groups.AdminsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">
@@ -375,6 +374,7 @@ const LabSemesterEdition: React.FC = () => {
 						role={Role.Monitors}
 						setLoading={setLoading}
 						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
+						isRemovableEnabled={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">
@@ -384,10 +384,8 @@ const LabSemesterEdition: React.FC = () => {
 						onHandleChange={onStudentEmailHandleChange}
 						role={Role.Students}
 						setLoading={setLoading}
-						isEmailInputVisible={validateGroupFunction(
-							[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup],
-							group
-						)}
+						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
+						isRemovableEnabled={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
 					/>
 				</Row>
 				<Row className="section">

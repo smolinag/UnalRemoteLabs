@@ -3,9 +3,6 @@ mutation deleteLabSemester($input: DeleteLabSemesterInput!) {
 		id
 		semesterName
 		description
-		professor
-		monitorEmailList
-		studentEmailList
 		laboratoryID
 		createdBy
 		createdAt

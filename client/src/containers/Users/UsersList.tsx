@@ -51,13 +51,13 @@ const UsersList: React.FC = () => {
 
 	const {refetch: getUserLabSemesterByUserId} = useListUserLabSemestersByUserIdQuery({
 		skip: true,
-		notifyOnNetworkStatusChange: true
+		fetchPolicy: 'network-only'
 	});
 	const [deleteUserLabSemester] = useDeleteUserLabSemesterMutation();
 
 	const {refetch: getUserLabPracticeSessionByUserId} = useListUserLabPracticeSessionsByUserIdQuery({
 		skip: true,
-		notifyOnNetworkStatusChange: true
+		fetchPolicy: 'network-only'
 	});
 	const [deleteUserLabPracticeSession] = useDeleteUserLabPracticeSessionMutation();
 
@@ -67,7 +67,7 @@ const UsersList: React.FC = () => {
 		refetch: refetchUsersData
 	} = useListUsersByRoleAndOrganizationIdQuery({
 		variables: {role: intial_role.role, organizationID: intial_org.id},
-		notifyOnNetworkStatusChange: true
+		fetchPolicy: 'network-only'
 	});
 
 	const [userToDelete, setUserToDelete] = useState<User>(initialUser);

@@ -203,9 +203,6 @@ export declare class LabSemester {
   readonly id: string;
   readonly semesterName: string;
   readonly description?: string | null;
-  readonly professor: string;
-  readonly monitorEmailList?: string | null;
-  readonly studentEmailList: string;
   readonly Laboratory?: Laboratory | null;
   readonly users?: (UserLabSemester | null)[] | null;
   readonly LabPracticeSessions?: (LabPracticeSession | null)[] | null;

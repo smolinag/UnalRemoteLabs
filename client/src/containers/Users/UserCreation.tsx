@@ -37,7 +37,7 @@ const UserCreation: React.FC = () => {
 	const [createUser] = useCreateUserMutation();
 	const [createCognitoUser] = useCreateCognitoUserMutation();
 
-	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, fetchPolicy: 'network-only'});
 
 	const navigate = useNavigate();
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);

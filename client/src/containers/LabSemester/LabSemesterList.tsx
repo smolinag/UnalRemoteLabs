@@ -42,17 +42,17 @@ const LabSemesterList: React.FC = () => {
 
 	const {refetch: getLabSemestersByUserId} = useListUserLabSemestersByUserIdQuery({
 		skip: true,
-		notifyOnNetworkStatusChange: true
+		fetchPolicy: 'network-only'
 	});
 
 	const {refetch: getLaboratoryById} = useGetLaboratoryQuery({
 		skip: true,
-		notifyOnNetworkStatusChange: true
+		fetchPolicy: 'network-only'
 	});
 
 	const {refetch: getLabSemestersByLaboratoryId} = useListLabSemestersByLaboratoryIdQuery({
 		skip: true,
-		notifyOnNetworkStatusChange: true
+		fetchPolicy: 'network-only'
 	});
 
 	const aGetLabSemetersUsersByUserId = async (userID: string) => {
@@ -68,9 +68,9 @@ const LabSemesterList: React.FC = () => {
 						id: labSemester ? labSemester.id : '',
 						semesterName: labSemester?.semesterName ? labSemester.semesterName : '',
 						description: labSemester?.description ? labSemester.description : null,
-						professorEmailList: new Array(1).fill(labSemester?.professor ? labSemester.professor : ''),
-						monitorEmailList: labSemester?.monitorEmailList ? labSemester.monitorEmailList : [],
-						studentEmailList: labSemester?.studentEmailList ? labSemester.studentEmailList : [],
+						professorEmailList: [],
+						monitorEmailList: [],
+						studentEmailList: [],
 						version: labSemester?._version ? labSemester._version : null,
 						deleted: labSemester?._deleted ? labSemester._deleted : null,
 						laboratoryID: labSemester?.Laboratory?.id ? labSemester?.Laboratory.id : '',
@@ -91,9 +91,9 @@ const LabSemesterList: React.FC = () => {
 						id: obj ? obj.id : '',
 						semesterName: obj?.semesterName ? obj.semesterName : '',
 						description: obj?.description ? obj.description : null,
-						professorEmailList: new Array(1).fill(obj?.professor ? obj.professor : ''),
-						monitorEmailList: obj?.monitorEmailList ? obj.monitorEmailList : [],
-						studentEmailList: obj?.studentEmailList ? obj.studentEmailList : [],
+						professorEmailList: [],
+						monitorEmailList: [],
+						studentEmailList: [],
 						version: obj?._version ? obj._version : null,
 						deleted: obj?._deleted ? obj._deleted : null,
 						laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''

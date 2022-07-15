@@ -5,9 +5,6 @@ query listLabSemestersByLaboratoryId($laboratoryID: ID!) {
 			semesterName
 			description
 			laboratoryID
-			professor
-			monitorEmailList
-			studentEmailList
 			updatedAt
 			updatedBy
 			createdBy

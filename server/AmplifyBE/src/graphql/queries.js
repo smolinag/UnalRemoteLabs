@@ -243,9 +243,6 @@ export const getUserLabPracticeSession = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -700,9 +697,6 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -1148,9 +1142,6 @@ export const getLabPracticeSession = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -1239,9 +1230,6 @@ export const listLabPracticeSessions = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -1314,9 +1302,6 @@ export const syncLabPracticeSessions = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -2064,9 +2049,6 @@ export const getLabSemester = /* GraphQL */ `
       id
       semesterName
       description
-      professor
-      monitorEmailList
-      studentEmailList
       laboratoryID
       updatedBy
       createdBy
@@ -2163,9 +2145,6 @@ export const listLabSemesters = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -2218,9 +2197,6 @@ export const syncLabSemesters = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -2321,9 +2297,6 @@ export const getLaboratory = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -2505,9 +2478,6 @@ export const getUserLabSemester = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -2582,9 +2552,6 @@ export const listUserLabSemesters = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -2643,9 +2610,6 @@ export const syncUserLabSemesters = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy

@@ -2093,9 +2093,6 @@ export type DeleteLabSemesterMutation = {__typename?: 'Mutation'} & {
 			| 'id'
 			| 'semesterName'
 			| 'description'
-			| 'professor'
-			| 'monitorEmailList'
-			| 'studentEmailList'
 			| 'laboratoryID'
 			| 'createdBy'
 			| 'createdAt'
@@ -2294,9 +2291,6 @@ export type UpdateLabSemesterMutation = {__typename?: 'Mutation'} & {
 			| 'id'
 			| 'semesterName'
 			| 'description'
-			| 'professor'
-			| 'monitorEmailList'
-			| 'studentEmailList'
 			| 'laboratoryID'
 			| 'createdBy'
 			| 'createdAt'
@@ -2420,9 +2414,6 @@ export type GetLabSemesterQuery = {__typename?: 'Query'} & {
 			| 'id'
 			| 'semesterName'
 			| 'description'
-			| 'professor'
-			| 'monitorEmailList'
-			| 'studentEmailList'
 			| 'laboratoryID'
 			| 'updatedAt'
 			| 'updatedBy'
@@ -2687,9 +2678,6 @@ export type ListLabSemestersByLaboratoryIdQuery = {__typename?: 'Query'} & {
 						| 'semesterName'
 						| 'description'
 						| 'laboratoryID'
-						| 'professor'
-						| 'monitorEmailList'
-						| 'studentEmailList'
 						| 'updatedAt'
 						| 'updatedBy'
 						| 'createdBy'
@@ -2764,9 +2752,6 @@ export type ListUserByLabSemesterQuery = {__typename?: 'Query'} & {
 								| 'id'
 								| 'semesterName'
 								| 'description'
-								| 'professor'
-								| 'monitorEmailList'
-								| 'studentEmailList'
 								| 'updatedAt'
 								| 'updatedBy'
 								| 'createdBy'
@@ -2872,14 +2857,7 @@ export type ListUserLabSemestersByUserIdQuery = {__typename?: 'Query'} & {
 					{__typename?: 'UserLabSemester'} & Pick<UserLabSemester, 'id' | 'userID' | '_version' | '_deleted'> & {
 							labsemester: {__typename?: 'LabSemester'} & Pick<
 								LabSemester,
-								| 'id'
-								| 'description'
-								| 'professor'
-								| 'monitorEmailList'
-								| 'studentEmailList'
-								| 'semesterName'
-								| '_version'
-								| '_deleted'
+								'id' | 'description' | 'semesterName' | '_version' | '_deleted'
 							> & {Laboratory?: Maybe<{__typename?: 'Laboratory'} & Pick<Laboratory, 'id' | 'name'>>};
 						}
 				>
@@ -3845,9 +3823,6 @@ export const DeleteLabSemesterDocument = gql`
 			id
 			semesterName
 			description
-			professor
-			monitorEmailList
-			studentEmailList
 			laboratoryID
 			createdBy
 			createdAt
@@ -4534,9 +4509,6 @@ export const UpdateLabSemesterDocument = gql`
 			id
 			semesterName
 			description
-			professor
-			monitorEmailList
-			studentEmailList
 			laboratoryID
 			createdBy
 			createdAt
@@ -4859,9 +4831,6 @@ export const GetLabSemesterDocument = gql`
 			id
 			semesterName
 			description
-			professor
-			monitorEmailList
-			studentEmailList
 			laboratoryID
 			updatedAt
 			updatedBy
@@ -5444,9 +5413,6 @@ export const ListLabSemestersByLaboratoryIdDocument = gql`
 				semesterName
 				description
 				laboratoryID
-				professor
-				monitorEmailList
-				studentEmailList
 				updatedAt
 				updatedBy
 				createdBy
@@ -5668,9 +5634,6 @@ export const ListUserByLabSemesterDocument = gql`
 						id
 						name
 					}
-					professor
-					monitorEmailList
-					studentEmailList
 					updatedAt
 					updatedBy
 					createdBy
@@ -5956,9 +5919,6 @@ export const ListUserLabSemestersByUserIdDocument = gql`
 				labsemester {
 					id
 					description
-					professor
-					monitorEmailList
-					studentEmailList
 					semesterName
 					Laboratory {
 						id

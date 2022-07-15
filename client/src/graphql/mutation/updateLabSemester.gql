@@ -3,9 +3,6 @@ mutation updateLabSemester($input: UpdateLabSemesterInput!) {
 		id
 		semesterName
 		description
-		professor
-		monitorEmailList
-		studentEmailList
 		laboratoryID
 		createdBy
 		createdAt

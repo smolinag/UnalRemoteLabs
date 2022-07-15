@@ -181,9 +181,6 @@ type LabSemester @aws_api_key @aws_cognito_user_pools {
   id: ID!
   semesterName: String!
   description: String
-  professor: String!
-  monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON!
   laboratoryID: ID!
   updatedBy: String
   createdBy: String!
@@ -1109,9 +1106,6 @@ input ModelLabSemesterFilterInput {
   id: ModelIDInput
   semesterName: ModelStringInput
   description: ModelStringInput
-  professor: ModelStringInput
-  monitorEmailList: ModelStringInput
-  studentEmailList: ModelStringInput
   laboratoryID: ModelIDInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput
@@ -1124,9 +1118,6 @@ input CreateLabSemesterInput {
   id: ID
   semesterName: String!
   description: String
-  professor: String!
-  monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON!
   laboratoryID: ID!
   updatedBy: String
   createdBy: String!
@@ -1137,9 +1128,6 @@ input UpdateLabSemesterInput {
   id: ID!
   semesterName: String
   description: String
-  professor: String
-  monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON
   laboratoryID: ID
   updatedBy: String
   createdBy: String
@@ -1154,9 +1142,6 @@ input DeleteLabSemesterInput {
 input ModelLabSemesterConditionInput {
   semesterName: ModelStringInput
   description: ModelStringInput
-  professor: ModelStringInput
-  monitorEmailList: ModelStringInput
-  studentEmailList: ModelStringInput
   laboratoryID: ModelIDInput
   updatedBy: ModelStringInput
   createdBy: ModelStringInput

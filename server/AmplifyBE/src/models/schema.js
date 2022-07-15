@@ -1232,27 +1232,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "professor": {
-                    "name": "professor",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "monitorEmailList": {
-                    "name": "monitorEmailList",
-                    "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "studentEmailList": {
-                    "name": "studentEmailList",
-                    "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "Laboratory": {
                     "name": "Laboratory",
                     "isArray": false,
@@ -1891,5 +1870,5 @@ export const schema = {
             }
         }
     },
-    "version": "9cd49a9d7f0226d77256f888ae25746d"
+    "version": "10b13be2776cfef2f8b1c4e831995dda"
 };

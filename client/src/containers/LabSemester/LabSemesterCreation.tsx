@@ -45,7 +45,7 @@ const LabSemesterCreation: React.FC = () => {
 
 	const [createUser] = useCreateUserMutation();
 	const [createUserLabSemester] = useCreateUserLabSemesterMutation();
-	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, fetchPolicy: 'network-only'});
 
 	if (group === Groups.ProfessorsGroup) {
 		useListLaboratoriesByUserQuery({

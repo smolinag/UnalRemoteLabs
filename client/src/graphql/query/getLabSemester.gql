@@ -3,9 +3,6 @@ query getLabSemester($id: ID!) {
 		id
 		semesterName
 		description
-		professor
-		monitorEmailList
-		studentEmailList
 		laboratoryID
 		updatedAt
 		updatedBy

@@ -136,9 +136,6 @@ type LabSemester @model @key(name: "byLaboratory", fields: ["laboratoryID"]) @au
   id: ID!
   semesterName: String!
   description: String
-  professor: String!
-  monitorEmailList: AWSJSON
-  studentEmailList: AWSJSON!
   Laboratory: Laboratory @connection(fields: ["laboratoryID"])
   laboratoryID: ID!
   users: [UserLabSemester] @connection(keyName: "byLabSemester", fields: ["id"])

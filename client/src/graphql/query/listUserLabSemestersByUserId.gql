@@ -6,9 +6,6 @@ query listUserLabSemestersByUserId($userID: ID!) {
 			labsemester {
 				id
 				description
-				professor
-				monitorEmailList
-				studentEmailList
 				semesterName
 				Laboratory {
 					id

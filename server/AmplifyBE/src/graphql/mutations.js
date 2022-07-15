@@ -293,9 +293,6 @@ export const createUserLabPracticeSession = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -412,9 +409,6 @@ export const updateUserLabPracticeSession = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -531,9 +525,6 @@ export const deleteUserLabPracticeSession = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -849,9 +840,6 @@ export const createLabPracticeSessionCommand = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -966,9 +954,6 @@ export const updateLabPracticeSessionCommand = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -1083,9 +1068,6 @@ export const deleteLabPracticeSessionCommand = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -1449,9 +1431,6 @@ export const createLabPracticeSession = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -1589,9 +1568,6 @@ export const updateLabPracticeSession = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -1729,9 +1705,6 @@ export const deleteLabPracticeSession = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -2875,9 +2848,6 @@ export const createLabSemester = /* GraphQL */ `
       id
       semesterName
       description
-      professor
-      monitorEmailList
-      studentEmailList
       laboratoryID
       updatedBy
       createdBy
@@ -2972,9 +2942,6 @@ export const updateLabSemester = /* GraphQL */ `
       id
       semesterName
       description
-      professor
-      monitorEmailList
-      studentEmailList
       laboratoryID
       updatedBy
       createdBy
@@ -3069,9 +3036,6 @@ export const deleteLabSemester = /* GraphQL */ `
       id
       semesterName
       description
-      professor
-      monitorEmailList
-      studentEmailList
       laboratoryID
       updatedBy
       createdBy
@@ -3225,9 +3189,6 @@ export const createLaboratory = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -3311,9 +3272,6 @@ export const updateLaboratory = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -3397,9 +3355,6 @@ export const deleteLaboratory = /* GraphQL */ `
           id
           semesterName
           description
-          professor
-          monitorEmailList
-          studentEmailList
           laboratoryID
           updatedBy
           createdBy
@@ -3476,9 +3431,6 @@ export const createUserLabSemester = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -3573,9 +3525,6 @@ export const updateUserLabSemester = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy
@@ -3670,9 +3619,6 @@ export const deleteUserLabSemester = /* GraphQL */ `
         id
         semesterName
         description
-        professor
-        monitorEmailList
-        studentEmailList
         laboratoryID
         updatedBy
         createdBy

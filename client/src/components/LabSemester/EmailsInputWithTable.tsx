@@ -39,7 +39,7 @@ const EmailsInputWithTable: React.FC<Props> = ({
 	const [emailsValue, setEmailsValue] = useState<string>('');
 	const [emailError, setEmailError] = useState<string | null>(null);
 
-	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, fetchPolicy: 'network-only'});
 
 	useEffect(() => {
 		setEmailList(emails);

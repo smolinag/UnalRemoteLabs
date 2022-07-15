@@ -11,9 +11,6 @@ query listUserByLabSemester($userId: ID!) {
 					id
 					name
 				}
-				professor
-				monitorEmailList
-				studentEmailList
 				updatedAt
 				updatedBy
 				createdBy

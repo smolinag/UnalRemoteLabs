@@ -47,6 +47,7 @@ const LabSemesterEdition: React.FC = () => {
 
 	const location = useLocation();
 	const labSemesterID = (location.state as LocationStateEdition)?.labSemesterID;
+	console.log(labSemesterID);
 	const {data: labSemesterData, loading: loadingLabSemesterData} = useGetLabSemesterQuery({
 		variables: {id: labSemesterID}
 	});
@@ -59,19 +60,58 @@ const LabSemesterEdition: React.FC = () => {
 		variables: {id: laboratoryID}
 	});
 
-	const {refetch: getUserLabSemesterBySemesterId} = useListUserLabSemestersBySemesterIdQuery({
-		skip: true,
-		notifyOnNetworkStatusChange: true
+	const {
+		data: userLabSemesterData,
+		loading: loadingUserLabSemesterData,
+		refetch: getUserLabSemesterBySemesterId
+	} = useListUserLabSemestersBySemesterIdQuery({
+		fetchPolicy: 'network-only',
+		variables: {semesterID: labSemesterID}
 	});
 
 	const [updateLabSemester] = useUpdateLabSemesterMutation();
 
 	const [createUser] = useCreateUserMutation();
 	const [createUserLabSemester] = useCreateUserLabSemesterMutation();
-	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, notifyOnNetworkStatusChange: true});
+	const {refetch: getUserByEmail} = useGetUserByEmailQuery({skip: true, fetchPolicy: 'network-only'});
 	const [deleteUserLabSemester] = useDeleteUserLabSemesterMutation();
 
 	const {showErrorBanner, showSuccessBanner} = useContext(notificationBannerContext);
+
+	useEffect(() => {
+		if (labSemesterData?.getLabSemester != null) {
+			const labSemester = labSemesterData.getLabSemester;
+
+			setLabSemester((prevState) => ({
+				...prevState,
+				id: labSemester.id,
+				semesterName: labSemester.semesterName,
+				description: labSemester.description ? labSemester.description : null,
+				version: labSemester._version,
+				deleted: labSemester._deleted
+			}));
+		}
+		setLoading(loadingLabSemesterData);
+	}, [labSemesterData]);
+
+	useEffect(() => {
+		console.log(userLabSemesterData);
+		if (userLabSemesterData && userLabSemesterData?.listUserLabSemesters != null) {
+			const professorEmailList = getEmailListByRole(userLabSemesterData, Role.Professors);
+			const monitorEmailList = getEmailListByRole(userLabSemesterData, Role.Monitors);
+			const studentEmailList = getEmailListByRole(userLabSemesterData, Role.Students);
+			console.log(professorEmailList);
+			console.log(monitorEmailList);
+			console.log(studentEmailList);
+			setLabSemester((prevState) => ({
+				...prevState,
+				professorEmailList,
+				monitorEmailList,
+				studentEmailList
+			}));
+		}
+		setLoading(loadingUserLabSemesterData);
+	}, [userLabSemesterData]);
 
 	useEffect(() => {
 		if (laboratoryData?.getLaboratory != null) {
@@ -80,28 +120,6 @@ const LabSemesterEdition: React.FC = () => {
 		}
 		setLoading(loadingLaboratoryData);
 	}, [laboratoryData]);
-
-	useEffect(() => {
-		if (labSemesterData?.getLabSemester != null) {
-			const labSemester = labSemesterData.getLabSemester;
-
-			let professorEmailList = [];
-			if (labSemester.professor !== undefined && labSemester.professor !== null && labSemester.professor != '') {
-				professorEmailList = new Array(1).fill(labSemester.professor);
-			}
-			setLabSemester({
-				id: labSemester.id,
-				semesterName: labSemester.semesterName,
-				description: labSemester.description ? labSemester.description : null,
-				professorEmailList,
-				monitorEmailList: JSON.parse(labSemester.monitorEmailList),
-				studentEmailList: JSON.parse(labSemester.studentEmailList),
-				version: labSemester._version,
-				deleted: labSemester._deleted
-			});
-		}
-		setLoading(loadingLabSemesterData);
-	}, [labSemesterData]);
 
 	const onProfessorsEmailHandleChange = (emails: Array<string>) => {
 		setLabSemester({...labSemester, professorEmailList: emails});
@@ -250,13 +268,7 @@ const LabSemesterEdition: React.FC = () => {
 		emailList: Array<string>,
 		role: Role
 	) => {
-		const userLabSemesterRecords = userLabSemester.listUserLabSemesters?.items?.filter(
-			(userLabSemester) => userLabSemester && userLabSemester._deleted !== true
-		);
-
-		const roleLabSemesterRecords = userLabSemesterRecords?.filter(
-			(obj) => obj && obj._deleted !== true && obj.user.role === role
-		);
+		const roleLabSemesterRecords = getRecordsByRole(userLabSemester, role);
 
 		const currentEmails = roleLabSemesterRecords?.map((obj) => obj && obj?.user).map((obj) => obj && obj.email);
 		const emailsToAdd = emailList.filter((email) => email && !currentEmails?.includes(email));
@@ -266,6 +278,24 @@ const LabSemesterEdition: React.FC = () => {
 			(obj) => obj && emailsToDelete?.includes(obj?.user.email)
 		);
 		return {emailsToAdd, userLabSemestersToDelete};
+	};
+
+	const getRecordsByRole = (userLabSemester: ListUserLabSemestersBySemesterIdQuery, role: Role) => {
+		const userLabSemesterRecords = userLabSemester.listUserLabSemesters?.items?.filter(
+			(userLabSemester) => userLabSemester && userLabSemester._deleted !== true
+		);
+
+		const userLabSemesterRecordsByRole = userLabSemesterRecords?.filter(
+			(obj) => obj && obj._deleted !== true && obj.user.role === role
+		);
+
+		return userLabSemesterRecordsByRole;
+	};
+
+	const getEmailListByRole = (userLabSemester: ListUserLabSemestersBySemesterIdQuery, role: Role): Array<string> => {
+		const userLabSemesterRecords = getRecordsByRole(userLabSemester, role);
+		const emailList = userLabSemesterRecords?.map((obj) => obj?.user.email ?? '');
+		return emailList ?? [];
 	};
 
 	const updateLaboratorySemester = async () => {

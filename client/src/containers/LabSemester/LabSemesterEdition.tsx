@@ -382,8 +382,14 @@ const LabSemesterEdition: React.FC = () => {
 						onHandleChange={onStudentEmailHandleChange}
 						role={Role.Students}
 						setLoading={setLoading}
-						isEmailInputVisible={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
-						isRemovableEnabled={validateGroupFunction([Groups.AdminsGroup, Groups.ProfessorsGroup], group)}
+						isEmailInputVisible={validateGroupFunction(
+							[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup],
+							group
+						)}
+						isRemovableEnabled={validateGroupFunction(
+							[Groups.AdminsGroup, Groups.ProfessorsGroup, Groups.MonitorsGroup],
+							group
+						)}
 					/>
 				</Row>
 				<Row className="section">

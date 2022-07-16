@@ -137,7 +137,13 @@ const LabSemesterList: React.FC = () => {
 
 		const emailList = userLabSemesterRecords
 			?.filter((obj) => obj && obj._deleted !== true && obj.user.role === Role.Professors)
-			.map((obj) => obj?.user.email ?? '');
+			.map((obj) => {
+				let ans = obj?.user.name;
+				if (!ans || ans === null || ans === '') {
+					ans = obj?.user.email;
+				}
+				return ans;
+			});
 
 		let professor = null;
 		if (emailList && emailList.length > 0) {

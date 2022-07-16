@@ -16,9 +16,11 @@ import {
 	useListLabPracticeCommandsQuery,
 	useListLabPracticeSessionCommandsQuery,
 	useListLabPracticeOutputsQuery,
+	useListUserLabPracticeSessionsByUserIdAndSessionIdLazyQuery,
 	useCreateLabPracticeSessionCommandMutation,
 	useOnUpdateLabPracticeSessionCommandBySessionIdSubscription,
 	useUpdateLabPracticeSessionCommandMutation,
+	useUpdateUserLabPracticeSessionMutation,
 	usePublishMqttMessageMutation,
 	useOnLabOutputListenSubscription,
 	useGetLabPracticeSessionQuery
@@ -79,6 +81,8 @@ const LabPracticeView: React.FC = () => {
 	const [outputTransition, setOutputTransition] = useState<boolean>(false);
 	const [outputIndex, setOutputIndex] = useState<number>(1);
 
+	const [inSessionDate, setInSessionDate] = useState<Date | null>(null);
+
 	const {userId, group} = useAuthContext(); //Get userId to check if it is the leader student, and group(role)
 
 	// TODO Deberíamos pasar esto a context?
@@ -89,8 +93,10 @@ const LabPracticeView: React.FC = () => {
 	const {data: labCommandsData} = useListLabPracticeCommandsQuery({variables: {id: labPracticeId}});
 	const {data: sessionCommands} = useListLabPracticeSessionCommandsQuery({variables: {id: sessionId}});
 	const {data: practiceOutputs} = useListLabPracticeOutputsQuery({variables: {id: labPracticeId}});
+	const [listUserSessionByUserIdAndSessionId] = useListUserLabPracticeSessionsByUserIdAndSessionIdLazyQuery({});
 	const [createLabPracticeSessionCommand] = useCreateLabPracticeSessionCommandMutation({});
 	const [updateLabPracticeSessionCommand] = useUpdateLabPracticeSessionCommandMutation({});
+	const [updateUserLabPracticeSession] = useUpdateUserLabPracticeSessionMutation({});
 	const [publishMqttMessageMutation] = usePublishMqttMessageMutation({});
 
 	const {data: updatedSessionCommand} = useOnUpdateLabPracticeSessionCommandBySessionIdSubscription({
@@ -98,6 +104,60 @@ const LabPracticeView: React.FC = () => {
 	});
 
 	const {data: updatedSessionOutput} = useOnLabOutputListenSubscription({variables: {id: deviceId}});
+
+	useEffect(() => {
+		//Query userSession and update SessionInformation
+		if (sessionId) {
+			const setUserSessionStartEndDate = async () => {
+				const {data} = await listUserSessionByUserIdAndSessionId({variables: {userID: userId, sessionID: sessionId}});
+				const userSessions = data?.listUserLabPracticeSessions?.items.filter((userSession) => {
+					userSession?._deleted === false;
+				});
+				if (userSessions) {
+					if (userSessions.length === 0) {
+						console.error(`There are no sessions associated to user: ${userId} and session: ${sessionId}`);
+					} else {
+						if (userSessions.length > 1) {
+							console.error(
+								`There are ${userSessions.length} sessions associated to user: ${userId} and session: ${sessionId}. Taking first one`
+							);
+						} else {
+							const userSession = userSessions[0];
+							if (userSession) {
+								if (!inSessionDate) {
+									setInSessionDate(new Date());
+								} else {
+									//Update user session information
+									if (userSession.sessionStartDate) {
+										//Update only with end session info
+										updateUserSession(userSession.id, userSession.sessionStartDate, new Date(), userSession._version);
+									} else {
+										//Update with both start and end session info
+										updateUserSession(userSession.id, inSessionDate, new Date(), userSession._version);
+									}
+								}
+							}
+						}
+					}
+				}
+			};
+			setUserSessionStartEndDate();
+		}
+	}, []);
+
+	const updateUserSession = async (id: string, startDate: Date, endDate: Date, version: number) => {
+		const {data} = await updateUserLabPracticeSession({
+			variables: {
+				input: {
+					id: id,
+					sessionStartDate: startDate.toISOString(),
+					sessionEndDate: endDate.toISOString(),
+					_version: version
+				}
+			}
+		});
+		return data;
+	};
 
 	useEffect(() => {
 		let interval: NodeJS.Timeout;

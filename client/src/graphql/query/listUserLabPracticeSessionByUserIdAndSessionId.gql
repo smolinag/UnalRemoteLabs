@@ -1,0 +1,13 @@
+query listUserLabPracticeSessionsByUserIdAndSessionId($userID: ID!, $sessionID: ID!) {
+	listUserLabPracticeSessions(filter: {userID: {eq: $userID}, labpracticesessionID: {eq: $sessionID}}) {
+		items {
+			sessionEndDate
+			sessionStartDate
+			id
+			_version
+			_deleted
+			labpracticesessionID
+			userID
+		}
+	}
+}

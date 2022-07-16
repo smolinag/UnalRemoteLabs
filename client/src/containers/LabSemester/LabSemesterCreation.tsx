@@ -253,7 +253,6 @@ const LabSemesterCreation: React.FC = () => {
 				showErrorBanner(`Error en la creación del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
-				console.log(labSemester.laboratoryId);
 				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryId}});
 			}
 		}

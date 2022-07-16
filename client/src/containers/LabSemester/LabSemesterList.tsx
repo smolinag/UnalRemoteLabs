@@ -11,7 +11,9 @@ import {
 	useListLabSemestersByLaboratoryIdQuery,
 	useDeleteLabSemesterMutation,
 	useGetLaboratoryQuery,
-	useListUserLabSemestersByUserIdQuery
+	useListUserLabSemestersByUserIdQuery,
+	useListUserLabSemestersBySemesterIdQuery,
+	Role
 } from '../../graphql/generated/schema';
 import {useAuthContext} from '../../GroupProvider';
 import {notificationBannerContext} from '../../state/NotificationBannerProvider';
@@ -56,58 +58,94 @@ const LabSemesterList: React.FC = () => {
 		});
 
 	useEffect(() => {
-		if (
-			(userID && group === Groups.StudentsGroup) ||
-			group === Groups.MonitorsGroup ||
-			group === Groups.ProfessorsGroup
-		) {
-			if (userLabSemesterByUserIdData && userLabSemesterByUserIdData.listUserLabSemesters?.items) {
-				const labsList: Array<LabSemester> = userLabSemesterByUserIdData.listUserLabSemesters?.items
-					.filter((obj) => obj && !obj._deleted && !obj.labsemester._deleted)
-					.map((obj) => {
-						const labSemester = obj?.labsemester;
-						return {
-							id: labSemester ? labSemester.id : '',
-							semesterName: labSemester?.semesterName ? labSemester.semesterName : '',
-							description: labSemester?.description ? labSemester.description : null,
-							professorEmailList: [],
-							monitorEmailList: [],
-							studentEmailList: [],
-							version: labSemester?._version ? labSemester._version : null,
-							deleted: labSemester?._deleted ? labSemester._deleted : null,
-							laboratoryId: labSemester?.Laboratory?.id ? labSemester?.Laboratory.id : '',
-							laboratoryName: labSemester?.Laboratory?.name ? labSemester?.Laboratory.name : ''
-						};
-					});
-				setLabSemesters(labsList);
-			}
-		} else if (laboratoryID && group === Groups.AdminsGroup) {
-			if (laboratoryByIdData && laboratoryByIdData?.getLaboratory != null) {
-				const lab = laboratoryByIdData.getLaboratory;
-				setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
-			}
+		(async () => {
+			let labSemesterList: Array<LabSemester> = [];
+			if (
+				(userID && group === Groups.StudentsGroup) ||
+				group === Groups.MonitorsGroup ||
+				group === Groups.ProfessorsGroup
+			) {
+				if (userLabSemesterByUserIdData && userLabSemesterByUserIdData.listUserLabSemesters?.items) {
+					labSemesterList = userLabSemesterByUserIdData.listUserLabSemesters?.items
+						.filter((obj) => obj && !obj._deleted && !obj.labsemester._deleted)
+						.map((obj) => {
+							const labSemester = obj?.labsemester;
+							return {
+								id: labSemester ? labSemester.id : '',
+								semesterName: labSemester?.semesterName ? labSemester.semesterName : '',
+								description: labSemester?.description ? labSemester.description : null,
+								professorEmailList: [],
+								monitorEmailList: [],
+								studentEmailList: [],
+								version: labSemester?._version ? labSemester._version : null,
+								deleted: labSemester?._deleted ? labSemester._deleted : null,
+								laboratoryId: labSemester?.Laboratory?.id ? labSemester?.Laboratory.id : '',
+								laboratoryName: labSemester?.Laboratory?.name ? labSemester?.Laboratory.name : ''
+							};
+						});
+				}
+			} else if (laboratoryID && group === Groups.AdminsGroup) {
+				if (laboratoryByIdData && laboratoryByIdData?.getLaboratory != null) {
+					const lab = laboratoryByIdData.getLaboratory;
+					setLaboratory({id: lab.id, name: lab.name, organizationID: lab.organizationID});
+				}
 
-			if (labSemestersByLaboratoryIdData && labSemestersByLaboratoryIdData.listLabSemesters?.items) {
-				const labsList: Array<LabSemester> = labSemestersByLaboratoryIdData.listLabSemesters?.items
-					.filter((obj) => obj && !obj._deleted)
-					.map((obj) => {
-						return {
-							id: obj ? obj.id : '',
-							semesterName: obj?.semesterName ? obj.semesterName : '',
-							description: obj?.description ? obj.description : null,
-							professorEmailList: [],
-							monitorEmailList: [],
-							studentEmailList: [],
-							version: obj?._version ? obj._version : null,
-							deleted: obj?._deleted ? obj._deleted : null,
-							laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''
-						};
-					});
-				setLabSemesters(labsList);
+				if (labSemestersByLaboratoryIdData && labSemestersByLaboratoryIdData.listLabSemesters?.items) {
+					labSemesterList = labSemestersByLaboratoryIdData.listLabSemesters?.items
+						.filter((obj) => obj && !obj._deleted)
+						.map((obj) => {
+							return {
+								id: obj ? obj.id : '',
+								semesterName: obj?.semesterName ? obj.semesterName : '',
+								description: obj?.description ? obj.description : null,
+								professorEmailList: [],
+								monitorEmailList: [],
+								studentEmailList: [],
+								version: obj?._version ? obj._version : null,
+								deleted: obj?._deleted ? obj._deleted : null,
+								laboratoryID: obj?.laboratoryID ? obj?.laboratoryID : ''
+							};
+						});
+				}
 			}
-		}
-		setLoading(loadingLabSemesterByUserIdData || loadingLaboratoryByIdData || loadinglabSemestersByLaboratoryId);
+			// Add professors to the semester list
+			const updateLabSemesters: Array<LabSemester> = [];
+			for (const semester of labSemesterList) {
+				const profesor = await getLabSemesterProffesor(semester.id ?? '');
+				if (profesor != null) {
+					updateLabSemesters.push({...semester, professorEmailList: [profesor]});
+				} else {
+					updateLabSemesters.push({...semester});
+				}
+			}
+			setLabSemesters(updateLabSemesters);
+			setLoading(loadingLabSemesterByUserIdData || loadingLaboratoryByIdData || loadinglabSemestersByLaboratoryId);
+		})();
 	}, [userLabSemesterByUserIdData, laboratoryByIdData, labSemestersByLaboratoryIdData]);
+
+	const {refetch: getUserLabSemesterBySemesterId} = useListUserLabSemestersBySemesterIdQuery({
+		fetchPolicy: 'network-only'
+	});
+
+	const getLabSemesterProffesor = async (labsemesterID: string) => {
+		const {data: userLabSemester} = await getUserLabSemesterBySemesterId({
+			semesterID: labsemesterID
+		});
+		const userLabSemesterRecords = userLabSemester.listUserLabSemesters?.items?.filter(
+			(userLabSemester) => userLabSemester && userLabSemester._deleted !== true
+		);
+
+		const emailList = userLabSemesterRecords
+			?.filter((obj) => obj && obj._deleted !== true && obj.user.role === Role.Professors)
+			.map((obj) => obj?.user.email ?? '');
+
+		let professor = null;
+		if (emailList && emailList.length > 0) {
+			professor = emailList[0];
+		}
+
+		return professor;
+	};
 
 	const [labSemesterToDelete, setLabSemesterToDelete] = useState<LabSemester>(initialLabSemester);
 	const [deleteLabSemester] = useDeleteLabSemesterMutation();

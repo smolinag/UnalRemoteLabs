@@ -44,7 +44,6 @@ const LabSemesterEdition: React.FC = () => {
 
 	const location = useLocation();
 	const labSemesterID = (location.state as LocationStateEdition)?.labSemesterID;
-	console.log(labSemesterID);
 	const {data: labSemesterData, loading: loadingLabSemesterData} = useGetLabSemesterQuery({
 		variables: {id: labSemesterID}
 	});
@@ -335,7 +334,6 @@ const LabSemesterEdition: React.FC = () => {
 				showErrorBanner(`Error en la actualización del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
-				console.log(labSemester.laboratoryId);
 				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryId}});
 			}
 		}

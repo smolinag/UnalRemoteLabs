@@ -2,11 +2,11 @@
   {
     "Effect": "Allow",
     "Action": ["ses:SendEmail"],
-    "Resource": ["arn:aws:ses:us-east-2:119135969665:identity/*"]
+    "Resource": ["arn:aws:ses:us-east-2:456488583726:identity/*"]
   },
   {
     "Effect": "Allow",
     "Action": ["ses:SendRawEmail"],
-    "Resource": ["arn:aws:ses:us-east-2:119135969665:identity/*"]
+    "Resource": ["arn:aws:ses:us-east-2:456488583726:identity/*"]
   }
 ]

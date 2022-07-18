@@ -59,7 +59,7 @@ const LabSemesterData: React.FC<Props> = ({
 				newState = {...labSemester, description: value};
 				break;
 			case Params.Laboratory:
-				newState = {...labSemester, laboratoryId: labId, laboratoryName: value};
+				newState = {...labSemester, laboratoryID: labId, laboratoryName: value};
 				break;
 			default:
 				return labSemester;

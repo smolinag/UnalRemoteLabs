@@ -4,11 +4,14 @@ import {useLocation} from 'react-router-dom';
 
 import {LoadingContainer} from '../../components/UI';
 import {UserLabPracticeSessionsTable} from '../../components/UsersLabsView';
+import {Groups} from '../../generalUtils/groups';
+import {validateGroupFunction} from '../../generalUtils/ValidateGroup';
 import {
 	useGetLaboratoryQuery,
 	useListLabPracticeSessionsQuery,
 	useListUserLabPracticeSessionsQuery
 } from '../../graphql/generated/schema';
+import {useAuthContext} from '../../GroupProvider';
 import {initialLaboratoryValue} from '../Laboratory/LaboratoryEdition';
 import {Laboratory} from '../Laboratory/types';
 import {LocationState} from '../LabPracticeList/LabPracticeList';
@@ -25,7 +28,9 @@ const UserLabPracticeSessionsList: React.FC = () => {
 	const labSemesterId = (location.state as LocationState)?.labSemesterId;
 	const userId = (location.state as LocationState)?.userId;
 
-	if (!userId && labSemesterId) {
+	const {group} = useAuthContext(); //Get group to decide which sessions to show
+
+	if (labSemesterId && validateGroupFunction([Groups.AdminsGroup], group)) {
 		useListLabPracticeSessionsQuery({
 			variables: {labSemesterID: labSemesterId},
 			fetchPolicy: 'network-only',

@@ -239,7 +239,7 @@ const LabPracticeList: React.FC = () => {
 				<h3 className="title">{'Prácticas de laboratorio de ' + laboratoryName}</h3>
 			</Row>
 			<Row className="section">
-				<Col sm={8} className={classes.table}>
+				<Col className={classes.table}>
 					<Table
 						headers={getTableHeaders()}
 						data={mapLabpracticesForTable(labPractices)}

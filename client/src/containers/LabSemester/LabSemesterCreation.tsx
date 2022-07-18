@@ -26,7 +26,7 @@ const initialLabSemester: LabSemester = {
 	professorEmailList: [],
 	monitorEmailList: [],
 	studentEmailList: [],
-	laboratoryId: '',
+	laboratoryID: '',
 	laboratoryName: '',
 	laboratoryOrganizationId: ''
 };
@@ -60,7 +60,7 @@ const LabSemesterCreation: React.FC = () => {
 				const lab = laboratoryData.getLaboratory;
 				setLabSemester({
 					...labSemester,
-					laboratoryId: lab.id,
+					laboratoryID: lab.id,
 					laboratoryName: lab.name,
 					laboratoryOrganizationId: lab.organizationID
 				});
@@ -81,7 +81,7 @@ const LabSemesterCreation: React.FC = () => {
 					setLabSemester({
 						...labSemester,
 						professorEmailList: [userEmail],
-						laboratoryId: labsList[0].id ?? '',
+						laboratoryID: labsList[0].id ?? '',
 						laboratoryName: labsList[0].name ?? ''
 					});
 				}
@@ -204,7 +204,7 @@ const LabSemesterCreation: React.FC = () => {
 				const {data: labPracticeData} = await createLabSemester({
 					variables: {
 						input: {
-							laboratoryID: labSemester.laboratoryId ? labSemester.laboratoryId : '',
+							laboratoryID: labSemester.laboratoryID ? labSemester.laboratoryID : '',
 							semesterName: labSemester.semesterName,
 							description: labSemester.description,
 							createdBy: '1'
@@ -253,7 +253,7 @@ const LabSemesterCreation: React.FC = () => {
 				showErrorBanner(`Error en la creación del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
-				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryId}});
+				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryID}});
 			}
 		}
 	};

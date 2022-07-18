@@ -125,13 +125,16 @@ const LabPracticeView: React.FC = () => {
 							const userSession = userSessions[0];
 							if (userSession) {
 								if (!inSessionDate) {
+									console.log("setInSessionDate")
 									setInSessionDate(new Date());
 								} else {
 									//Update user session information
 									if (userSession.sessionStartDate) {
+										console.log("Update only with end session info")
 										//Update only with end session info
 										updateUserSession(userSession.id, userSession.sessionStartDate, new Date(), userSession._version);
 									} else {
+										console.log("Update with both start and end session info")
 										//Update with both start and end session info
 										updateUserSession(userSession.id, inSessionDate, new Date(), userSession._version);
 									}

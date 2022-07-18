@@ -98,155 +98,163 @@ const LabSessionProgrammingView: React.FC = () => {
 
 	const createLabSession = async () => {
 		if (labSessionInfo.labPractice) {
-			setLoading(true);
-			try {
-				const {data: labPracticeSessionData} = await createLabPracticeSession({
-					variables: {
-						input: {
-							labpracticeID: labSessionInfo.labPractice.id,
-							labSemesterID: labSessionInfo.semesterId,
-							description: labSessionInfo.description,
-							startDate: labSessionInfo.startDate,
-							endDate: labSession.labPractice?.duration
-								? new Date(labSessionInfo.startDate.getTime() + labSession.labPractice.duration * 60000)
-								: labSessionInfo.startDate,
-							leaderUsers: studentList.length > 0 ? studentList[0].userId : '', //Set first student as leader by default
-							createdBy: '1'
+			if (labSessionInfo.startDate > new Date()) {
+				setLoading(true);
+				try {
+					const {data: labPracticeSessionData} = await createLabPracticeSession({
+						variables: {
+							input: {
+								labpracticeID: labSessionInfo.labPractice.id,
+								labSemesterID: labSessionInfo.semesterId,
+								description: labSessionInfo.description,
+								startDate: labSessionInfo.startDate,
+								endDate: labSession.labPractice?.duration
+									? new Date(labSessionInfo.startDate.getTime() + labSession.labPractice.duration * 60000)
+									: labSessionInfo.startDate,
+								leaderUsers: studentList.length > 0 ? studentList[0].userId : '', //Set first student as leader by default
+								createdBy: '1'
+							}
 						}
-					}
-				});
-				if (!labPracticeSessionData?.createLabPracticeSession?.id) {
-					throw Error('');
-				} else {
-					if (studentList.length > 0) {
-						for (const student of studentList) {
+					});
+					if (!labPracticeSessionData?.createLabPracticeSession?.id) {
+						throw Error('');
+					} else {
+						if (studentList.length > 0) {
+							for (const student of studentList) {
+								try {
+									const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
+										variables: {
+											input: {
+												userID: student.userId,
+												labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
+											}
+										}
+									});
+									if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
+										throw Error('');
+									}
+								} catch (ex) {
+									console.error(ex);
+									showErrorBanner(
+										`Error en la asignación del usuario ${student.userName} a la sesión del laboratorio ${labSession.labPractice?.name}`
+									);
+								}
+							}
 							try {
-								const {data: userLabPracticeSessionData} = await createUserLabPracticeSession({
+								await sendEmail({
 									variables: {
 										input: {
-											userID: student.userId,
-											labpracticesessionID: labPracticeSessionData.createLabPracticeSession.id
+											topic: 'Registro a sesión de laboratorio ' + labSession.labPractice?.name,
+											emailList: JSON.stringify(
+												studentList.filter((student) => !student.sessionUserDeleted).map((student) => student.userEmail)
+											),
+											message:
+												'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
+												labSession.labPractice?.name +
+												' para la fecha: ' +
+												labSessionInfo.startDate.toLocaleString() +
+												'.\nPara ingresar use el siguiente link: ' +
+												awsmobile.oauth.redirectSignIn
 										}
 									}
 								});
-								if (!userLabPracticeSessionData?.createUserLabPracticeSession?.id) {
-									throw Error('');
-								}
 							} catch (ex) {
 								console.error(ex);
-								showErrorBanner(
-									`Error en la asignación del usuario ${student.userName} a la sesión del laboratorio ${labSession.labPractice?.name}`
-								);
+								showErrorBanner(`Error al enviar las notificaciones por correo electrónico`);
 							}
+						} else {
+							//TODO Deal with sessions with no students
+							console.log('Created session with no students');
 						}
-						try {
-							await sendEmail({
-								variables: {
-									input: {
-										topic: 'Registro a sesión de laboratorio ' + labSession.labPractice?.name,
-										emailList: JSON.stringify(
-											studentList.filter((student) => !student.sessionUserDeleted).map((student) => student.userEmail)
-										),
-										message:
-											'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha programado una sesión de laboratorio para la práctica ' +
-											labSession.labPractice?.name +
-											' para la fecha: ' +
-											labSessionInfo.startDate.toLocaleString() +
-											'.\nPara ingresar use el siguiente link: ' +
-											awsmobile.oauth.redirectSignIn
-									}
-								}
-							});
-						} catch (ex) {
-							console.error(ex);
-							showErrorBanner(`Error al enviar las notificaciones por correo electrónico`);
-						}
-					} else {
-						//TODO Deal with sessions with no students
-						console.log('Created session with no students');
 					}
+					showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue creada exitosamente`);
+				} catch (ex) {
+					console.error(ex);
+					showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSession.labPractice?.name}`);
+				} finally {
+					setLoading(false);
+					navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
 				}
-				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue creada exitosamente`);
-			} catch (ex) {
-				console.error(ex);
-				showErrorBanner(`Error en la creación de la sesión del laboratorio ${labSession.labPractice?.name}`);
-			} finally {
-				setLoading(false);
-				navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
+			} else {
+				showErrorBanner(`La fecha de inicio de la sesión debe ser superior a la fecha actual`);
 			}
 		}
 	};
 
 	const updateLabSession = async () => {
 		if (labSessionInfo.id) {
-			setLoading(true);
-			try {
-				//Update LabPracticeSession data
-				const {data: labPracticeSessionData} = await updateLabPracticeSession({
-					variables: {
-						input: {
-							id: labSessionInfo.id,
-							_version: labSessionInfo._version,
-							description: labSessionInfo.description,
-							startDate: labSessionInfo.startDate,
-							endDate: labSession.labPractice?.duration
-								? new Date(new Date(labSessionInfo.startDate).getTime() + labSession.labPractice.duration * 60000)
-								: labSessionInfo.startDate,
-							leaderUsers: studentList.length > 0 ? studentList[0].userId : '', //Set first student as leader by default
-							createdBy: '1'
-						}
-					}
-				});
-				if (!labPracticeSessionData?.updateLabPracticeSession?.id) {
-					throw Error('');
-				} else {
-					//Check if students were removed from the list. If so delete them from UserLabPracticeSession
-					studentList.forEach(async (student) => {
-						try {
-							if (student.sessionUserDeleted && student.sessionUserid && student.sessionUserVersion) {
-								await deleteLabPracticeSessionUser(student.sessionUserid, student.sessionUserVersion);
+			if (labSessionInfo.startDate > new Date()) {
+				setLoading(true);
+				try {
+					//Update LabPracticeSession data
+					const {data: labPracticeSessionData} = await updateLabPracticeSession({
+						variables: {
+							input: {
+								id: labSessionInfo.id,
+								_version: labSessionInfo._version,
+								description: labSessionInfo.description,
+								startDate: labSessionInfo.startDate,
+								endDate: labSession.labPractice?.duration
+									? new Date(new Date(labSessionInfo.startDate).getTime() + labSession.labPractice.duration * 60000)
+									: labSessionInfo.startDate,
+								leaderUsers: studentList.length > 0 ? studentList[0].userId : '', //Set first student as leader by default
+								createdBy: '1'
 							}
-						} catch (ex) {
-							console.error(ex);
-							showErrorBanner(`Error al eliminar el usuario: ${student.userName} con id: ${student.userId}`);
 						}
 					});
-
-					if (studentList.length > 0) {
-						try {
-							await sendEmail({
-								variables: {
-									input: {
-										topic: 'Actualización de sesión de laboratorio ' + labSession.labPractice?.name,
-										emailList: JSON.stringify(
-											studentList.filter((student) => !student.sessionUserDeleted).map((item) => item.userEmail)
-										),
-										message:
-											'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha actualizado una sesión de laboratorio para la práctica ' +
-											labSession.labPractice?.name +
-											' para la fecha: ' +
-											labSessionInfo.startDate.toLocaleString() +
-											'.\nPara ingresar use el siguiente link: ' +
-											awsmobile.oauth.redirectSignIn
-									}
-								}
-							});
-						} catch (ex) {
-							console.error(ex);
-							showErrorBanner(`Error al enviar las notificaciones por correo electrónico`);
-						}
+					if (!labPracticeSessionData?.updateLabPracticeSession?.id) {
+						throw Error('');
 					} else {
-						//TODO Deal with sessions with no students
-						console.log('Updated session with no students');
+						//Check if students were removed from the list. If so delete them from UserLabPracticeSession
+						studentList.forEach(async (student) => {
+							try {
+								if (student.sessionUserDeleted && student.sessionUserid && student.sessionUserVersion) {
+									await deleteLabPracticeSessionUser(student.sessionUserid, student.sessionUserVersion);
+								}
+							} catch (ex) {
+								console.error(ex);
+								showErrorBanner(`Error al eliminar el usuario: ${student.userName} con id: ${student.userId}`);
+							}
+						});
+
+						if (studentList.length > 0) {
+							try {
+								await sendEmail({
+									variables: {
+										input: {
+											topic: 'Actualización de sesión de laboratorio ' + labSession.labPractice?.name,
+											emailList: JSON.stringify(
+												studentList.filter((student) => !student.sessionUserDeleted).map((item) => item.userEmail)
+											),
+											message:
+												'Estimado usuario\n\nEl sistema de Laboratorios remotos de la Universidad Nacional de Colombia le informa que se ha actualizado una sesión de laboratorio para la práctica ' +
+												labSession.labPractice?.name +
+												' para la fecha: ' +
+												labSessionInfo.startDate.toLocaleString() +
+												'.\nPara ingresar use el siguiente link: ' +
+												awsmobile.oauth.redirectSignIn
+										}
+									}
+								});
+							} catch (ex) {
+								console.error(ex);
+								showErrorBanner(`Error al enviar las notificaciones por correo electrónico`);
+							}
+						} else {
+							//TODO Deal with sessions with no students
+							console.log('Updated session with no students');
+						}
 					}
+					showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue actualizada exitosamente`);
+				} catch (ex) {
+					console.error(ex);
+					showErrorBanner(`Error en la actualización de la sesión del laboratorio ${labSession.labPractice?.name}`);
+				} finally {
+					setLoading(false);
+					navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
 				}
-				showSuccessBanner(`La sesión del laboratorio ${labSession.labPractice?.name} fue actualizada exitosamente`);
-			} catch (ex) {
-				console.error(ex);
-				showErrorBanner(`Error en la actualización de la sesión del laboratorio ${labSession.labPractice?.name}`);
-			} finally {
-				setLoading(false);
-				navigate('/user-labs-sessions', {state: {labSemesterId: labSessionInfo.semesterId}});
+			} else {
+				showErrorBanner(`La fecha de inicio de la sesión debe ser superior a la fecha actual`);
 			}
 		}
 	};

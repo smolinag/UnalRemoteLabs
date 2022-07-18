@@ -24,8 +24,7 @@ const LabSessionData: React.FC<Props> = ({sessionInfo, onDescriptionChange, onSt
 				<DateTimePickerComponent
 					placeholder={'Fecha inicio'}
 					onValueChange={(value: Date) => onStartDateChange(value)}
-					value={sessionInfo.startDate}
-					minDate={new Date()}
+					value={new Date(sessionInfo.startDate)}
 				/>
         <TextLabel
 					placeholder="Duración"

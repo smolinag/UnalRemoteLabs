@@ -28,7 +28,7 @@ const initialLabSemester: LabSemester = {
 	professorEmailList: [],
 	monitorEmailList: [],
 	studentEmailList: [],
-	laboratoryId: '',
+	laboratoryID: '',
 	laboratoryName: '',
 	laboratoryOrganizationId: ''
 };
@@ -95,7 +95,7 @@ const LabSemesterEdition: React.FC = () => {
 			const lab = laboratoryData.getLaboratory;
 			setLabSemester((prevState) => ({
 				...prevState,
-				laboratoryId: lab.id,
+				laboratoryID: lab.id,
 				laboratoryName: lab.name,
 				laboratoryOrganizationId: lab.organizationID
 			}));
@@ -308,11 +308,12 @@ const LabSemesterEdition: React.FC = () => {
 							id: labSemester.id ? labSemester.id : '',
 							semesterName: labSemester.semesterName,
 							description: labSemester.description,
-							laboratoryID: labSemester.laboratoryId,
+							laboratoryID: labSemester.laboratoryID,
 							_version: labSemester.version
 						}
 					}
 				}).catch((error) => {
+					console.log(error)
 					throw Error('Error updating Lab Semester');
 				});
 
@@ -334,7 +335,7 @@ const LabSemesterEdition: React.FC = () => {
 				showErrorBanner(`Error en la actualización del semestre de laboratorio ${labSemester.semesterName}`);
 			} finally {
 				setLoading(false);
-				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryId}});
+				navigate('/lab-semesters', {state: {laboratoryID: labSemester.laboratoryID}});
 			}
 		}
 	};

@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.14\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.0.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -178,7 +178,7 @@
                 "ses:SendEmail"
               ],
               "Resource": [
-                "arn:aws:ses:us-east-2:119135969665:identity/*"
+                "arn:aws:ses:us-east-2:456488583726:identity/*"
               ]
             },
             {
@@ -187,7 +187,7 @@
                 "ses:SendRawEmail"
               ],
               "Resource": [
-                "arn:aws:ses:us-east-2:119135969665:identity/*"
+                "arn:aws:ses:us-east-2:456488583726:identity/*"
               ]
             }
           ]

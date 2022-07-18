@@ -3,21 +3,21 @@
     "Effect": "Allow",
     "Action": ["dynamodb:*"],
     "Resource": [
-      "arn:aws:dynamodb:us-east-2:119135969665:table/*"
+      "arn:aws:dynamodb:us-east-2:456488583726:table/*"
     ]
   },
   {
     "Effect": "Allow",
     "Action": ["dynamodb:*"],
     "Resource": [
-      "arn:aws:dynamodb:us-east-2:119135969665:table/*/*"
+      "arn:aws:dynamodb:us-east-2:456488583726:table/*/*"
     ]
   },
   {
     "Effect": "Allow",
     "Action": ["cognito-idp:*"],
     "Resource": [
-      "arn:aws:cognito-idp:us-east-2:119135969665:userpool/*"
+      "arn:aws:cognito-idp:us-east-2:456488583726:userpool/*"
     ]
   }
 ]

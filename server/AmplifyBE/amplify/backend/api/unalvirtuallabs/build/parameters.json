@@ -9,6 +9,6 @@
             "Outputs.UserPoolId"
         ]
     },
-    "S3DeploymentBucket": "amplify-unalvirtuallabs-develop-222622-deployment",
-    "S3DeploymentRootKey": "amplify-appsync-files/bdaa8eec433cbb1b96a5c25f6426c07fd73f3579"
+    "S3DeploymentBucket": "amplify-unalvirtuallabs-dev-205819-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/68af5dbe310bfad54f89f77a604443abb2604b12"
 }

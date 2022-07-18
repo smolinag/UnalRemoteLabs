@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.14\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Windows\",\"createdBy\":\"Amplify\",\"createdWith\":\"8.0.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "GROUP": {
       "Type": "String",
@@ -217,7 +217,7 @@
                 "dynamodb:*"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-2:119135969665:table/*"
+                "arn:aws:dynamodb:us-east-2:456488583726:table/*"
               ]
             },
             {
@@ -226,7 +226,7 @@
                 "dynamodb:*"
               ],
               "Resource": [
-                "arn:aws:dynamodb:us-east-2:119135969665:table/*/*"
+                "arn:aws:dynamodb:us-east-2:456488583726:table/*/*"
               ]
             },
             {
@@ -235,7 +235,7 @@
                 "cognito-idp:*"
               ],
               "Resource": [
-                "arn:aws:cognito-idp:us-east-2:119135969665:userpool/*"
+                "arn:aws:cognito-idp:us-east-2:456488583726:userpool/*"
               ]
             }
           ]

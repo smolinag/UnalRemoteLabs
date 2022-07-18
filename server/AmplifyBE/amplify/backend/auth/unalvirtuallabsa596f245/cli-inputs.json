@@ -92,10 +92,7 @@
     "permissions": [],
     "userPoolGroups": true,
     "adminQueries": false,
-    "authTriggerConnections": [
-      "{\"triggerType\":\"PostConfirmation\",\"lambdaFunctionName\":\"unalvirtuallabsa596f245PostConfirmation\"}",
-      "{\"triggerType\":\"PreSignUp\",\"lambdaFunctionName\":\"unalvirtuallabsa596f245PreSignup\"}"
-    ],
+    "authTriggerConnections": "[\n  {\n    \"triggerType\": \"PostConfirmation\",\n    \"lambdaFunctionName\": \"unalvirtuallabsa596f245PostConfirmation\"\n  },\n  {\n    \"triggerType\": \"PreSignUp\",\n    \"lambdaFunctionName\": \"unalvirtuallabsa596f245PreSignup\"\n  }\n]",
     "authProviders": [
       "accounts.google.com"
     ],
@@ -105,6 +102,8 @@
       "Google"
     ],
     "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"username\":\"sub\"}}]",
-    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://d1p0lxk2wvxo6e.cloudfront.net/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://d1p0lxk2wvxo6e.cloudfront.net/\"]}"
+    "hostedUIProviderCreds": "[{\"ProviderName\":\"Google\"}]",
+    "googleClientId": "871258856285-dji6vjqaeneoo114jqkbk1499fa5u2qu.apps.googleusercontent.com",
+    "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:3000/\",\"https://d1xb30i372mnxf.cloudfront.net/\"],\"LogoutURLs\":[\"http://localhost:3000/\",\"https://d1xb30i372mnxf.cloudfront.net/\"]}"
   }
 }

@@ -3,16 +3,16 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-2",
-    "aws_appsync_graphqlEndpoint": "https://suyo76f525grpph3owjsbkoepa.appsync-api.us-east-2.amazonaws.com/graphql",
+    "aws_appsync_graphqlEndpoint": "https://5c4xkk3c55htnl7os5hvar7n34.appsync-api.us-east-2.amazonaws.com/graphql",
     "aws_appsync_region": "us-east-2",
     "aws_appsync_authenticationType": "AMAZON_COGNITO_USER_POOLS",
-    "aws_appsync_apiKey": "da2-2lwzqnmamjfwbnownxgqur6sgy",
-    "aws_cognito_identity_pool_id": "us-east-2:6331e38d-a076-4349-98b5-81ab3e82d98b",
+    "aws_appsync_apiKey": "da2-s77v3vheprg7npaifa324bdrmq",
+    "aws_cognito_identity_pool_id": "us-east-2:f9363645-cdfe-4ff2-81be-b8cace3417f0",
     "aws_cognito_region": "us-east-2",
-    "aws_user_pools_id": "us-east-2_sYVFylt3P",
-    "aws_user_pools_web_client_id": "4ueiacku7rk8118029vddmktur",
+    "aws_user_pools_id": "us-east-2_8A5YDY5CR",
+    "aws_user_pools_web_client_id": "79es0qval0rvra031o46oscs8h",
     "oauth": {
-        "domain": "unalvirtuallabsd9e2ffd9-d9e2ffd9-develop.auth.us-east-2.amazoncognito.com",
+        "domain": "unalvirtuallabsd9e2ffd9-d9e2ffd9-dev.auth.us-east-2.amazoncognito.com",
         "scope": [
             "phone",
             "email",
@@ -20,10 +20,10 @@ const awsmobile = {
             "profile",
             "aws.cognito.signin.user.admin"
         ],
-        "redirectSignIn": "http://localhost:3000/",
-        "redirectSignOut": "http://localhost:3000/",
-		// "redirectSignIn": "https://d1p0lxk2wvxo6e.cloudfront.net/",
-        // "redirectSignOut": "https://d1p0lxk2wvxo6e.cloudfront.net/",
+        // "redirectSignIn": "http://localhost:3000/",
+        // "redirectSignOut": "http://localhost:3000/",
+		"redirectSignIn": "https://d1xb30i372mnxf.cloudfront.net/",
+        "redirectSignOut": "https://d1xb30i372mnxf.cloudfront.net/",
         "responseType": "code"
     },
     "federationTarget": "COGNITO_USER_AND_IDENTITY_POOLS",
@@ -47,7 +47,7 @@ const awsmobile = {
     "aws_cognito_verification_mechanisms": [
         "EMAIL"
     ],
-    "aws_user_files_s3_bucket": "unal-labs-files-dev222622-develop",
+    "aws_user_files_s3_bucket": "unal-labs-files-dev205819-dev",
     "aws_user_files_s3_bucket_region": "us-east-2"
 };
 

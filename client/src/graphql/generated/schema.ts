@@ -2866,10 +2866,9 @@ export type ListUsersByLabPracticeSessionQuery = {__typename?: 'Query'} & {
 				{__typename?: 'ModelUserLabPracticeSessionConnection'} & {
 					items: Array<
 						Maybe<
-							{__typename?: 'UserLabPracticeSession'} & Pick<
-								UserLabPracticeSession,
-								'id' | '_version' | '_deleted' | 'sessionStartDate'
-							> & {User?: Maybe<{__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>>}
+							{__typename?: 'UserLabPracticeSession'} & Pick<UserLabPracticeSession, 'id' | '_version' | '_deleted'> & {
+									User?: Maybe<{__typename?: 'User'} & Pick<User, 'id' | 'name' | 'email' | 'role' | '_deleted'>>;
+								}
 						>
 					>;
 				}
@@ -6009,7 +6008,6 @@ export const ListUsersByLabPracticeSessionDocument = gql`
 					id
 					_version
 					_deleted
-					sessionStartDate
 					User {
 						id
 						name

@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 import Row from 'react-bootstrap/Row';
-import {IoEnter, IoPencil, IoTrash} from 'react-icons/io5';
+import {IoEnter, IoPencil, IoTrash, IoDocumentText} from 'react-icons/io5';
 import {TiCancel} from 'react-icons/ti';
 import {useNavigate} from 'react-router-dom';
 
@@ -43,6 +43,7 @@ const COLUMNS_SESSIONS = [
 	'Inicio',
 	'Finalización',
 	'Ingresar',
+	'Asistencia',
 	'Editar',
 	'Eliminar'
 ];
@@ -84,7 +85,6 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 
 	const mapOutputUserSessions = ({
 		sessionStartDate,
-		sessionEndDate,
 		labPracticeSession
 	}: UserLabPracticeSession): (boolean | string | React.ReactNode | number)[] => [
 		<span key={labPracticeSession.labPracticeInfo.laboratory.name} style={{fontWeight: 'bold'}}>
@@ -110,6 +110,7 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		showDate(labPracticeSession.startDate),
 		showDate(labPracticeSession.endDate),
 		redirectToSession(labPracticeSession),
+		downloadAttendance(labPracticeSession),
 		redirectEdit(labPracticeSession),
 		warnDelete(labPracticeSession)
 	];
@@ -121,12 +122,12 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		const quarter = Math.round(duration / 4);
 		const quarteMilisec = quarter * 60 * 1000;
 
-		const quarterTime = new Date(labPracticeSession.startDate).getTime() + quarteMilisec
+		const quarterTime = new Date(labPracticeSession.startDate).getTime() + quarteMilisec;
 
 		if (
 			new Date() < new Date(labPracticeSession.endDate) &&
-			new Date() >= new Date(labPracticeSession.startDate) && 
-			new Date().getTime() < quarterTime 
+			new Date() >= new Date(labPracticeSession.startDate) &&
+			new Date().getTime() < quarterTime
 		) {
 			return (
 				<IoEnter
@@ -145,6 +146,61 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 			);
 		} else {
 			return <TiCancel className={`${classes.actionIcon} ${classes.actionIconDont}`} />;
+		}
+	};
+
+	const downloadAttendance = (labPracticeSession: LabPracticeSession) => {
+		return (
+			<IoDocumentText
+				key={labPracticeSession.labPracticeInfo.laboratory.name}
+				className={classes.actionIcon}
+				onClick={async () => queryUsersAttendance(labPracticeSession.id)}
+			/>
+		);
+	};
+
+	const queryUsersAttendance = async (sessionId: string) => {
+		const {data: usersData, error: usersErrors} = await listUsersBySession({
+			variables: {id: sessionId}
+		});
+		if (usersErrors) {
+			console.log(usersErrors);
+		} else {
+			if (usersData?.getLabPracticeSession?.UserLabPracticeSessions?.items) {
+				const userSessions = usersData.getLabPracticeSession.UserLabPracticeSessions.items;
+				const attendanceList = userSessions.map((userSession) => {
+					if (userSession) {
+						const sessionStart = userSession.sessionStartDate;
+						const user = userSession?.User?.name ? userSession.User.name : '--';
+						const email = userSession?.User?.email ? userSession.User.email : '--';
+						return `${user},  ${email}, ${sessionStart}`;
+					} else {
+						return '';
+					}
+				});
+				console.log(attendanceList)
+				const blob = new Blob([attendanceList.toString()]);
+				const fileDownloadUrl = URL.createObjectURL(blob);
+				const link = document.createElement('a');
+				link.href = fileDownloadUrl;
+				link.setAttribute(
+				  'download',
+				  'Asistencia.txt',
+				);
+			
+				// Append to html link element page
+				document.body.appendChild(link);
+			
+				// Start download
+				link.click();
+			
+				// Clean up and remove the link
+				if(link.parentNode){
+					link.parentNode.removeChild(link);
+				}				
+			} else {
+				console.error('Error listUsersBySession by sessionID: ' + sessionId);
+			}
 		}
 	};
 

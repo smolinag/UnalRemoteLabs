@@ -1,5 +1,5 @@
 var AWS = require("aws-sdk");
-var ses = new AWS.SES({ region: "us-east" });
+var ses = new AWS.SES({ region: "us-east-2" });
 
 exports.handler = async function (event) {
   const { message, topic, emailList } = event.arguments.input;
@@ -7,10 +7,11 @@ exports.handler = async function (event) {
   console.log("Message: " + message);
   console.log("Topic: " + topic);
   console.log("EmailList: " + emailList);
+  console.log("EmailListJson: " + JSON.parse(emailList))
 
   var params = {
     Destination: {
-      ToAddresses: ["santiago.molina.g@gmail.com"],
+      ToAddresses: JSON.parse(emailList),
     },
     Message: {
       Body: {
@@ -19,7 +20,7 @@ exports.handler = async function (event) {
 
       Subject: { Data: topic },
     },
-    Source: "smolinag@unal.edu.co",
+    Source: "labremotosunalmzl@gmail.com",
   };
 
   return ses.sendEmail(params).promise();

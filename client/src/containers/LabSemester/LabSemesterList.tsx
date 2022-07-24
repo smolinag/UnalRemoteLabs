@@ -66,7 +66,6 @@ const LabSemesterList: React.FC = () => {
 				group === Groups.ProfessorsGroup
 			) {
 				if (userLabSemesterByUserIdData && userLabSemesterByUserIdData.listUserLabSemesters?.items) {
-					console.log(userLabSemesterByUserIdData)
 					labSemesterList = userLabSemesterByUserIdData.listUserLabSemesters?.items
 						.filter((obj) => obj && !obj._deleted && !obj.labsemester._deleted)
 						.map((obj) => {

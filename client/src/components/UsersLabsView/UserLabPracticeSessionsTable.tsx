@@ -32,7 +32,6 @@ const COLUMNS_USER_SESSIONS = [
 	'Inicio',
 	'Finalización',
 	'Ingreso',
-	'Salida',
 	'Ingresar'
 ];
 
@@ -98,7 +97,6 @@ const UserLabPracticeSessionsTable: React.FC<Props> = ({
 		showDate(labPracticeSession.startDate),
 		showDate(labPracticeSession.endDate),
 		showDate(sessionStartDate),
-		showDate(sessionEndDate),
 		redirectToSession(labPracticeSession)
 	];
 

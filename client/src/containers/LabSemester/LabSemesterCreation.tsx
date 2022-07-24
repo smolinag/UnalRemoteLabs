@@ -32,7 +32,7 @@ const initialLabSemester: LabSemester = {
 };
 
 const LabSemesterCreation: React.FC = () => {
-	const {group, userEmail} = useAuthContext();
+	const {group, user} = useAuthContext();
 	const navigate = useNavigate();
 
 	const [labSemester, setLabSemester] = useState<LabSemester>(initialLabSemester);
@@ -80,7 +80,7 @@ const LabSemesterCreation: React.FC = () => {
 				if (labsList.length > 0) {
 					setLabSemester({
 						...labSemester,
-						professorEmailList: [userEmail],
+						professorEmailList: [user.email],
 						laboratoryID: labsList[0].id ?? '',
 						laboratoryName: labsList[0].name ?? ''
 					});

@@ -81,7 +81,7 @@ const LabPracticeView: React.FC = () => {
 	const [outputTransition, setOutputTransition] = useState<boolean>(false);
 	const [outputIndex, setOutputIndex] = useState<number>(1);
 
-	const {userId, group} = useAuthContext(); //Get userId to check if it is the leader student, and group(role)
+	const {user, group} = useAuthContext(); //Get userId to check if it is the leader student, and group(role)
 
 	// TODO Deberíamos pasar esto a context?
 	const {showErrorBanner, showSuccessBanner, showWarningBanner} = useContext(notificationBannerContext);
@@ -105,17 +105,17 @@ const LabPracticeView: React.FC = () => {
 
 	useEffect(() => {
 		const setUserSessionStart = async () => {
-			const {data} = await listUserSessionByUserIdAndSessionId({variables: {userID: userId, sessionID: sessionId}});
+			const {data} = await listUserSessionByUserIdAndSessionId({variables: {userID: user.userId, sessionID: sessionId}});
 			const userSessions = data?.listUserLabPracticeSessions?.items.filter((userSession) => {
 				return userSession?._deleted != true;
 			});
 			if (userSessions) {
 				if (userSessions.length === 0) {
-					console.error(`There are no sessions associated to user: ${userId} and session: ${sessionId}`);
+					console.error(`There are no sessions associated to user: ${user.userId} and session: ${sessionId}`);
 				} else {
 					if (userSessions.length > 1) {
 						console.error(
-							`There are ${userSessions.length} sessions associated to user: ${userId} and session: ${sessionId}. Taking first one`
+							`There are ${userSessions.length} sessions associated to user: ${user.userId} and session: ${sessionId}. Taking first one`
 						);
 					} else {
 						const userSession = userSessions[0];
@@ -236,7 +236,8 @@ const LabPracticeView: React.FC = () => {
 						labpracticeSessionID: sessionCommand?.labpracticesessionID ? sessionCommand?.labpracticesessionID : '',
 						parameters: sessionCommand?.parameters ? sessionCommand?.parameters : '',
 						status: sessionCommand?.status ? sessionCommand?.status : '',
-						command: sessionCommand?.LabPracticeCommand?.labelName ? sessionCommand?.LabPracticeCommand.labelName : ''
+						command: sessionCommand?.LabPracticeCommand?.labelName ? sessionCommand?.LabPracticeCommand.labelName : '',
+						name: ''
 					};
 				});
 			});
@@ -306,7 +307,8 @@ const LabPracticeView: React.FC = () => {
 				labpracticeSessionID: updatedCommand?.labpracticesessionID ? updatedCommand?.labpracticesessionID : '',
 				parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
 				status: updatedCommand?.status ? updatedCommand?.status : '',
-				command: commandLabel?.label ? commandLabel?.label : ''
+				command: commandLabel?.label ? commandLabel?.label : '',
+				name: user.name
 			};
 
 			clearTimeout(commandExecutionTimeout);
@@ -354,7 +356,8 @@ const LabPracticeView: React.FC = () => {
 						labpracticecommandID: id,
 						parameters: JSON.stringify(parameters[0]),
 						status: Status.Pending,
-						requestDate: new Date().toISOString()
+						requestDate: new Date().toISOString(),
+						username: user.name
 					}
 				}
 			});
@@ -374,7 +377,8 @@ const LabPracticeView: React.FC = () => {
 				labpracticeSessionID: sessionId,
 				parameters: JSON.stringify(parameters[0]),
 				status: Status.Pending,
-				command: name
+				command: name,
+				name: user.name
 			});
 
 			setExecutedCommands(exeCommands);
@@ -404,7 +408,8 @@ const LabPracticeView: React.FC = () => {
 							status: Status.Failure,
 							requestDate: new Date().toISOString(),
 							executionDate: new Date().toISOString(),
-							_version: version
+							_version: version,
+							username: user.name
 						}
 					}
 				});
@@ -427,7 +432,8 @@ const LabPracticeView: React.FC = () => {
 					status: dataError?.updateLabPracticeSessionCommand?.status
 						? dataError?.updateLabPracticeSessionCommand?.status
 						: '',
-					command: name
+					command: name,
+					name: user.name
 				});
 
 				setExecutedCommands(exeCommands);
@@ -453,7 +459,7 @@ const LabPracticeView: React.FC = () => {
 				guideFileName={practiceInfo?.getLabPractice?.guideS3Path}
 				sessionInformation={sessionInformation}
 			/>
-			{userId === sessionInformation.leaderStudent ||
+			{user.userId === sessionInformation.leaderStudent ||
 			validateGroupFunction(['Admins', 'Professors', 'Monitors'], group) ? (
 				<Row className="section">
 					<Col md={7}>

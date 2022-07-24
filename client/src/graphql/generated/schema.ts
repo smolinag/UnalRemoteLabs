@@ -87,6 +87,7 @@ export type CreateLabPracticeSessionCommandInput = {
 	requestDate: Scalars['AWSDateTime'];
 	executionDate?: Maybe<Scalars['AWSDateTime']>;
 	status: Status;
+	username?: Maybe<Scalars['String']>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID: Scalars['ID'];
 	labpracticecommandID: Scalars['ID'];
@@ -425,6 +426,7 @@ export type LabPracticeSessionCommand = {
 	requestDate: Scalars['AWSDateTime'];
 	executionDate?: Maybe<Scalars['AWSDateTime']>;
 	status: Status;
+	username?: Maybe<Scalars['String']>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID: Scalars['ID'];
 	labpracticecommandID: Scalars['ID'];
@@ -733,6 +735,7 @@ export type ModelLabPracticeSessionCommandConditionInput = {
 	requestDate?: Maybe<ModelStringInput>;
 	executionDate?: Maybe<ModelStringInput>;
 	status?: Maybe<ModelStatusInput>;
+	username?: Maybe<ModelStringInput>;
 	parameters?: Maybe<ModelStringInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
 	labpracticecommandID?: Maybe<ModelIdInput>;
@@ -753,6 +756,7 @@ export type ModelLabPracticeSessionCommandFilterInput = {
 	requestDate?: Maybe<ModelStringInput>;
 	executionDate?: Maybe<ModelStringInput>;
 	status?: Maybe<ModelStatusInput>;
+	username?: Maybe<ModelStringInput>;
 	parameters?: Maybe<ModelStringInput>;
 	labpracticesessionID?: Maybe<ModelIdInput>;
 	labpracticecommandID?: Maybe<ModelIdInput>;
@@ -1689,6 +1693,7 @@ export type UpdateLabPracticeSessionCommandInput = {
 	requestDate?: Maybe<Scalars['AWSDateTime']>;
 	executionDate?: Maybe<Scalars['AWSDateTime']>;
 	status?: Maybe<Status>;
+	username?: Maybe<Scalars['String']>;
 	parameters?: Maybe<Scalars['AWSJSON']>;
 	labpracticesessionID?: Maybe<Scalars['ID']>;
 	labpracticecommandID?: Maybe<Scalars['ID']>;
@@ -1939,7 +1944,14 @@ export type CreateLabPracticeSessionCommandMutation = {__typename?: 'Mutation'} 
 	createLabPracticeSessionCommand?: Maybe<
 		{__typename?: 'LabPracticeSessionCommand'} & Pick<
 			LabPracticeSessionCommand,
-			'id' | 'labpracticesessionID' | 'labpracticecommandID' | 'status' | 'parameters' | '_version' | 'executionDate'
+			| 'id'
+			| 'labpracticesessionID'
+			| 'labpracticecommandID'
+			| 'status'
+			| 'parameters'
+			| '_version'
+			| 'executionDate'
+			| 'username'
 		>
 	>;
 };
@@ -3276,6 +3288,7 @@ export const CreateLabPracticeSessionCommandDocument = gql`
 			parameters
 			_version
 			executionDate
+			username
 		}
 	}
 `;

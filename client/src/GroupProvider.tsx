@@ -2,23 +2,21 @@ import React, {createContext, useState, useContext} from 'react';
 
 export interface AuthContext {
 	group: string;
-	userId: string;
-	userEmail: string;
 	defineGroup: (jwt: string) => void;
 	clearGroup: () => void;
-	setUserInfo: (userId: string, userEmail: string) => void;
+	setUserInfo: (userId: string, email: string, name: string) => void;
+	user: {userId: string; email: string; name: string};
 }
 
 const authContext = createContext<AuthContext>({
 	group: '',
-	userId: '',
-	userEmail: '',
 	defineGroup() {
 		/*  */
 	},
 	clearGroup() {
 		/*  */
 	},
+	user: {userId: '', name: '', email: ''},
 	setUserInfo() {
 		/*  */
 	}
@@ -26,8 +24,11 @@ const authContext = createContext<AuthContext>({
 
 const GroupProvider: React.FC = ({children}) => {
 	const [group, setGroup] = useState<string>('');
-	const [userId, setUserId] = useState<string>('');
-	const [userEmail, setUserEmail] = useState<string>('');
+	const [user, setUser] = useState<{userId: string; name: string; email: string}>({
+		userId: '',
+		name: '',
+		email: ''
+	});
 
 	function clearGroup() {
 		setGroup('');
@@ -38,17 +39,15 @@ const GroupProvider: React.FC = ({children}) => {
 		setGroup(group);
 	}
 
-	function setUserInfo(userId: string, email: string) {
-		setUserId(userId);
-		setUserEmail(email);
+	function setUserInfo(userId: string, email: string, name: string) {
+		setUser({userId, name, email});
 	}
 
 	return (
 		<authContext.Provider
 			value={{
+				user,
 				group,
-				userId,
-				userEmail,
 				defineGroup,
 				clearGroup,
 				setUserInfo

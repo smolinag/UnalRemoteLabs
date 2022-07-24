@@ -22,6 +22,7 @@ export interface CommandSession {
 	status: string;
 	executionDate: string;
 	parameters: string;
+	name: string;
 }
 
 interface Props {

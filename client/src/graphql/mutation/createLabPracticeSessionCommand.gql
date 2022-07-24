@@ -7,5 +7,6 @@ mutation createLabPracticeSessionCommand($input: CreateLabPracticeSessionCommand
 		parameters
 		_version
 		executionDate
+	username
 	}
 }

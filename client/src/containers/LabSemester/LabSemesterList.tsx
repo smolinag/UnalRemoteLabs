@@ -31,7 +31,7 @@ const initialLabSemester: LabSemester = {
 const LabSemesterList: React.FC = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const {group, userId: userID} = useAuthContext();
+	const {group, user} = useAuthContext();
 
 	const laboratoryID = (location.state as LocationStateList)?.laboratoryID;
 
@@ -42,7 +42,7 @@ const LabSemesterList: React.FC = () => {
 
 	const {data: userLabSemesterByUserIdData, loading: loadingLabSemesterByUserIdData} =
 		useListUserLabSemestersByUserIdQuery({
-			variables: {userID: userID},
+			variables: {userID: user.userId},
 			fetchPolicy: 'network-only'
 		});
 
@@ -61,7 +61,7 @@ const LabSemesterList: React.FC = () => {
 		(async () => {
 			let labSemesterList: Array<LabSemester> = [];
 			if (
-				(userID && group === Groups.StudentsGroup) ||
+				(user.userId && group === Groups.StudentsGroup) ||
 				group === Groups.MonitorsGroup ||
 				group === Groups.ProfessorsGroup
 			) {
@@ -222,7 +222,7 @@ const LabSemesterList: React.FC = () => {
 			</ValidateGroupComponent>
 
 			<Row className="section">
-				<LabSemesterTable data={labSemesters} onAction={handleLabSemesterAction} userId={userID} />
+				<LabSemesterTable data={labSemesters} onAction={handleLabSemesterAction} userId={user.userId} />
 			</Row>
 			<ValidateGroupComponent groups={[Groups.AdminsGroup, Groups.ProfessorsGroup]}>
 				<Row className="section">

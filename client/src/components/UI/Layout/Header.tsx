@@ -22,7 +22,11 @@ const Header: React.FC = () => {
 			const items = data?.getUserByEmail?.items?.filter((item) => item !== null && item._deleted !== true);
 			if (items && items.length > 0) {
 				defineGroup(items[0]?.role ? items[0]?.role : '');
-				setUserInfo(items[0]?.id ? items[0]?.id : '', items[0]?.email ? items[0]?.email : '');
+				setUserInfo(
+					items[0]?.id ? items[0]?.id : '',
+					items[0]?.email ? items[0]?.email : '',
+					items[0]?.name ? items[0]?.name : ''
+				);
 			}
 		}
 	});
@@ -44,7 +48,7 @@ const Header: React.FC = () => {
 		setLoggedUser('');
 		navigate('/');
 		Auth.signOut();
-		setUserInfo('', '');
+		setUserInfo('', '', '');
 		window.sessionStorage.getItem('token');
 	};
 

@@ -12,7 +12,7 @@ import classes from './Home.module.scss';
 
 const HomeView: React.FC = () => {
 	const navigate = useNavigate();
-	const {group, userId} = useAuthContext();
+	const {group, user} = useAuthContext();
 
 	const redirectRol = () => {
 		switch (group) {
@@ -21,7 +21,7 @@ const HomeView: React.FC = () => {
 				break;
 			default:
 				navigate('/lab-semesters', {
-					state: {userId: userId}
+					state: {userId: user.userId}
 				});
 				break;
 		}

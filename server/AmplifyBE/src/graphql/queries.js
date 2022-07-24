@@ -645,6 +645,7 @@ export const getLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -765,6 +766,7 @@ export const listLabPracticeSessionCommands = /* GraphQL */ `
         requestDate
         executionDate
         status
+        username
         parameters
         labpracticesessionID
         labpracticecommandID
@@ -829,6 +831,7 @@ export const syncLabPracticeSessionCommands = /* GraphQL */ `
         requestDate
         executionDate
         status
+        username
         parameters
         labpracticesessionID
         labpracticecommandID
@@ -1081,6 +1084,7 @@ export const getLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -1583,6 +1587,7 @@ export const getLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID

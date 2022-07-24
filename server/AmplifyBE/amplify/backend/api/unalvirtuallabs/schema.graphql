@@ -45,6 +45,7 @@ type LabPracticeSessionCommand @model @key(name: "byLabPracticeSession", fields:
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
   status: Status!
+  username: String
   parameters: AWSJSON
   LabPracticeSession: LabPracticeSession @connection(fields: ["labpracticesessionID"])
   labpracticesessionID: ID!

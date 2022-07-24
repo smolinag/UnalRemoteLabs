@@ -60,6 +60,7 @@ type LabPracticeSessionCommand @aws_api_key @aws_cognito_user_pools {
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
   status: Status!
+  username: String
   parameters: AWSJSON
   labpracticesessionID: ID!
   labpracticecommandID: ID!
@@ -699,6 +700,7 @@ input ModelLabPracticeSessionCommandFilterInput {
   requestDate: ModelStringInput
   executionDate: ModelStringInput
   status: ModelStatusInput
+  username: ModelStringInput
   parameters: ModelStringInput
   labpracticesessionID: ModelIDInput
   labpracticecommandID: ModelIDInput
@@ -712,6 +714,7 @@ input CreateLabPracticeSessionCommandInput {
   requestDate: AWSDateTime!
   executionDate: AWSDateTime
   status: Status!
+  username: String
   parameters: AWSJSON
   labpracticesessionID: ID!
   labpracticecommandID: ID!
@@ -723,6 +726,7 @@ input UpdateLabPracticeSessionCommandInput {
   requestDate: AWSDateTime
   executionDate: AWSDateTime
   status: Status
+  username: String
   parameters: AWSJSON
   labpracticesessionID: ID
   labpracticecommandID: ID
@@ -738,6 +742,7 @@ input ModelLabPracticeSessionCommandConditionInput {
   requestDate: ModelStringInput
   executionDate: ModelStringInput
   status: ModelStatusInput
+  username: ModelStringInput
   parameters: ModelStringInput
   labpracticesessionID: ModelIDInput
   labpracticecommandID: ModelIDInput

@@ -758,6 +758,7 @@ export const onCreateLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -869,6 +870,7 @@ export const onUpdateLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -980,6 +982,7 @@ export const onDeleteLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -1322,6 +1325,7 @@ export const onCreateLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -1456,6 +1460,7 @@ export const onUpdateLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -1590,6 +1595,7 @@ export const onDeleteLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -2030,6 +2036,7 @@ export const onCreateLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -2136,6 +2143,7 @@ export const onUpdateLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -2242,6 +2250,7 @@ export const onDeleteLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -3565,6 +3574,7 @@ export const onUpdateLabPracticeSessionCommandBySessionID = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID

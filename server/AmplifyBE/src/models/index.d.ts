@@ -75,6 +75,7 @@ export declare class LabPracticeSessionCommand {
   readonly requestDate: string;
   readonly executionDate?: string | null;
   readonly status: Status | keyof typeof Status;
+  readonly username?: string | null;
   readonly parameters?: string | null;
   readonly LabPracticeSession?: LabPracticeSession | null;
   readonly LabPracticeCommand?: LabPracticeCommand | null;

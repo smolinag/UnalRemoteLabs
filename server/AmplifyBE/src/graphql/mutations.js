@@ -788,6 +788,7 @@ export const createLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -902,6 +903,7 @@ export const updateLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -1016,6 +1018,7 @@ export const deleteLabPracticeSessionCommand = /* GraphQL */ `
       requestDate
       executionDate
       status
+      username
       parameters
       labpracticesessionID
       labpracticecommandID
@@ -1370,6 +1373,7 @@ export const createLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -1507,6 +1511,7 @@ export const updateLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -1644,6 +1649,7 @@ export const deleteLabPracticeSession = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -2096,6 +2102,7 @@ export const createLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -2205,6 +2212,7 @@ export const updateLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID
@@ -2314,6 +2322,7 @@ export const deleteLabPracticeCommand = /* GraphQL */ `
           requestDate
           executionDate
           status
+          username
           parameters
           labpracticesessionID
           labpracticecommandID

@@ -33,6 +33,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "parameters": {
                     "name": "parameters",
                     "isArray": false,
@@ -1870,5 +1877,5 @@ export const schema = {
             }
         }
     },
-    "version": "10b13be2776cfef2f8b1c4e831995dda"
+    "version": "3d09a3a9aab8bd92f7e7804d9ce6cfd1"
 };

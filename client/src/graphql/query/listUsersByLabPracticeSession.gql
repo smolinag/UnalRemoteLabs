@@ -5,6 +5,7 @@ query listUsersByLabPracticeSession($id: ID!) {
 				id
 				_version
 				_deleted
+				sessionStartDate
 				User {
 					id
 					name

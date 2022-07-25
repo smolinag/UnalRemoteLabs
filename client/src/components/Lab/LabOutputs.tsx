@@ -22,14 +22,15 @@ interface Props {
 
 const COLUMNS_OUTPUTS = ['Salida', 'Valores'];
 
-const mapOutput = ({status, executionDate, command, parameters}: CommandSession): string[] => [
+const mapOutput = ({status, executionDate, command, parameters, name}: CommandSession): string[] => [
 	executionDate,
 	command,
 	status,
-	parameters && `${JSON.parse(parameters).label.toString()} ${JSON.parse(parameters).value.toString()}`
+	parameters && `${JSON.parse(parameters).label.toString()} ${JSON.parse(parameters).value.toString()}`,
+	name
 ];
 
-const COLUMNS_COMMANDS = ['Fecha de ejecución', 'Comando', 'Estado', 'Parámetro'];
+const COLUMNS_COMMANDS = ['Fecha de ejecución', 'Comando', 'Estado', 'Parámetro', 'Usuario'];
 
 const LabOutputs: React.FC<Props> = ({dataOutput, dataCommands, outputTransition}) => {
 	return (

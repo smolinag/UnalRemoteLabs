@@ -76,7 +76,7 @@
       "function": {
         "iotpub": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-205819-deployment",
-          "s3Key": "amplify-builds/iotpub-484e4f564255324c2f55-build.zip"
+          "s3Key": "amplify-builds/iotpub-7354444f4a3339414179-build.zip"
         },
         "laboutputlogger": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-205819-deployment",
@@ -93,7 +93,7 @@
         },
         "emaildelivery": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-205819-deployment",
-          "s3Key": "amplify-builds/emaildelivery-6931353553326a4f572b-build.zip"
+          "s3Key": "amplify-builds/emaildelivery-596d4a4c78686d366873-build.zip"
         },
         "createcognitouser": {
           "deploymentBucketName": "amplify-unalvirtuallabs-dev-205819-deployment",

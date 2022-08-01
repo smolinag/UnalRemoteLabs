@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 
-var iotdata = new AWS.IotData({endpoint:"abs5zb35f9o6-ats.iot.us-east-2.amazonaws.com"});
+var iotdata = new AWS.IotData({endpoint:"a18wpf5gcnjwiy-ats.iot.us-east-2.amazonaws.com"});
 
 exports.handler = async (event) => {
 

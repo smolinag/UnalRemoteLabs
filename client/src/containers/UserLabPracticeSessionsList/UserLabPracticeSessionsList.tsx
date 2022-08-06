@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Row from 'react-bootstrap/Row';
 import {useLocation} from 'react-router-dom';
 
@@ -7,9 +7,9 @@ import {UserLabPracticeSessionsTable} from '../../components/UsersLabsView';
 import {Groups} from '../../generalUtils/groups';
 import {validateGroupFunction} from '../../generalUtils/ValidateGroup';
 import {
-	useGetLaboratoryQuery,
-	useListLabPracticeSessionsQuery,
-	useListUserLabPracticeSessionsQuery
+	useGetLaboratoryLazyQuery,
+	useListLabPracticeSessionsLazyQuery,
+	useListUserLabPracticeSessionsLazyQuery
 } from '../../graphql/generated/schema';
 import {useAuthContext} from '../../GroupProvider';
 import {initialLaboratoryValue} from '../Laboratory/LaboratoryEdition';
@@ -30,135 +30,140 @@ const UserLabPracticeSessionsList: React.FC = () => {
 
 	const {group} = useAuthContext(); //Get group to decide which sessions to show
 
-	if (labSemesterId && validateGroupFunction([Groups.AdminsGroup], group)) {
-		useListLabPracticeSessionsQuery({
-			variables: {labSemesterID: labSemesterId},
-			fetchPolicy: 'network-only',
-			onCompleted: (data) => {
-				const receivedList = data?.listLabPracticeSessions?.items.filter(
-					(session) => !session?._deleted && !session?.LabPractice?._deleted
-				);
+	const [listLabPracticeSessions] = useListLabPracticeSessionsLazyQuery({
+		fetchPolicy: 'network-only',
+		onCompleted: (data) => {
+			const receivedList = data?.listLabPracticeSessions?.items.filter(
+				(session) => !session?._deleted && !session?.LabPractice?._deleted
+			);
 
-				if (receivedList && receivedList.length > 0) {
-					const list: LabPracticeSession[] = receivedList.map((session) => ({
-						id: session?.id ? session.id : '',
-						startDate: session?.startDate ? session.startDate : '',
-						endDate: session?.endDate ? session.endDate : '',
-						version: session?._version ? session._version : null,
-						description: session?.description ? session.description : '',
+			if (receivedList && receivedList.length > 0) {
+				const list: LabPracticeSession[] = receivedList.map((session) => ({
+					id: session?.id ? session.id : '',
+					startDate: session?.startDate ? session.startDate : '',
+					endDate: session?.endDate ? session.endDate : '',
+					version: session?._version ? session._version : null,
+					description: session?.description ? session.description : '',
+					labSemesterInfo: {
+						id: session?.LabSemester?.id ? session.LabSemester.id : '',
+						name: session?.LabSemester?.semesterName ? session.LabSemester.semesterName : '',
+						description: session?.LabSemester?.description ? session.LabSemester.description : '',
+						laboratory: session?.LabSemester?.Laboratory?.name
+					},
+					labPracticeInfo: {
+						id: session?.LabPractice?.id ? session.LabPractice?.id : '',
+						practiceInfoName: session?.LabPractice?.name ? session?.LabPractice?.name : '',
+						practiceInfoDescription: session?.LabPractice?.description ? session?.LabPractice?.description : '',
+						practiceInfoDuration: session?.LabPractice?.duration ? session?.LabPractice?.duration : 0,
+						laboratory: {
+							id: session?.LabPractice?.Laboratory?.id ? session?.LabPractice?.Laboratory?.id : '',
+							name: session?.LabPractice?.Laboratory?.name ? session?.LabPractice?.Laboratory?.name : '',
+							description: session?.LabPractice?.Laboratory?.description
+								? session?.LabPractice?.Laboratory?.description
+								: ''
+						},
+						labPracticeDeviceId: session?.LabPractice?.LabPracticeDeviceId
+							? session.LabPractice.LabPracticeDeviceId
+							: ''
+					}
+				}));
+				setLabPracticeSessionsList(list);
+			}
+
+			setLoading(false);
+		}
+	});
+
+	const [getLaboratory] = useGetLaboratoryLazyQuery({
+		fetchPolicy: 'network-only',
+		onCompleted: (data) => {
+			if (data?.getLaboratory != null) {
+				const lab = data.getLaboratory;
+
+				setLaboratory({
+					id: lab.id,
+					name: lab.name,
+					description: lab.description ? lab.description : '',
+					organizationId: lab.organizationID,
+					version: lab._version
+				});
+			}
+		}
+	});
+
+	const [listUserLabPracticeSessions] = useListUserLabPracticeSessionsLazyQuery({
+		fetchPolicy: 'network-only',
+		onCompleted: (data) => {
+			const receivedList = data?.listUserLabPracticeSessions?.items.filter(
+				(session) =>
+					!session?._deleted &&
+					!session?.LabPracticeSession?._deleted &&
+					!session?.LabPracticeSession?.LabPractice?._deleted
+			);
+
+			if (receivedList && receivedList.length > 0) {
+				const list: UserLabPracticeSession[] = receivedList.map((session) => ({
+					id: session ? session.id : '',
+					sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
+					sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
+					version: session?._version ? session._version : null,
+					labPracticeSession: {
+						id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
+						startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
+						endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
+						version: session?.LabPracticeSession?._version ? session.LabPracticeSession._version : null,
+						description: session?.LabPracticeSession?.description ? session.LabPracticeSession?.description : '',
 						labSemesterInfo: {
-							id: session?.LabSemester?.id ? session.LabSemester.id : '',
-							name: session?.LabSemester?.semesterName ? session.LabSemester.semesterName : '',
-							description: session?.LabSemester?.description ? session.LabSemester.description : '',
-							laboratory: session?.LabSemester?.Laboratory?.name
+							id: session?.LabPracticeSession?.LabSemester?.id ? session.LabPracticeSession.LabSemester.id : '',
+							name: session?.LabPracticeSession?.LabSemester?.semesterName
+								? session.LabPracticeSession.LabSemester.semesterName
+								: '',
+							description: session?.LabPracticeSession?.LabSemester?.description
+								? session.LabPracticeSession.LabSemester.description
+								: ''
 						},
 						labPracticeInfo: {
-							id: session?.LabPractice?.id ? session.LabPractice?.id : '',
-							practiceInfoName: session?.LabPractice?.name ? session?.LabPractice?.name : '',
-							practiceInfoDescription: session?.LabPractice?.description ? session?.LabPractice?.description : '',
-							practiceInfoDuration: session?.LabPractice?.duration ? session?.LabPractice?.duration : 0,
+							id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
+							practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
+								? session?.LabPracticeSession?.LabPractice?.name
+								: '',
+							practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
+								? session?.LabPracticeSession?.LabPractice?.description
+								: '',
+							practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
+								? session?.LabPracticeSession?.LabPractice?.duration
+								: 0,
 							laboratory: {
-								id: session?.LabPractice?.Laboratory?.id ? session?.LabPractice?.Laboratory?.id : '',
-								name: session?.LabPractice?.Laboratory?.name ? session?.LabPractice?.Laboratory?.name : '',
-								description: session?.LabPractice?.Laboratory?.description
-									? session?.LabPractice?.Laboratory?.description
+								id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+									? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
+									: '',
+								name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+									? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
+									: '',
+								description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
+									? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
 									: ''
 							},
-							labPracticeDeviceId: session?.LabPractice?.LabPracticeDeviceId
-								? session.LabPractice.LabPracticeDeviceId
-								: ''
+							labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDeviceId
 						}
-					}));
-					setLabPracticeSessionsList(list);
-				}
+					}
+				}));
 
-				setLoading(false);
+				setUserLabPracticeSessionsList(list);
 			}
-		});
 
-		useGetLaboratoryQuery({
-			variables: {id: labId},
-			onCompleted: (data) => {
-				if (data?.getLaboratory != null) {
-					const lab = data.getLaboratory;
+			setLoading(false);
+		}
+	});
 
-					setLaboratory({
-						id: lab.id,
-						name: lab.name,
-						description: lab.description ? lab.description : '',
-						organizationId: lab.organizationID,
-						version: lab._version
-					});
-				}
-			}
-		});
-	} else if (userId) {
-		useListUserLabPracticeSessionsQuery({
-			variables: {id: userId ? userId : ''},
-			fetchPolicy: 'network-only',
-			onCompleted: (data) => {
-				const receivedList = data?.listUserLabPracticeSessions?.items.filter(
-					(session) =>
-						!session?._deleted &&
-						!session?.LabPracticeSession?._deleted &&
-						!session?.LabPracticeSession?.LabPractice?._deleted
-				);
-
-				if (receivedList && receivedList.length > 0) {
-					const list: UserLabPracticeSession[] = receivedList.map((session) => ({
-						id: session ? session.id : '',
-						sessionStartDate: session?.sessionStartDate ? session?.sessionStartDate : '',
-						sessionEndDate: session?.sessionEndDate ? session.sessionEndDate : '',
-						version: session?._version ? session._version : null,
-						labPracticeSession: {
-							id: session?.LabPracticeSession?.id ? session.LabPracticeSession?.id : '',
-							startDate: session?.LabPracticeSession?.startDate ? session.LabPracticeSession?.startDate : '',
-							endDate: session?.LabPracticeSession?.endDate ? session.LabPracticeSession?.endDate : '',
-							version: session?.LabPracticeSession?._version ? session.LabPracticeSession._version : null,
-							description: session?.LabPracticeSession?.description ? session.LabPracticeSession?.description : '',
-							labSemesterInfo: {
-								id: session?.LabPracticeSession?.LabSemester?.id ? session.LabPracticeSession.LabSemester.id : '',
-								name: session?.LabPracticeSession?.LabSemester?.semesterName
-									? session.LabPracticeSession.LabSemester.semesterName
-									: '',
-								description: session?.LabPracticeSession?.LabSemester?.description
-									? session.LabPracticeSession.LabSemester.description
-									: ''
-							},
-							labPracticeInfo: {
-								id: session?.LabPracticeSession?.LabPractice?.id ? session.LabPracticeSession?.LabPractice?.id : '',
-								practiceInfoName: session?.LabPracticeSession?.LabPractice?.name
-									? session?.LabPracticeSession?.LabPractice?.name
-									: '',
-								practiceInfoDescription: session?.LabPracticeSession?.LabPractice?.description
-									? session?.LabPracticeSession?.LabPractice?.description
-									: '',
-								practiceInfoDuration: session?.LabPracticeSession?.LabPractice?.duration
-									? session?.LabPracticeSession?.LabPractice?.duration
-									: 0,
-								laboratory: {
-									id: session?.LabPracticeSession?.LabPractice?.Laboratory?.id
-										? session?.LabPracticeSession?.LabPractice?.Laboratory?.id
-										: '',
-									name: session?.LabPracticeSession?.LabPractice?.Laboratory?.name
-										? session?.LabPracticeSession?.LabPractice?.Laboratory?.name
-										: '',
-									description: session?.LabPracticeSession?.LabPractice?.Laboratory?.description
-										? session?.LabPracticeSession?.LabPractice?.Laboratory?.description
-										: ''
-								},
-								labPracticeDeviceId: session?.LabPracticeSession?.LabPractice?.LabPracticeDeviceId
-							}
-						}
-					}));
-
-					setUserLabPracticeSessionsList(list);
-				}
-
-				setLoading(false);
-			}
-		});
-	}
+	useEffect(() => {
+		if (group && labSemesterId && validateGroupFunction([Groups.AdminsGroup], group)) {
+			listLabPracticeSessions({variables: {labSemesterID: labSemesterId}});
+			getLaboratory({variables: {id: labId}});
+		} else if (group && userId) {
+			listUserLabPracticeSessions({variables: {id: userId ? userId : ''}});
+		}
+	}, [group]);
 
 	const handleSuccessSessionDelete = (session: LabPracticeSession) => {
 		//Remove deleted session from labPracticeSessionsList state

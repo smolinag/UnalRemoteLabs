@@ -462,14 +462,14 @@ const LabPracticeView: React.FC = () => {
 			{user.userId === sessionInformation.leaderStudent ||
 			validateGroupFunction(['Admins', 'Professors', 'Monitors'], group) ? (
 				<Row className="section">
-					<Col md={7}>
+					<Col md={6}>
 						<Commands
 							commands={labCommands}
 							onCommandChange={handleCommandChange}
 							isExecutingCommand={isExecutingCommand}
 						/>
 					</Col>
-					<Col md={5}>
+					<Col md={6}>
 						<LabVideo videoUrl={sessionInformation.videoUrlCode} onVideoUrlRefresh={handleVideoUrlRefresh} />
 					</Col>
 				</Row>

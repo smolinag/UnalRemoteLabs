@@ -308,7 +308,7 @@ const LabPracticeView: React.FC = () => {
 				parameters: updatedCommand?.parameters ? updatedCommand?.parameters : '',
 				status: updatedCommand?.status ? updatedCommand?.status : '',
 				command: commandLabel?.label ? commandLabel?.label : '',
-				name: user.name
+				name: user.name.length > 0 ? user.name : user.email
 			};
 
 			clearTimeout(commandExecutionTimeout);
@@ -357,7 +357,7 @@ const LabPracticeView: React.FC = () => {
 						parameters: JSON.stringify(parameters[0]),
 						status: Status.Pending,
 						requestDate: new Date().toISOString(),
-						username: user.name
+						username: user.name.length > 0 ? user.name : user.email
 					}
 				}
 			});
@@ -378,7 +378,7 @@ const LabPracticeView: React.FC = () => {
 				parameters: JSON.stringify(parameters[0]),
 				status: Status.Pending,
 				command: name,
-				name: user.name
+				name: user.name.length > 0 ? user.name : user.email
 			});
 
 			setExecutedCommands(exeCommands);
@@ -409,7 +409,7 @@ const LabPracticeView: React.FC = () => {
 							requestDate: new Date().toISOString(),
 							executionDate: new Date().toISOString(),
 							_version: version,
-							username: user.name
+							username: user.name.length > 0 ? user.name : user.email
 						}
 					}
 				});
@@ -433,7 +433,7 @@ const LabPracticeView: React.FC = () => {
 						? dataError?.updateLabPracticeSessionCommand?.status
 						: '',
 					command: name,
-					name: user.name
+					name: user.name.length > 0 ? user.name : user.email
 				});
 
 				setExecutedCommands(exeCommands);
@@ -462,14 +462,14 @@ const LabPracticeView: React.FC = () => {
 			{user.userId === sessionInformation.leaderStudent ||
 			validateGroupFunction(['Admins', 'Professors', 'Monitors'], group) ? (
 				<Row className="section">
-					<Col md={7}>
+					<Col md={6}>
 						<Commands
 							commands={labCommands}
 							onCommandChange={handleCommandChange}
 							isExecutingCommand={isExecutingCommand}
 						/>
 					</Col>
-					<Col md={5}>
+					<Col md={6}>
 						<LabVideo videoUrl={sessionInformation.videoUrlCode} onVideoUrlRefresh={handleVideoUrlRefresh} />
 					</Col>
 				</Row>

@@ -123,6 +123,7 @@ async function listLabPracticeOutputs(filter) {
       query: LIST_OUTPUTS,
       variables: { filter },
     });
+    console.log(filter)
     let outputs = queryAns.data.listLabPracticeOutputs.items;
     if (outputs.length > 0) {
       console.log("Outputs before deleted filter: " + outputs.length);
@@ -139,6 +140,7 @@ async function listLabPracticeOutputs(filter) {
   } catch (error) {
     console.log(error);
   }
+  return null;
 }
 
 async function updateLabPracticeSessionCommand(uuid, status, executionDate) {
@@ -202,10 +204,13 @@ exports.handler = async (event) => {
             let item = event.data[i];
             console.log(item);        
             let outputId = await listLabPracticeOutputs({ name: { eq: item.name }, labpracticeID: {eq: labPracticeId} });
-            await labOutputListen(event.rpiId, outputId, item.value, event.captureDate);
+            if(outputId){
+              await labOutputListen(event.rpiId, outputId, item.value, event.captureDate);
+            }            
           }
           break;
         case "command":
+          console.log(item)
           await updateLabPracticeSessionCommand(event.uuid, event.status, event.executionDate);
           break;
         default:
